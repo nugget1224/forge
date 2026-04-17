@@ -136,12 +136,24 @@
   .ex-note { font-size: 11px; color: var(--text3); margin-top: 1px; }
   .ex-info { flex: 1; }
 
-  /* Progress log */
+  /* Progress log (shared with weight log) */
   .log-item { display: flex; align-items: center; gap: 12px; padding: 10px 12px; background: var(--surface2); border-radius: var(--radius); border: 1px solid var(--border); margin-bottom: 6px; }
   .log-date { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--text3); min-width: 80px; }
   .log-ex { flex: 1; font-weight: 500; font-size: 13px; }
   .log-detail { font-family: 'DM Mono', monospace; font-size: 12px; color: var(--accent); }
   .log-vol { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--text3); }
+
+  /* Session history cards */
+  .session-day-group { margin-bottom: 28px; }
+  .session-day-header { font-size: 11px; font-family: 'DM Mono', monospace; color: var(--text3); text-transform: uppercase; letter-spacing: 0.07em; padding-bottom: 8px; border-bottom: 1px solid var(--border); margin-bottom: 10px; }
+  .session-cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 8px; }
+  .session-card { background: var(--surface2); border: 1px solid var(--border); border-radius: var(--radius); padding: 12px 14px; display: flex; flex-direction: column; gap: 0; }
+  .session-card-header { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
+  .session-card-name { font-size: 13px; font-weight: 500; color: var(--text); flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .session-card-summary { font-size: 12px; font-family: 'DM Mono', monospace; color: var(--accent); margin-bottom: 8px; }
+  .session-card-sets { display: flex; flex-direction: column; gap: 3px; margin-bottom: 8px; }
+  .session-set-row { display: grid; grid-template-columns: 38px 30px 56px auto; align-items: center; gap: 6px; font-size: 11px; font-family: 'DM Mono', monospace; color: var(--text3); }
+  .session-card-footer { display: flex; align-items: center; justify-content: flex-end; padding-top: 7px; border-top: 1px solid var(--border); font-size: 11px; font-family: 'DM Mono', monospace; color: var(--text3); margin-top: auto; }
 
   /* Goals */
   .goal-item { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
@@ -213,26 +225,31 @@
   @keyframes pulse { 0%,100%{opacity:0.3} 50%{opacity:1} }
 
   /* Today's workout log */
-  .workout-log-item { background: var(--surface2); border: 1px solid var(--border); border-radius: var(--radius); padding: 10px 12px; margin-bottom: 8px; }
-  .workout-log-item.logged { opacity: 0.6; border-color: var(--border); }
-  .workout-log-item.logged .wli-name::after { content: ' ✓'; color: var(--accent); font-size: 12px; }
+  .workout-log-item { background: var(--surface2); border: 1px solid var(--border); border-left: 3px solid var(--border2); border-radius: var(--radius); padding: 13px 14px; margin-bottom: 10px; transition: border-color 0.15s; }
+  .workout-log-item.logged { opacity: 0.55; border-left-color: var(--accent); }
+  .workout-log-item.logged .wli-name::after { content: ' ✓'; color: var(--accent); font-size: 11px; }
   .workout-log-item.logged .wli-body { display: none; }
   .workout-log-item.logged.wli-expanded .wli-body { display: block; }
   .workout-log-item.logged .wli-top { margin-bottom: 0; cursor: pointer; }
-  .workout-log-item.logged.wli-expanded .wli-top { margin-bottom: 8px; }
-  .wli-top { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
-  .wli-name { font-size: 13px; font-weight: 500; color: var(--text); flex: 1; }
-  .wli-planned { font-size: 11px; font-family: 'DM Mono', monospace; color: var(--text3); }
+  .workout-log-item.logged.wli-expanded .wli-top { margin-bottom: 10px; }
+  .wli-top { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
+  .wli-name { font-size: 14px; font-weight: 500; color: var(--text); flex: 1; min-width: 0; }
+  .wli-planned { font-size: 10px; font-family: 'DM Mono', monospace; color: var(--text3); background: var(--surface); border: 1px solid var(--border); padding: 2px 7px; border-radius: 4px; white-space: nowrap; flex-shrink: 0; }
+  .wli-summary { font-size: 11px; font-family: 'DM Mono', monospace; color: var(--text2); margin-top: 3px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
   .wli-inputs { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
   .wli-inputs input { width: 75px; flex: none; }
   .wli-inputs .btn { white-space: nowrap; }
+  .wli-progress { font-size: 11px; font-family: 'DM Mono', monospace; color: var(--text3); margin-bottom: 12px; display: flex; align-items: center; gap: 10px; }
+  .wli-progress-bar { flex: 1; height: 3px; background: var(--border); border-radius: 2px; overflow: hidden; }
+  .wli-progress-bar-fill { height: 100%; background: var(--accent); border-radius: 2px; transition: width 0.3s; }
   .no-workout-today { text-align: center; padding: 20px; color: var(--text3); font-size: 13px; font-family: 'DM Mono', monospace; }
 
   /* Per-set weight logging */
-  .set-rows { display: flex; flex-direction: column; gap: 5px; margin: 8px 0 6px; }
-  .set-row { display: flex; align-items: center; gap: 6px; }
-  .set-num { font-size: 11px; font-family: 'DM Mono', monospace; color: var(--text3); min-width: 36px; }
+  .set-rows { display: flex; flex-direction: column; gap: 10px; margin: 10px 0 8px; }
+  .set-row { display: flex; align-items: flex-start; gap: 6px; flex-wrap: wrap; }
+  .set-num { font-size: 11px; font-family: 'DM Mono', monospace; color: var(--text3); min-width: 36px; padding-top: 9px; }
   .set-row input { width: 80px; flex: none; }
+  .wli-rpe-block { display: flex; flex-direction: column; gap: 2px; flex-shrink: 0; }
   .set-done { width: 22px; height: 22px; border-radius: 50%; border: 1px solid var(--border2); background: none; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 11px; color: var(--text3); transition: all 0.15s; flex-shrink: 0; }
   .set-done.checked { background: var(--accent); border-color: var(--accent); color: #0f1a00; }
 
@@ -284,19 +301,20 @@
   .food-lib-tab { background: none; border: none; border-bottom: 2px solid transparent; padding: 5px 12px; font-size: 12px; color: var(--text2); cursor: pointer; margin-bottom: -0.5px; font-family: var(--font-sans); transition: color 0.12s; }
   .food-lib-tab:hover { color: var(--text); }
   .food-lib-tab.active { color: var(--accent); border-bottom-color: var(--accent); font-weight: 500; }
-  .food-lib-panel { display: flex; flex-wrap: wrap; gap: 6px; min-height: 24px; }
-  .food-pill { display: flex; align-items: center; gap: 0; background: var(--surface2); border: 1px solid var(--border); border-radius: 20px; overflow: hidden; cursor: pointer; transition: border-color 0.12s; }
-  .food-pill:hover { border-color: var(--accent); }
-  .food-pill-name { padding: 4px 10px; font-size: 12px; color: var(--text); }
-  .food-pill-cal { padding: 4px 8px 4px 0; font-size: 11px; color: var(--text3); font-family: monospace; }
-  .food-pill-del { padding: 4px 8px; font-size: 11px; color: var(--text3); border-left: 1px solid var(--border); line-height: 1; cursor: pointer; }
+  .food-lib-panel { display: flex; flex-direction: column; gap: 4px; min-height: 24px; }
+  .food-pill { display: flex; align-items: center; gap: 10px; background: var(--surface2); border: 1px solid var(--border); border-radius: var(--radius); padding: 8px 10px; cursor: pointer; transition: border-color 0.12s; }
+  .food-pill:hover { border-color: var(--border2); }
+  .food-pill-name { flex: 1; font-size: 13px; color: var(--text); min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .food-pill-cal { font-size: 12px; color: var(--accent); font-family: monospace; white-space: nowrap; flex-shrink: 0; }
+  .food-pill-macros { font-size: 10px; color: var(--text3); font-family: monospace; white-space: nowrap; flex-shrink: 0; }
+  .food-pill-del { padding: 2px 4px; font-size: 11px; color: var(--text3); line-height: 1; cursor: pointer; flex-shrink: 0; border-radius: 4px; }
   .food-pill-del:hover { color: var(--red); background: var(--red-dim); }
-  .food-ac-item { padding: 9px 12px; cursor: pointer; display: flex; align-items: center; gap: 10px; border-bottom: 0.5px solid var(--border); }
+  .food-ac-item { padding: 10px 14px; cursor: pointer; display: flex; align-items: center; gap: 12px; border-bottom: 0.5px solid var(--border); }
   .food-ac-item:last-child { border-bottom: none; }
   .food-ac-item:hover { background: var(--surface2); }
-  .food-ac-name { flex: 1; font-size: 13px; color: var(--text); }
-  .food-ac-cal { font-size: 11px; font-family: monospace; color: var(--accent); }
-  .food-ac-macros { font-size: 10px; color: var(--text3); font-family: monospace; }
+  .food-ac-name { flex: 1; font-size: 14px; color: var(--text); }
+  .food-ac-cal { font-size: 12px; font-family: monospace; color: var(--accent); white-space: nowrap; }
+  .food-ac-macros { font-size: 11px; color: var(--text3); font-family: monospace; margin-top: 2px; }
 
   /* Recipes */
   .recipe-card { background: var(--surface2); border: 1px solid var(--border); border-radius: var(--radius-lg); margin-bottom: 10px; overflow: hidden; }
@@ -371,8 +389,7 @@
 
   @media (max-width: 700px) {
     #recipe-list.grid-view { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; }
-    #food-name-row { grid-template-columns: 1fr 1fr !important; }
-    #food-name-row > div:first-child { grid-column: 1 / -1; }
+
 
     /* Hide desktop sidebar, show bottom tab bar */
     .sidebar { display: none; }
@@ -393,6 +410,15 @@
     /* Sections */
     .section { padding: 14px; border-radius: var(--radius); }
 
+    /* Session history cards — single column on mobile */
+    .session-cards { grid-template-columns: 1fr; }
+
+    /* Set rows — keep inputs fixed width, wrap RPE block to new line */
+    .set-row { flex-wrap: wrap; }
+    .set-row input { width: 76px !important; }
+    .wli-rpe-block { flex-basis: 100%; padding-left: 42px; flex-direction: row; align-items: center; gap: 6px; }
+    .wli-rpe-block > div:last-child { font-size: 10px; }
+
     /* Forms — collapse multi-col grids to single column */
     input[type=number] { width: 100%; }
     .input-wide { width: 100%; }
@@ -408,10 +434,13 @@
     }
 
     /* Ingredient form — collapse to stacked rows */
-    #ing-row-1, #ing-row-2 {
+    #ing-row-1 {
+      display: grid !important; grid-template-columns: 1fr; gap: 6px;
+    }
+    #ing-row-2 {
       display: flex !important; flex-wrap: wrap; gap: 8px;
     }
-    #ing-row-1 > * { flex: 1 1 120px; min-width: 100px; }
+    #ing-row-1 > * { width: 100%; }
     #ing-row-2 > * { flex: 1 1 70px; min-width: 65px; }
 
     /* Add + Clear buttons — full width on their own line */
@@ -505,7 +534,7 @@
     </div>
     <div class="nav-item" onclick="showPage('progress', this)">
       <svg class="nav-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="2,12 6,7 10,9 14,4"/></svg>
-      Progress log
+      Workout log
     </div>
     <div class="nav-section">Settings</div>
     <div class="nav-item" onclick="showPage('goals', this)">
@@ -616,12 +645,12 @@
 
         <!-- Food name + amount + unit -->
         <div style="display:flex;flex-direction:column;gap:6px;margin-bottom:8px;">
-          <div id="food-name-row" style="display:grid;grid-template-columns:1fr 90px 90px;gap:6px;align-items:end;">
+          <div id="food-name-row" style="display:grid;grid-template-columns:1fr;gap:6px;align-items:end;">
             <div style="position:relative;">
               <div style="font-size:10px;color:var(--text3);font-family:monospace;margin-bottom:3px;">Food name</div>
-              <input class="input-wide" type="text" id="food-name" placeholder="e.g. Chicken breast" autocomplete="off"
+              <input class="input-wide" type="text" id="food-name" placeholder="e.g. Chicken breast" autocomplete="off" style="width:100%;"
                 oninput="onFoodNameInput(this.value)" onfocus="onFoodNameInput(this.value)" onblur="setTimeout(hideFoodAC,180)" />
-              <div id="food-ac-dropdown" style="display:none;position:absolute;top:100%;left:0;right:0;z-index:50;background:var(--surface);border:1px solid var(--border2);border-radius:var(--radius);margin-top:2px;max-height:220px;overflow-y:auto;box-shadow:0 4px 16px rgba(0,0,0,0.4);"></div>
+              <div id="food-ac-dropdown" style="display:none;position:absolute;top:100%;left:0;right:0;z-index:50;background:var(--surface);border:1px solid var(--border2);border-radius:var(--radius);margin-top:2px;max-height:300px;overflow-y:auto;box-shadow:0 4px 16px rgba(0,0,0,0.4);"></div>
             </div>
             <div>
               <div style="font-size:10px;color:var(--text3);font-family:monospace;margin-bottom:3px;">Amount</div>
@@ -866,7 +895,7 @@
     <!-- PROGRESS PAGE -->
     <div class="page" id="page-progress">
       <div class="page-header">
-        <div class="page-title">Progress log</div>
+        <div class="page-title">Workout log</div>
         <div class="page-sub">Track your lifts over time</div>
       </div>
 
@@ -879,6 +908,10 @@
             <button id="plate-calc-toggle" onclick="togglePlateCalc()" title="Toggle plate calculator"
               style="background:none;border:1px solid var(--border2);border-radius:6px;padding:3px 8px;cursor:pointer;font-size:10px;font-family:'DM Mono',monospace;color:var(--text3);white-space:nowrap;">
               plates: on
+            </button>
+            <button id="weight-suggest-toggle" onclick="toggleWeightSuggest()" title="Toggle weight suggestions"
+              style="background:none;border:1px solid var(--border2);border-radius:6px;padding:3px 8px;cursor:pointer;font-size:10px;font-family:'DM Mono',monospace;color:var(--text3);white-space:nowrap;">
+              suggest: on
             </button>
           </div>
         </div>
@@ -1173,7 +1206,7 @@
       <div id="recipe-ingredients" style="display:flex;flex-direction:column;gap:6px;margin-bottom:8px;"></div>
       <div style="display:flex;flex-direction:column;gap:6px;margin-bottom:12px;" id="recipe-ing-row">
         <!-- Row 1: name + amount + unit -->
-        <div id="ing-row-1" style="display:grid;grid-template-columns:1fr 90px 90px;gap:6px;align-items:end;">
+        <div id="ing-row-1" style="display:grid;grid-template-columns:1fr;gap:6px;align-items:end;">
           <div style="position:relative;">
             <div style="font-size:10px;color:var(--text3);font-family:monospace;margin-bottom:3px;">Ingredient name</div>
             <input type="text" id="ing-name" placeholder="e.g. Chicken breast" style="width:100%;" autocomplete="off"
@@ -1348,7 +1381,7 @@
     </button>
     <button class="mobile-nav-item" data-page="progress" onclick="showPage('progress',this)">
       <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="2,12 6,7 10,9 14,4"/></svg>
-      Progress
+      Log
     </button>
     <button class="mobile-nav-item" data-page="goals" onclick="showPage('goals',this)">
       <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="8" r="3"/><circle cx="8" cy="8" r="6"/></svg>
@@ -2156,12 +2189,11 @@ function renderFoodLibrary() {
   const pillHtml = (food, type) => {
     const encName = food.name.replace(/'/g, "\\'").replace(/"/g, '&quot;');
     const delFn = type === 'saved' ? 'deleteSavedFood' : 'deleteRecentFood';
-    return '<div class="food-pill">'
-      + '<span class="food-pill-name" onclick="fillFoodForm({name:\''+encName+'\',cal:'+food.cal+',p:'+(food.p||0)+',c:'+(food.c||0)+',f:'+(food.f||0)+'})" title="'+food.name+'">'
-      + (food.name.length > 20 ? food.name.slice(0, 18) + '…' : food.name)
-      + '</span>'
-      + '<span class="food-pill-cal">' + food.cal + '</span>'
-      + '<span class="food-pill-del" onclick="'+delFn+'(\''+encName+'\')">&#10005;</span>'
+    return '<div class="food-pill" onclick="fillFoodForm({name:\''+encName+'\',cal:'+food.cal+',p:'+(food.p||0)+',c:'+(food.c||0)+',f:'+(food.f||0)+'})">'
+      + '<span class="food-pill-name" title="'+food.name+'">' + food.name + '</span>'
+      + '<span class="food-pill-macros">' + (food.p||0) + 'p · ' + (food.c||0) + 'c · ' + (food.f||0) + 'f</span>'
+      + '<span class="food-pill-cal">' + food.cal + ' kcal</span>'
+      + '<span class="food-pill-del" onclick="event.stopPropagation();'+delFn+'(\''+encName+'\')">&#10005;</span>'
       + '</div>';
   };
 
@@ -2211,10 +2243,23 @@ function onFoodNameInput(query) {
   }, 350);
 }
 
-function renderFoodDropdown(dropdown, local, usda) {
+function renderFoodDropdown(dropdown, local, remote) {
+  const usdaItems = remote.filter(f => f.source !== 'off');
+  const offItems  = remote.filter(f => f.source === 'off');
+  const sectionHdr = (label, sub, hasBorder) =>
+    '<div style="font-size:10px;color:var(--text3);font-family:monospace;padding:6px 12px 2px;text-transform:uppercase;letter-spacing:.06em;border-top:'+(hasBorder?'0.5px solid var(--border)':'none')+';">'
+    + label + (sub ? ' <span style="font-size:9px;">'+sub+'</span>' : '') + '</div>';
+  const remoteRow = (f, fillFn) => {
+    const enc   = f.name.replace(/'/g, "\\'").replace(/"/g, '&quot;');
+    const label = f.name + (f.brand ? ' — ' + f.brand : '');
+    return '<div class="food-ac-item" onmousedown="'+fillFn+'({name:\''+enc+'\',cal:'+f.cal+',p:'+(f.p||0)+',c:'+(f.c||0)+',f:'+(f.f||0)+',per100g:true})">'
+      + '<div><div class="food-ac-name">' + label + '</div>'
+      + '<div class="food-ac-macros">' + (f.p||0) + 'p · ' + (f.c||0) + 'c · ' + (f.f||0) + 'f · per 100g</div></div>'
+      + '<span class="food-ac-cal">' + f.cal + ' kcal</span></div>';
+  };
   let html = '';
   if (local.length) {
-    html += '<div style="font-size:10px;color:var(--text3);font-family:monospace;padding:6px 12px 2px;text-transform:uppercase;letter-spacing:.06em;">Your foods</div>';
+    html += sectionHdr('Your foods', '', false);
     html += local.map(f => {
       const enc = f.name.replace(/'/g, "\\'").replace(/"/g, '&quot;');
       return '<div class="food-ac-item" onmousedown="fillFoodForm({name:\''+enc+'\',cal:'+f.cal+',p:'+(f.p||0)+',c:'+(f.c||0)+',f:'+(f.f||0)+'})">'
@@ -2223,16 +2268,13 @@ function renderFoodDropdown(dropdown, local, usda) {
         + '<span class="food-ac-cal">' + f.cal + ' kcal</span></div>';
     }).join('');
   }
-  if (usda.length) {
-    html += '<div style="font-size:10px;color:var(--text3);font-family:monospace;padding:6px 12px 2px;text-transform:uppercase;letter-spacing:.06em;border-top:'+(local.length?'0.5px solid var(--border)':'none')+';">USDA database <span style="font-size:9px;">per 100g</span></div>';
-    html += usda.map(f => {
-      const enc   = f.name.replace(/'/g, "\\'").replace(/"/g, '&quot;');
-      const label = f.name + (f.brand ? ' — ' + f.brand : '');
-      return '<div class="food-ac-item" onmousedown="fillFoodForm({name:\''+enc+'\',cal:'+f.cal+',p:'+(f.p||0)+',c:'+(f.c||0)+',f:'+(f.f||0)+',per100g:true})">'
-        + '<div><div class="food-ac-name" style="font-size:12px;">' + label + '</div>'
-        + '<div class="food-ac-macros">' + (f.p||0) + 'p · ' + (f.c||0) + 'c · ' + (f.f||0) + 'f · per 100g</div></div>'
-        + '<span class="food-ac-cal">' + f.cal + ' kcal</span></div>';
-    }).join('');
+  if (usdaItems.length) {
+    html += sectionHdr('USDA database', 'per 100g', local.length > 0);
+    html += usdaItems.map(f => remoteRow(f, 'fillFoodForm')).join('');
+  }
+  if (offItems.length) {
+    html += sectionHdr('Branded products', 'per 100g', local.length + usdaItems.length > 0);
+    html += offItems.map(f => remoteRow(f, 'fillFoodForm')).join('');
   }
   if (!html) html = '<div style="padding:10px 12px;font-size:12px;color:var(--text3);font-family:monospace;">No matches found</div>';
   dropdown.innerHTML = html;
@@ -3261,7 +3303,7 @@ function buildSetRows(exIdx, count, lastSets, exName, plannedReps) {
     const prevWeight = lastSets&&lastSets[s] ? lastSets[s].weight : '';
     const prevRPE = lastSets&&lastSets[s] ? (lastSets[s].rpe||'') : '';
     const sugWeight = suggested[s]||'';
-    const showSuggestion = !prevWeight && sugWeight;
+    const showSuggestion = !prevWeight && sugWeight && weightSuggestOn();
     const inputVal = prevWeight||'';
     const plateDesc = (useBarbell&&sugWeight) ? describePlates(sugWeight) : '';
     const rpeButtons = [6,7,8,9,10].map(r=>{
@@ -3269,8 +3311,8 @@ function buildSetRows(exIdx, count, lastSets, exName, plannedReps) {
       const sel = (prevRPE===r) ? ' selected' : '';
       return '<button type="button" class="rpe-btn '+cls+sel+'" id="rpe-'+exIdx+'-'+s+'-'+r+'" onclick="selectRPE('+exIdx+','+s+','+r+')" title="RPE '+r+'">'+r+'</button>';
     }).join('');
-    rows += '<div class="set-row" id="set-row-'+exIdx+'-'+s+'" style="align-items:flex-start;padding-top:4px;flex-wrap:wrap;">'
-      +'<span class="set-num" style="padding-top:9px;min-width:38px;">set '+(s+1)+'</span>'
+    rows += '<div class="set-row" id="set-row-'+exIdx+'-'+s+'">'
+      +'<span class="set-num">set '+(s+1)+'</span>'
       +'<input type="number" placeholder="Reps" value="'+prevReps+'" min="1" id="sr-reps-'+exIdx+'-'+s+'" style="width:68px;margin-top:2px;flex-shrink:0;" />'
       +'<div style="display:flex;flex-direction:column;gap:2px;flex-shrink:0;">'
       +'<div style="display:flex;align-items:center;gap:4px;">'
@@ -3279,7 +3321,7 @@ function buildSetRows(exIdx, count, lastSets, exName, plannedReps) {
       +'</div>'
       +'<div id="plate-hint-'+exIdx+'-'+s+'" style="font-size:10px;color:var(--text3);font-family:monospace;min-height:13px;padding-left:2px;'+(platesOn()?'':'display:none;')+'">'+(platesOn()?(showSuggestion&&plateDesc?plateDesc:(inputVal&&useBarbell?describePlates(parseFloat(inputVal)):'')):'')+'</div>'
       +'</div>'
-      +'<div style="display:flex;flex-direction:column;gap:2px;flex-shrink:0;">'
+      +'<div class="wli-rpe-block">'
       +'<div style="display:flex;align-items:center;gap:2px;">'+rpeButtons+'</div>'
       +'<div style="font-size:10px;color:var(--text3);font-family:monospace;padding-left:2px;">target RPE '+targetRPE+'</div>'
       +'</div>'
@@ -3304,6 +3346,21 @@ function togglePlateCalc() {
 function initPlateCalcToggle() {
   const btn = document.getElementById('plate-calc-toggle');
   if (btn) btn.textContent = platesOn() ? 'plates: on' : 'plates: off';
+}
+function weightSuggestOn() {
+  return getForgeSettings().weightSuggest !== false;
+}
+function toggleWeightSuggest() {
+  const s = getForgeSettings();
+  s.weightSuggest = !weightSuggestOn();
+  localStorage.setItem('forge_settings', JSON.stringify(s));
+  const btn = document.getElementById('weight-suggest-toggle');
+  if (btn) btn.textContent = s.weightSuggest ? 'suggest: on' : 'suggest: off';
+  renderTodaysWorkout();
+}
+function initWeightSuggestToggle() {
+  const btn = document.getElementById('weight-suggest-toggle');
+  if (btn) btn.textContent = weightSuggestOn() ? 'suggest: on' : 'suggest: off';
 }
 function updatePlateHint(exIdx, setIdx, val, useBarbell) {
   const hint = document.getElementById('plate-hint-'+exIdx+'-'+setIdx);
@@ -3367,7 +3424,11 @@ function renderTodaysWorkout() {
         : '<button class="btn btn-accent btn-sm" onclick="logWorkoutCalories('+totalWorkoutBurned+')">→ Add to calorie log</button>')
       +'</div>'
     : '';
-  listEl.innerHTML = workoutBurnBannerHtml + todayExs.map((ex, i) => {
+  const loggedCount = todayExs.filter(ex => loggedToday.some(s => s.exName === ex.name)).length;
+  const progressHtml = todayExs.length > 0
+    ? '<div class="wli-progress"><span>'+loggedCount+' / '+todayExs.length+' done</span><div class="wli-progress-bar"><div class="wli-progress-bar-fill" style="width:'+Math.round(loggedCount/todayExs.length*100)+'%"></div></div></div>'
+    : '';
+  listEl.innerHTML = workoutBurnBannerHtml + progressHtml + todayExs.map((ex, i) => {
     const todayLogs = loggedToday.filter(s=>s.exName===ex.name);
     const isLogged = todayLogs.length > 0;
     const lastSession = [...state.sessions].filter(s=>s.exName===ex.name&&s.date!==todayStr()).pop();
@@ -3389,7 +3450,13 @@ function renderTodaysWorkout() {
       const last = todayLogs[todayLogs.length - 1];
       if (!last) return '';
       if (last.cardio) return last.duration + ' min · ' + last.intensity + (last.distance ? ' · ' + last.distance + ' mi' : '') + ' · ~' + last.caloriesBurned + ' kcal';
-      if (last.setData) return last.setData.length + ' sets · ' + last.setData.map(s => s.reps + 'r @ ' + s.weight + 'lb').join(', ');
+      if (last.setData && last.setData.length) {
+        const sets = last.setData;
+        const allSameWeight = sets.every(s => s.weight === sets[0].weight);
+        const allSameReps = sets.every(s => s.reps === sets[0].reps);
+        if (allSameWeight && allSameReps) return sets.length + ' × ' + sets[0].reps + 'r @ ' + sets[0].weight + 'lb';
+        return sets.length + ' sets · ' + sets.map(s => s.reps + 'r @ ' + s.weight + 'lb').join(', ');
+      }
       return last.sets + '×' + last.reps + ' @ ' + last.weight + 'lb';
     })();
     const exNameSafe = ex.name.replace(/\\/g,'\\\\').replace(/'/g,"\\'");
@@ -3403,7 +3470,7 @@ function renderTodaysWorkout() {
         : '<span class="wli-planned">'+ex.sets+'\xd7'+ex.reps+' planned</span>')
       +(isLogged ? chevron : '')
       +'</div>'
-      +(isLogged?'<div style="font-size:11px;font-family:monospace;color:var(--text3);margin-top:2px;margin-bottom:0;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;" class="wli-summary">'+loggedSummaryLine+'</div>':'')
+      +(isLogged?'<div class="wli-summary">'+loggedSummaryLine+'</div>':'')
       +'<div class="wli-body">'
       +(isLogged?'<div style="margin-bottom:6px;margin-top:8px;">'+loggedSummary+'</div>':'')
       +(ex.type==='Cardio'
@@ -3474,14 +3541,22 @@ function logCardio(i, exName) {
 
 // PROGRESS
 function populateExSelects() {
-  const names = [...new Set(state.exercises.map(e=>e.name))];
-  ['log-ex-select','filter-ex'].forEach(id=>{
-    const sel=document.getElementById(id);
-    if(!sel) return;
-    const cur=sel.value;
-    sel.innerHTML=(id==='filter-ex'?'<option value="">All exercises</option>':'<option value="">— select exercise —</option>')
-      +names.map(n=>'<option value="'+n+'"'+(n===cur?' selected':'')+'>'+n+'</option>').join('');
-  });
+  const custom = [...new Set(state.exercises.map(e => e.name))];
+  const allNames = [...new Set([...PREMADE_EXERCISE_NAMES, ...custom.map(n => n.charAt(0).toUpperCase()+n.slice(1))])].sort();
+  const loggedNames = [...new Set(state.sessions.map(s => s.exName))].sort();
+
+  const logSel = document.getElementById('log-ex-select');
+  if (logSel) {
+    const cur = logSel.value;
+    logSel.innerHTML = '<option value="">— select exercise —</option>'
+      + allNames.map(n => '<option value="'+n+'"'+(n===cur?' selected':'')+'>'+n+'</option>').join('');
+  }
+  const filterSel = document.getElementById('filter-ex');
+  if (filterSel) {
+    const cur = filterSel.value;
+    filterSel.innerHTML = '<option value="">All exercises</option>'
+      + loggedNames.map(n => '<option value="'+n+'"'+(n===cur?' selected':'')+'>'+n+'</option>').join('');
+  }
 }
 function logSession() {
   const exName=document.getElementById('log-ex-select').value;
@@ -3491,42 +3566,74 @@ function logSession() {
   const weight=parseFloat(document.getElementById('log-weight').value)||0;
   state.sessions.push({id:Date.now(),date:todayStr(),exName,sets,reps,weight,volume:sets*reps*weight});
   ['log-sets','log-reps','log-weight'].forEach(id=>document.getElementById(id).value='');
-  save(); renderProgress(); renderChart();
+  save(); populateExSelects(); renderProgress(); renderChart();
 }
 function removeSession(id) {
   state.sessions=state.sessions.filter(s=>s.id!==id);
-  save(); renderProgress(); renderChart();
+  save(); populateExSelects(); renderProgress(); renderChart();
 }
 function renderProgress() {
-  const filter=document.getElementById('filter-ex').value;
-  const sessions=[...state.sessions].reverse().filter(s=>!filter||s.exName===filter);
-  const list=document.getElementById('progress-list');
-  if(!sessions.length){list.innerHTML='<div class="empty-state">No sessions logged yet</div>';return;}
-  list.innerHTML=sessions.map(s=>{
-    let detailHtml;
-    if(s.cardio){
-      detailHtml='<span style="font-size:11px;font-family:monospace;color:var(--text3)">'+s.duration+' min</span>'
-        +' <span style="font-size:11px;font-family:monospace;color:var(--text3)">'+s.intensity+'</span>'
-        +(s.distance?' <span style="font-size:11px;font-family:monospace;color:var(--text3)">'+s.distance+' mi</span>':'')
-        +' <span style="font-size:11px;font-family:monospace;color:var(--accent)">~'+s.caloriesBurned+' kcal</span>';
-    } else if(s.setData){
-      detailHtml=s.setData.map((sd,si)=>{
-        const rpeStr=sd.rpe?' <span style="color:'+(sd.rpe<=6?'#6baeff':sd.rpe<=7?'#c8f56a':sd.rpe<=8?'#ffc96b':'#ff6b6b')+'">RPE'+sd.rpe+'</span>':'';
-        return '<span style="font-size:11px;font-family:monospace;color:var(--text3)">s'+(si+1)+': '+sd.reps+'r@'+sd.weight+'lb'+rpeStr+'</span>';
-      }).join(' ');
-      if(s.avgRPE) detailHtml+=' <span style="font-size:11px;color:var(--text3);font-family:monospace;">avg RPE '+s.avgRPE+'</span>';
-    } else {
-      detailHtml='<span class="log-detail">'+s.sets+'\xd7'+s.reps+' @ '+s.weight+'lb</span>';
-    }
-    return '<div class="log-item" style="flex-wrap:wrap;gap:6px;">'
-      +'<div class="log-date">'+formatDate(s.date)+'</div>'
-      +'<div class="log-ex">'+s.exName+'</div>'
-      +'<div style="flex:1;min-width:100%;display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-top:2px;">'
-      +detailHtml
-      +'<span class="log-vol" style="margin-left:auto">vol: '+Math.round(s.volume)+'</span>'
-      +'</div>'
-      +'<button class="del" onclick="removeSession('+s.id+')">&#10005;</button>'
-      +'</div>';
+  const filter = document.getElementById('filter-ex').value;
+  const sessions = [...state.sessions].reverse().filter(s => !filter || s.exName === filter);
+  const list = document.getElementById('progress-list');
+  if (!sessions.length) { list.innerHTML = '<div class="empty-state">No sessions logged yet</div>'; return; }
+
+  // Group by date (already reverse-sorted)
+  const byDate = {};
+  sessions.forEach(s => { if (!byDate[s.date]) byDate[s.date] = []; byDate[s.date].push(s); });
+
+  const typeClass = { Push:'badge-push', Pull:'badge-pull', Legs:'badge-legs', Cardio:'badge-cardio', Other:'badge-other' };
+
+  list.innerHTML = Object.entries(byDate).map(([date, daySessions]) => {
+    const dateLabel = new Date(date + 'T12:00:00').toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' });
+
+    const cards = daySessions.map(s => {
+      const ex = state.exercises.find(e => e.name === s.exName) || {};
+      const badge = typeClass[ex.type] || 'badge-other';
+      const typeLabel = ex.type || '';
+      let summaryHtml = '', setsHtml = '', footerText = '';
+
+      if (s.cardio) {
+        summaryHtml = s.duration + ' min · ' + s.intensity + (s.distance ? ' · ' + s.distance + ' mi' : '');
+        footerText = '~' + s.caloriesBurned + ' kcal burned';
+      } else if (s.setData && s.setData.length) {
+        const sets = s.setData;
+        const allSameWeight = sets.every(sd => sd.weight === sets[0].weight);
+        const allSameReps = sets.every(sd => sd.reps === sets[0].reps);
+        summaryHtml = (allSameWeight && allSameReps)
+          ? sets.length + ' × ' + sets[0].reps + 'r @ ' + sets[0].weight + 'lb'
+          : sets.length + ' sets';
+        setsHtml = sets.map((sd, si) => {
+          const rpeColor = !sd.rpe ? '' : sd.rpe <= 6 ? '#6baeff' : sd.rpe <= 7 ? '#c8f56a' : sd.rpe <= 8 ? '#ffc96b' : '#ff6b6b';
+          return '<div class="session-set-row">'
+            + '<span>set ' + (si+1) + '</span>'
+            + '<span style="color:var(--text2)">' + sd.reps + 'r</span>'
+            + '<span style="color:var(--text2)">' + sd.weight + 'lb</span>'
+            + (sd.rpe ? '<span style="color:' + rpeColor + '">RPE ' + sd.rpe + '</span>' : '<span></span>')
+            + '</div>';
+        }).join('');
+        footerText = 'vol: ' + Math.round(s.volume) + (s.avgRPE ? ' · avg RPE ' + s.avgRPE : '');
+      } else {
+        summaryHtml = s.sets + '×' + s.reps + ' @ ' + s.weight + 'lb';
+        footerText = 'vol: ' + Math.round(s.volume);
+      }
+
+      return '<div class="session-card">'
+        + '<div class="session-card-header">'
+        + '<span class="session-card-name">' + s.exName + '</span>'
+        + (typeLabel ? '<span class="day-type-badge ' + badge + '">' + typeLabel + '</span>' : '')
+        + '<button class="del" onclick="removeSession(' + s.id + ')">&#10005;</button>'
+        + '</div>'
+        + '<div class="session-card-summary">' + summaryHtml + '</div>'
+        + (setsHtml ? '<div class="session-card-sets">' + setsHtml + '</div>' : '')
+        + (footerText ? '<div class="session-card-footer">' + footerText + '</div>' : '')
+        + '</div>';
+    }).join('');
+
+    return '<div class="session-day-group">'
+      + '<div class="session-day-header">' + dateLabel + '</div>'
+      + '<div class="session-cards">' + cards + '</div>'
+      + '</div>';
   }).join('');
 }
 function renderChart() {
@@ -4225,12 +4332,27 @@ function onIngNameInput(query) {
   }, 350);
 }
 
-// Build the dropdown HTML from local library + USDA results
-function renderIngDropdown(dropdown, local, usda) {
+// Build the dropdown HTML from local library + remote results (USDA + Open Food Facts)
+function renderIngDropdown(dropdown, local, remote) {
+  const usdaItems = remote.filter(f => f.source !== 'off');
+  const offItems  = remote.filter(f => f.source === 'off');
+  const sectionHdr = (label, sub, hasBorder) =>
+    '<div style="font-size:10px;color:var(--text3);font-family:monospace;padding:6px 12px 2px;text-transform:uppercase;letter-spacing:.06em;border-top:'+(hasBorder?'0.5px solid var(--border)':'none')+';">'
+    + label + (sub ? ' <span style="font-size:9px;">'+sub+'</span>' : '') + '</div>';
+  const remoteRow = (f) => {
+    const enc   = f.name.replace(/'/g, "\\'").replace(/"/g, '&quot;');
+    const label = f.name + (f.brand ? ' — ' + f.brand : '');
+    return '<div class="food-ac-item" onmousedown="fillIngForm({name:\''+enc+'\',cal:'+f.cal+',p:'+(f.p||0)+',c:'+(f.c||0)+',f:'+(f.f||0)+',per100g:true})">'
+      + '<div>'
+      + '<div class="food-ac-name">' + label + '</div>'
+      + '<div class="food-ac-macros">' + (f.p||0) + 'p · ' + (f.c||0) + 'c · ' + (f.f||0) + 'f · per 100g</div>'
+      + '</div>'
+      + '<span class="food-ac-cal">' + f.cal + ' kcal</span>'
+      + '</div>';
+  };
   let html = '';
-
   if (local.length) {
-    html += '<div style="font-size:10px;color:var(--text3);font-family:monospace;padding:6px 12px 2px;text-transform:uppercase;letter-spacing:.06em;">Your foods</div>';
+    html += sectionHdr('Your foods', '', false);
     html += local.map(f => {
       const enc = f.name.replace(/'/g, "\\'").replace(/"/g, '&quot;');
       return '<div class="food-ac-item" onmousedown="fillIngForm({name:\''+enc+'\',cal:'+f.cal+',p:'+(f.p||0)+',c:'+(f.c||0)+',f:'+(f.f||0)+'})">'
@@ -4242,27 +4364,17 @@ function renderIngDropdown(dropdown, local, usda) {
         + '</div>';
     }).join('');
   }
-
-  if (usda.length) {
-    html += '<div style="font-size:10px;color:var(--text3);font-family:monospace;padding:6px 12px 2px;text-transform:uppercase;letter-spacing:.06em;border-top:'+(local.length?'0.5px solid var(--border)':'none')+';">USDA database <span style="color:var(--text3);font-size:9px;">per 100g</span></div>';
-    html += usda.map(f => {
-      const enc   = f.name.replace(/'/g, "\\'").replace(/"/g, '&quot;');
-      const label = f.name + (f.brand ? ' — ' + f.brand : '');
-      // per100g:true tells fillIngForm these values are per 100 g so it can scale correctly
-      return '<div class="food-ac-item" onmousedown="fillIngForm({name:\''+enc+'\',cal:'+f.cal+',p:'+(f.p||0)+',c:'+(f.c||0)+',f:'+(f.f||0)+',per100g:true})">'
-        + '<div>'
-        + '<div class="food-ac-name" style="font-size:12px;">' + label + '</div>'
-        + '<div class="food-ac-macros">' + (f.p||0) + 'p · ' + (f.c||0) + 'c · ' + (f.f||0) + 'f · per 100g</div>'
-        + '</div>'
-        + '<span class="food-ac-cal">' + f.cal + ' kcal</span>'
-        + '</div>';
-    }).join('');
+  if (usdaItems.length) {
+    html += sectionHdr('USDA database', 'per 100g', local.length > 0);
+    html += usdaItems.map(f => remoteRow(f)).join('');
   }
-
+  if (offItems.length) {
+    html += sectionHdr('Branded products', 'per 100g', local.length + usdaItems.length > 0);
+    html += offItems.map(f => remoteRow(f)).join('');
+  }
   if (!html) {
     html = '<div style="padding:10px 12px;font-size:12px;color:var(--text3);font-family:monospace;">No matches found</div>';
   }
-
   dropdown.innerHTML = html;
 }
 
@@ -5214,6 +5326,7 @@ load().then(() => {
   renderAll();
   recalc();
   initPlateCalcToggle();
+  initWeightSuggestToggle();
 });
 
 

@@ -248,50 +248,75 @@ app.delete('/api/withings/disconnect', (req, res) => {
   res.json({ ok: true });
 });
 
-// ── USDA food search ─────────────────────────────────────────────────────────
+// ── Food search (USDA + Open Food Facts) ─────────────────────────────────────
 
 // GET /api/food-search?q=chicken+breast
-// Queries USDA FoodData Central and returns up to 8 results with
-// standardised cal/p/c/f values per 100 g so the client can display them.
+// Queries USDA FoodData Central and Open Food Facts in parallel.
+// Returns up to 10 USDA results (source:'usda') and up to 8 branded results
+// (source:'off') all normalised to { name, brand, cal, p, c, f, source }.
 app.get('/api/food-search', async (req, res) => {
   const q = (req.query.q || '').trim();
   if (!q) return res.json([]);
 
-  const url = 'https://api.nal.usda.gov/fdc/v1/foods/search'
+  const usdaUrl = 'https://api.nal.usda.gov/fdc/v1/foods/search'
     + '?query='    + encodeURIComponent(q)
-    + '&pageSize=8'
-    + '&dataType=SR%20Legacy,Foundation,Branded'  // most reliable data types
+    + '&pageSize=10'
+    + '&dataType=SR%20Legacy,Foundation,Branded'
     + '&api_key='  + process.env.USDA_API_KEY;
 
-  try {
-    const response = await fetch(url, { signal: AbortSignal.timeout(6000) });
-    if (!response.ok) throw new Error('USDA HTTP ' + response.status);
-    const data = await response.json();
+  const offUrl = 'https://world.openfoodfacts.org/cgi/search.pl'
+    + '?search_terms=' + encodeURIComponent(q)
+    + '&search_simple=1&action=process&json=1&page_size=8'
+    + '&fields=product_name,brands,nutriments';
 
-    // Normalise each result to { name, cal, p, c, f, per } where per is the
-    // reference amount (always 100 g for USDA SR/Foundation, may vary for Branded)
-    const results = (data.foods || []).map(food => {
-      const n = (food.foodNutrients || []);
-      const get = (id) => {
-        const hit = n.find(x => x.nutrientId === id || x.nutrientNumber === String(id));
-        return hit ? Math.round((hit.value || 0) * 10) / 10 : 0;
-      };
-      return {
-        name:   food.description,
-        brand:  food.brandOwner || food.brandName || '',
-        cal:    Math.round(get(1008) || get(2047)), // Energy kcal
-        p:      get(1003),   // Protein
-        c:      get(1005),   // Carbohydrates
-        f:      get(1004),   // Total Fat
-        per:    '100g',
-      };
-    }).filter(f => f.cal > 0); // drop items with no calorie data
+  const [usdaResult, offResult] = await Promise.allSettled([
+    fetch(usdaUrl,  { signal: AbortSignal.timeout(6000) }).then(r => r.json()),
+    fetch(offUrl,   { signal: AbortSignal.timeout(6000) }).then(r => r.json()),
+  ]);
 
-    res.json(results);
-  } catch (e) {
-    console.error('USDA search error:', e.message);
-    res.status(502).json({ error: e.message });
+  // Normalise USDA results
+  let usda = [];
+  if (usdaResult.status === 'fulfilled') {
+    const get = (nutrients, id) => {
+      const hit = nutrients.find(x => x.nutrientId === id || x.nutrientNumber === String(id));
+      return hit ? Math.round((hit.value || 0) * 10) / 10 : 0;
+    };
+    usda = (usdaResult.value.foods || []).map(food => ({
+      name:   food.description,
+      brand:  food.brandOwner || food.brandName || '',
+      cal:    Math.round(get(food.foodNutrients || [], 1008) || get(food.foodNutrients || [], 2047)),
+      p:      get(food.foodNutrients || [], 1003),
+      c:      get(food.foodNutrients || [], 1005),
+      f:      get(food.foodNutrients || [], 1004),
+      source: 'usda',
+    })).filter(f => f.cal > 0);
+  } else {
+    console.error('USDA search error:', usdaResult.reason?.message);
   }
+
+  // Normalise Open Food Facts results
+  let off = [];
+  if (offResult.status === 'fulfilled') {
+    const round1 = v => Math.round((parseFloat(v) || 0) * 10) / 10;
+    off = (offResult.value.products || [])
+      .map(p => {
+        const nm = p.nutriments || {};
+        return {
+          name:   (p.product_name || '').trim(),
+          brand:  (p.brands || '').split(',')[0].trim(),
+          cal:    Math.round(nm['energy-kcal_100g'] || nm['energy-kcal'] || 0),
+          p:      round1(nm['proteins_100g'] || nm['proteins'] || 0),
+          c:      round1(nm['carbohydrates_100g'] || nm['carbohydrates'] || 0),
+          f:      round1(nm['fat_100g'] || nm['fat'] || 0),
+          source: 'off',
+        };
+      })
+      .filter(f => f.name && f.cal > 0);
+  } else {
+    console.error('Open Food Facts error:', offResult.reason?.message);
+  }
+
+  res.json([...usda, ...off]);
 });
 
 // ── Recipe from URL ───────────────────────────────────────────────────────────
