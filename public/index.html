@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Forge</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0f0f0f;
+    --surface: #181818;
+    --surface2: #222222;
+    --border: #2a2a2a;
+    --border2: #333;
+    --text: #f0ede8;
+    --text2: #888;
+    --text3: #555;
+    --accent: #c8f56a;
+    --accent2: #a8d94e;
+    --accent-dim: #1e2e0a;
+    --red: #ff6b6b;
+    --blue: #6baeff;
+    --amber: #ffc96b;
+    --radius: 10px;
+    --radius-lg: 16px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 32px 20px;
+  }
+
+  .wordmark {
+    font-family: 'Instrument Serif', serif;
+    font-size: 48px;
+    letter-spacing: 0.02em;
+    color: var(--text);
+    margin-bottom: 6px;
+  }
+  .tagline {
+    font-size: 13px;
+    color: var(--text3);
+    font-family: 'DM Mono', monospace;
+    margin-bottom: 56px;
+    letter-spacing: 0.04em;
+  }
+
+  .app-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 16px;
+    width: 100%;
+    max-width: 560px;
+  }
+
+  .app-card {
+    display: block;
+    text-decoration: none;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 28px 24px;
+    transition: border-color 0.15s, background 0.15s, transform 0.15s;
+    cursor: pointer;
+  }
+  .app-card:hover {
+    border-color: var(--border2);
+    background: var(--surface2);
+    transform: translateY(-2px);
+  }
+  .app-card:hover .app-icon {
+    opacity: 1;
+  }
+  .app-card:hover .app-arrow {
+    opacity: 1;
+    transform: translateX(3px);
+  }
+
+  .app-card-top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: 16px;
+  }
+  .app-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0.85;
+    transition: opacity 0.15s;
+  }
+  .app-icon svg {
+    width: 22px;
+    height: 22px;
+  }
+  .app-icon.fitness { background: var(--accent-dim); }
+  .app-icon.fitness svg { stroke: var(--accent); }
+  .app-icon.draft { background: #0d1a2a; }
+  .app-icon.draft svg { stroke: var(--blue); }
+
+  .app-arrow {
+    font-size: 18px;
+    color: var(--text3);
+    opacity: 0;
+    transition: opacity 0.15s, transform 0.15s;
+    margin-top: 2px;
+  }
+
+  .app-name {
+    font-family: 'Instrument Serif', serif;
+    font-size: 20px;
+    color: var(--text);
+    margin-bottom: 6px;
+  }
+  .app-desc {
+    font-size: 12px;
+    color: var(--text2);
+    line-height: 1.5;
+  }
+  .app-tags {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    margin-top: 14px;
+  }
+  .tag {
+    font-size: 10px;
+    font-family: 'DM Mono', monospace;
+    padding: 3px 7px;
+    border-radius: 4px;
+    border: 1px solid var(--border2);
+    color: var(--text3);
+  }
+
+  .footer {
+    margin-top: 48px;
+    font-size: 11px;
+    color: var(--text3);
+    font-family: 'DM Mono', monospace;
+  }
+</style>
+</head>
+<body>
+
+  <div class="wordmark">Forge</div>
+  <div class="tagline">your personal toolkit</div>
+
+  <div class="app-grid">
+
+    <a class="app-card" href="/fitness.html">
+      <div class="app-card-top">
+        <div class="app-icon fitness">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 2a10 10 0 1 0 0 20A10 10 0 0 0 12 2z"/>
+            <path d="M12 6v6l4 2"/>
+          </svg>
+        </div>
+        <span class="app-arrow">→</span>
+      </div>
+      <div class="app-name">Fitness Tracker</div>
+      <div class="app-desc">Log meals, track macros, monitor weight, and manage workouts — all synced across your devices.</div>
+      <div class="app-tags">
+        <span class="tag">nutrition</span>
+        <span class="tag">workouts</span>
+        <span class="tag">weight</span>
+        <span class="tag">recipes</span>
+      </div>
+    </a>
+
+    <a class="app-card" href="/draft.html">
+      <div class="app-card-top">
+        <div class="app-icon draft">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="3" width="7" height="7" rx="1"/>
+            <rect x="14" y="3" width="7" height="7" rx="1"/>
+            <rect x="3" y="14" width="7" height="7" rx="1"/>
+            <rect x="14" y="14" width="7" height="7" rx="1"/>
+          </svg>
+        </div>
+        <span class="app-arrow">→</span>
+      </div>
+      <div class="app-name">Fantasy Draft</div>
+      <div class="app-desc">Live Sleeper data, tier rankings, VOR scoring, positional need analysis, and a full draft tracker.</div>
+      <div class="app-tags">
+        <span class="tag">PPR</span>
+        <span class="tag">rankings</span>
+        <span class="tag">sleeper</span>
+        <span class="tag">snake draft</span>
+      </div>
+    </a>
+
+  </div>
+
+  <div class="footer" style="display:flex;align-items:center;gap:16px;">
+    <span>forge · running locally</span>
+    <a href="/settings.html" style="color:var(--text3);text-decoration:none;font-family:'DM Mono',monospace;font-size:11px;display:inline-flex;align-items:center;gap:4px;">
+      <svg style="width:11px;height:11px;" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="8" r="2.5"/><path d="M8 1v2M8 13v2M1 8h2M13 8h2M3.05 3.05l1.41 1.41M11.54 11.54l1.41 1.41M3.05 12.95l1.41-1.41M11.54 4.46l1.41-1.41"/></svg>
+      Settings
+    </a>
+  </div>
+
+</body>
+</html>

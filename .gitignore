@@ -1,0 +1,6 @@
+node_modules/
+data.json
+.env
+withings_tokens.json
+forge.log
+*.log

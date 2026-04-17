@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Forge — Settings</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0f0f0f;
+    --surface: #181818;
+    --surface2: #222222;
+    --border: #2a2a2a;
+    --border2: #333;
+    --text: #f0ede8;
+    --text2: #888;
+    --text3: #555;
+    --accent: #c8f56a;
+    --accent2: #a8d94e;
+    --accent-dim: #1e2e0a;
+    --red: #ff6b6b;
+    --blue: #6baeff;
+    --amber: #ffc96b;
+    --radius: 10px;
+    --radius-lg: 16px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--text); font-family: 'DM Sans', sans-serif; font-size: 14px; min-height: 100vh; display: flex; }
+
+  /* Sidebar */
+  .sidebar { width: 220px; background: var(--surface); border-right: 1px solid var(--border); padding: 28px 0; display: flex; flex-direction: column; flex-shrink: 0; position: sticky; top: 0; height: 100vh; }
+  .logo { padding: 0 20px 24px; }
+  .logo-name { font-family: 'Instrument Serif', serif; font-size: 22px; color: var(--text); }
+  .logo-sub { font-size: 11px; font-family: 'DM Mono', monospace; color: var(--text3); margin-top: 1px; }
+  .nav-section { font-size: 10px; font-family: 'DM Mono', monospace; color: var(--text3); padding: 16px 20px 6px; text-transform: uppercase; letter-spacing: 0.08em; }
+  .nav-item { display: flex; align-items: center; gap: 10px; padding: 9px 20px; font-size: 13px; color: var(--text2); cursor: pointer; transition: background 0.12s, color 0.12s; border-radius: 0; text-decoration: none; }
+  .nav-item:hover { background: var(--surface2); color: var(--text); }
+  .nav-item.active { background: var(--surface2); color: var(--text); }
+  .nav-icon { width: 14px; height: 14px; opacity: 0.5; flex-shrink: 0; }
+  .nav-item.active .nav-icon, .nav-item:hover .nav-icon { opacity: 1; }
+  .sidebar-bottom { margin-top: auto; border-top: 1px solid var(--border); padding-top: 8px; }
+
+  /* Main */
+  .main { flex: 1; padding: 40px 48px; max-width: 740px; }
+  .page-header { margin-bottom: 32px; }
+  .page-title { font-family: 'Instrument Serif', serif; font-size: 28px; color: var(--text); }
+  .page-sub { font-size: 13px; color: var(--text3); font-family: 'DM Mono', monospace; margin-top: 4px; }
+
+  .section { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 24px; margin-bottom: 20px; }
+  .section-title { font-family: 'Instrument Serif', serif; font-size: 18px; color: var(--text); margin-bottom: 4px; }
+  .section-desc { font-size: 12px; color: var(--text3); font-family: 'DM Mono', monospace; margin-bottom: 20px; }
+
+  .setting-row { display: flex; align-items: flex-start; justify-content: space-between; gap: 24px; padding: 14px 0; border-bottom: 1px solid var(--border); }
+  .setting-row:last-child { border-bottom: none; padding-bottom: 0; }
+  .setting-row:first-child { padding-top: 0; }
+  .setting-label { flex: 1; }
+  .setting-label-name { font-size: 13px; font-weight: 500; color: var(--text); margin-bottom: 3px; }
+  .setting-label-desc { font-size: 12px; color: var(--text3); line-height: 1.5; }
+  .setting-control { flex-shrink: 0; min-width: 200px; }
+
+  select, input[type="text"] {
+    width: 100%;
+    background: var(--surface2);
+    border: 1px solid var(--border2);
+    border-radius: var(--radius);
+    padding: 7px 11px;
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    outline: none;
+    transition: border-color 0.15s;
+  }
+  select:focus, input:focus { border-color: var(--accent); }
+
+  .save-indicator { font-size: 11px; font-family: 'DM Mono', monospace; color: var(--accent); margin-top: 8px; display: none; }
+
+  /* App links */
+  .app-links { display: flex; flex-direction: column; gap: 6px; }
+  .app-link { display: flex; align-items: center; gap: 10px; padding: 10px 14px; background: var(--surface2); border: 1px solid var(--border); border-radius: var(--radius); text-decoration: none; color: var(--text2); font-size: 13px; transition: border-color 0.15s, color 0.15s; }
+  .app-link:hover { border-color: var(--border2); color: var(--text); }
+  .app-link-icon { width: 28px; height: 28px; border-radius: 6px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .app-link-icon.fitness { background: var(--accent-dim); }
+  .app-link-icon.fitness svg { stroke: var(--accent); }
+  .app-link-icon.draft { background: #0d1a2a; }
+  .app-link-icon.draft svg { stroke: var(--blue); }
+  .app-link-name { font-weight: 500; color: var(--text); }
+  .app-link-desc { font-size: 11px; color: var(--text3); margin-top: 1px; }
+
+  @media (max-width: 600px) {
+    .sidebar { display: none; }
+    .main { padding: 24px 18px; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="sidebar">
+  <div class="logo">
+    <div class="logo-name">Forge</div>
+    <div class="logo-sub">settings</div>
+  </div>
+  <div class="nav-section">Settings</div>
+  <div class="nav-item active">
+    <svg class="nav-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="8" r="2.5"/><path d="M8 1v2M8 13v2M1 8h2M13 8h2M3.05 3.05l1.41 1.41M11.54 11.54l1.41 1.41M3.05 12.95l1.41-1.41M11.54 4.46l1.41-1.41"/></svg>
+    General
+  </div>
+  <div class="sidebar-bottom">
+    <div class="nav-section" style="padding-top:12px;">Apps</div>
+    <a class="nav-item" href="/fitness.html" style="text-decoration:none;">
+      <svg class="nav-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="8" r="6"/><path d="M8 5v3l2 2"/></svg>
+      Fitness
+    </a>
+    <a class="nav-item" href="/draft.html" style="text-decoration:none;">
+      <svg class="nav-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="2" width="5" height="5" rx="1"/><rect x="9" y="2" width="5" height="5" rx="1"/><rect x="2" y="9" width="5" height="5" rx="1"/><rect x="9" y="9" width="5" height="5" rx="1"/></svg>
+      Fantasy Draft
+    </a>
+    <a class="nav-item" href="/" style="text-decoration:none;">
+      <svg class="nav-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 8l6-6 6 6"/><path d="M4 6v7h3v-3h2v3h3V6"/></svg>
+      All apps
+    </a>
+  </div>
+</nav>
+
+<main class="main">
+  <div class="page-header">
+    <div class="page-title">Settings</div>
+    <div class="page-sub">Preferences shared across all Forge apps</div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">General</div>
+    <div class="section-desc">Global preferences used by all apps</div>
+
+    <div class="setting-row">
+      <div class="setting-label">
+        <div class="setting-label-name">Timezone</div>
+        <div class="setting-label-desc">Determines "today" for calorie logging, workout day matching, and date displays across all apps.</div>
+      </div>
+      <div class="setting-control">
+        <select id="tz-select" onchange="saveSetting('timezone', this.value)"></select>
+        <div class="save-indicator" id="tz-saved">Saved</div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="section">
+    <div class="section-title">Apps</div>
+    <div class="section-desc">Jump to any app</div>
+    <div class="app-links">
+      <a class="app-link" href="/fitness.html">
+        <div class="app-link-icon fitness">
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="8" r="6"/><path d="M8 5v3l2 2"/></svg>
+        </div>
+        <div>
+          <div class="app-link-name">Fitness Tracker</div>
+          <div class="app-link-desc">Calories, workouts, weight, recipes</div>
+        </div>
+      </a>
+      <a class="app-link" href="/draft.html">
+        <div class="app-link-icon draft">
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="2" width="5" height="5" rx="1"/><rect x="9" y="2" width="5" height="5" rx="1"/><rect x="2" y="9" width="5" height="5" rx="1"/><rect x="9" y="9" width="5" height="5" rx="1"/></svg>
+        </div>
+        <div>
+          <div class="app-link-name">Fantasy Draft</div>
+          <div class="app-link-desc">Rankings, VOR scoring, draft tracker</div>
+        </div>
+      </a>
+    </div>
+  </div>
+
+</main>
+
+<script>
+const TZ_LIST = [
+  'Pacific/Honolulu','America/Anchorage','America/Los_Angeles','America/Denver',
+  'America/Chicago','America/New_York','America/Halifax','America/Sao_Paulo',
+  'Atlantic/Azores','Europe/London','Europe/Paris','Europe/Berlin','Europe/Helsinki',
+  'Europe/Moscow','Asia/Dubai','Asia/Kolkata','Asia/Dhaka','Asia/Bangkok',
+  'Asia/Shanghai','Asia/Tokyo','Asia/Seoul','Australia/Sydney','Pacific/Auckland',
+];
+
+function loadSettings() {
+  try { return JSON.parse(localStorage.getItem('forge_settings') || '{}'); } catch { return {}; }
+}
+function saveSettings(s) { localStorage.setItem('forge_settings', JSON.stringify(s)); }
+
+function saveSetting(key, value) {
+  const s = loadSettings();
+  s[key] = value;
+  saveSettings(s);
+  const ind = document.getElementById(key.replace(/([A-Z])/g, '-$1').toLowerCase() + '-saved') ||
+              document.getElementById(key + '-saved');
+  if (ind) { ind.style.display = 'block'; setTimeout(() => ind.style.display = 'none', 2000); }
+}
+
+function getUtcOffsetLabel(tz) {
+  try {
+    const parts = new Intl.DateTimeFormat('en-US', { timeZone: tz, timeZoneName: 'shortOffset' }).formatToParts(new Date());
+    const off = (parts.find(p => p.type === 'timeZoneName') || {}).value || '';
+    return '(' + off + ')';
+  } catch { return ''; }
+}
+
+function populateTzSelect() {
+  const sel = document.getElementById('tz-select');
+  const settings = loadSettings();
+  const browserTz = Intl.DateTimeFormat().resolvedOptions().timeZone;
+  const current = settings.timezone || browserTz;
+  const all = [...new Set([browserTz, ...TZ_LIST])].sort();
+  sel.innerHTML = all.map(tz =>
+    '<option value="' + tz + '"' + (tz === current ? ' selected' : '') + '>'
+    + getUtcOffsetLabel(tz) + ' ' + tz.replace(/_/g, ' ') + '</option>'
+  ).join('');
+}
+
+populateTzSelect();
+</script>
+</body>
+</html>
