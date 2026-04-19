@@ -58,7 +58,7 @@
     grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
     gap: 16px;
     width: 100%;
-    max-width: 560px;
+    max-width: 820px;
   }
 
   .app-card {
@@ -106,6 +106,8 @@
   }
   .app-icon.fitness { background: var(--accent-dim); }
   .app-icon.fitness svg { stroke: var(--accent); }
+  .app-icon.calories { background: #1a1020; }
+  .app-icon.calories svg { stroke: #b06bff; }
   .app-icon.draft { background: #0d1a2a; }
   .app-icon.draft svg { stroke: var(--blue); }
 
@@ -158,6 +160,26 @@
 
   <div class="app-grid">
 
+    <a class="app-card" href="/calories.html">
+      <div class="app-card-top">
+        <div class="app-icon calories">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"/>
+            <path d="M12 8v4l3 3"/>
+          </svg>
+        </div>
+        <span class="app-arrow">→</span>
+      </div>
+      <div class="app-name">Calorie Tracker</div>
+      <div class="app-desc">Log meals, track macros, scan barcodes, and calculate your calorie target from your TDEE.</div>
+      <div class="app-tags">
+        <span class="tag">nutrition</span>
+        <span class="tag">macros</span>
+        <span class="tag">goals</span>
+        <span class="tag">TDEE</span>
+      </div>
+    </a>
+
     <a class="app-card" href="/fitness.html">
       <div class="app-card-top">
         <div class="app-icon fitness">
@@ -169,12 +191,12 @@
         <span class="app-arrow">→</span>
       </div>
       <div class="app-name">Fitness Tracker</div>
-      <div class="app-desc">Log meals, track macros, monitor weight, and manage workouts — all synced across your devices.</div>
+      <div class="app-desc">Manage workouts, log sessions, track weight, and build weekly training plans with split templates.</div>
       <div class="app-tags">
-        <span class="tag">nutrition</span>
         <span class="tag">workouts</span>
         <span class="tag">weight</span>
         <span class="tag">recipes</span>
+        <span class="tag">splits</span>
       </div>
     </a>
 

@@ -269,9 +269,18 @@ app.get('/api/food-search', async (req, res) => {
     + '&search_simple=1&action=process&json=1&page_size=8'
     + '&fields=product_name,brands,nutriments';
 
+  const offHeaders = {
+    'User-Agent': 'ForgeApp/1.0 (personal fitness tracker; brennan)',
+    'Accept': 'application/json',
+  };
+
   const [usdaResult, offResult] = await Promise.allSettled([
-    fetch(usdaUrl,  { signal: AbortSignal.timeout(6000) }).then(r => r.json()),
-    fetch(offUrl,   { signal: AbortSignal.timeout(6000) }).then(r => r.json()),
+    fetch(usdaUrl, { signal: AbortSignal.timeout(6000) }).then(r => r.json()),
+    fetch(offUrl,  { signal: AbortSignal.timeout(6000), headers: offHeaders }).then(r => {
+      if (!r.ok || !r.headers.get('content-type')?.includes('application/json'))
+        throw new Error('OFF returned non-JSON (' + r.status + ')');
+      return r.json();
+    }),
   ]);
 
   // Normalise USDA results
