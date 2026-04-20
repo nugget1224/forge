@@ -4,6 +4,13 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Forge</title>
+<link rel="manifest" href="/manifest.json">
+<link rel="apple-touch-icon" href="/icon.svg">
+<meta name="theme-color" content="#0f0f0f">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Forge">
+<script>if('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js');</script>
 <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
   :root {
@@ -58,7 +65,7 @@
     grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
     gap: 16px;
     width: 100%;
-    max-width: 820px;
+    max-width: 1100px;
   }
 
   .app-card {
@@ -110,6 +117,8 @@
   .app-icon.calories svg { stroke: #b06bff; }
   .app-icon.draft { background: #0d1a2a; }
   .app-icon.draft svg { stroke: var(--blue); }
+  .app-icon.meals { background: #1a1208; }
+  .app-icon.meals svg { stroke: var(--amber); }
 
   .app-arrow {
     font-size: 18px;
@@ -197,6 +206,25 @@
         <span class="tag">weight</span>
         <span class="tag">recipes</span>
         <span class="tag">splits</span>
+      </div>
+    </a>
+
+    <a class="app-card" href="/meals.html">
+      <div class="app-card-top">
+        <div class="app-icon meals">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 3h18v4H3z"/><path d="M5 7v14"/><path d="M19 7v14"/><path d="M9 11h6M9 15h4"/>
+          </svg>
+        </div>
+        <span class="app-arrow">→</span>
+      </div>
+      <div class="app-name">Meal Planner</div>
+      <div class="app-desc">Build recipes from ingredients, import from URLs, scan barcodes, and log meals to your calorie tracker.</div>
+      <div class="app-tags">
+        <span class="tag">recipes</span>
+        <span class="tag">ingredients</span>
+        <span class="tag">import</span>
+        <span class="tag">barcode</span>
       </div>
     </a>
 

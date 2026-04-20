@@ -4,6 +4,13 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Forge — Fitness Tracker</title>
+<link rel="manifest" href="/manifest.json">
+<link rel="apple-touch-icon" href="/icon.svg">
+<meta name="theme-color" content="#0f0f0f">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Forge">
+<script>if('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js');</script>
 <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
   :root {
@@ -525,19 +532,15 @@
       <svg class="nav-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="2,12 6,7 10,9 14,4"/></svg>
       Workout log
     </div>
-    <div class="nav-item" onclick="showPage('recipes', this)">
-      <svg class="nav-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 2h8a1 1 0 011 1v10a1 1 0 01-1 1H4a1 1 0 01-1-1V3a1 1 0 011-1z"/><path d="M6 6h4M6 9h4M6 12h2"/></svg>
-      Recipes
-    </div>
-    <div class="nav-item" onclick="showPage('weight', this)">
-      <svg class="nav-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 2a4 4 0 0 1 4 4c0 3-4 8-4 8S4 9 4 6a4 4 0 0 1 4-4z"/><circle cx="8" cy="6" r="1.5" fill="currentColor" stroke="none"/></svg>
-      Weight
-    </div>
     <div class="sidebar-footer">
       <div class="today-pill" id="sidebar-date" style="margin-bottom:12px;">—</div>
       <a class="nav-item" href="/calories.html" style="text-decoration:none;padding-left:0;color:var(--text3);font-size:12px;font-family:'DM Mono',monospace;">
         <svg class="nav-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="8" r="6"/><path d="M8 5v3l2 2"/></svg>
         Calorie Tracker
+      </a>
+      <a class="nav-item" href="/meals.html" style="text-decoration:none;padding-left:0;color:var(--text3);font-size:12px;font-family:'DM Mono',monospace;">
+        <svg class="nav-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 2h8a1 1 0 011 1v10a1 1 0 01-1 1H4a1 1 0 01-1-1V3a1 1 0 011-1z"/><path d="M6 6h4M6 9h4M6 12h2"/></svg>
+        Meal Planner
       </a>
       <a class="nav-item" href="/settings.html" style="text-decoration:none;padding-left:0;color:var(--text3);font-size:12px;font-family:'DM Mono',monospace;">
         <svg class="nav-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="8" r="2.5"/><path d="M8 1v2M8 13v2M1 8h2M13 8h2M3.05 3.05l1.41 1.41M11.54 11.54l1.41 1.41M3.05 12.95l1.41-1.41M11.54 4.46l1.41-1.41"/></svg>
@@ -926,7 +929,7 @@
       <div class="section">
         <div class="section-head"><div class="section-title">Log any exercise</div></div>
         <div class="form-row">
-          <select id="log-ex-select" class="input-wide"><option value="">— select exercise —</option></select>
+          <select id="log-ex-select" class="input-wide" onchange="onLogExSelect()"><option value="">— select exercise —</option></select>
           <input type="number" id="log-sets" placeholder="Sets" min="1" style="width:70px" />
           <input type="number" id="log-reps" placeholder="Qty" min="1" style="width:70px" />
           <select id="log-reps-type" style="width:80px;font-size:12px;">
@@ -969,8 +972,8 @@
       </div>
     </div>
 
-    <!-- WEIGHT PAGE -->
-    <div class="page" id="page-weight">
+    <!-- WEIGHT PAGE — moved to /calories.html -->
+    <div class="page" id="page-weight" style="display:none!important">
       <div class="page-header">
         <div class="page-title">Weight tracking</div>
         <div class="page-sub">Log and visualize your body weight over time</div>
@@ -1149,8 +1152,8 @@
     </div>
 
 
-  <!-- RECIPES PAGE -->
-  <div class="page" id="page-recipes">
+  <!-- RECIPES PAGE — moved to /meals.html -->
+  <div class="page" id="page-recipes" style="display:none!important">
     <div class="page-header">
       <div class="page-title">Recipes</div>
       <div class="page-sub">Build recipes from ingredients and log them as meals</div>
@@ -1382,21 +1385,9 @@
       <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="2,12 6,7 10,9 14,4"/></svg>
       Log
     </button>
-    <button class="mobile-nav-item" data-page="recipes" onclick="showPage('recipes',this)">
-      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 2h8a1 1 0 011 1v10a1 1 0 01-1 1H4a1 1 0 01-1-1V3a1 1 0 011-1z"/><path d="M6 6h4M6 9h4M6 12h2"/></svg>
-      Recipes
-    </button>
-    <button class="mobile-nav-item" data-page="weight" onclick="showPage('weight',this)">
-      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 2a4 4 0 0 1 4 4c0 3-4 8-4 8S4 9 4 6a4 4 0 0 1 4-4z"/><circle cx="8" cy="6" r="1.5" fill="currentColor" stroke="none"/></svg>
-      Weight
-    </button>
-    <a class="mobile-nav-item" href="/calories.html" style="text-decoration:none;">
-      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="8" r="6"/><path d="M8 5v3l2 2"/></svg>
-      Calories
-    </a>
     <a class="mobile-nav-item" href="/" style="text-decoration:none;">
       <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 8l6-6 6 6"/><path d="M4 6v7h3v-3h2v3h3V6"/></svg>
-      Apps
+      Home
     </a>
   </div>
 </nav>
@@ -1606,8 +1597,6 @@ function showPage(name, el) {
   const mobileBtn = document.querySelector('.mobile-nav-item[data-page="'+name+'"]');
   if (mobileBtn) mobileBtn.classList.add('active');
   if (name === 'progress') { renderTodaysWorkout(); renderProgress(); renderChart(); }
-  if (name === 'weight') { renderWeightPage(); }
-  if (name === 'recipes') { renderRecipes(); }
 }
 function changeDay(delta) {
   const d = new Date(currentDate+'T00:00:00');
@@ -3349,12 +3338,23 @@ function getSelectedRPE(exIdx, setIdx) {
   return null;
 }
 
+function parseRepType(plannedReps) {
+  const s = String(plannedReps || '');
+  if (/secs/i.test(s)) return 'secs';
+  if (/mins/i.test(s)) return 'mins';
+  if (/\byd\b/.test(s)) return 'yd';
+  if (/\bm\b/.test(s)) return 'm';
+  return 'reps';
+}
+
 function buildSetRows(exIdx, count, lastSets, exName, plannedReps) {
   const bw = state.weightLog&&state.weightLog.length ? state.weightLog[state.weightLog.length-1].weight : (state.bio&&state.bio.weight?state.bio.weight:175);
   const suggested = suggestWeights(exName||'', count, plannedReps||8, bw);
   const isFirstTime = !state.sessions.some(s=>s.exName===exName);
   const useBarbell = isBarbell(exName||'');
   const targetRPE = targetRPEForExercise(exName);
+  const repType = parseRepType(plannedReps);
+  const repLabel = repType === 'reps' ? 'Reps' : repType === 'secs' ? 'Secs' : repType === 'mins' ? 'Mins' : repType.toUpperCase();
   let rows = '';
   for (let s = 0; s < count; s++) {
     const prevReps = lastSets&&lastSets[s] ? lastSets[s].reps : '';
@@ -3371,7 +3371,10 @@ function buildSetRows(exIdx, count, lastSets, exName, plannedReps) {
     }).join('');
     rows += '<div class="set-row" id="set-row-'+exIdx+'-'+s+'">'
       +'<span class="set-num">set '+(s+1)+'</span>'
-      +'<input type="number" placeholder="Reps" value="'+prevReps+'" min="1" id="sr-reps-'+exIdx+'-'+s+'" style="width:68px;margin-top:2px;flex-shrink:0;" />'
+      +'<div style="display:flex;align-items:center;gap:3px;flex-shrink:0;">'
+      +'<input type="number" placeholder="'+repLabel+'" value="'+prevReps+'" min="1" id="sr-reps-'+exIdx+'-'+s+'" style="width:68px;margin-top:2px;" />'
+      +(repType !== 'reps' ? '<span style="font-size:10px;color:var(--text3);font-family:monospace;margin-top:2px;">'+repType+'</span>' : '')
+      +'</div>'
       +'<div style="display:flex;flex-direction:column;gap:2px;flex-shrink:0;">'
       +'<div style="display:flex;align-items:center;gap:4px;">'
       +'<input type="number" placeholder="'+(sugWeight?sugWeight+' lb':'lb')+'" value="'+inputVal+'" min="0" id="sr-weight-'+exIdx+'-'+s+'" style="width:88px" oninput="updatePlateHint('+exIdx+','+s+',this.value,'+useBarbell+')" />'
@@ -3616,6 +3619,20 @@ function populateExSelects() {
       + loggedNames.map(n => '<option value="'+n+'"'+(n===cur?' selected':'')+'>'+n+'</option>').join('');
   }
 }
+function onLogExSelect() {
+  const name = document.getElementById('log-ex-select').value;
+  const ex = (state.exercises || []).find(e => e.name === name);
+  const typeEl = document.getElementById('log-reps-type');
+  const setsEl = document.getElementById('log-sets');
+  if (!typeEl) return;
+  if (ex) {
+    typeEl.value = parseRepType(ex.reps);
+    if (setsEl && ex.sets) setsEl.value = ex.sets;
+  } else {
+    typeEl.value = 'reps';
+  }
+}
+
 function logSession() {
   const exName=document.getElementById('log-ex-select').value;
   if(!exName) return;
@@ -5375,8 +5392,6 @@ function renderAll() {
   renderTodaysWorkout();
   renderProgress();
   populateExSelects();
-  renderRecipes();
-  if (document.getElementById('page-weight').classList.contains('active')) renderWeightPage();
 }
 
 // load() is async (fetches from server), so we wait for it to finish

@@ -4,6 +4,13 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Forge — Calorie Tracker</title>
+<link rel="manifest" href="/manifest.json">
+<link rel="apple-touch-icon" href="/icon.svg">
+<meta name="theme-color" content="#0f0f0f">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Forge">
+<script>if('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js');</script>
 <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
   :root {
@@ -284,6 +291,10 @@
     <div class="nav-item active" onclick="showPage('calories', this)">
       <svg class="nav-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="8" r="6"/><path d="M8 5v3l2 2"/></svg>
       Calories
+    </div>
+    <div class="nav-item" onclick="showPage('weight', this)">
+      <svg class="nav-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 2a4 4 0 0 1 4 4c0 3-4 8-4 8S4 9 4 6a4 4 0 0 1 4-4z"/><circle cx="8" cy="6" r="1.5" fill="currentColor" stroke="none"/></svg>
+      Weight
     </div>
     <div class="nav-section">Settings</div>
     <div class="nav-item" onclick="showPage('goals', this)">
@@ -643,6 +654,91 @@
 
     </div>
 
+    <!-- WEIGHT PAGE -->
+    <div class="page" id="page-weight">
+      <div class="page-header">
+        <div class="page-title">Weight tracking</div>
+        <div class="page-sub">Log and visualize your body weight over time</div>
+      </div>
+
+      <!-- WITHINGS CONNECT -->
+      <div class="section" id="withings-section">
+        <div class="section-head">
+          <div class="section-title">Withings scale</div>
+          <span id="withings-status-badge" style="font-size:11px;font-family:monospace;color:var(--text3);"></span>
+        </div>
+        <div id="withings-disconnected" style="display:none;">
+          <div style="font-size:13px;color:var(--text2);margin-bottom:12px;">Connect your Withings scale to automatically sync weight data every 3 hours.</div>
+          <a href="/api/withings/auth" class="btn btn-accent btn-sm" style="text-decoration:none;">Connect Withings</a>
+        </div>
+        <div id="withings-connected" style="display:none;">
+          <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
+            <div style="flex:1;">
+              <div style="font-size:13px;color:var(--text2);">Auto-syncing every 3 hours.</div>
+              <div style="font-size:11px;font-family:monospace;color:var(--text3);margin-top:3px;" id="withings-last-sync">Last sync: —</div>
+            </div>
+            <button class="btn btn-accent btn-sm" onclick="syncWithingsNow()" id="withings-sync-btn">Sync now</button>
+            <button class="btn btn-ghost btn-sm" onclick="disconnectWithings()" style="color:var(--red);">Disconnect</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- LOG ENTRY -->
+      <div class="section">
+        <div class="section-head"><div class="section-title">Log weight</div></div>
+        <div class="form-row" style="align-items:center;">
+          <input type="number" id="wt-weight" placeholder="Weight (lb)" min="50" max="600" step="0.1" style="width:140px;flex:none;" />
+          <input type="date" id="wt-date" style="flex:none;" />
+          <button class="btn btn-accent" onclick="logWeightEntry()">Log</button>
+        </div>
+        <div id="wt-log-status" style="display:none;font-size:12px;font-family:monospace;margin-top:8px;color:var(--accent);"></div>
+      </div>
+
+      <!-- CHART -->
+      <div class="section">
+        <div class="section-head">
+          <div class="section-title">Trend</div>
+          <div style="display:flex;gap:4px;">
+            <button class="wt-range-btn active" onclick="setWeightRange(30,this)">30d</button>
+            <button class="wt-range-btn" onclick="setWeightRange(90,this)">90d</button>
+            <button class="wt-range-btn" onclick="setWeightRange(180,this)">6mo</button>
+            <button class="wt-range-btn" onclick="setWeightRange(365,this)">1yr</button>
+            <button class="wt-range-btn" onclick="setWeightRange(0,this)">All</button>
+          </div>
+        </div>
+        <div id="wt-stats-row" style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-bottom:16px;"></div>
+        <div style="position:relative;height:240px;">
+          <canvas id="weight-chart"></canvas>
+        </div>
+        <div id="wt-no-data" style="display:none;text-align:center;padding:40px 0;font-size:13px;color:var(--text3);font-family:monospace;">No weight entries yet — log your first weight above</div>
+      </div>
+
+      <!-- TABLE -->
+      <div class="section">
+        <div class="section-head">
+          <div class="section-title">History</div>
+          <div style="display:flex;gap:6px;align-items:center;">
+            <span style="font-size:11px;color:var(--text3);font-family:monospace;" id="wt-table-count"></span>
+            <button class="btn btn-ghost btn-sm" onclick="exportWeightCSV()" style="font-size:11px;">Export CSV</button>
+          </div>
+        </div>
+        <div id="wt-table-wrap" style="overflow-x:auto;">
+          <table id="wt-table" style="width:100%;border-collapse:collapse;font-size:13px;">
+            <thead>
+              <tr style="border-bottom:0.5px solid var(--border2);">
+                <th style="text-align:left;padding:6px 10px 8px 0;font-size:11px;font-weight:500;color:var(--text3);font-family:monospace;text-transform:uppercase;letter-spacing:.04em;cursor:pointer;" onclick="sortWeightTable('date')">Date <span id="sort-date">↓</span></th>
+                <th style="text-align:right;padding:6px 0 8px 10px;font-size:11px;font-weight:500;color:var(--text3);font-family:monospace;text-transform:uppercase;letter-spacing:.04em;cursor:pointer;" onclick="sortWeightTable('weight')">Weight <span id="sort-weight"></span></th>
+                <th style="text-align:right;padding:6px 0 8px 10px;font-size:11px;font-weight:500;color:var(--text3);font-family:monospace;text-transform:uppercase;letter-spacing:.04em;">Change</th>
+                <th style="text-align:right;padding:6px 0 8px 10px;font-size:11px;font-weight:500;color:var(--text3);font-family:monospace;text-transform:uppercase;letter-spacing:.04em;">Action</th>
+              </tr>
+            </thead>
+            <tbody id="wt-tbody"></tbody>
+          </table>
+          <div id="wt-table-empty" style="display:none;text-align:center;padding:24px 0;font-size:13px;color:var(--text3);font-family:monospace;">No entries yet</div>
+        </div>
+      </div>
+    </div>
+
   </main>
 </div>
 
@@ -653,21 +749,22 @@
       <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="8" r="6"/><path d="M8 5v3l2 2"/></svg>
       Calories
     </button>
+    <button class="mobile-nav-item" data-page="weight" onclick="showPage('weight',this)">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 2a4 4 0 0 1 4 4c0 3-4 8-4 8S4 9 4 6a4 4 0 0 1 4-4z"/><circle cx="8" cy="6" r="1.5" fill="currentColor" stroke="none"/></svg>
+      Weight
+    </button>
     <button class="mobile-nav-item" data-page="goals" onclick="showPage('goals',this)">
       <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="8" r="3"/><circle cx="8" cy="8" r="6"/></svg>
       Goals
     </button>
-    <a class="mobile-nav-item" href="/fitness.html">
-      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 8h2m8 0h2M4 8l1-2h6l1 2M5 6V4M11 6V4"/></svg>
-      Fitness
-    </a>
     <a class="mobile-nav-item" href="/">
       <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 8l6-6 6 6"/><path d="M4 6v7h3v-3h2v3h3V6"/></svg>
-      Apps
+      Home
     </a>
   </div>
 </nav>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <script>
 let state = {
   foods: {},
@@ -738,6 +835,7 @@ function showPage(name, el) {
   if (el) el.classList.add('active');
   const mobileBtn = document.querySelector('.mobile-nav-item[data-page="'+name+'"]');
   if (mobileBtn) mobileBtn.classList.add('active');
+  if (name === 'weight') renderWeightPage();
 }
 
 function changeDay(delta) {
@@ -1422,10 +1520,244 @@ function renderWeightLog() {
   ).join('');
 }
 
+// ── WEIGHT PAGE ───────────────────────────────────────────────────────────────
+let weightSortCol = 'date';
+let weightSortDir = -1;
+let weightRangeDays = 30;
+let weightChartInstance = null;
+
+function setDateInput() {
+  const el = document.getElementById('wt-date');
+  if (el && !el.value) el.value = todayStr();
+}
+
+function logWeightEntry() {
+  const w = parseFloat(document.getElementById('wt-weight').value);
+  const dateEl = document.getElementById('wt-date');
+  const d = dateEl && dateEl.value ? dateEl.value : todayStr();
+  if (!w || w < 50 || w > 600) return;
+  if (!state.weightLog) state.weightLog = [];
+  const existing = state.weightLog.findIndex(e => e.date === d);
+  if (existing >= 0) state.weightLog[existing].weight = w;
+  else state.weightLog.push({ id: Date.now(), date: d, weight: w });
+  // Keep bio.weight in sync for TDEE calc
+  if (d === todayStr()) {
+    state.bio.weight = w;
+    const bioEl = document.getElementById('bio-weight');
+    if (bioEl) { bioEl.value = w; recalc(); }
+  }
+  save();
+  const statusEl = document.getElementById('wt-log-status');
+  if (statusEl) {
+    statusEl.textContent = w + ' lb logged for ' + formatDate(d);
+    statusEl.style.display = 'block';
+    setTimeout(() => statusEl.style.display = 'none', 2500);
+  }
+  renderWeightPage();
+  renderWeightLog();
+}
+
+function removeWeightEntryFromPage(id) {
+  state.weightLog = state.weightLog.filter(e => e.id !== id);
+  save(); renderWeightPage(); renderWeightLog();
+}
+
+function setWeightRange(days, btn) {
+  weightRangeDays = days;
+  document.querySelectorAll('.wt-range-btn').forEach(b => b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+  renderWeightPage();
+}
+
+function sortWeightTable(col) {
+  if (weightSortCol === col) weightSortDir *= -1;
+  else { weightSortCol = col; weightSortDir = col === 'date' ? -1 : 1; }
+  document.getElementById('sort-date').textContent = '';
+  document.getElementById('sort-weight').textContent = '';
+  document.getElementById('sort-' + col).textContent = weightSortDir === -1 ? '↓' : '↑';
+  renderWeightTable();
+}
+
+function getFilteredWeightEntries() {
+  if (!state.weightLog || !state.weightLog.length) return [];
+  const sorted = [...state.weightLog].sort((a, b) => a.date.localeCompare(b.date));
+  if (!weightRangeDays) return sorted;
+  const cutoff = new Date();
+  cutoff.setDate(cutoff.getDate() - weightRangeDays);
+  const cutoffStr = cutoff.toISOString().slice(0, 10);
+  return sorted.filter(e => e.date >= cutoffStr);
+}
+
+async function refreshWithingsStatus() {
+  try {
+    const res  = await fetch('/api/withings/status');
+    const data = await res.json();
+    const disconnEl  = document.getElementById('withings-disconnected');
+    const connEl     = document.getElementById('withings-connected');
+    const badgeEl    = document.getElementById('withings-status-badge');
+    const lastSyncEl = document.getElementById('withings-last-sync');
+    if (!disconnEl || !connEl) return;
+    if (data.connected) {
+      disconnEl.style.display = 'none';
+      connEl.style.display    = '';
+      if (badgeEl) { badgeEl.textContent = 'Connected'; badgeEl.style.color = 'var(--accent)'; }
+      if (lastSyncEl && data.lastSync) lastSyncEl.textContent = 'Last sync: ' + new Date(data.lastSync).toLocaleString();
+    } else {
+      disconnEl.style.display = '';
+      connEl.style.display    = 'none';
+      if (badgeEl) { badgeEl.textContent = 'Not connected'; badgeEl.style.color = 'var(--text3)'; }
+    }
+  } catch (e) {}
+}
+
+async function syncWithingsNow() {
+  const btn = document.getElementById('withings-sync-btn');
+  if (btn) { btn.textContent = 'Syncing…'; btn.disabled = true; }
+  try {
+    const res  = await fetch('/api/withings/sync', { method: 'POST' });
+    const data = await res.json();
+    if (data.ok) {
+      const stateRes = await fetch('/api/state');
+      if (stateRes.ok) { const fresh = await stateRes.json(); state = Object.assign(state, fresh); }
+      renderWeightPage();
+      refreshWithingsStatus();
+    } else { alert('Sync failed: ' + (data.error || 'Unknown error')); }
+  } catch (e) { alert('Sync error: ' + e.message); }
+  finally { if (btn) { btn.textContent = 'Sync now'; btn.disabled = false; } }
+}
+
+async function disconnectWithings() {
+  if (!confirm('Disconnect Withings? Your logged weight data will not be deleted.')) return;
+  await fetch('/api/withings/disconnect', { method: 'DELETE' });
+  refreshWithingsStatus();
+}
+
+function renderWeightPage() {
+  setDateInput();
+  refreshWithingsStatus();
+  const all      = [...(state.weightLog || [])].sort((a, b) => a.date.localeCompare(b.date));
+  const filtered = getFilteredWeightEntries();
+  const noDataChart = document.getElementById('wt-no-data');
+  const canvas      = document.getElementById('weight-chart');
+  const statsRow    = document.getElementById('wt-stats-row');
+
+  if (statsRow) {
+    if (!all.length) {
+      statsRow.innerHTML = '';
+    } else {
+      const latest = all[all.length - 1].weight;
+      const filteredVals = filtered.map(e => e.weight);
+      const rangeFirst  = filteredVals.length ? filteredVals[0] : latest;
+      const rangeLast   = filteredVals.length ? filteredVals[filteredVals.length - 1] : latest;
+      const rangeChange = filteredVals.length >= 2 ? Math.round((rangeLast - rangeFirst) * 10) / 10 : null;
+      const rangeSign   = rangeChange !== null ? (rangeChange > 0 ? '+' : '') : '';
+      const rangeLabel  = weightRangeDays === 0 ? 'all time' : weightRangeDays === 30 ? '30 days' : weightRangeDays === 90 ? '90 days' : weightRangeDays === 180 ? '6 months' : weightRangeDays === 365 ? '1 year' : weightRangeDays + ' days';
+
+      function trendSlope(entries) {
+        if (entries.length < 2) return null;
+        const n = entries.length;
+        const xs = entries.map((_, i) => i);
+        const ys = entries.map(e => e.weight);
+        const mx = xs.reduce((a, x) => a + x, 0) / n;
+        const my = ys.reduce((a, y) => a + y, 0) / n;
+        const num = xs.reduce((a, x, i) => a + (x - mx) * (ys[i] - my), 0);
+        const den = xs.reduce((a, x) => a + (x - mx) ** 2, 0);
+        return den === 0 ? 0 : num / den;
+      }
+      function trendLabel(slope) {
+        if (slope === null) return { val: '—', sub: 'not enough data', color: 'var(--text)' };
+        const weekly = Math.round(slope * 7 * 10) / 10;
+        const s = weekly > 0 ? '+' : '';
+        const color = Math.abs(weekly) < 0.2 ? 'var(--text2)' : weekly < 0 ? 'var(--accent)' : 'var(--red)';
+        const dir   = Math.abs(weekly) < 0.2 ? 'stable' : weekly < 0 ? '▼ losing' : '▲ gaining';
+        return { val: s + weekly + ' lb/wk', sub: dir, color };
+      }
+
+      const t = trendLabel(trendSlope(filtered));
+      const avgRange = filteredVals.length ? Math.round(filteredVals.reduce((s, v) => s + v, 0) / filteredVals.length * 10) / 10 : null;
+
+      statsRow.innerHTML =
+        '<div class="wt-stat"><div class="wt-stat-label">Current</div><div class="wt-stat-val">' + latest + '</div><div class="wt-stat-sub">lb</div></div>'
+        + '<div class="wt-stat"><div class="wt-stat-label">Trend (' + rangeLabel + ')</div><div class="wt-stat-val" style="font-size:16px;color:' + t.color + '">' + t.val + '</div><div class="wt-stat-sub">' + t.sub + '</div></div>'
+        + '<div class="wt-stat"><div class="wt-stat-label">Avg (' + rangeLabel + ')</div><div class="wt-stat-val" style="font-size:16px;">' + (avgRange !== null ? avgRange : '—') + '</div><div class="wt-stat-sub">lb</div></div>'
+        + '<div class="wt-stat"><div class="wt-stat-label">Change (' + rangeLabel + ')</div><div class="wt-stat-val" style="color:' + (rangeChange === null ? 'var(--text)' : rangeChange <= 0 ? 'var(--accent)' : 'var(--red)') + '">' + (rangeChange !== null ? rangeSign + rangeChange : '—') + '</div><div class="wt-stat-sub">lb</div></div>';
+    }
+  }
+
+  if (filtered.length < 2) {
+    if (noDataChart) noDataChart.style.display = 'block';
+    if (canvas) canvas.style.display = 'none';
+    if (weightChartInstance) { weightChartInstance.destroy(); weightChartInstance = null; }
+  } else {
+    if (noDataChart) noDataChart.style.display = 'none';
+    if (canvas) canvas.style.display = 'block';
+    const labels  = filtered.map(e => { const d = new Date(e.date+'T00:00:00'); return d.toLocaleDateString('en-US',{month:'short',day:'numeric'}); });
+    const data    = filtered.map(e => e.weight);
+    const avgData = filtered.map((_, i) => {
+      const slice = filtered.slice(Math.max(0, i - 6), i + 1);
+      return Math.round(slice.reduce((s, e) => s + e.weight, 0) / slice.length * 10) / 10;
+    });
+    if (weightChartInstance) { weightChartInstance.destroy(); weightChartInstance = null; }
+    weightChartInstance = new Chart(canvas, {
+      type: 'line',
+      data: { labels, datasets: [
+        { label:'Weight', data, borderColor:'#c8f56a', backgroundColor:'rgba(200,245,106,0.06)', pointRadius: filtered.length > 60 ? 0 : 3, pointBackgroundColor:'#c8f56a', tension:0.2, fill:true, borderWidth:1.5 },
+        { label:'7-day avg', data: avgData, borderColor:'#378ADD', backgroundColor:'transparent', pointRadius:0, tension:0.4, borderWidth:2, borderDash:[4,3] }
+      ]},
+      options: {
+        responsive:true, maintainAspectRatio:false,
+        plugins: { legend:{ display:false }, tooltip:{ callbacks:{ label: ctx => ctx.dataset.label+': '+ctx.parsed.y+' lb' } } },
+        scales: {
+          x: { ticks:{ color:'#555', font:{size:10}, maxTicksLimit:10 }, grid:{ color:'#2a2a2a' } },
+          y: { ticks:{ color:'#555', font:{size:11}, callback: v => v+' lb' }, grid:{ color:'#2a2a2a' }, suggestedMin: Math.min(...data)-2, suggestedMax: Math.max(...data)+2 }
+        }
+      }
+    });
+  }
+  renderWeightTable();
+}
+
+function renderWeightTable() {
+  const tbody = document.getElementById('wt-tbody');
+  const empty = document.getElementById('wt-table-empty');
+  const count = document.getElementById('wt-table-count');
+  if (!tbody) return;
+  const all = [...(state.weightLog || [])].sort((a, b) => {
+    if (weightSortCol === 'date') return weightSortDir * a.date.localeCompare(b.date);
+    return weightSortDir * (a.weight - b.weight);
+  });
+  if (count) count.textContent = all.length + ' entr' + (all.length === 1 ? 'y' : 'ies');
+  if (!all.length) { tbody.innerHTML = ''; if (empty) empty.style.display = 'block'; return; }
+  if (empty) empty.style.display = 'none';
+  const chrono = [...(state.weightLog || [])].sort((a, b) => a.date.localeCompare(b.date));
+  const changeMap = {};
+  chrono.forEach((e, i) => { changeMap[e.id] = i === 0 ? null : Math.round((e.weight - chrono[i-1].weight) * 10) / 10; });
+  tbody.innerHTML = all.map(e => {
+    const chg = changeMap[e.id];
+    const chgHtml = chg === null ? '<span style="color:var(--text3)">—</span>'
+      : chg === 0 ? '<span style="color:var(--text3)">±0</span>'
+      : chg < 0 ? '<span style="color:var(--accent)">' + chg + ' lb</span>'
+      : '<span style="color:var(--red)">+' + chg + ' lb</span>';
+    return '<tr><td>' + formatDate(e.date) + '</td><td>' + e.weight + ' lb</td><td>' + chgHtml + '</td>'
+      + '<td><button class="del" onclick="removeWeightEntryFromPage(' + e.id + ')">&#10005;</button></td></tr>';
+  }).join('');
+}
+
+function exportWeightCSV() {
+  const rows = [['date','weight_lb']];
+  [...(state.weightLog||[])].sort((a,b)=>a.date.localeCompare(b.date)).forEach(e => rows.push([e.date, e.weight]));
+  const csv = rows.map(r => r.join(',')).join('\n');
+  const blob = new Blob([csv], { type: 'text/csv' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a'); a.href = url; a.download = 'forge_weight_log_'+todayStr()+'.csv'; a.click();
+  URL.revokeObjectURL(url);
+}
+
 function renderAll() {
   renderCalories();
   renderFoodLibrary();
   renderWeightLog();
+  if (document.getElementById('page-weight').classList.contains('active')) renderWeightPage();
 }
 
 load().then(() => {

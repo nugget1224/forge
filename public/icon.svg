@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <!-- Background -->
+  <rect width="512" height="512" rx="112" fill="#181818"/>
+  <!-- Bold F made of rectangles in accent green -->
+  <rect x="128" y="112" width="88" height="288" rx="12" fill="#c8f56a"/>
+  <rect x="128" y="112" width="256" height="88" rx="12" fill="#c8f56a"/>
+  <rect x="128" y="210" width="210" height="76" rx="12" fill="#c8f56a"/>
+</svg>
