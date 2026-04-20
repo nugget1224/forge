@@ -1,7 +1,8 @@
 # Ignore everything
 *
 
-# Except the public folder and this file
+# Except the public folder, readme, and this file
 !.gitignore
+!README.md
 !public/
 !public/**

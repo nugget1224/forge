@@ -1,9 +1,10 @@
-const CACHE = 'forge-v2';
+const CACHE = 'forge-v3';
 const SHELL = [
   '/',
   '/calories.html',
   '/fitness.html',
   '/meals.html',
+  '/plants.html',
   '/draft.html',
   '/settings.html',
 ];
