@@ -173,6 +173,24 @@
   .notif-banner svg { flex-shrink: 0; }
   .notif-banner-text { flex: 1; font-size: 13px; color: var(--amber); }
 
+  /* Probe */
+  .probe-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 12px; }
+  .probe-cell { background: var(--surface2); border: 1px solid var(--border); border-radius: var(--radius); padding: 10px 12px; }
+  .probe-cell-label { font-size: 10px; color: var(--text3); font-family: 'DM Mono', monospace; text-transform: uppercase; letter-spacing: .06em; margin-bottom: 4px; }
+  .probe-cell-value { font-size: 18px; font-weight: 500; color: var(--text); line-height: 1; }
+  .probe-cell-unit { font-size: 11px; color: var(--text2); margin-left: 2px; }
+  .probe-cell-bar { height: 3px; border-radius: 2px; margin-top: 6px; background: var(--border2); overflow: hidden; }
+  .probe-cell-bar-fill { height: 100%; border-radius: 2px; transition: width 0.4s; }
+  .probe-cell.warn .probe-cell-value { color: var(--amber); }
+  .probe-cell.alert .probe-cell-value { color: var(--red); }
+  .probe-cell.good .probe-cell-value { color: var(--green); }
+  .probe-status { display: flex; align-items: center; gap: 8px; font-size: 11px; font-family: 'DM Mono', monospace; color: var(--text3); margin-bottom: 10px; }
+  .probe-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+  .probe-dot.live { background: var(--green); box-shadow: 0 0 6px var(--green); animation: pulse 2s infinite; }
+  .probe-dot.error { background: var(--red); }
+  .probe-dot.idle { background: var(--text3); }
+  @keyframes pulse { 0%,100% { opacity:1; } 50% { opacity:0.4; } }
+
   /* Mobile nav */
   .mobile-nav { display: none; position: fixed; bottom: 0; left: 0; right: 0; background: var(--surface); border-top: 1px solid var(--border); z-index: 100; padding: 0; padding-bottom: env(safe-area-inset-bottom, 0px); }
   .mobile-nav-inner { display: flex; align-items: stretch; }
@@ -407,6 +425,7 @@ function renderPlants() {
       +   (p.species ? '<div class="plant-card-species">' + _esc(p.species) + '</div>' : '')
       +   (p.location ? '<div class="plant-card-location">📍 ' + _esc(p.location) + '</div>' : '')
       +   '<div style="display:flex;gap:5px;flex-wrap:wrap;margin-top:6px;">' + waterBadge + fertBadge + '</div>'
+      +   (p.probeEnabled && p.lastReading ? probeCardSnippet(p.lastReading) : '')
       +   '<div class="plant-card-actions" onclick="event.stopPropagation()">'
       +     '<button class="btn btn-sm btn-ghost" onclick="quickLog(' + p.id + ',\'watered\')" title="Log watering">💧</button>'
       +     '<button class="btn btn-sm btn-ghost" onclick="quickLog(' + p.id + ',\'fertilized\')" title="Log fertilizing">🌿</button>'
@@ -575,9 +594,11 @@ function openPlantDetail(plantId) {
   _modalPhotos = plant.photos ? [...plant.photos] : [];
   renderPlantDetail(plant);
   document.getElementById('plant-modal').style.display = 'flex';
+  startProbePolling(plantId);
 }
 
 function closeModal() {
+  stopAllProbePolling();
   document.getElementById('plant-modal').style.display = 'none';
   _editingPlantId = null;
   _modalPhotos = [];
@@ -590,6 +611,19 @@ function onModalOverlayClick(e) {
 function renderPlantForm(plant) {
   const isEdit = !!plant;
   const mc = document.getElementById('modal-content');
+
+  const probeIntervalOpts = [
+    ['manual','Manual only'],['30','Every 30s'],['60','Every 1 min'],
+    ['300','Every 5 min'],['600','Every 10 min'],['1800','Every 30 min'],
+  ].map(function(pair) {
+    const v = pair[0], l = pair[1];
+    return '<option value="' + v + '"' + ((plant?.probeInterval || 'manual') === v ? ' selected' : '') + '>' + l + '</option>';
+  }).join('');
+
+  const healthOpts = ['healthy','needs-attention','critical'].map(function(s) {
+    return '<label style="display:flex;align-items:center;gap:5px;cursor:pointer;font-size:12px;">'
+      + '<input type="radio" name="form-health" value="' + s + '"' + ((plant?.healthStatus || 'healthy') === s ? ' checked' : '') + ' /> ' + s + '</label>';
+  }).join('');
   mc.innerHTML =
     '<div class="modal-body">'
     + '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;">'
@@ -653,13 +687,34 @@ function renderPlantForm(plant) {
     +     '<input type="date" id="form-last-repot" value="' + (plant?.lastRepotted || '') + '" style="width:100%;font-size:12px;" /></div>'
     + '</div>'
 
+    // Probe
+    + '<div style="font-size:11px;color:var(--text3);font-family:monospace;text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px;">Plant probe</div>'
+    + '<div style="background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius);padding:12px;margin-bottom:14px;">'
+    +   '<label style="display:flex;align-items:center;gap:8px;cursor:pointer;margin-bottom:10px;">'
+    +     '<input type="checkbox" id="form-probe-enabled"' + (plant?.probeEnabled ? ' checked' : '') + ' onchange="toggleProbeForm(this.checked)" style="width:16px;height:16px;accent-color:var(--accent);" />'
+    +     '<span style="font-size:13px;color:var(--text);">Enable probe sensor</span>'
+    +   '</label>'
+    +   '<div id="probe-url-row" style="display:' + (plant?.probeEnabled ? 'block' : 'none') + ';">'
+    +     '<div style="font-size:11px;color:var(--text3);font-family:monospace;margin-bottom:4px;">Raspberry Pi sensor URL</div>'
+    +     '<div style="display:flex;gap:8px;flex-wrap:wrap;">'
+    +       '<input type="url" id="form-probe-url" value="' + _esc(plant?.probeUrl || '') + '" placeholder="http://raspberrypi.local:5000/sensor" class="input-wide" style="font-size:12px;" />'
+    +       '<button class="btn btn-ghost btn-sm" onclick="testProbeUrl()" id="probe-test-btn">Test</button>'
+    +     '</div>'
+    +     '<div id="probe-test-result" style="display:none;font-size:12px;font-family:monospace;margin-top:6px;padding:6px 10px;border-radius:6px;"></div>'
+    +     '<div style="font-size:11px;color:var(--text3);margin-top:6px;">Expected JSON fields (any subset): <span style="font-family:monospace;">moisture, temperature, humidity, light, ec, nitrogen, phosphorus, potassium</span></div>'
+    +     '<div style="margin-top:10px;">'
+    +       '<div style="font-size:11px;color:var(--text3);font-family:monospace;margin-bottom:4px;">Poll interval</div>'
+    +       '<select id="form-probe-interval" style="font-size:12px;">'
+    +         probeIntervalOpts
+    +       '</select>'
+    +     '</div>'
+    +   '</div>'
+    + '</div>'
+
     // Health + notes
     + '<div style="font-size:11px;color:var(--text3);font-family:monospace;text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px;">Health status</div>'
     + '<div style="display:flex;gap:8px;margin-bottom:14px;">'
-    +   ['healthy','needs-attention','critical'].map(s =>
-        '<label style="display:flex;align-items:center;gap:5px;cursor:pointer;font-size:12px;">'
-        + '<input type="radio" name="form-health" value="' + s + '"' + ((plant?.healthStatus||'healthy')===s?' checked':'') + ' /> ' + s + '</label>'
-      ).join('')
+    +   healthOpts
     + '</div>'
     + '<div style="margin-bottom:14px;"><div style="font-size:11px;color:var(--text3);font-family:monospace;margin-bottom:4px;">Notes</div>'
     +   '<textarea id="form-notes" placeholder="Care notes, observations…">' + _esc(plant?.notes || '') + '</textarea></div>'
@@ -826,6 +881,9 @@ function savePlantForm() {
       plant.notes = document.getElementById('form-notes')?.value.trim() || '';
       plant.healthStatus = health;
       plant.photos = [..._modalPhotos];
+      plant.probeEnabled = document.getElementById('form-probe-enabled')?.checked || false;
+      plant.probeUrl = document.getElementById('form-probe-url')?.value.trim() || '';
+      plant.probeInterval = document.getElementById('form-probe-interval')?.value || 'manual';
     }
   } else {
     state.plants.push({
@@ -844,6 +902,10 @@ function savePlantForm() {
       notes: document.getElementById('form-notes')?.value.trim() || '',
       healthStatus: health,
       photos: [..._modalPhotos],
+      probeEnabled: document.getElementById('form-probe-enabled')?.checked || false,
+      probeUrl: document.getElementById('form-probe-url')?.value.trim() || '',
+      probeInterval: document.getElementById('form-probe-interval')?.value || 'manual',
+      lastReading: null,
       log: [],
     });
   }
@@ -914,6 +976,22 @@ function renderPlantDetail(plant) {
     +     careCard('🌿 Fertilize', plant.fertilizingInterval ? 'every ' + plant.fertilizingInterval + 'd' : 'not set', fertDueBadgeText(fertDue))
     +     careCard('🪴 Pot', (plant.size || 'medium') + ' · ' + (plant.soilType || 'standard'), plant.lastRepotted ? 'last ' + formatDate(plant.lastRepotted) : '')
     +   '</div>'
+
+    // Probe panel
+    +   (plant.probeEnabled
+        ? '<div style="margin-bottom:16px;">'
+          + '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">'
+          +   '<div style="font-size:11px;color:var(--text3);font-family:\'DM Mono\',monospace;text-transform:uppercase;letter-spacing:.06em;">Probe readings</div>'
+          +   '<div style="display:flex;gap:6px;align-items:center;">'
+          +     '<div class="probe-status"><div class="probe-dot idle" id="probe-dot-' + plant.id + '"></div><span id="probe-status-text-' + plant.id + '">idle</span></div>'
+          +     '<button class="btn btn-sm btn-ghost" onclick="fetchProbeReading(' + plant.id + ')" style="font-size:11px;">↻ Read</button>'
+          +   '</div>'
+          + '</div>'
+          + '<div id="probe-readings-' + plant.id + '">'
+          +   (plant.lastReading ? probeGridHtml(plant.lastReading) : '<div style="font-size:12px;color:var(--text3);font-family:monospace;">No readings yet — click ↻ Read to fetch</div>')
+          + '</div>'
+          + '</div>'
+        : '')
 
     // Quick actions
     +   '<div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px;">'
@@ -1078,6 +1156,149 @@ function fireOverdueNotifications() {
     icon: '/icon.svg',
   });
 }
+
+// ── Probe ─────────────────────────────────────────────────────────────────────
+const _probeTimers = {}; // plantId → setInterval handle
+
+function toggleProbeForm(enabled) {
+  document.getElementById('probe-url-row').style.display = enabled ? 'block' : 'none';
+}
+
+async function testProbeUrl() {
+  const url = document.getElementById('form-probe-url')?.value.trim();
+  const resultEl = document.getElementById('probe-test-result');
+  const btn = document.getElementById('probe-test-btn');
+  if (!url) return;
+  resultEl.style.display = 'block';
+  resultEl.style.background = 'var(--surface2)';
+  resultEl.style.color = 'var(--text2)';
+  resultEl.style.border = '1px solid var(--border2)';
+  resultEl.textContent = 'Testing…';
+  btn.disabled = true;
+  try {
+    const resp = await fetch('/api/probe-reading', {
+      method: 'POST', headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({ url }),
+    });
+    const data = await resp.json();
+    if (data.error) throw new Error(data.error);
+    resultEl.style.background = 'var(--green-dim)';
+    resultEl.style.color = 'var(--green)';
+    resultEl.style.border = '1px solid #1a4a2a';
+    resultEl.textContent = '✓ Connected — got: ' + Object.keys(data.reading).join(', ');
+  } catch(e) {
+    resultEl.style.background = 'var(--red-dim)';
+    resultEl.style.color = 'var(--red)';
+    resultEl.style.border = '1px solid #3a1515';
+    resultEl.textContent = '✗ ' + e.message;
+  }
+  btn.disabled = false;
+}
+
+async function fetchProbeReading(plantId) {
+  const plant = (state.plants || []).find(p => p.id === plantId);
+  if (!plant || !plant.probeEnabled || !plant.probeUrl) return;
+
+  const dot  = document.getElementById('probe-dot-' + plantId);
+  const text = document.getElementById('probe-status-text-' + plantId);
+  const grid = document.getElementById('probe-readings-' + plantId);
+
+  if (dot) { dot.className = 'probe-dot idle'; dot.style.background = 'var(--amber)'; }
+  if (text) text.textContent = 'reading…';
+
+  try {
+    const resp = await fetch('/api/probe-reading', {
+      method: 'POST', headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({ url: plant.probeUrl }),
+    });
+    const data = await resp.json();
+    if (data.error) throw new Error(data.error);
+
+    plant.lastReading = { ...data.reading, ts: data.ts };
+    save();
+
+    if (dot) { dot.className = 'probe-dot live'; dot.style.background = ''; }
+    const ago = new Date(data.ts).toLocaleTimeString();
+    if (text) text.textContent = 'live · ' + ago;
+    if (grid) grid.innerHTML = probeGridHtml(plant.lastReading);
+    renderPlants(); // refresh card badges
+  } catch(e) {
+    if (dot) { dot.className = 'probe-dot error'; dot.style.background = ''; }
+    if (text) text.textContent = 'error: ' + e.message;
+  }
+}
+
+function startProbePolling(plantId) {
+  stopProbePolling(plantId);
+  const plant = (state.plants || []).find(p => p.id === plantId);
+  if (!plant || !plant.probeEnabled || !plant.probeUrl || plant.probeInterval === 'manual') return;
+  const ms = parseInt(plant.probeInterval) * 1000;
+  fetchProbeReading(plantId); // immediate first read
+  _probeTimers[plantId] = setInterval(() => fetchProbeReading(plantId), ms);
+}
+
+function stopProbePolling(plantId) {
+  if (_probeTimers[plantId]) { clearInterval(_probeTimers[plantId]); delete _probeTimers[plantId]; }
+}
+
+function stopAllProbePolling() {
+  Object.keys(_probeTimers).forEach(stopProbePolling);
+}
+
+// Build a compact probe grid HTML from a reading object
+function probeGridHtml(r) {
+  if (!r) return '';
+  const cells = [];
+
+  if (r.moisture != null)     cells.push(probeCell('Moisture', r.moisture, '%', moistureLevel(r.moisture), r.moisture, 100));
+  if (r.temperature != null)  cells.push(probeCell('Temp', r.temperature, '°', tempLevel(r.temperature), null, null));
+  if (r.humidity != null)     cells.push(probeCell('Humidity', r.humidity, '%', humidityLevel(r.humidity), r.humidity, 100));
+  if (r.light != null)        cells.push(probeCell('Light', r.light > 1000 ? Math.round(r.light/100)/10 + 'k' : r.light, r.light > 1000 ? ' lux' : ' lux', lightLevel(r.light), r.light, Math.max(r.light, 10000)));
+  if (r.ec != null)           cells.push(probeCell('EC', r.ec, ' µS', ecLevel(r.ec), null, null));
+  if (r.nitrogen != null)     cells.push(probeCell('N', r.nitrogen, ' mg/kg', npkLevel(r.nitrogen), r.nitrogen, 200));
+  if (r.phosphorus != null)   cells.push(probeCell('P', r.phosphorus, ' mg/kg', npkLevel(r.phosphorus), r.phosphorus, 200));
+  if (r.potassium != null)    cells.push(probeCell('K', r.potassium, ' mg/kg', npkLevel(r.potassium), r.potassium, 200));
+
+  if (!cells.length) return '<div style="font-size:12px;color:var(--text3);">No recognised fields in probe response</div>';
+  return '<div class="probe-grid">' + cells.join('') + '</div>'
+    + (r.ts ? '<div style="font-size:10px;color:var(--text3);font-family:monospace;margin-top:2px;">last read ' + new Date(r.ts).toLocaleTimeString() + '</div>' : '');
+}
+
+function probeCell(label, value, unit, level, barVal, barMax) {
+  const barHtml = barVal != null
+    ? '<div class="probe-cell-bar"><div class="probe-cell-bar-fill" style="width:' + Math.min(100, Math.round(barVal/barMax*100)) + '%;background:' + levelColor(level) + ';"></div></div>'
+    : '';
+  return '<div class="probe-cell ' + level + '">'
+    + '<div class="probe-cell-label">' + label + '</div>'
+    + '<div class="probe-cell-value">' + value + '<span class="probe-cell-unit">' + unit + '</span></div>'
+    + barHtml
+    + '</div>';
+}
+
+// Compact inline probe snippet for plant cards
+function probeCardSnippet(r) {
+  if (!r) return '';
+  const parts = [];
+  if (r.moisture != null)    parts.push('<span style="color:' + levelColor(moistureLevel(r.moisture)) + '">💧' + r.moisture + '%</span>');
+  if (r.temperature != null) parts.push('<span style="color:var(--text2);">🌡' + r.temperature + '°</span>');
+  if (r.light != null)       parts.push('<span style="color:var(--text2);">☀' + (r.light > 1000 ? Math.round(r.light/100)/10 + 'k' : r.light) + '</span>');
+  if (!parts.length) return '';
+  return '<div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:4px;font-size:11px;font-family:monospace;">' + parts.join('') + '</div>';
+}
+
+function levelColor(level) {
+  if (level === 'good')  return 'var(--green)';
+  if (level === 'warn')  return 'var(--amber)';
+  if (level === 'alert') return 'var(--red)';
+  return 'var(--text2)';
+}
+
+function moistureLevel(v)  { if (v < 20) return 'alert'; if (v < 35) return 'warn'; if (v > 80) return 'warn'; return 'good'; }
+function tempLevel(v)      { if (v < 10 || v > 35) return 'alert'; if (v < 15 || v > 30) return 'warn'; return 'good'; }
+function humidityLevel(v)  { if (v < 30) return 'alert'; if (v < 40 || v > 80) return 'warn'; return 'good'; }
+function lightLevel(v)     { if (v < 200) return 'alert'; if (v < 500 || v > 50000) return 'warn'; return 'good'; }
+function ecLevel(v)        { if (v < 200) return 'warn'; if (v > 3000) return 'alert'; return 'good'; }
+function npkLevel(v)       { if (v < 20) return 'warn'; if (v > 300) return 'alert'; return 'good'; }
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
 function _esc(str) {
