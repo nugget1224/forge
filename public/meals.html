@@ -367,15 +367,15 @@
           </div>
           <div>
             <div style="font-size:10px;color:var(--text3);font-family:monospace;margin-bottom:3px;">Protein</div>
-            <input type="number" id="ing-p" placeholder="g" min="0" step="0.1" style="width:100%;" oninput="clearIngBase()" />
+            <input type="number" id="ing-p" placeholder="g" min="0" step="0.1" style="width:100%;" oninput="clearIngBase(); autoCalcIngCal()" />
           </div>
           <div>
             <div style="font-size:10px;color:var(--text3);font-family:monospace;margin-bottom:3px;">Carbs</div>
-            <input type="number" id="ing-c" placeholder="g" min="0" step="0.1" style="width:100%;" oninput="clearIngBase()" />
+            <input type="number" id="ing-c" placeholder="g" min="0" step="0.1" style="width:100%;" oninput="clearIngBase(); autoCalcIngCal()" />
           </div>
           <div>
             <div style="font-size:10px;color:var(--text3);font-family:monospace;margin-bottom:3px;">Fat</div>
-            <input type="number" id="ing-f" placeholder="g" min="0" step="0.1" style="width:100%;" oninput="clearIngBase()" />
+            <input type="number" id="ing-f" placeholder="g" min="0" step="0.1" style="width:100%;" oninput="clearIngBase(); autoCalcIngCal()" />
           </div>
           <div style="display:flex;align-items:flex-end;gap:6px;">
             <button class="btn btn-accent btn-sm" onclick="addIngredient()" style="white-space:nowrap;">+ Add ingredient</button>
@@ -864,14 +864,30 @@ function fillIngForm(food) {
 }
 
 function scaleIngMacros() {
-  if (!_ingBase) return;
   const amount = parseFloat(document.getElementById('ing-amount').value) || 0;
   const unit   = document.getElementById('ing-unit').value;
+  const weightUnits = ['g','kg','oz','lb','ml','fl oz','cup','tbsp','tsp'];
+
+  if (!_ingBase) {
+    const cal = parseFloat(document.getElementById('ing-cal').value) || 0;
+    const p   = parseFloat(document.getElementById('ing-p').value)   || 0;
+    const c   = parseFloat(document.getElementById('ing-c').value)   || 0;
+    const f   = parseFloat(document.getElementById('ing-f').value)   || 0;
+    if (!cal && !p && !c && !f) return;
+    if (weightUnits.includes(unit)) {
+      const g = unitToGrams(amount, unit);
+      if (!g) return;
+      _ingBase = { cal: cal * 100 / g, p: p * 100 / g, c: c * 100 / g, f: f * 100 / g, per100g: true };
+    } else {
+      if (!amount) return;
+      _ingBase = { cal: cal / amount, p: p / amount, c: c / amount, f: f / amount, per100g: false };
+    }
+  }
+
   let multiplier;
   if (_ingBase.per100g) {
     multiplier = unitToGrams(amount, unit) / 100;
   } else {
-    const weightUnits = ['g','kg','oz','lb','ml','fl oz','cup','tbsp','tsp'];
     multiplier = weightUnits.includes(unit) ? unitToGrams(amount, unit) / 100 : amount;
   }
   const setV = (id, v) => { const el = document.getElementById(id); if (el) el.value = v; };
@@ -882,6 +898,12 @@ function scaleIngMacros() {
 }
 
 function clearIngBase() { _ingBase = null; }
+function autoCalcIngCal() {
+  const p = parseFloat(document.getElementById('ing-p').value) || 0;
+  const c = parseFloat(document.getElementById('ing-c').value) || 0;
+  const f = parseFloat(document.getElementById('ing-f').value) || 0;
+  if (p || c || f) document.getElementById('ing-cal').value = Math.round(p * 4 + c * 4 + f * 9);
+}
 
 function clearIngForm() {
   _ingBase = null;

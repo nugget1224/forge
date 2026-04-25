@@ -454,15 +454,15 @@
             </div>
             <div>
               <div style="font-size:10px;color:var(--text3);font-family:monospace;margin-bottom:3px;">Protein g</div>
-              <input type="number" id="food-p" placeholder="0" min="0" step="0.1" style="width:100%;" oninput="clearFoodBase()" />
+              <input type="number" id="food-p" placeholder="0" min="0" step="0.1" style="width:100%;" oninput="clearFoodBase(); autoCalcFoodCal()" />
             </div>
             <div>
               <div style="font-size:10px;color:var(--text3);font-family:monospace;margin-bottom:3px;">Carbs g</div>
-              <input type="number" id="food-c" placeholder="0" min="0" step="0.1" style="width:100%;" oninput="clearFoodBase()" />
+              <input type="number" id="food-c" placeholder="0" min="0" step="0.1" style="width:100%;" oninput="clearFoodBase(); autoCalcFoodCal()" />
             </div>
             <div>
               <div style="font-size:10px;color:var(--text3);font-family:monospace;margin-bottom:3px;">Fat g</div>
-              <input type="number" id="food-f" placeholder="0" min="0" step="0.1" style="width:100%;" oninput="clearFoodBase()" />
+              <input type="number" id="food-f" placeholder="0" min="0" step="0.1" style="width:100%;" oninput="clearFoodBase(); autoCalcFoodCal()" />
             </div>
             <div style="display:flex;gap:6px;align-items:flex-end;">
               <button class="btn btn-accent" onclick="addFood()" style="white-space:nowrap;">Add</button>
@@ -499,15 +499,15 @@
               </div>
               <div>
                 <div style="font-size:11px;color:var(--text3);font-family:monospace;margin-bottom:4px;">Protein (g)</div>
-                <input type="number" id="cf-p" placeholder="0" min="0" step="0.1" style="width:100%;" />
+                <input type="number" id="cf-p" placeholder="0" min="0" step="0.1" style="width:100%;" oninput="autoCalcCfCal()" />
               </div>
               <div>
                 <div style="font-size:11px;color:var(--text3);font-family:monospace;margin-bottom:4px;">Carbs (g)</div>
-                <input type="number" id="cf-c" placeholder="0" min="0" step="0.1" style="width:100%;" />
+                <input type="number" id="cf-c" placeholder="0" min="0" step="0.1" style="width:100%;" oninput="autoCalcCfCal()" />
               </div>
               <div>
                 <div style="font-size:11px;color:var(--text3);font-family:monospace;margin-bottom:4px;">Fat (g)</div>
-                <input type="number" id="cf-f" placeholder="0" min="0" step="0.1" style="width:100%;" />
+                <input type="number" id="cf-f" placeholder="0" min="0" step="0.1" style="width:100%;" oninput="autoCalcCfCal()" />
               </div>
               <div>
                 <div style="font-size:11px;color:var(--text3);font-family:monospace;margin-bottom:4px;">Fiber (g)</div>
@@ -1192,14 +1192,30 @@ function unitToGrams(amount, unit) {
 }
 
 function scaleFoodMacros() {
-  if (!_foodBase) return;
   const amount = parseFloat(document.getElementById('food-amount').value) || 0;
   const unit   = document.getElementById('food-unit').value;
+  const weightUnits = ['g','kg','oz','lb','ml','fl oz','cup','tbsp','tsp'];
+
+  if (!_foodBase) {
+    const cal = parseFloat(document.getElementById('food-cal').value) || 0;
+    const p   = parseFloat(document.getElementById('food-p').value)   || 0;
+    const c   = parseFloat(document.getElementById('food-c').value)   || 0;
+    const f   = parseFloat(document.getElementById('food-f').value)   || 0;
+    if (!cal && !p && !c && !f) return;
+    if (weightUnits.includes(unit)) {
+      const g = unitToGrams(amount, unit);
+      if (!g) return;
+      _foodBase = { cal: cal * 100 / g, p: p * 100 / g, c: c * 100 / g, f: f * 100 / g, per100g: true };
+    } else {
+      if (!amount) return;
+      _foodBase = { cal: cal / amount, p: p / amount, c: c / amount, f: f / amount, per100g: false };
+    }
+  }
+
   let multiplier;
   if (_foodBase.per100g) {
     multiplier = unitToGrams(amount, unit) / 100;
   } else {
-    const weightUnits = ['g','kg','oz','lb','ml','fl oz','cup','tbsp','tsp'];
     multiplier = weightUnits.includes(unit) ? unitToGrams(amount, unit) / 100 : amount;
   }
   const setV = (id, v) => { const el = document.getElementById(id); if (el) el.value = v; };
@@ -1210,6 +1226,18 @@ function scaleFoodMacros() {
 }
 
 function clearFoodBase() { _foodBase = null; }
+function autoCalcFoodCal() {
+  const p = parseFloat(document.getElementById('food-p').value) || 0;
+  const c = parseFloat(document.getElementById('food-c').value) || 0;
+  const f = parseFloat(document.getElementById('food-f').value) || 0;
+  if (p || c || f) document.getElementById('food-cal').value = Math.round(p * 4 + c * 4 + f * 9);
+}
+function autoCalcCfCal() {
+  const p = parseFloat(document.getElementById('cf-p').value) || 0;
+  const c = parseFloat(document.getElementById('cf-c').value) || 0;
+  const f = parseFloat(document.getElementById('cf-f').value) || 0;
+  if (p || c || f) document.getElementById('cf-cal').value = Math.round(p * 4 + c * 4 + f * 9);
+}
 
 function switchFoodLib(tab, btn) {
   document.querySelectorAll('.food-lib-tab').forEach(b => b.classList.remove('active'));
