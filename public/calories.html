@@ -419,11 +419,11 @@
             </div>
             <div>
               <div style="font-size:10px;color:var(--text3);font-family:monospace;margin-bottom:3px;">Amount</div>
-              <input type="number" id="food-amount" placeholder="e.g. 150" min="0" step="any" style="width:100%;" oninput="scaleFoodMacros()" />
+              <input type="number" id="food-amount" placeholder="e.g. 150" min="0" step="any" style="width:100%;" onfocus="captureFoodBase()" oninput="scaleFoodMacros()" />
             </div>
             <div>
               <div style="font-size:10px;color:var(--text3);font-family:monospace;margin-bottom:3px;">Unit</div>
-              <select id="food-unit" style="width:100%;" onchange="scaleFoodMacros()">
+              <select id="food-unit" style="width:100%;" onmousedown="captureFoodBase()" ontouchstart="captureFoodBase()" onchange="scaleFoodMacros()">
                 <optgroup label="Weight">
                   <option value="g">g</option>
                   <option value="oz">oz</option>
@@ -1191,32 +1191,37 @@ function unitToGrams(amount, unit) {
   }
 }
 
+function captureFoodBase() {
+  if (_foodBase) return;
+  const amount = parseFloat(document.getElementById('food-amount').value) || 0;
+  const unit   = document.getElementById('food-unit').value;
+  const cal = parseFloat(document.getElementById('food-cal').value) || 0;
+  const p   = parseFloat(document.getElementById('food-p').value)   || 0;
+  const c   = parseFloat(document.getElementById('food-c').value)   || 0;
+  const f   = parseFloat(document.getElementById('food-f').value)   || 0;
+  if (!amount || (!cal && !p && !c && !f)) return;
+  const weightUnits = ['g','kg','oz','lb','ml','fl oz','cup','tbsp','tsp'];
+  if (weightUnits.includes(unit)) {
+    const g = unitToGrams(amount, unit);
+    if (!g) return;
+    _foodBase = { cal: cal*100/g, p: p*100/g, c: c*100/g, f: f*100/g, per100g: true };
+  } else {
+    _foodBase = { cal: cal/amount, p: p/amount, c: c/amount, f: f/amount, per100g: false };
+  }
+}
 function scaleFoodMacros() {
+  if (!_foodBase) return;
   const amount = parseFloat(document.getElementById('food-amount').value) || 0;
   const unit   = document.getElementById('food-unit').value;
   const weightUnits = ['g','kg','oz','lb','ml','fl oz','cup','tbsp','tsp'];
-
-  if (!_foodBase) {
-    const cal = parseFloat(document.getElementById('food-cal').value) || 0;
-    const p   = parseFloat(document.getElementById('food-p').value)   || 0;
-    const c   = parseFloat(document.getElementById('food-c').value)   || 0;
-    const f   = parseFloat(document.getElementById('food-f').value)   || 0;
-    if (!cal && !p && !c && !f) return;
-    if (weightUnits.includes(unit)) {
-      const g = unitToGrams(amount, unit);
-      if (!g) return;
-      _foodBase = { cal: cal * 100 / g, p: p * 100 / g, c: c * 100 / g, f: f * 100 / g, per100g: true };
-    } else {
-      if (!amount) return;
-      _foodBase = { cal: cal / amount, p: p / amount, c: c / amount, f: f / amount, per100g: false };
-    }
-  }
-
+  const isWeight = weightUnits.includes(unit);
   let multiplier;
   if (_foodBase.per100g) {
+    if (!isWeight) return;
     multiplier = unitToGrams(amount, unit) / 100;
   } else {
-    multiplier = weightUnits.includes(unit) ? unitToGrams(amount, unit) / 100 : amount;
+    if (isWeight) return;
+    multiplier = amount;
   }
   const setV = (id, v) => { const el = document.getElementById(id); if (el) el.value = v; };
   setV('food-cal', Math.round(_foodBase.cal * multiplier));
@@ -1384,7 +1389,10 @@ function addFood() {
   const f = parseFloat(document.getElementById('food-f').value)||0;
   if (!state.foods[currentDate]) state.foods[currentDate] = [];
   state.foods[currentDate].push({ id:Date.now(), name:n, cal, p, c, f });
-  recordRecentFood({ name:n, cal, p, c, f });
+  const recentEntry = (_foodBase && _foodBase.per100g)
+    ? { name:n, cal:_foodBase.cal, p:_foodBase.p, c:_foodBase.c, f:_foodBase.f, per100g:true }
+    : { name:n, cal, p, c, f };
+  recordRecentFood(recentEntry);
   renderFoodLibrary();
   ['food-name','food-amount','food-cal','food-p','food-c','food-f'].forEach(id => { const el = document.getElementById(id); if (el) el.value = ''; });
   const u = document.getElementById('food-unit'); if (u) u.value = 'g';

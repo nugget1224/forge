@@ -2514,20 +2514,24 @@ function renderWorkout() {
           +'<span style="font-size:11px;color:var(--text3);font-family:monospace;">Move all to:</span>'
           +'<select style="font-size:12px;padding:4px 8px;width:auto;" onchange="moveDay(\''+day+'\',this.value);this.value=\''+day+'\'">'
           +moveOpts+'</select></div>'
-          +exs.map(e => {
+          +exs.map((e, ei) => {
             const link = getExerciseLink(e.name);
             const reps = getReplacements(e.name);
             const repsHtml = reps.length
               ? '<div class="ex-replacements">'
                 +'<span style="font-size:10px;color:var(--text3);font-family:monospace;text-transform:uppercase;letter-spacing:.04em;">swap with:</span>'
                 +reps.map(r => {
-                  const rLink = getExerciseLink(r);
                   return '<button class="rep-btn" onclick="swapExercise('+e.id+',\'' + r.replace(/'/g,"\\'") + '\')" title="Replace with '+r.replace(/"/g,'&quot;')+'">'+r+'</button>';
                 }).join('')
                 +'</div>'
               : '';
+            const reorderBtns = '<div style="display:flex;flex-direction:column;gap:1px;flex-shrink:0;">'
+              +'<button class="btn btn-ghost" style="padding:1px 5px;font-size:10px;line-height:1;opacity:'+(ei===0?'0.2':'0.7')+'" '+(ei===0?'disabled':'')+' onclick="moveExerciseInDay('+e.id+',-1)">▲</button>'
+              +'<button class="btn btn-ghost" style="padding:1px 5px;font-size:10px;line-height:1;opacity:'+(ei===exs.length-1?'0.2':'0.7')+'" '+(ei===exs.length-1?'disabled':'')+' onclick="moveExerciseInDay('+e.id+',1)">▼</button>'
+              +'</div>';
             return '<div class="ex-item" style="flex-direction:column;align-items:stretch;">'
               +'<div style="display:flex;align-items:center;gap:10px;">'
+              +reorderBtns
               +'<div class="ex-info">'
               +'<div class="ex-name">'+e.name+(link?' <a href="'+link+'" target="_blank" rel="noopener" style="color:var(--text3);font-size:11px;text-decoration:none;margin-left:4px;">&#x25B6; tutorial</a>':'')+'</div>'
               +(e.type==='Cardio'
@@ -2555,6 +2559,21 @@ function swapExercise(id, newName) {
   ex.note = '';
   save(); renderWorkout(); populateExSelects();
   openDays.forEach(day=>{ const el=document.getElementById('wd-'+day); if(el) el.classList.add('open'); });
+}
+function moveExerciseInDay(id, dir) {
+  const ex = state.exercises.find(e => e.id === id);
+  if (!ex) return;
+  const dayExs = state.exercises.filter(e => e.day === ex.day);
+  const dayIdx = dayExs.findIndex(e => e.id === id);
+  const swapIdx = dayIdx + dir;
+  if (swapIdx < 0 || swapIdx >= dayExs.length) return;
+  const swapEx = dayExs[swapIdx];
+  const ai = state.exercises.findIndex(e => e.id === id);
+  const bi = state.exercises.findIndex(e => e.id === swapEx.id);
+  [state.exercises[ai], state.exercises[bi]] = [state.exercises[bi], state.exercises[ai]];
+  const openDays = [...document.querySelectorAll('.workout-day.open')].map(el => el.id.replace('wd-',''));
+  save(); renderWorkout(); populateExSelects();
+  openDays.forEach(d => { const el = document.getElementById('wd-'+d); if (el) el.classList.add('open'); });
 }
 function moveDay(fromDay, toDay) {
   if (fromDay===toDay) return;
@@ -3489,6 +3508,7 @@ function renderTodaysWorkout() {
   const progressHtml = todayExs.length > 0
     ? '<div class="wli-progress"><span>'+loggedCount+' / '+todayExs.length+' done</span><div class="wli-progress-bar"><div class="wli-progress-bar-fill" style="width:'+Math.round(loggedCount/todayExs.length*100)+'%"></div></div></div>'
     : '';
+  const totalDayExs = todayExs.length;
   listEl.innerHTML = workoutBurnBannerHtml + progressHtml + todayExs.map((ex, i) => {
     const todayLogs = loggedToday.filter(s=>s.exName===ex.name);
     const isLogged = todayLogs.length > 0;
@@ -3522,8 +3542,13 @@ function renderTodaysWorkout() {
     })();
     const exNameSafe = ex.name.replace(/\\/g,'\\\\').replace(/'/g,"\\'");
     const chevron = '<span style="font-size:10px;color:var(--text3);margin-left:4px;transition:transform .2s;" class="wli-chevron">&#9658;</span>';
+    const wliReorderBtns = '<div style="display:flex;flex-direction:column;gap:1px;flex-shrink:0;margin-right:2px;" onclick="event.stopPropagation()">'
+      +'<button class="btn btn-ghost" style="padding:1px 5px;font-size:10px;line-height:1;opacity:'+(i===0?'0.2':'0.7')+'" '+(i===0?'disabled':'')+' onclick="moveExerciseInDay('+ex.id+',-1)">▲</button>'
+      +'<button class="btn btn-ghost" style="padding:1px 5px;font-size:10px;line-height:1;opacity:'+(i===totalDayExs-1?'0.2':'0.7')+'" '+(i===totalDayExs-1?'disabled':'')+' onclick="moveExerciseInDay('+ex.id+',1)">▼</button>'
+      +'</div>';
     return '<div class="workout-log-item'+(isLogged?' logged':'')+'" id="wli-'+i+'">'
       +'<div class="wli-top"'+(isLogged?' onclick="toggleWli('+i+')"':' style="cursor:default"')+'>'
+      +wliReorderBtns
       +'<span class="wli-name">'+ex.name+(link?' <a href="'+link+'" target="_blank" rel="noopener" style="color:var(--text3);font-size:11px;text-decoration:none;margin-left:4px;" onclick="event.stopPropagation()">&#x25B6; tutorial</a>':'')+'</span>'
       +'<span class="day-type-badge '+(typeClass[ex.type]||'badge-other')+'">'+ex.type+'</span>'
       +(ex.type==='Cardio'

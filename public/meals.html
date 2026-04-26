@@ -332,11 +332,11 @@
           </div>
           <div>
             <div style="font-size:10px;color:var(--text3);font-family:monospace;margin-bottom:3px;">Amount</div>
-            <input type="number" id="ing-amount" placeholder="e.g. 150" min="0" step="any" style="width:100%;" oninput="scaleIngMacros()" />
+            <input type="number" id="ing-amount" placeholder="e.g. 150" min="0" step="any" style="width:100%;" onfocus="captureIngBase()" oninput="scaleIngMacros()" />
           </div>
           <div>
             <div style="font-size:10px;color:var(--text3);font-family:monospace;margin-bottom:3px;">Unit</div>
-            <select id="ing-unit" style="width:100%;" onchange="scaleIngMacros()">
+            <select id="ing-unit" style="width:100%;" onmousedown="captureIngBase()" ontouchstart="captureIngBase()" onchange="scaleIngMacros()">
               <optgroup label="Weight">
                 <option value="g">g</option>
                 <option value="oz">oz</option>
@@ -863,32 +863,37 @@ function fillIngForm(food) {
   hideIngAC();
 }
 
+function captureIngBase() {
+  if (_ingBase) return;
+  const amount = parseFloat(document.getElementById('ing-amount').value) || 0;
+  const unit   = document.getElementById('ing-unit').value;
+  const cal = parseFloat(document.getElementById('ing-cal').value) || 0;
+  const p   = parseFloat(document.getElementById('ing-p').value)   || 0;
+  const c   = parseFloat(document.getElementById('ing-c').value)   || 0;
+  const f   = parseFloat(document.getElementById('ing-f').value)   || 0;
+  if (!amount || (!cal && !p && !c && !f)) return;
+  const weightUnits = ['g','kg','oz','lb','ml','fl oz','cup','tbsp','tsp'];
+  if (weightUnits.includes(unit)) {
+    const g = unitToGrams(amount, unit);
+    if (!g) return;
+    _ingBase = { cal: cal*100/g, p: p*100/g, c: c*100/g, f: f*100/g, per100g: true };
+  } else {
+    _ingBase = { cal: cal/amount, p: p/amount, c: c/amount, f: f/amount, per100g: false };
+  }
+}
 function scaleIngMacros() {
+  if (!_ingBase) return;
   const amount = parseFloat(document.getElementById('ing-amount').value) || 0;
   const unit   = document.getElementById('ing-unit').value;
   const weightUnits = ['g','kg','oz','lb','ml','fl oz','cup','tbsp','tsp'];
-
-  if (!_ingBase) {
-    const cal = parseFloat(document.getElementById('ing-cal').value) || 0;
-    const p   = parseFloat(document.getElementById('ing-p').value)   || 0;
-    const c   = parseFloat(document.getElementById('ing-c').value)   || 0;
-    const f   = parseFloat(document.getElementById('ing-f').value)   || 0;
-    if (!cal && !p && !c && !f) return;
-    if (weightUnits.includes(unit)) {
-      const g = unitToGrams(amount, unit);
-      if (!g) return;
-      _ingBase = { cal: cal * 100 / g, p: p * 100 / g, c: c * 100 / g, f: f * 100 / g, per100g: true };
-    } else {
-      if (!amount) return;
-      _ingBase = { cal: cal / amount, p: p / amount, c: c / amount, f: f / amount, per100g: false };
-    }
-  }
-
+  const isWeight = weightUnits.includes(unit);
   let multiplier;
   if (_ingBase.per100g) {
+    if (!isWeight) return;
     multiplier = unitToGrams(amount, unit) / 100;
   } else {
-    multiplier = weightUnits.includes(unit) ? unitToGrams(amount, unit) / 100 : amount;
+    if (isWeight) return;
+    multiplier = amount;
   }
   const setV = (id, v) => { const el = document.getElementById(id); if (el) el.value = v; };
   setV('ing-cal', Math.round(_ingBase.cal * multiplier));
