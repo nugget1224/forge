@@ -178,6 +178,31 @@
 
   /* Chart area */
   .chart-wrap { position: relative; height: 180px; margin-top: 8px; }
+  .graphs-chart-wrap { position: relative; height: 260px; margin-top: 12px; }
+  .graphs-metric-btn, .graphs-range-btn {
+    background: none; border: 1px solid var(--border2); border-radius: 5px;
+    padding: 3px 10px; font-size: 11px; font-family: 'DM Mono', monospace;
+    color: var(--text3); cursor: pointer; white-space: nowrap;
+  }
+  .graphs-metric-btn.active, .graphs-range-btn.active {
+    background: var(--accent-dim); border-color: #3a5c10; color: var(--accent);
+  }
+  .graphs-pr-row {
+    display: flex; gap: 12px; flex-wrap: wrap; margin: 10px 0 4px;
+  }
+  .graphs-pr-card {
+    background: var(--surface2); border: 1px solid var(--border1); border-radius: var(--radius);
+    padding: 10px 16px; min-width: 110px;
+  }
+  .graphs-pr-card .pr-val { font-size: 20px; font-family: 'DM Mono', monospace; color: var(--accent); font-weight: 600; }
+  .graphs-pr-card .pr-label { font-size: 10px; color: var(--text3); font-family: 'DM Mono', monospace; text-transform: uppercase; letter-spacing: .05em; margin-top: 1px; }
+  .graphs-pr-card .pr-date { font-size: 10px; color: var(--text3); font-family: 'DM Mono', monospace; margin-top: 3px; }
+  .pr-board-row {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 10px 14px; border-bottom: 1px solid var(--border1); cursor: pointer;
+  }
+  .pr-board-row:hover { background: var(--surface2); }
+  .pr-board-row:last-child { border-bottom: none; }
 
   /* Scrollbar */
   ::-webkit-scrollbar { width: 4px; }
@@ -524,13 +549,17 @@
       <div class="logo-sub">fitness tracker</div>
     </div>
     <div class="nav-section">Track</div>
-    <div class="nav-item active" onclick="showPage('workout', this)">
+    <div class="nav-item active" onclick="showPage('progress', this)">
+      <svg class="nav-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="2,12 6,7 10,9 14,4"/></svg>
+      Workout log
+    </div>
+    <div class="nav-item" onclick="showPage('workout', this)">
       <svg class="nav-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 8h2m8 0h2M4 8l1-2h6l1 2M5 6V4M11 6V4"/></svg>
       Workout plan
     </div>
-    <div class="nav-item" onclick="showPage('progress', this)">
-      <svg class="nav-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="2,12 6,7 10,9 14,4"/></svg>
-      Workout log
+    <div class="nav-item" onclick="showPage('graphs', this)">
+      <svg class="nav-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="2,13 5,8 8,10 11,5 14,3"/><line x1="2" y1="13" x2="14" y2="13"/></svg>
+      Lift progress
     </div>
     <div class="sidebar-footer">
       <div class="today-pill" id="sidebar-date" style="margin-bottom:12px;">—</div>
@@ -796,7 +825,7 @@
     </div>
 
     <!-- WORKOUT PAGE -->
-    <div class="page active" id="page-workout">
+    <div class="page" id="page-workout">
       <div class="page-header">
         <div class="page-title">Workout plan</div>
         <div class="page-sub">Load a suggested split or build your own</div>
@@ -893,14 +922,17 @@
       <div class="section">
         <div class="section-head">
           <div class="section-title">Weekly schedule</div>
-          <button class="btn btn-ghost btn-sm" onclick="clearSchedule(event)" style="font-size:11px;">Clear all</button>
+          <div style="display:flex;gap:6px;align-items:center;">
+            <button class="btn btn-ghost btn-sm reorder-toggle-btn" onclick="toggleReorderMode()" style="font-size:11px;opacity:0.6;">Reorder</button>
+            <button class="btn btn-ghost btn-sm" onclick="clearSchedule(event)" style="font-size:11px;">Clear all</button>
+          </div>
         </div>
         <div id="workout-schedule"></div>
       </div>
     </div>
 
     <!-- PROGRESS PAGE -->
-    <div class="page" id="page-progress">
+    <div class="page active" id="page-progress">
       <div class="page-header">
         <div class="page-title">Workout log</div>
         <div class="page-sub">Track your lifts over time</div>
@@ -919,6 +951,10 @@
             <button id="weight-suggest-toggle" onclick="toggleWeightSuggest()" title="Toggle weight suggestions"
               style="background:none;border:1px solid var(--border2);border-radius:6px;padding:3px 8px;cursor:pointer;font-size:10px;font-family:'DM Mono',monospace;color:var(--text3);white-space:nowrap;">
               suggest: on
+            </button>
+            <button class="reorder-toggle-btn" onclick="toggleReorderMode()"
+              style="background:none;border:1px solid var(--border2);border-radius:6px;padding:3px 8px;cursor:pointer;font-size:10px;font-family:'DM Mono',monospace;color:var(--text3);white-space:nowrap;opacity:0.6;">
+              Reorder
             </button>
           </div>
         </div>
@@ -969,6 +1005,57 @@
       <div class="section" id="chart-section" style="display:none">
         <div class="section-head"><div class="section-title" id="chart-title">Volume over time</div></div>
         <div class="chart-wrap"><canvas id="progress-chart"></canvas></div>
+      </div>
+    </div>
+
+    <!-- LIFT PROGRESS PAGE -->
+    <div class="page" id="page-graphs">
+      <div class="page-header">
+        <div class="page-title">Lift progress</div>
+        <div class="page-sub">Strength gains over time</div>
+      </div>
+
+      <div class="section">
+        <div class="section-head" style="flex-wrap:wrap;gap:8px;">
+          <select id="graphs-ex-select" onchange="renderGraphs()" style="font-size:12px;padding:5px 10px;min-width:180px;">
+            <option value="">— select exercise —</option>
+          </select>
+          <div style="display:flex;gap:4px;flex-wrap:wrap;align-items:center;">
+            <button class="graphs-metric-btn active" data-metric="e1rm" onclick="selectGraphMetric('e1rm',this)">Est. 1RM</button>
+            <button class="graphs-metric-btn" data-metric="weight" onclick="selectGraphMetric('weight',this)">Best weight</button>
+            <button class="graphs-metric-btn" data-metric="volume" onclick="selectGraphMetric('volume',this)">Volume</button>
+            <span style="color:var(--border2);margin:0 2px;">|</span>
+            <button class="graphs-range-btn active" data-range="90" onclick="selectGraphRange(90,this)">90d</button>
+            <button class="graphs-range-btn" data-range="180" onclick="selectGraphRange(180,this)">180d</button>
+            <button class="graphs-range-btn" data-range="0" onclick="selectGraphRange(0,this)">All</button>
+          </div>
+        </div>
+        <div id="graphs-pr-row" class="graphs-pr-row" style="display:none;">
+          <div class="graphs-pr-card">
+            <div class="pr-val" id="graphs-pr-e1rm-val">—</div>
+            <div class="pr-label">Est. 1RM PR</div>
+            <div class="pr-date" id="graphs-pr-e1rm-date"></div>
+          </div>
+          <div class="graphs-pr-card">
+            <div class="pr-val" id="graphs-pr-weight-val">—</div>
+            <div class="pr-label">Best weight PR</div>
+            <div class="pr-date" id="graphs-pr-weight-date"></div>
+          </div>
+          <div class="graphs-pr-card" style="border-color:var(--border1);">
+            <div class="pr-val" style="color:var(--text2);" id="graphs-pr-sessions-val">—</div>
+            <div class="pr-label">Sessions logged</div>
+            <div class="pr-date" id="graphs-pr-first-date"></div>
+          </div>
+        </div>
+        <div id="graphs-chart-container" style="display:none;">
+          <div class="graphs-chart-wrap"><canvas id="graphs-chart"></canvas></div>
+        </div>
+        <div id="graphs-empty" style="padding:32px 14px;font-size:12px;color:var(--text3);font-family:monospace;text-align:center;">Select an exercise above to view progress</div>
+      </div>
+
+      <div class="section">
+        <div class="section-head"><div class="section-title">Personal records</div></div>
+        <div id="graphs-pr-board"><div class="empty-state">No sessions logged yet</div></div>
       </div>
     </div>
 
@@ -1377,13 +1464,17 @@
 <!-- Mobile bottom tab bar (hidden on desktop via CSS) -->
 <nav class="mobile-nav">
   <div class="mobile-nav-inner">
-    <button class="mobile-nav-item active" data-page="workout" onclick="showPage('workout',this)">
+    <button class="mobile-nav-item active" data-page="progress" onclick="showPage('progress',this)">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="2,12 6,7 10,9 14,4"/></svg>
+      Log
+    </button>
+    <button class="mobile-nav-item" data-page="workout" onclick="showPage('workout',this)">
       <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 8h2m8 0h2M4 8l1-2h6l1 2M5 6V4M11 6V4"/></svg>
       Workout
     </button>
-    <button class="mobile-nav-item" data-page="progress" onclick="showPage('progress',this)">
-      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="2,12 6,7 10,9 14,4"/></svg>
-      Log
+    <button class="mobile-nav-item" data-page="graphs" onclick="showPage('graphs',this)">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="2,13 5,8 8,10 11,5 14,3"/><line x1="2" y1="13" x2="14" y2="13"/></svg>
+      Graphs
     </button>
     <a class="mobile-nav-item" href="/" style="text-decoration:none;">
       <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 8l6-6 6 6"/><path d="M4 6v7h3v-3h2v3h3V6"/></svg>
@@ -1394,6 +1485,7 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <script>
+let reorderMode = false;
 let state = {
   foods: {},
   exercises: [],
@@ -1597,6 +1689,7 @@ function showPage(name, el) {
   const mobileBtn = document.querySelector('.mobile-nav-item[data-page="'+name+'"]');
   if (mobileBtn) mobileBtn.classList.add('active');
   if (name === 'progress') { renderTodaysWorkout(); renderProgress(); renderChart(); }
+  if (name === 'graphs') { populateGraphsSelect(); renderGraphs(); }
 }
 function changeDay(delta) {
   const d = new Date(currentDate+'T00:00:00');
@@ -2525,10 +2618,12 @@ function renderWorkout() {
                 }).join('')
                 +'</div>'
               : '';
-            const reorderBtns = '<div style="display:flex;flex-direction:column;gap:1px;flex-shrink:0;">'
-              +'<button class="btn btn-ghost" style="padding:1px 5px;font-size:10px;line-height:1;opacity:'+(ei===0?'0.2':'0.7')+'" '+(ei===0?'disabled':'')+' onclick="moveExerciseInDay('+e.id+',-1)">▲</button>'
-              +'<button class="btn btn-ghost" style="padding:1px 5px;font-size:10px;line-height:1;opacity:'+(ei===exs.length-1?'0.2':'0.7')+'" '+(ei===exs.length-1?'disabled':'')+' onclick="moveExerciseInDay('+e.id+',1)">▼</button>'
-              +'</div>';
+            const reorderBtns = reorderMode
+              ? '<div style="display:flex;flex-direction:column;gap:1px;flex-shrink:0;">'
+                +'<button class="btn btn-ghost" style="padding:1px 5px;font-size:10px;line-height:1;opacity:'+(ei===0?'0.2':'0.7')+'" '+(ei===0?'disabled':'')+' onclick="moveExerciseInDay('+e.id+',-1)">▲</button>'
+                +'<button class="btn btn-ghost" style="padding:1px 5px;font-size:10px;line-height:1;opacity:'+(ei===exs.length-1?'0.2':'0.7')+'" '+(ei===exs.length-1?'disabled':'')+' onclick="moveExerciseInDay('+e.id+',1)">▼</button>'
+                +'</div>'
+              : '';
             return '<div class="ex-item" style="flex-direction:column;align-items:stretch;">'
               +'<div style="display:flex;align-items:center;gap:10px;">'
               +reorderBtns
@@ -2572,8 +2667,18 @@ function moveExerciseInDay(id, dir) {
   const bi = state.exercises.findIndex(e => e.id === swapEx.id);
   [state.exercises[ai], state.exercises[bi]] = [state.exercises[bi], state.exercises[ai]];
   const openDays = [...document.querySelectorAll('.workout-day.open')].map(el => el.id.replace('wd-',''));
-  save(); renderWorkout(); populateExSelects();
+  save(); renderWorkout(); renderTodaysWorkout(); populateExSelects();
   openDays.forEach(d => { const el = document.getElementById('wd-'+d); if (el) el.classList.add('open'); });
+}
+function toggleReorderMode() {
+  reorderMode = !reorderMode;
+  const openDays = [...document.querySelectorAll('.workout-day.open')].map(el => el.id.replace('wd-',''));
+  renderWorkout(); renderTodaysWorkout();
+  openDays.forEach(d => { const el = document.getElementById('wd-'+d); if (el) el.classList.add('open'); });
+  document.querySelectorAll('.reorder-toggle-btn').forEach(btn => {
+    btn.textContent = reorderMode ? 'Done' : 'Reorder';
+    btn.style.opacity = reorderMode ? '1' : '0.6';
+  });
 }
 function moveDay(fromDay, toDay) {
   if (fromDay===toDay) return;
@@ -2888,7 +2993,7 @@ const SPLITS = {
       {name:'Incline dumbbell press',sets:3,reps:'10–12',note:'Upper chest'},
       {name:'Lateral raise',sets:3,reps:'15–20',note:'Side delt'},
       {name:'Tricep pushdown',sets:3,reps:'12–15',note:''},
-      {name:'Plank',sets:3,reps:'30–60s',note:'Full body tension, no hips sagging'},
+      {name:'Plank',sets:3,reps:'30–60secs',note:'Full body tension, no hips sagging'},
     ]},
     { day:'Tuesday', type:'Pull', exercises:[
       {name:'Deadlift',sets:4,reps:'4–6',note:'Primary posterior chain'},
@@ -2969,7 +3074,7 @@ const SPLITS = {
       {name:'Barbell row',sets:3,reps:'5',note:'Primary pull compound'},
       {name:'Dumbbell OHP',sets:2,reps:'10–12',note:'Accessory shoulder'},
       {name:'Dumbbell curl',sets:2,reps:'12–15',note:'Accessory bicep'},
-      {name:'Plank',sets:3,reps:'30s',note:'Core'},
+      {name:'Plank',sets:3,reps:'30secs',note:'Core'},
     ]},
     { day:'Wednesday', type:'Other', exercises:[
       {name:'Romanian deadlift',sets:3,reps:'8',note:'Hip hinge focus'},
@@ -3285,30 +3390,47 @@ function describePlates(totalWeight) {
 }
 
 // WEIGHT SUGGESTIONS
+function epleyScale(weight, fromReps, toReps) {
+  if (!weight || !fromReps || !toReps || fromReps === toReps) return weight;
+  const orm = weight * (1 + fromReps / 30);
+  return orm / (1 + toReps / 30);
+}
 function suggestWeights(exName, plannedSets, plannedReps, bodyweightLb) {
   const useBarbell = isBarbell(exName);
   const snap = (w) => useBarbell ? snapToBarbell(w) : Math.round(w/2.5)*2.5;
+  const inc = useBarbell ? 5 : 2.5;
+  const targetReps = parseInt(String(plannedReps).split(/[-\u2013]/)[0])||8;
   const history = state.sessions.filter(s=>s.exName===exName&&s.date!==todayStr()).sort((a,b)=>a.date.localeCompare(b.date));
   if (history.length > 0) {
-    const last = history[history.length-1];
-    const lastSets = last.setData || Array(plannedSets).fill({reps:last.reps,weight:last.weight});
-    const baseWeight = lastSets[0] ? lastSets[0].weight : last.weight;
-    const targetReps = parseInt(String(plannedReps).split(/[-\u2013]/)[0])||8;
     return Array.from({length:plannedSets},(_,s)=>{
-      const sd = lastSets[s]||{reps:last.reps,weight:baseWeight};
-      const lastRPE = sd.rpe||last.avgRPE||null;
-      const inc = useBarbell ? 5 : 2.5;
-      let bump = 0;
-      if (lastRPE!==null) {
-        if(lastRPE<=6) bump=inc*2;
-        else if(lastRPE<=7) bump=inc;
-        else if(lastRPE<=8) bump=(sd.reps>=targetReps)?inc:0;
-        else if(lastRPE<=9) bump=0;
-        else bump=-inc;
-      } else {
-        bump = (sd.reps>=targetReps) ? inc : 0;
+      // Search history from most recent, prefer sessions where set reps are within ±2 of target
+      let matchSd = null, matchSess = null, fallbackSd = null, fallbackSess = null;
+      for (let h = history.length-1; h >= 0; h--) {
+        const sess = history[h];
+        const sd = sess.setData ? (sess.setData[s]||sess.setData[sess.setData.length-1]) : {reps:Math.round(sess.reps/(sess.sets||1)),weight:sess.weight};
+        if (!fallbackSd) { fallbackSd = sd; fallbackSess = sess; }
+        if (sd.reps && Math.abs(sd.reps - targetReps) <= 2) { matchSd = sd; matchSess = sess; break; }
       }
-      return snap(Math.max(useBarbell?BAR_WEIGHT:5, sd.weight+bump));
+      const sd = matchSd || fallbackSd;
+      const sess = matchSess || fallbackSess;
+      if (!sd) return useBarbell ? BAR_WEIGHT : 5;
+      const sdReps = sd.reps || targetReps;
+      const baseWeight = matchSd ? sd.weight : epleyScale(sd.weight, sdReps, targetReps);
+      const lastRPE = sd.rpe || sess.avgRPE || null;
+      let bump = 0;
+      if (matchSd) {
+        // Only apply progression bump when rep count matched (not when we scaled)
+        if (lastRPE !== null) {
+          if(lastRPE<=6) bump=inc*2;
+          else if(lastRPE<=7) bump=inc;
+          else if(lastRPE<=8) bump=(sdReps>=targetReps)?inc:0;
+          else if(lastRPE<=9) bump=0;
+          else bump=-inc;
+        } else {
+          bump = (sdReps >= targetReps) ? inc : 0;
+        }
+      }
+      return snap(Math.max(useBarbell?BAR_WEIGHT:5, baseWeight+bump));
     });
   }
   const bw = bodyweightLb||175;
@@ -3328,7 +3450,6 @@ function suggestWeights(exName, plannedSets, plannedReps, bodyweightLb) {
   };
   const ratio = standards[(exName||'').toLowerCase()]||0.5;
   const est1rm = bw * ratio;
-  const targetReps = parseInt(String(plannedReps).split(/[-\u2013]/)[0])||8;
   const intensityFactor = 1-(targetReps*0.025);
   const base = snap(Math.max(useBarbell?BAR_WEIGHT:5, est1rm*intensityFactor));
   return Array.from({length:plannedSets},(_,s)=>snap(base+s*(useBarbell?5:2.5)));
@@ -3359,7 +3480,7 @@ function getSelectedRPE(exIdx, setIdx) {
 
 function parseRepType(plannedReps) {
   const s = String(plannedReps || '');
-  if (/secs/i.test(s)) return 'secs';
+  if (/secs|\ds\b|\ds$/i.test(s)) return 'secs';
   if (/mins/i.test(s)) return 'mins';
   if (/\byd\b/.test(s)) return 'yd';
   if (/\bm\b/.test(s)) return 'm';
@@ -3380,8 +3501,10 @@ function buildSetRows(exIdx, count, lastSets, exName, plannedReps) {
     const prevWeight = lastSets&&lastSets[s] ? lastSets[s].weight : '';
     const prevRPE = lastSets&&lastSets[s] ? (lastSets[s].rpe||'') : '';
     const sugWeight = suggested[s]||'';
+    // Use suggestion as placeholder when it differs from prevWeight (rep-adjusted) or there's no history
+    const weightPlaceholder = sugWeight ? sugWeight+' lb' : (prevWeight ? prevWeight+' lb' : 'lb');
     const showSuggestion = !prevWeight && sugWeight && weightSuggestOn();
-    const inputVal = prevWeight||'';
+    const inputVal = '';
     const plateDesc = (useBarbell&&sugWeight) ? describePlates(sugWeight) : '';
     const rpeButtons = [6,7,8,9,10].map(r=>{
       const cls = rpeClass(r);
@@ -3391,12 +3514,12 @@ function buildSetRows(exIdx, count, lastSets, exName, plannedReps) {
     rows += '<div class="set-row" id="set-row-'+exIdx+'-'+s+'">'
       +'<span class="set-num">set '+(s+1)+'</span>'
       +'<div style="display:flex;align-items:center;gap:3px;flex-shrink:0;">'
-      +'<input type="number" placeholder="'+repLabel+'" value="'+prevReps+'" min="1" id="sr-reps-'+exIdx+'-'+s+'" style="width:68px;margin-top:2px;" />'
+      +'<input type="number" placeholder="'+(prevReps||repLabel)+'" value="" min="1" id="sr-reps-'+exIdx+'-'+s+'" style="width:68px;margin-top:2px;" />'
       +(repType !== 'reps' ? '<span style="font-size:10px;color:var(--text3);font-family:monospace;margin-top:2px;">'+repType+'</span>' : '')
       +'</div>'
       +'<div style="display:flex;flex-direction:column;gap:2px;flex-shrink:0;">'
       +'<div style="display:flex;align-items:center;gap:4px;">'
-      +'<input type="number" placeholder="'+(sugWeight?sugWeight+' lb':'lb')+'" value="'+inputVal+'" min="0" id="sr-weight-'+exIdx+'-'+s+'" style="width:88px" oninput="updatePlateHint('+exIdx+','+s+',this.value,'+useBarbell+')" />'
+      +'<input type="number" placeholder="'+weightPlaceholder+'" value="" min="0" id="sr-weight-'+exIdx+'-'+s+'" style="width:88px" oninput="updatePlateHint('+exIdx+','+s+',this.value,'+useBarbell+')" />'
       +(showSuggestion?'<button type="button" class="suggest-use-btn" onclick="useSuggested('+exIdx+','+s+','+sugWeight+','+useBarbell+')" title="Use suggested"><span style="font-size:10px;color:var(--accent);white-space:nowrap;font-family:monospace;">'+(isFirstTime?'~':'')+sugWeight+'lb</span></button>':'')
       +'</div>'
       +'<div id="plate-hint-'+exIdx+'-'+s+'" style="font-size:10px;color:var(--text3);font-family:monospace;min-height:13px;padding-left:2px;'+(platesOn()?'':'display:none;')+'">'+(platesOn()?(showSuggestion&&plateDesc?plateDesc:(inputVal&&useBarbell?describePlates(parseFloat(inputVal)):'')):'')+'</div>'
@@ -3460,12 +3583,14 @@ function addSetRow(exIdx) {
   const container = document.getElementById('set-rows-'+exIdx);
   const current = container.querySelectorAll('.set-row').length;
   const prevWeightEl = document.getElementById('sr-weight-'+exIdx+'-'+(current-1));
-  const prevWeight = prevWeightEl ? prevWeightEl.value : '';
+  const prevWeight = prevWeightEl ? (prevWeightEl.value||prevWeightEl.placeholder) : 'lb';
+  const prevRepsEl = document.getElementById('sr-reps-'+exIdx+'-'+(current-1));
+  const prevRepsHint = prevRepsEl ? (prevRepsEl.value||prevRepsEl.placeholder) : 'Reps';
   const newRow = document.createElement('div');
   newRow.className='set-row'; newRow.id='set-row-'+exIdx+'-'+current;
   newRow.innerHTML='<span class="set-num">set '+(current+1)+'</span>'
-    +'<input type="number" placeholder="Reps" value="" min="1" id="sr-reps-'+exIdx+'-'+current+'" style="width:75px" />'
-    +'<input type="number" placeholder="lb" value="'+prevWeight+'" min="0" id="sr-weight-'+exIdx+'-'+current+'" style="width:90px" />';
+    +'<input type="number" placeholder="'+prevRepsHint+'" value="" min="1" id="sr-reps-'+exIdx+'-'+current+'" style="width:75px" />'
+    +'<input type="number" placeholder="'+prevWeight+'" value="" min="0" id="sr-weight-'+exIdx+'-'+current+'" style="width:90px" />';
   container.appendChild(newRow);
 }
 function removeSetRow(exIdx) {
@@ -3542,10 +3667,12 @@ function renderTodaysWorkout() {
     })();
     const exNameSafe = ex.name.replace(/\\/g,'\\\\').replace(/'/g,"\\'");
     const chevron = '<span style="font-size:10px;color:var(--text3);margin-left:4px;transition:transform .2s;" class="wli-chevron">&#9658;</span>';
-    const wliReorderBtns = '<div style="display:flex;flex-direction:column;gap:1px;flex-shrink:0;margin-right:2px;" onclick="event.stopPropagation()">'
-      +'<button class="btn btn-ghost" style="padding:1px 5px;font-size:10px;line-height:1;opacity:'+(i===0?'0.2':'0.7')+'" '+(i===0?'disabled':'')+' onclick="moveExerciseInDay('+ex.id+',-1)">▲</button>'
-      +'<button class="btn btn-ghost" style="padding:1px 5px;font-size:10px;line-height:1;opacity:'+(i===totalDayExs-1?'0.2':'0.7')+'" '+(i===totalDayExs-1?'disabled':'')+' onclick="moveExerciseInDay('+ex.id+',1)">▼</button>'
-      +'</div>';
+    const wliReorderBtns = reorderMode
+      ? '<div style="display:flex;flex-direction:column;gap:1px;flex-shrink:0;margin-right:2px;" onclick="event.stopPropagation()">'
+        +'<button class="btn btn-ghost" style="padding:1px 5px;font-size:10px;line-height:1;opacity:'+(i===0?'0.2':'0.7')+'" '+(i===0?'disabled':'')+' onclick="moveExerciseInDay('+ex.id+',-1)">▲</button>'
+        +'<button class="btn btn-ghost" style="padding:1px 5px;font-size:10px;line-height:1;opacity:'+(i===totalDayExs-1?'0.2':'0.7')+'" '+(i===totalDayExs-1?'disabled':'')+' onclick="moveExerciseInDay('+ex.id+',1)">▼</button>'
+        +'</div>'
+      : '';
     return '<div class="workout-log-item'+(isLogged?' logged':'')+'" id="wli-'+i+'">'
       +'<div class="wli-top"'+(isLogged?' onclick="toggleWli('+i+')"':' style="cursor:default"')+'>'
       +wliReorderBtns
@@ -3595,8 +3722,10 @@ function logPlannedExercise(i, exName) {
   const rows = container.querySelectorAll('.set-row');
   const setData = []; let totalVolume = 0;
   rows.forEach((row,s) => {
-    const reps=parseInt(document.getElementById('sr-reps-'+i+'-'+s).value)||0;
-    const weight=parseFloat(document.getElementById('sr-weight-'+i+'-'+s).value)||0;
+    const repsEl=document.getElementById('sr-reps-'+i+'-'+s);
+    const weightEl=document.getElementById('sr-weight-'+i+'-'+s);
+    const reps=parseInt(repsEl.value||repsEl.placeholder)||0;
+    const weight=parseFloat(weightEl.value||weightEl.placeholder)||0;
     const rpe=getSelectedRPE(i,s);
     setData.push({reps,weight,rpe}); totalVolume+=reps*weight;
   });
@@ -3643,6 +3772,7 @@ function populateExSelects() {
     filterSel.innerHTML = '<option value="">All exercises</option>'
       + loggedNames.map(n => '<option value="'+n+'"'+(n===cur?' selected':'')+'>'+n+'</option>').join('');
   }
+  populateGraphsSelect();
 }
 function onLogExSelect() {
   const name = document.getElementById('log-ex-select').value;
@@ -3759,6 +3889,144 @@ function renderChart() {
       y:{ticks:{color:'#555',font:{size:11}},grid:{color:'#2a2a2a'}}
     }}
   });
+}
+
+// LIFT PROGRESS / GRAPHS PAGE
+let graphsChartInstance = null;
+let graphsMetric = 'e1rm';
+let graphsRange = 90;
+
+function selectGraphMetric(metric, el) {
+  graphsMetric = metric;
+  document.querySelectorAll('.graphs-metric-btn').forEach(b => b.classList.toggle('active', b === el));
+  renderGraphs();
+}
+function selectGraphRange(days, el) {
+  graphsRange = days;
+  document.querySelectorAll('.graphs-range-btn').forEach(b => b.classList.toggle('active', b === el));
+  renderGraphs();
+}
+function populateGraphsSelect() {
+  const sel = document.getElementById('graphs-ex-select');
+  if (!sel) return;
+  const names = [...new Set(state.sessions.filter(s=>!s.cardio).map(s=>s.exName))].sort();
+  const cur = sel.value;
+  sel.innerHTML = '<option value="">— select exercise —</option>'
+    + names.map(n => '<option value="'+n+'"'+(n===cur?' selected':'')+'>'+n+'</option>').join('');
+}
+function sessionE1RM(s) {
+  if (s.setData && s.setData.length)
+    return Math.max(...s.setData.map(sd => (sd.weight||0) * (1 + (sd.reps||0)/30)));
+  return (s.weight||0) * (1 + (s.reps||0)/30);
+}
+function sessionBestWeight(s) {
+  if (s.setData && s.setData.length) return Math.max(...s.setData.map(sd => sd.weight||0));
+  return s.weight||0;
+}
+function renderGraphs() {
+  const sel = document.getElementById('graphs-ex-select');
+  const exName = sel ? sel.value : '';
+  const empty = document.getElementById('graphs-empty');
+  const prRow = document.getElementById('graphs-pr-row');
+  const chartContainer = document.getElementById('graphs-chart-container');
+  renderPRBoard();
+  if (!exName) {
+    if (empty) empty.style.display = '';
+    if (chartContainer) chartContainer.style.display = 'none';
+    if (prRow) prRow.style.display = 'none';
+    return;
+  }
+  const allForEx = state.sessions.filter(s => s.exName === exName && !s.cardio)
+    .sort((a,b) => a.date.localeCompare(b.date));
+  let sessions = allForEx;
+  if (graphsRange > 0) {
+    const cutoff = new Date(); cutoff.setDate(cutoff.getDate() - graphsRange);
+    const cutoffStr = cutoff.toISOString().slice(0,10);
+    sessions = sessions.filter(s => s.date >= cutoffStr);
+  }
+  if (!sessions.length) {
+    if (empty) empty.style.display = '';
+    if (chartContainer) chartContainer.style.display = 'none';
+    if (prRow) prRow.style.display = 'none';
+    return;
+  }
+  if (empty) empty.style.display = 'none';
+  if (chartContainer) chartContainer.style.display = '';
+  if (prRow) prRow.style.display = '';
+
+  // PR stats (always from all-time data)
+  const allE1RMs = allForEx.map(sessionE1RM);
+  const allWeights = allForEx.map(sessionBestWeight);
+  const prE1RM = allE1RMs.length ? Math.max(...allE1RMs) : 0;
+  const prWeight = allWeights.length ? Math.max(...allWeights) : 0;
+  const prE1RMSess = allForEx.find(s => Math.abs(sessionE1RM(s) - prE1RM) < 0.1);
+  const prWeightSess = allForEx.find(s => Math.abs(sessionBestWeight(s) - prWeight) < 0.01);
+  const el = id => document.getElementById(id);
+  if (el('graphs-pr-e1rm-val')) el('graphs-pr-e1rm-val').textContent = Math.round(prE1RM) + ' lb';
+  if (el('graphs-pr-e1rm-date')) el('graphs-pr-e1rm-date').textContent = prE1RMSess ? formatDate(prE1RMSess.date) : '';
+  if (el('graphs-pr-weight-val')) el('graphs-pr-weight-val').textContent = prWeight + ' lb';
+  if (el('graphs-pr-weight-date')) el('graphs-pr-weight-date').textContent = prWeightSess ? formatDate(prWeightSess.date) : '';
+  if (el('graphs-pr-sessions-val')) el('graphs-pr-sessions-val').textContent = allForEx.length;
+  if (el('graphs-pr-first-date')) el('graphs-pr-first-date').textContent = allForEx.length ? 'since ' + formatDate(allForEx[0].date) : '';
+
+  // Chart data
+  const getValue = graphsMetric === 'e1rm' ? sessionE1RM
+    : graphsMetric === 'weight' ? sessionBestWeight
+    : s => s.volume||0;
+  const metricUnit = graphsMetric === 'volume' ? 'lb·reps' : 'lb';
+  const labels = sessions.map(s => formatDate(s.date));
+  const data = sessions.map(s => Math.round(getValue(s) * 10) / 10);
+
+  if (graphsChartInstance) { graphsChartInstance.destroy(); graphsChartInstance = null; }
+  graphsChartInstance = new Chart(document.getElementById('graphs-chart'), {
+    type: 'line',
+    data: { labels, datasets: [{
+      data,
+      borderColor: '#c8f56a',
+      backgroundColor: 'rgba(200,245,106,0.07)',
+      tension: 0.3,
+      pointRadius: 4,
+      pointHoverRadius: 6,
+      pointBackgroundColor: '#c8f56a',
+      fill: true,
+    }]},
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false },
+        tooltip: { callbacks: { label: ctx => Math.round(ctx.parsed.y*10)/10 + ' ' + metricUnit } }
+      },
+      scales: {
+        x: { ticks: { color:'#666', font:{size:11} }, grid: { color:'#2a2a2a' } },
+        y: { ticks: { color:'#666', font:{size:11} }, grid: { color:'#2a2a2a' }, beginAtZero: false },
+      }
+    }
+  });
+}
+function renderPRBoard() {
+  const board = document.getElementById('graphs-pr-board');
+  if (!board) return;
+  const names = [...new Set(state.sessions.filter(s=>!s.cardio).map(s=>s.exName))].sort();
+  if (!names.length) { board.innerHTML = '<div class="empty-state">No sessions logged yet</div>'; return; }
+  board.innerHTML = names.map(name => {
+    const sessions = state.sessions.filter(s=>s.exName===name&&!s.cardio);
+    const prE1RM = Math.round(Math.max(...sessions.map(sessionE1RM)));
+    const prWeight = Math.max(...sessions.map(sessionBestWeight));
+    const nameSafe = name.replace(/'/g,"\\'");
+    return '<div class="pr-board-row" onclick="selectGraphsExercise(\''+nameSafe+'\')">'
+      + '<span style="font-size:13px;color:var(--text1);">'+name+'</span>'
+      + '<span style="font-size:11px;font-family:monospace;color:var(--text3);">'
+      + 'e1RM <span style="color:var(--accent);">'+prE1RM+'lb</span>'
+      + '&nbsp;&nbsp;best <span style="color:var(--text2);">'+prWeight+'lb</span>'
+      + '</span>'
+      + '</div>';
+  }).join('');
+}
+function selectGraphsExercise(name) {
+  const sel = document.getElementById('graphs-ex-select');
+  if (sel) { sel.value = name; renderGraphs(); }
+  const container = document.getElementById('graphs-chart-container');
+  if (container) container.scrollIntoView({ behavior:'smooth', block:'start' });
 }
 
 // CSV EXPORT / IMPORT
