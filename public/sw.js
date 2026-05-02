@@ -1,4 +1,4 @@
-const CACHE = 'forge-v16';
+const CACHE = 'forge-v19';
 const SHELL = [
   '/',
   '/calories.html',
@@ -24,17 +24,29 @@ self.addEventListener('activate', e => {
 });
 
 self.addEventListener('fetch', e => {
-  // Only handle same-origin GET requests
   const url = new URL(e.request.url);
   if (e.request.method !== 'GET' || url.origin !== self.location.origin) return;
 
-  // API calls: network first, no cache
+  // API calls: network only, never cache
   if (url.pathname.startsWith('/api/')) {
     e.respondWith(fetch(e.request));
     return;
   }
 
-  // Shell: cache first, fall back to network
+  // HTML pages: network first, fall back to cache when offline
+  const isHTML = url.pathname === '/' || url.pathname.endsWith('.html');
+  if (isHTML) {
+    e.respondWith(
+      fetch(e.request).then(resp => {
+        const clone = resp.clone();
+        caches.open(CACHE).then(c => c.put(e.request, clone));
+        return resp;
+      }).catch(() => caches.match(e.request))
+    );
+    return;
+  }
+
+  // Other assets (JS libs, fonts, etc): cache first, fall back to network
   e.respondWith(
     caches.match(e.request).then(cached => cached || fetch(e.request).then(resp => {
       const clone = resp.clone();
