@@ -1,0 +1,887 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Forge — Commander</title>
+<link rel="manifest" href="/manifest.json">
+<link rel="apple-touch-icon" href="/icon.svg">
+<meta name="theme-color" content="#0f0f0f">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Forge">
+<script>if('serviceWorker' in navigator){navigator.serviceWorker.register('/sw.js');navigator.serviceWorker.addEventListener('controllerchange',()=>window.location.reload());}</script>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0f0f0f; --surface: #181818; --surface2: #222222;
+  --border: #2a2a2a; --border2: #333; --text: #f0ede8;
+  --text2: #888; --text3: #555; --accent: #c8f56a;
+  --accent2: #a8d94e; --accent-dim: #1e2e0a; --red: #ff6b6b;
+  --red-dim: #2a1010; --blue: #6baeff; --blue-dim: #0d1a2a;
+  --amber: #ffc96b; --amber-dim: #2a1e0a; --purple: #b06bff;
+  --purple-dim: #1a1020; --radius: 10px; --radius-lg: 16px;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: var(--bg); color: var(--text); font-family: 'DM Sans', sans-serif; font-size: 14px; min-height: 100vh; display: flex; }
+
+.sidebar { width: 220px; background: var(--surface); border-right: 1px solid var(--border); padding: 28px 0; display: flex; flex-direction: column; flex-shrink: 0; position: sticky; top: 0; height: 100vh; }
+.logo { padding: 0 20px 24px; }
+.logo-name { font-family: 'Instrument Serif', serif; font-size: 22px; color: var(--text); }
+.logo-sub { font-size: 11px; font-family: 'DM Mono', monospace; color: var(--text3); margin-top: 1px; }
+.nav-section { font-size: 10px; font-family: 'DM Mono', monospace; color: var(--text3); padding: 16px 20px 6px; text-transform: uppercase; letter-spacing: 0.08em; }
+.nav-item { display: flex; align-items: center; gap: 10px; padding: 9px 20px; font-size: 13px; color: var(--text2); cursor: pointer; transition: background 0.12s, color 0.12s; text-decoration: none; }
+.nav-item:hover { background: var(--surface2); color: var(--text); }
+.nav-item.active { background: var(--surface2); color: var(--text); }
+.nav-icon { width: 14px; height: 14px; opacity: 0.5; flex-shrink: 0; }
+.nav-item.active .nav-icon, .nav-item:hover .nav-icon { opacity: 1; }
+.sidebar-bottom { margin-top: auto; border-top: 1px solid var(--border); padding-top: 8px; }
+
+.main { flex: 1; padding: 40px 48px; max-width: 900px; }
+.page-header { margin-bottom: 28px; }
+.page-title { font-family: 'Instrument Serif', serif; font-size: 28px; color: var(--text); }
+.page-sub { font-size: 13px; color: var(--text3); font-family: 'DM Mono', monospace; margin-top: 4px; }
+
+.tabs { display: flex; gap: 4px; margin-bottom: 24px; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 4px; width: fit-content; }
+.tab-btn { padding: 6px 16px; border: none; border-radius: 7px; background: transparent; color: var(--text2); font-family: 'DM Sans', sans-serif; font-size: 13px; cursor: pointer; transition: background 0.12s, color 0.12s; }
+.tab-btn.active { background: var(--surface2); color: var(--text); }
+
+.btn { padding: 8px 16px; border: none; border-radius: var(--radius); cursor: pointer; font-family: 'DM Sans', sans-serif; font-size: 13px; transition: opacity 0.12s; }
+.btn:disabled { opacity: 0.4; cursor: not-allowed; }
+.btn-accent { background: var(--accent); color: #111; font-weight: 500; }
+.btn-accent:hover:not(:disabled) { background: var(--accent2); }
+.btn-ghost { background: var(--surface2); color: var(--text2); border: 1px solid var(--border2); }
+.btn-ghost:hover:not(:disabled) { color: var(--text); }
+.btn-danger { background: var(--red-dim); color: var(--red); border: 1px solid #3a1a1a; }
+.btn-danger:hover:not(:disabled) { background: #3a1a1a; }
+.btn-sm { padding: 5px 11px; font-size: 12px; }
+
+input, select, textarea {
+  background: var(--surface2); border: 1px solid var(--border2); border-radius: var(--radius);
+  padding: 7px 11px; color: var(--text); font-family: 'DM Sans', sans-serif; font-size: 13px;
+  outline: none; transition: border-color 0.15s;
+}
+input:focus, select:focus, textarea:focus { border-color: var(--accent); }
+textarea { resize: vertical; }
+
+.section { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 20px; margin-bottom: 16px; }
+.section-title { font-family: 'Instrument Serif', serif; font-size: 16px; color: var(--text); margin-bottom: 4px; }
+.section-desc { font-size: 11px; color: var(--text3); font-family: 'DM Mono', monospace; margin-bottom: 14px; }
+
+/* Color pips */
+.pips { display: flex; gap: 3px; align-items: center; }
+.pip { display: inline-flex; align-items: center; justify-content: center; width: 16px; height: 16px; border-radius: 50%; font-size: 8px; font-weight: 700; font-family: 'DM Mono', monospace; flex-shrink: 0; }
+.pip-W { background: #f0e0a8; color: #7a6010; border: 1px solid #c8a820; }
+.pip-U { background: #1a5faa; color: #fff; }
+.pip-B { background: #2e2e2e; color: #aaa; border: 1px solid #555; }
+.pip-R { background: #aa2e1a; color: #fff; }
+.pip-G { background: #1a6e2a; color: #fff; }
+.pip-C { background: #666; color: #ddd; }
+
+/* Deck cards */
+.deck-grid { display: flex; flex-direction: column; gap: 10px; }
+.deck-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; }
+.deck-card-header { display: flex; align-items: center; gap: 14px; padding: 14px 16px; cursor: pointer; transition: background 0.12s; user-select: none; }
+.deck-card-header:hover { background: #1c1c1c; }
+.deck-thumb { width: 44px; height: 60px; border-radius: 4px; object-fit: cover; flex-shrink: 0; background: var(--surface2); border: 1px solid var(--border2); }
+.deck-thumb-placeholder { width: 44px; height: 60px; border-radius: 4px; flex-shrink: 0; background: var(--purple-dim); border: 1px solid #2a1a40; display: flex; align-items: center; justify-content: center; }
+.deck-name { font-family: 'Instrument Serif', serif; font-size: 17px; color: var(--text); margin-bottom: 3px; }
+.deck-commander { font-size: 12px; color: var(--text2); margin-bottom: 5px; }
+.deck-meta { display: flex; align-items: center; gap: 10px; }
+.deck-count { font-size: 11px; font-family: 'DM Mono', monospace; color: var(--text3); }
+.deck-chevron { font-size: 10px; color: var(--text3); transition: transform 0.2s; margin-left: auto; flex-shrink: 0; }
+.deck-card.open .deck-chevron { transform: rotate(90deg); }
+.deck-body { display: none; padding: 0 16px 16px; border-top: 1px solid var(--border); }
+.deck-card.open .deck-body { display: block; }
+
+/* Card list in deck body */
+.category-header { font-size: 10px; font-family: 'DM Mono', monospace; color: var(--text3); text-transform: uppercase; letter-spacing: 0.08em; margin-top: 14px; margin-bottom: 5px; display: flex; align-items: center; gap: 6px; }
+.category-count { font-size: 10px; background: var(--surface2); border: 1px solid var(--border2); border-radius: 4px; padding: 1px 5px; color: var(--text3); }
+.card-list { display: flex; flex-direction: column; gap: 2px; }
+.card-row { display: flex; align-items: center; gap: 8px; padding: 3px 6px; border-radius: 6px; transition: background 0.1s; }
+.card-row:hover { background: var(--surface2); }
+.card-qty { font-size: 11px; font-family: 'DM Mono', monospace; color: var(--text3); width: 18px; text-align: right; flex-shrink: 0; }
+.card-name { font-size: 13px; color: var(--text2); cursor: pointer; transition: color 0.1s; }
+.card-name:hover { color: var(--accent); text-decoration: underline; text-decoration-style: dotted; }
+.card-remove { margin-left: auto; opacity: 0; background: none; border: none; color: var(--red); cursor: pointer; font-size: 13px; padding: 0 4px; flex-shrink: 0; }
+.card-row:hover .card-remove { opacity: 0.6; }
+.card-remove:hover { opacity: 1 !important; }
+
+/* Build form */
+.form-row { display: grid; gap: 10px; margin-bottom: 10px; }
+.form-label { font-size: 10px; font-family: 'DM Mono', monospace; color: var(--text3); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 4px; }
+.commander-preview { display: flex; gap: 14px; align-items: flex-start; margin-bottom: 14px; }
+.commander-img { width: 80px; border-radius: 6px; border: 1px solid var(--border2); object-fit: cover; }
+.commander-img-placeholder { width: 80px; height: 112px; border-radius: 6px; border: 1px dashed var(--border2); display: flex; align-items: center; justify-content: center; }
+.add-card-row { display: grid; grid-template-columns: 1fr 140px 60px auto; gap: 8px; align-items: end; }
+.import-area { position: relative; }
+
+/* Autocomplete dropdown */
+.ac-dropdown { display: none; position: absolute; top: 100%; left: 0; right: 0; z-index: 60; background: var(--surface); border: 1px solid var(--border2); border-radius: var(--radius); margin-top: 2px; max-height: 240px; overflow-y: auto; box-shadow: 0 4px 16px rgba(0,0,0,0.5); }
+.ac-item { padding: 8px 12px; cursor: pointer; font-size: 13px; color: var(--text2); transition: background 0.1s; }
+.ac-item:hover, .ac-item.selected { background: var(--surface2); color: var(--text); }
+
+/* Pending cards in form */
+.pending-card-row { display: flex; align-items: center; gap: 8px; padding: 4px 6px; border-radius: 6px; }
+.pending-card-row:hover { background: var(--surface2); }
+.pending-category-badge { font-size: 10px; font-family: 'DM Mono', monospace; color: var(--text3); background: var(--surface2); border: 1px solid var(--border); border-radius: 4px; padding: 1px 5px; flex-shrink: 0; }
+
+/* Card hover preview */
+#card-hover-preview { position: fixed; z-index: 9999; pointer-events: none; display: none; }
+#card-hover-preview img { width: 220px; border-radius: 11px; box-shadow: 0 8px 32px rgba(0,0,0,0.8); }
+
+/* Empty state */
+.empty-state { text-align: center; padding: 48px 20px; color: var(--text3); font-family: 'DM Mono', monospace; font-size: 13px; }
+
+/* Import tab */
+.import-method-tabs { display: flex; gap: 2px; margin-bottom: 12px; }
+.imt-btn { padding: 5px 12px; border: 1px solid var(--border2); background: transparent; color: var(--text3); font-family: 'DM Mono', monospace; font-size: 11px; cursor: pointer; border-radius: 6px; }
+.imt-btn.active { background: var(--surface2); color: var(--text); border-color: var(--border2); }
+
+@media (max-width: 700px) {
+  .sidebar { display: none; }
+  .main { padding: 24px 16px; }
+  .add-card-row { grid-template-columns: 1fr 1fr; }
+  .add-card-row > *:last-child { grid-column: 1 / -1; }
+}
+</style>
+</head>
+<body>
+
+<nav class="sidebar">
+  <div class="logo">
+    <div class="logo-name">Forge</div>
+    <div class="logo-sub">commander</div>
+  </div>
+  <div class="nav-section">Commander</div>
+  <div class="nav-item active">
+    <svg class="nav-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="6.5" y="2" width="3" height="8" rx="0.6" transform="rotate(-24 8 10)"/>
+      <rect x="6.5" y="2" width="3" height="8" rx="0.6" transform="rotate(24 8 10)"/>
+      <rect x="6.5" y="2" width="3" height="8" rx="0.6"/>
+      <path d="M5 10 C4.5 12 5.5 14 8 14 C10.5 14 11.5 12 11 10"/>
+      <path d="M5 10 C4.2 9 3.5 9.8 4 11 C4.4 11.8 5 12 5 12"/>
+    </svg>
+    My Decks
+  </div>
+  <div class="sidebar-bottom">
+    <div class="nav-section" style="padding-top:12px;">Navigate</div>
+    <a class="nav-item" href="/" style="text-decoration:none;">
+      <svg class="nav-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 8l6-6 6 6"/><path d="M4 6v7h3v-3h2v3h3V6"/></svg>
+      All apps
+    </a>
+  </div>
+</nav>
+
+<main class="main">
+  <div class="page-header">
+    <div class="page-title">Commander</div>
+    <div class="page-sub">Decklists, card previews, and collection tracking</div>
+  </div>
+
+  <div class="tabs">
+    <button class="tab-btn active" id="tab-library" onclick="showTab('library')">My Decks</button>
+    <button class="tab-btn" id="tab-build" onclick="showTab('build')">Build / Edit</button>
+  </div>
+
+  <!-- LIBRARY TAB -->
+  <div id="page-library">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
+      <div id="deck-count-label" style="font-size:12px;color:var(--text3);font-family:'DM Mono',monospace;"></div>
+      <button class="btn btn-accent btn-sm" onclick="showTab('build')">+ New deck</button>
+    </div>
+    <div class="deck-grid" id="deck-list"></div>
+  </div>
+
+  <!-- BUILD TAB -->
+  <div id="page-build" style="display:none;">
+    <div id="deck-form-title" style="font-family:'Instrument Serif',serif;font-size:20px;color:var(--text);margin-bottom:18px;">New deck</div>
+
+    <!-- URL import -->
+    <div class="section" style="margin-bottom:16px;">
+      <div class="section-title">Import from URL</div>
+      <div class="section-desc">Paste a Moxfield, Archidekt, or other decklist URL to auto-fill the form</div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;">
+        <input type="url" id="deck-url" placeholder="https://www.moxfield.com/decks/…" style="flex:1;min-width:0;"
+          onkeydown="if(event.key==='Enter')importDeckFromUrl()" />
+        <button class="btn btn-accent btn-sm" onclick="importDeckFromUrl()" id="url-import-btn" style="white-space:nowrap;">Import</button>
+      </div>
+      <div id="url-import-status" style="display:none;font-size:12px;font-family:monospace;margin-top:8px;"></div>
+    </div>
+
+    <!-- Deck name -->
+    <div class="section">
+      <div class="form-label">Deck name</div>
+      <input type="text" id="deck-name" placeholder="e.g. Atraxa Superfriends" style="width:100%;margin-bottom:14px;" />
+
+      <div class="form-label">Commander</div>
+      <div style="position:relative;" class="import-area">
+        <input type="text" id="commander-search" placeholder="Search for commander…" style="width:100%;"
+          oninput="onCommanderInput(this.value)"
+          onblur="setTimeout(()=>hideAC('commander-ac'),160)"
+          onkeydown="onACKeydown(event,'commander-ac',selectCommanderFromAC)" />
+        <div class="ac-dropdown" id="commander-ac"></div>
+      </div>
+      <div class="commander-preview" style="margin-top:12px;" id="commander-preview-row">
+        <div class="commander-img-placeholder" id="commander-img-placeholder">
+          <svg style="width:22px;height:22px;opacity:0.3;" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><polygon points="8,1 10,6 15,6 11,9 13,14 8,11 3,14 5,9 1,6 6,6"/></svg>
+        </div>
+        <img id="commander-img" class="commander-img" style="display:none;" />
+        <div>
+          <div id="commander-name-display" style="font-size:14px;font-weight:500;color:var(--text);margin-bottom:5px;"></div>
+          <div id="commander-type-display" style="font-size:12px;color:var(--text3);font-family:'DM Mono',monospace;margin-bottom:6px;"></div>
+          <div id="commander-pips-display" class="pips"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Cards -->
+    <div class="section">
+      <div class="section-title">Cards</div>
+      <div class="section-desc">Add individual cards or paste a full decklist</div>
+
+      <div class="import-method-tabs">
+        <button class="imt-btn active" id="imt-manual" onclick="switchAddMethod('manual')">Manual</button>
+        <button class="imt-btn" id="imt-paste" onclick="switchAddMethod('paste')">Paste list</button>
+      </div>
+
+      <!-- Manual add -->
+      <div id="add-manual">
+        <div class="add-card-row">
+          <div style="position:relative;">
+            <div class="form-label">Card name</div>
+            <input type="text" id="card-search" placeholder="Search cards…" style="width:100%;"
+              oninput="onCardInput(this.value)"
+              onblur="setTimeout(()=>hideAC('card-ac'),160)"
+              onkeydown="onACKeydown(event,'card-ac',selectCardFromAC)" />
+            <div class="ac-dropdown" id="card-ac"></div>
+          </div>
+          <div>
+            <div class="form-label">Category</div>
+            <select id="card-category" style="width:100%;">
+              <option>Creatures</option>
+              <option>Instants</option>
+              <option>Sorceries</option>
+              <option>Enchantments</option>
+              <option>Artifacts</option>
+              <option>Planeswalkers</option>
+              <option>Lands</option>
+              <option>Ramp</option>
+              <option>Draw</option>
+              <option>Removal</option>
+              <option>Wipes</option>
+              <option>Protection</option>
+              <option>Win Conditions</option>
+              <option>Other</option>
+            </select>
+          </div>
+          <div>
+            <div class="form-label">Qty</div>
+            <input type="number" id="card-qty" value="1" min="1" max="4" style="width:100%;" />
+          </div>
+          <div style="display:flex;align-items:flex-end;">
+            <button class="btn btn-ghost btn-sm" onclick="addCardToList()" style="white-space:nowrap;margin-bottom:1px;">+ Add</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Paste import -->
+      <div id="add-paste" style="display:none;">
+        <div class="form-label">Paste decklist</div>
+        <div style="font-size:11px;color:var(--text3);font-family:monospace;margin-bottom:6px;">Supports MTGO/Moxfield format. Section headers become categories (e.g. "Creatures", "Lands").</div>
+        <textarea id="paste-input" rows="12" placeholder="1 Sol Ring&#10;1 Command Tower&#10;&#10;Creatures&#10;1 Rhystic Study&#10;..." style="width:100%;font-family:'DM Mono',monospace;font-size:12px;"></textarea>
+        <div style="display:flex;gap:8px;margin-top:8px;">
+          <button class="btn btn-accent btn-sm" onclick="importPastedList()">Import list</button>
+          <button class="btn btn-ghost btn-sm" onclick="document.getElementById('paste-input').value=''">Clear</button>
+        </div>
+        <div id="paste-status" style="display:none;font-size:12px;font-family:monospace;margin-top:6px;"></div>
+      </div>
+
+      <!-- Pending card list -->
+      <div id="pending-cards-section" style="margin-top:16px;display:none;">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
+          <div style="font-size:11px;font-family:'DM Mono',monospace;color:var(--text3);" id="pending-card-count"></div>
+          <button class="btn btn-ghost btn-sm" onclick="clearAllCards()" style="font-size:11px;">Clear all</button>
+        </div>
+        <div id="pending-card-list"></div>
+      </div>
+    </div>
+
+    <!-- Notes -->
+    <div class="section">
+      <div class="form-label">Notes</div>
+      <textarea id="deck-notes" rows="3" placeholder="Deck strategy, win conditions, upgrade ideas…" style="width:100%;"></textarea>
+    </div>
+
+    <div style="display:flex;gap:8px;align-items:center;margin-top:4px;">
+      <button class="btn btn-accent" onclick="saveDeck()" id="save-deck-btn">Save deck</button>
+      <button class="btn btn-ghost" id="cancel-edit-btn" style="display:none;" onclick="cancelEdit()">Cancel</button>
+      <div id="deck-save-status" style="display:none;font-size:12px;font-family:monospace;"></div>
+    </div>
+  </div>
+</main>
+
+<!-- Hover preview -->
+<div id="card-hover-preview"><img id="card-hover-img" /></div>
+
+<script>
+// ── State ──────────────────────────────────────────────────────────────────────
+let state = {};
+let _editingDeckId = null;
+let _pendingCards = [];
+let _pendingCommander = null;
+let _cardImageCache = {};
+let _acIndex = -1;
+let _cardACIndex = -1;
+let _hoverTimeout = null;
+
+const CATEGORIES = ['Creatures','Instants','Sorceries','Enchantments','Artifacts','Planeswalkers','Lands','Ramp','Draw','Removal','Wipes','Protection','Win Conditions','Other'];
+
+// ── Persistence ────────────────────────────────────────────────────────────────
+async function load() {
+  try {
+    const r = await fetch('/api/state');
+    state = await r.json();
+  } catch { state = {}; }
+  if (!state.commanderDecks) state.commanderDecks = [];
+  renderDecks();
+}
+
+async function save() {
+  await fetch('/api/state', { method: 'PUT', headers: {'Content-Type':'application/json'}, body: JSON.stringify(state) });
+}
+
+// ── Scryfall ───────────────────────────────────────────────────────────────────
+let _scryfallTimer = null;
+async function scryfallAutocomplete(query) {
+  if (!query || query.length < 2) return [];
+  try {
+    const r = await fetch('https://api.scryfall.com/cards/autocomplete?q=' + encodeURIComponent(query));
+    const d = await r.json();
+    return d.data || [];
+  } catch { return []; }
+}
+
+async function scryfallNamed(name) {
+  const key = name.toLowerCase();
+  if (_cardImageCache[key + '__card']) return _cardImageCache[key + '__card'];
+  try {
+    const r = await fetch('https://api.scryfall.com/cards/named?fuzzy=' + encodeURIComponent(name));
+    if (!r.ok) return null;
+    const card = await r.json();
+    _cardImageCache[key + '__card'] = card;
+    const img = card.image_uris ? card.image_uris.normal : (card.card_faces && card.card_faces[0].image_uris ? card.card_faces[0].image_uris.normal : null);
+    if (img) _cardImageCache[key] = img;
+    return card;
+  } catch { return null; }
+}
+
+async function getCardImage(name) {
+  const key = name.toLowerCase();
+  if (_cardImageCache[key]) return _cardImageCache[key];
+  const card = await scryfallNamed(name);
+  if (!card) return null;
+  return _cardImageCache[key] || null;
+}
+
+// ── Card hover preview ─────────────────────────────────────────────────────────
+function attachCardHover(el, name) {
+  el.addEventListener('mouseenter', async e => {
+    clearTimeout(_hoverTimeout);
+    _hoverTimeout = setTimeout(async () => {
+      const img = await getCardImage(name);
+      if (!img) return;
+      const prev = document.getElementById('card-hover-preview');
+      const prevImg = document.getElementById('card-hover-img');
+      prevImg.src = img;
+      prev.style.display = 'block';
+      positionPreview(e.clientX, e.clientY);
+    }, 180);
+  });
+  el.addEventListener('mousemove', e => { positionPreview(e.clientX, e.clientY); });
+  el.addEventListener('mouseleave', () => { clearTimeout(_hoverTimeout); hideCardPreview(); });
+}
+
+function positionPreview(x, y) {
+  const prev = document.getElementById('card-hover-preview');
+  const w = 228, h = 320;
+  const vw = window.innerWidth, vh = window.innerHeight;
+  let left = x + 16, top = y - 60;
+  if (left + w > vw - 8) left = x - w - 12;
+  if (top + h > vh - 8) top = vh - h - 8;
+  if (top < 8) top = 8;
+  prev.style.left = left + 'px';
+  prev.style.top = top + 'px';
+}
+
+function hideCardPreview() {
+  document.getElementById('card-hover-preview').style.display = 'none';
+}
+
+// ── URL import ────────────────────────────────────────────────────────────────
+async function importDeckFromUrl() {
+  const url = (document.getElementById('deck-url').value || '').trim();
+  const btn = document.getElementById('url-import-btn');
+  const status = document.getElementById('url-import-status');
+  if (!url) return;
+  btn.disabled = true; btn.textContent = 'Importing…';
+  status.style.display = 'block'; status.style.color = 'var(--text2)';
+  status.textContent = 'Fetching decklist…';
+  try {
+    const r = await fetch('/api/decklist-from-url', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ url }),
+    });
+    const data = await r.json();
+    if (data.error) { status.style.color = 'var(--red)'; status.textContent = data.error; return; }
+
+    if (data.name)  document.getElementById('deck-name').value = data.name;
+
+    if (data.commander) {
+      document.getElementById('commander-search').value = data.commander;
+      _pendingCommander = {
+        name: data.commander,
+        imageUri: data.commanderImageUri || null,
+        colorIdentity: data.colorIdentity || [],
+        typeLine: '',
+      };
+      document.getElementById('commander-name-display').textContent = data.commander;
+      document.getElementById('commander-pips-display').innerHTML = colorPips(data.colorIdentity || []);
+      if (data.commanderImageUri) {
+        document.getElementById('commander-img').src = data.commanderImageUri;
+        document.getElementById('commander-img').style.display = '';
+        document.getElementById('commander-img-placeholder').style.display = 'none';
+      }
+    }
+
+    _pendingCards = (data.cards || []).map(c => ({ name: c.name, qty: c.qty || 1, category: c.category || 'Other' }));
+    renderPendingCards();
+
+    const total = _pendingCards.reduce((s, c) => s + c.qty, 0);
+    status.style.color = 'var(--accent)';
+    status.textContent = 'Imported ' + _pendingCards.length + ' entries (' + total + ' cards) — review below, then save.';
+    document.getElementById('deck-url').value = '';
+  } catch (e) {
+    status.style.color = 'var(--red)'; status.textContent = 'Error: ' + e.message;
+  } finally {
+    btn.disabled = false; btn.textContent = 'Import';
+  }
+}
+
+// ── Tabs ───────────────────────────────────────────────────────────────────────
+function showTab(name) {
+  document.getElementById('page-library').style.display = name === 'library' ? '' : 'none';
+  document.getElementById('page-build').style.display   = name === 'build'   ? '' : 'none';
+  document.getElementById('tab-library').classList.toggle('active', name === 'library');
+  document.getElementById('tab-build').classList.toggle('active', name === 'build');
+}
+
+function switchAddMethod(method) {
+  document.getElementById('add-manual').style.display = method === 'manual' ? '' : 'none';
+  document.getElementById('add-paste').style.display  = method === 'paste'  ? '' : 'none';
+  document.getElementById('imt-manual').classList.toggle('active', method === 'manual');
+  document.getElementById('imt-paste').classList.toggle('active', method === 'paste');
+}
+
+// ── Color pips ─────────────────────────────────────────────────────────────────
+function colorPips(identity) {
+  if (!identity || !identity.length) return '<span style="font-size:11px;color:var(--text3);font-family:monospace;">colorless</span>';
+  return identity.map(c => '<span class="pip pip-' + c + '">' + c + '</span>').join('');
+}
+
+// ── Rendering ──────────────────────────────────────────────────────────────────
+function renderDecks() {
+  const decks = state.commanderDecks || [];
+  const label = document.getElementById('deck-count-label');
+  if (label) label.textContent = decks.length + ' deck' + (decks.length !== 1 ? 's' : '');
+  const list = document.getElementById('deck-list');
+  if (!list) return;
+  if (!decks.length) {
+    list.innerHTML = '<div class="empty-state">No decks yet — build your first one above</div>';
+    return;
+  }
+  list.innerHTML = decks.map(deck => renderDeckHTML(deck)).join('');
+  // Attach hover events
+  list.querySelectorAll('.card-name[data-card]').forEach(el => {
+    attachCardHover(el, el.dataset.card);
+  });
+}
+
+function renderDeckHTML(deck) {
+  const cards = deck.cards || [];
+  const total = cards.reduce((s, c) => s + (c.qty || 1), 0);
+  const totalWithCmd = total + 1;
+  const thumbHtml = deck.commanderImageUri
+    ? '<img class="deck-thumb" src="' + deck.commanderImageUri + '" />'
+    : '<div class="deck-thumb-placeholder"><svg style="width:16px;height:16px;opacity:0.4;" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><polygon points="8,1 10,6 15,6 11,9 13,14 8,11 3,14 5,9 1,6 6,6"/></svg></div>';
+
+  // Group cards by category
+  const groups = {};
+  cards.forEach(c => {
+    const cat = c.category || 'Other';
+    if (!groups[cat]) groups[cat] = [];
+    groups[cat].push(c);
+  });
+  const catOrder = CATEGORIES.filter(c => groups[c]);
+  const extra = Object.keys(groups).filter(c => !CATEGORIES.includes(c));
+  const orderedCats = [...catOrder, ...extra];
+
+  const cardListHtml = orderedCats.map(cat => {
+    const catCards = groups[cat];
+    const catTotal = catCards.reduce((s, c) => s + (c.qty || 1), 0);
+    const rows = catCards.map(c =>
+      '<div class="card-row">'
+      + '<span class="card-qty">' + (c.qty > 1 ? c.qty : '·') + '</span>'
+      + '<span class="card-name" data-card="' + c.name.replace(/"/g, '&quot;') + '">' + c.name + '</span>'
+      + '<button class="card-remove" onclick="event.stopPropagation();removeCardFromDeck(' + deck.id + ',\'' + c.name.replace(/'/g, "\\'") + '\')" title="Remove">×</button>'
+      + '</div>'
+    ).join('');
+    return '<div class="category-header">' + cat + ' <span class="category-count">' + catTotal + '</span></div>'
+      + '<div class="card-list">' + rows + '</div>';
+  }).join('');
+
+  const cmdSection = deck.commander
+    ? '<div class="category-header">Commander <span class="category-count">1</span></div>'
+      + '<div class="card-list"><div class="card-row">'
+      + '<span class="card-qty">·</span>'
+      + '<span class="card-name" data-card="' + deck.commander.replace(/"/g, '&quot;') + '">' + deck.commander + '</span>'
+      + '</div></div>'
+    : '';
+
+  return '<div class="deck-card" id="deck-card-' + deck.id + '">'
+    + '<div class="deck-card-header" onclick="toggleDeck(' + deck.id + ')">'
+    + thumbHtml
+    + '<div style="flex:1;min-width:0;">'
+    + '<div class="deck-name">' + deck.name + '</div>'
+    + '<div class="deck-commander">' + (deck.commander || '—') + '</div>'
+    + '<div class="deck-meta"><div class="pips">' + colorPips(deck.colorIdentity) + '</div><span class="deck-count">' + totalWithCmd + '/100 cards</span></div>'
+    + '</div>'
+    + '<span class="deck-chevron">&#9658;</span>'
+    + '</div>'
+    + '<div class="deck-body">'
+    + '<div style="display:flex;gap:6px;padding:10px 0 4px;">'
+    + '<button class="btn btn-ghost btn-sm" onclick="event.stopPropagation();editDeck(' + deck.id + ')">Edit</button>'
+    + '<button class="btn btn-danger btn-sm" onclick="event.stopPropagation();deleteDeck(' + deck.id + ')">Delete</button>'
+    + '</div>'
+    + cmdSection
+    + cardListHtml
+    + (deck.notes ? '<div style="margin-top:12px;padding-top:10px;border-top:1px solid var(--border);font-size:12px;color:var(--text3);white-space:pre-wrap;line-height:1.5;">' + deck.notes + '</div>' : '')
+    + '</div>'
+    + '</div>';
+}
+
+function toggleDeck(id) {
+  const el = document.getElementById('deck-card-' + id);
+  if (!el) return;
+  const wasOpen = el.classList.contains('open');
+  // Close all
+  document.querySelectorAll('.deck-card.open').forEach(e => e.classList.remove('open'));
+  if (!wasOpen) {
+    el.classList.add('open');
+    // Re-attach hover events
+    el.querySelectorAll('.card-name[data-card]').forEach(e => attachCardHover(e, e.dataset.card));
+  }
+}
+
+function renderPendingCards() {
+  const section = document.getElementById('pending-cards-section');
+  const list = document.getElementById('pending-card-list');
+  const countEl = document.getElementById('pending-card-count');
+  if (!_pendingCards.length) { section.style.display = 'none'; list.innerHTML = ''; return; }
+  section.style.display = '';
+  const total = _pendingCards.reduce((s, c) => s + (c.qty || 1), 0);
+  if (countEl) countEl.textContent = _pendingCards.length + ' entries · ' + total + ' cards';
+
+  const groups = {};
+  _pendingCards.forEach((c, i) => {
+    const cat = c.category || 'Other';
+    if (!groups[cat]) groups[cat] = [];
+    groups[cat].push({ ...c, _i: i });
+  });
+  const catOrder = CATEGORIES.filter(c => groups[c]);
+  const extra = Object.keys(groups).filter(c => !CATEGORIES.includes(c));
+  const orderedCats = [...catOrder, ...extra];
+
+  list.innerHTML = orderedCats.map(cat => {
+    const rows = groups[cat].map(c =>
+      '<div class="pending-card-row">'
+      + '<span class="card-qty">' + (c.qty > 1 ? c.qty + 'x' : '·') + '</span>'
+      + '<span style="font-size:13px;color:var(--text2);flex:1;">' + c.name + '</span>'
+      + '<span class="pending-category-badge">' + c.category + '</span>'
+      + '<button class="card-remove" style="opacity:0.5;" onclick="removePendingCard(' + c._i + ')">×</button>'
+      + '</div>'
+    ).join('');
+    const catTotal = groups[cat].reduce((s, c) => s + (c.qty || 1), 0);
+    return '<div class="category-header">' + cat + ' <span class="category-count">' + catTotal + '</span></div>' + rows;
+  }).join('');
+}
+
+// ── Commander search ───────────────────────────────────────────────────────────
+let _cmdACNames = [];
+async function onCommanderInput(val) {
+  clearTimeout(_scryfallTimer);
+  if (val.length < 2) { hideAC('commander-ac'); return; }
+  _scryfallTimer = setTimeout(async () => {
+    const names = await scryfallAutocomplete(val);
+    _cmdACNames = names.slice(0, 8);
+    _acIndex = -1;
+    const dd = document.getElementById('commander-ac');
+    dd.innerHTML = _cmdACNames.map((n, i) => '<div class="ac-item" data-i="' + i + '" onmousedown="selectCommander(\'' + n.replace(/'/g, "\\'") + '\')">' + n + '</div>').join('');
+    dd.style.display = _cmdACNames.length ? 'block' : 'none';
+  }, 260);
+}
+
+async function selectCommander(name) {
+  document.getElementById('commander-search').value = name;
+  hideAC('commander-ac');
+  const card = await scryfallNamed(name);
+  if (!card) return;
+  const img = card.image_uris ? card.image_uris.normal : (card.card_faces && card.card_faces[0].image_uris ? card.card_faces[0].image_uris.normal : null);
+  _pendingCommander = { name, imageUri: img || null, colorIdentity: card.color_identity || [], typeLine: card.type_line || '' };
+  const imgEl = document.getElementById('commander-img');
+  const placeholder = document.getElementById('commander-img-placeholder');
+  if (img) { imgEl.src = img; imgEl.style.display = ''; placeholder.style.display = 'none'; }
+  document.getElementById('commander-name-display').textContent = name;
+  document.getElementById('commander-type-display').textContent = card.type_line || '';
+  document.getElementById('commander-pips-display').innerHTML = colorPips(card.color_identity);
+}
+
+function selectCommanderFromAC() {
+  if (_acIndex >= 0 && _cmdACNames[_acIndex]) selectCommander(_cmdACNames[_acIndex]);
+  else if (_cmdACNames.length) selectCommander(_cmdACNames[0]);
+}
+
+// ── Card search ────────────────────────────────────────────────────────────────
+let _cardACNames = [];
+async function onCardInput(val) {
+  clearTimeout(_scryfallTimer);
+  if (val.length < 2) { hideAC('card-ac'); return; }
+  _scryfallTimer = setTimeout(async () => {
+    const names = await scryfallAutocomplete(val);
+    _cardACNames = names.slice(0, 8);
+    _cardACIndex = -1;
+    const dd = document.getElementById('card-ac');
+    dd.innerHTML = _cardACNames.map((n, i) => '<div class="ac-item" data-i="' + i + '" onmousedown="fillCardName(\'' + n.replace(/'/g, "\\'") + '\')">' + n + '</div>').join('');
+    dd.style.display = _cardACNames.length ? 'block' : 'none';
+  }, 260);
+}
+
+function fillCardName(name) {
+  document.getElementById('card-search').value = name;
+  hideAC('card-ac');
+}
+
+function selectCardFromAC() {
+  if (_cardACIndex >= 0 && _cardACNames[_cardACIndex]) fillCardName(_cardACNames[_cardACIndex]);
+  else if (_cardACNames.length) fillCardName(_cardACNames[0]);
+}
+
+function addCardToList() {
+  const name = (document.getElementById('card-search').value || '').trim();
+  if (!name) return;
+  const category = document.getElementById('card-category').value;
+  const qty = Math.max(1, parseInt(document.getElementById('card-qty').value) || 1);
+  const existing = _pendingCards.find(c => c.name.toLowerCase() === name.toLowerCase() && c.category === category);
+  if (existing) { existing.qty = (existing.qty || 1) + qty; }
+  else { _pendingCards.push({ name, qty, category }); }
+  document.getElementById('card-search').value = '';
+  document.getElementById('card-qty').value = '1';
+  renderPendingCards();
+  document.getElementById('card-search').focus();
+}
+
+function removePendingCard(i) {
+  _pendingCards.splice(i, 1);
+  renderPendingCards();
+}
+
+function clearAllCards() {
+  if (!_pendingCards.length || confirm('Clear all ' + _pendingCards.length + ' cards?')) {
+    _pendingCards = [];
+    renderPendingCards();
+  }
+}
+
+// ── Paste import ───────────────────────────────────────────────────────────────
+function importPastedList() {
+  const text = document.getElementById('paste-input').value;
+  const status = document.getElementById('paste-status');
+  const { commander, cards } = parseDecklistText(text);
+  if (!cards.length && !commander) {
+    status.style.display = 'block'; status.style.color = 'var(--red)';
+    status.textContent = 'No cards found — check format'; return;
+  }
+  if (commander && !_pendingCommander) {
+    document.getElementById('commander-search').value = commander.name;
+    selectCommander(commander.name);
+  }
+  _pendingCards = cards;
+  renderPendingCards();
+  status.style.display = 'block'; status.style.color = 'var(--accent)';
+  const total = cards.reduce((s, c) => s + c.qty, 0);
+  status.textContent = 'Imported ' + cards.length + ' entries (' + total + ' cards)';
+  switchAddMethod('manual');
+}
+
+function parseDecklistText(text) {
+  const lines = text.split('\n').map(l => l.trim()).filter(Boolean);
+  let commander = null;
+  const cards = [];
+  let currentCategory = 'Other';
+  let inSideboard = false;
+  let inCommanderSection = false;
+
+  for (const line of lines) {
+    if (/^(sideboard|sb:)/i.test(line)) { inSideboard = true; continue; }
+    if (inSideboard) continue;
+
+    if (/^commander$/i.test(line)) { inCommanderSection = true; continue; }
+
+    // Section header (no leading digit)
+    if (!/^\d/.test(line)) {
+      const header = line.replace(/^[//#*\[\]]+\s*/, '').replace(/\s*\(\d+\)\s*$/, '').trim();
+      if (header) { currentCategory = header; inCommanderSection = false; }
+      continue;
+    }
+
+    const m = line.match(/^(\d+)x?\s+(.+)$/);
+    if (!m) continue;
+    const qty = parseInt(m[1]);
+    const name = m[2].split(' // ')[0].replace(/\s*\(.*\)\s*\d*$/, '').trim();
+    if (!name) continue;
+
+    if (inCommanderSection) {
+      commander = { name, qty: 1 };
+      inCommanderSection = false;
+    } else {
+      const existing = cards.find(c => c.name.toLowerCase() === name.toLowerCase() && c.category === currentCategory);
+      if (existing) existing.qty += qty;
+      else cards.push({ name, qty, category: currentCategory });
+    }
+  }
+  return { commander, cards };
+}
+
+// ── Deck CRUD ──────────────────────────────────────────────────────────────────
+function saveDeck() {
+  const name = (document.getElementById('deck-name').value || '').trim();
+  if (!name) { showSaveStatus('Deck name is required.', false); return; }
+  if (!_pendingCommander && !document.getElementById('commander-search').value.trim()) {
+    showSaveStatus('Commander is required.', false); return;
+  }
+  const cmdName = _pendingCommander ? _pendingCommander.name : document.getElementById('commander-search').value.trim();
+  const deck = {
+    id: _editingDeckId || (Date.now() + Math.random()),
+    name,
+    commander: cmdName,
+    commanderImageUri: _pendingCommander ? _pendingCommander.imageUri : null,
+    colorIdentity: _pendingCommander ? _pendingCommander.colorIdentity : [],
+    cards: [..._pendingCards],
+    notes: (document.getElementById('deck-notes').value || '').trim(),
+  };
+  if (_editingDeckId) {
+    const idx = state.commanderDecks.findIndex(d => d.id === _editingDeckId);
+    if (idx >= 0) state.commanderDecks[idx] = deck;
+  } else {
+    state.commanderDecks.unshift(deck);
+  }
+  save();
+  showSaveStatus(_editingDeckId ? 'Deck updated!' : 'Deck saved!', true);
+  resetForm();
+  renderDecks();
+  setTimeout(() => showTab('library'), 600);
+}
+
+function deleteDeck(id) {
+  if (!confirm('Delete this deck?')) return;
+  state.commanderDecks = state.commanderDecks.filter(d => d.id !== id);
+  save();
+  renderDecks();
+}
+
+function editDeck(id) {
+  const deck = state.commanderDecks.find(d => d.id === id);
+  if (!deck) return;
+  _editingDeckId = id;
+  _pendingCards = (deck.cards || []).map(c => ({ ...c }));
+  _pendingCommander = deck.commander ? { name: deck.commander, imageUri: deck.commanderImageUri, colorIdentity: deck.colorIdentity || [], typeLine: '' } : null;
+  document.getElementById('deck-name').value = deck.name;
+  document.getElementById('deck-notes').value = deck.notes || '';
+  if (deck.commander) {
+    document.getElementById('commander-search').value = deck.commander;
+    document.getElementById('commander-name-display').textContent = deck.commander;
+    document.getElementById('commander-pips-display').innerHTML = colorPips(deck.colorIdentity);
+    if (deck.commanderImageUri) {
+      document.getElementById('commander-img').src = deck.commanderImageUri;
+      document.getElementById('commander-img').style.display = '';
+      document.getElementById('commander-img-placeholder').style.display = 'none';
+    }
+  }
+  document.getElementById('deck-form-title').textContent = 'Edit deck';
+  document.getElementById('save-deck-btn').textContent = 'Update deck';
+  document.getElementById('cancel-edit-btn').style.display = '';
+  renderPendingCards();
+  showTab('build');
+}
+
+function cancelEdit() { resetForm(); showTab('library'); }
+
+function removeCardFromDeck(deckId, cardName) {
+  const deck = state.commanderDecks.find(d => d.id === deckId);
+  if (!deck) return;
+  deck.cards = deck.cards.filter(c => c.name !== cardName);
+  save();
+  renderDecks();
+  const el = document.getElementById('deck-card-' + deckId);
+  if (el) { el.classList.add('open'); el.querySelectorAll('.card-name[data-card]').forEach(e => attachCardHover(e, e.dataset.card)); }
+}
+
+function resetForm() {
+  _editingDeckId = null; _pendingCards = []; _pendingCommander = null;
+  document.getElementById('deck-name').value = '';
+  document.getElementById('deck-notes').value = '';
+  document.getElementById('commander-search').value = '';
+  document.getElementById('commander-name-display').textContent = '';
+  document.getElementById('commander-type-display').textContent = '';
+  document.getElementById('commander-pips-display').innerHTML = '';
+  document.getElementById('commander-img').style.display = 'none';
+  document.getElementById('commander-img-placeholder').style.display = '';
+  document.getElementById('deck-form-title').textContent = 'New deck';
+  document.getElementById('save-deck-btn').textContent = 'Save deck';
+  document.getElementById('cancel-edit-btn').style.display = 'none';
+  document.getElementById('deck-save-status').style.display = 'none';
+  renderPendingCards();
+}
+
+function showSaveStatus(msg, ok) {
+  const el = document.getElementById('deck-save-status');
+  el.textContent = msg; el.style.color = ok ? 'var(--accent)' : 'var(--red)'; el.style.display = 'block';
+  if (ok) setTimeout(() => { el.style.display = 'none'; }, 2500);
+}
+
+// ── Autocomplete helpers ───────────────────────────────────────────────────────
+function hideAC(id) { const el = document.getElementById(id); if (el) el.style.display = 'none'; }
+
+function onACKeydown(event, dropdownId, selectFn) {
+  const dd = document.getElementById(dropdownId);
+  const items = dd ? [...dd.querySelectorAll('.ac-item')] : [];
+  const isCmd = dropdownId === 'commander-ac';
+  let idx = isCmd ? _acIndex : _cardACIndex;
+  if (!items.length || dd.style.display === 'none') {
+    if (event.key === 'Enter' && dropdownId === 'card-ac') { event.preventDefault(); addCardToList(); }
+    return;
+  }
+  if (event.key === 'ArrowDown') { event.preventDefault(); idx = Math.min(idx + 1, items.length - 1); }
+  else if (event.key === 'ArrowUp') { event.preventDefault(); idx = Math.max(idx - 1, -1); }
+  else if (event.key === 'Enter') { event.preventDefault(); if (selectFn) selectFn(); hideAC(dropdownId); return; }
+  else if (event.key === 'Escape') { hideAC(dropdownId); return; }
+  items.forEach((el, i) => el.classList.toggle('selected', i === idx));
+  if (isCmd) _acIndex = idx; else _cardACIndex = idx;
+}
+
+// ── Init ───────────────────────────────────────────────────────────────────────
+load();
+</script>
+</body>
+</html>

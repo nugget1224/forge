@@ -1232,16 +1232,20 @@ function scaleFoodMacros() {
 
 function clearFoodBase() { _foodBase = null; }
 function autoCalcFoodCal() {
+  const calEl = document.getElementById('food-cal');
+  if (calEl.value) return;
   const p = parseFloat(document.getElementById('food-p').value) || 0;
   const c = parseFloat(document.getElementById('food-c').value) || 0;
   const f = parseFloat(document.getElementById('food-f').value) || 0;
-  if (p || c || f) document.getElementById('food-cal').value = Math.round(p * 4 + c * 4 + f * 9);
+  if (p || c || f) calEl.value = Math.round(p * 4 + c * 4 + f * 9);
 }
 function autoCalcCfCal() {
+  const calEl = document.getElementById('cf-cal');
+  if (calEl.value) return;
   const p = parseFloat(document.getElementById('cf-p').value) || 0;
   const c = parseFloat(document.getElementById('cf-c').value) || 0;
   const f = parseFloat(document.getElementById('cf-f').value) || 0;
-  if (p || c || f) document.getElementById('cf-cal').value = Math.round(p * 4 + c * 4 + f * 9);
+  if (p || c || f) calEl.value = Math.round(p * 4 + c * 4 + f * 9);
 }
 
 function switchFoodLib(tab, btn) {

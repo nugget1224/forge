@@ -989,11 +989,18 @@ function renderPendingIngredients() {
   const el = document.getElementById('recipe-ingredients');
   if (!el) return;
   if (!_pendingIngredients.length) { el.innerHTML = ''; return; }
-  el.innerHTML = _pendingIngredients.map((ing, i) => {
+  let html = '';
+  let lastGroup = null;
+  _pendingIngredients.forEach((ing, i) => {
+    const group = ing.group || '';
+    if (group && group !== lastGroup) {
+      html += '<div style="font-size:10px;color:var(--text3);font-family:monospace;text-transform:uppercase;letter-spacing:.07em;margin-top:' + (lastGroup !== null ? '10px' : '2px') + ';margin-bottom:3px;padding-left:2px;">' + group.replace(/</g,'&lt;') + '</div>';
+      lastGroup = group;
+    }
     const unitOpts = ING_UNIT_OPTIONS.map(([v, l]) =>
       '<option value="' + v + '"' + (ing.unit === v ? ' selected' : '') + '>' + l + '</option>'
     ).join('');
-    return '<div class="ing-row" id="pending-ing-row-' + i + '">'
+    html += '<div class="ing-row" id="pending-ing-row-' + i + '">'
       + '<span class="ing-name">' + ing.name + '</span>'
       + '<div style="display:flex;align-items:center;gap:4px;flex-shrink:0;">'
       +   '<input type="number" value="' + (ing.amountNum != null ? ing.amountNum : '') + '" min="0" step="any"'
@@ -1011,7 +1018,8 @@ function renderPendingIngredients() {
       + '</span>'
       + '<button class="del" onclick="removePendingIngredient(' + i + ')">&#10005;</button>'
       + '</div>';
-  }).join('');
+  });
+  el.innerHTML = html;
 }
 
 function updatePendingIngAmount(i, val) {
@@ -1101,11 +1109,12 @@ async function importRecipeFromUrl() {
     _pendingTags = Array.isArray(data.tags) ? data.tags.map(t => String(t).toLowerCase().trim()).filter(Boolean) : [];
     renderTagsPreview();
     _pendingIngredients = (data.ingredients || []).map(ing => ({
-      name: ing.name + (ing.amount ? ' (' + ing.amount + ')' : ''),
-      cal:  ing.cal  || 0,
-      p:    ing.p    || 0,
-      c:    ing.c    || 0,
-      f:    ing.f    || 0,
+      name:  ing.name + (ing.amount ? ' (' + ing.amount + ')' : ''),
+      cal:   ing.cal  || 0,
+      p:     ing.p    || 0,
+      c:     ing.c    || 0,
+      f:     ing.f    || 0,
+      group: ing.group || '',
     }));
     renderPendingIngredients();
     updateRecipeTotals();
@@ -1423,10 +1432,17 @@ function renderRecipes() {
     const tot = recipe.ingredients.reduce((a, ing) => ({ cal: a.cal + ing.cal, p: a.p + ing.p, c: a.c + ing.c, f: a.f + ing.f }), { cal:0, p:0, c:0, f:0 });
     const srv = Math.max(1, recipe.servings);
     const ps = { cal: Math.round(tot.cal/srv), p: Math.round(tot.p/srv*10)/10, c: Math.round(tot.c/srv*10)/10, f: Math.round(tot.f/srv*10)/10 };
-    const ingredientsHtml = recipe.ingredients.map(ing =>
-      '<div class="ing-row"><span class="ing-name">' + ing.name + '</span>'
-      + '<span class="ing-macros"><span style="color:var(--accent)">' + ing.cal + ' kcal</span> &nbsp;<span style="color:var(--blue)">' + ing.p + 'p</span> <span style="color:var(--amber)">' + ing.c + 'c</span> <span style="color:var(--red)">' + ing.f + 'f</span></span></div>'
-    ).join('');
+    let _lastIngGroup = null;
+    const ingredientsHtml = recipe.ingredients.map(ing => {
+      const group = ing.group || '';
+      let header = '';
+      if (group && group !== _lastIngGroup) {
+        header = '<div style="font-size:10px;color:var(--text3);font-family:monospace;text-transform:uppercase;letter-spacing:.07em;margin-top:' + (_lastIngGroup !== null ? '10px' : '2px') + ';margin-bottom:3px;padding-left:2px;">' + group.replace(/</g,'&lt;') + '</div>';
+        _lastIngGroup = group;
+      }
+      return header + '<div class="ing-row"><span class="ing-name">' + ing.name + '</span>'
+        + '<span class="ing-macros"><span style="color:var(--accent)">' + ing.cal + ' kcal</span> &nbsp;<span style="color:var(--blue)">' + ing.p + 'p</span> <span style="color:var(--amber)">' + ing.c + 'c</span> <span style="color:var(--red)">' + ing.f + 'f</span></span></div>';
+    }).join('');
     const instructionsHtml = recipe.instructions
       ? '<div style="margin-top:14px;"><div style="font-size:11px;color:var(--text3);font-family:monospace;text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px;">Instructions</div><div style="font-size:13px;color:var(--text2);white-space:pre-wrap;line-height:1.6;">' + recipe.instructions + '</div></div>' : '';
     const notesHtml = recipe.notes

@@ -1,4 +1,4 @@
-const CACHE = 'forge-v19';
+const CACHE = 'forge-v23';
 const SHELL = [
   '/',
   '/calories.html',
@@ -7,6 +7,7 @@ const SHELL = [
   '/plants.html',
   '/draft.html',
   '/settings.html',
+  '/commander.html',
 ];
 
 self.addEventListener('install', e => {

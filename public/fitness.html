@@ -3361,6 +3361,11 @@ function isBarbell(exName) {
   const n = (exName||'').toLowerCase();
   return n.includes('barbell')||n.includes('deadlift')||n.includes('squat')||n.includes('ohp')||n.includes('row');
 }
+function isBodyweightOnly(exName) {
+  const n = (exName||'').toLowerCase();
+  if (n.includes('weighted')) return false;
+  return ['plank','dead bug','hollow body','ab wheel','glute bridge','hanging knee raise','burpee','mountain climber','flutter kick','l-sit','v-sit'].some(p => n.includes(p));
+}
 function snapToBarbell(rawWeight) {
   if (rawWeight <= BAR_WEIGHT) return BAR_WEIGHT;
   const perSide = (rawWeight - BAR_WEIGHT) / 2;
@@ -3492,6 +3497,7 @@ function buildSetRows(exIdx, count, lastSets, exName, plannedReps) {
   const suggested = suggestWeights(exName||'', count, plannedReps||8, bw);
   const isFirstTime = !state.sessions.some(s=>s.exName===exName);
   const useBarbell = isBarbell(exName||'');
+  const noWeight = isBodyweightOnly(exName||'');
   const targetRPE = targetRPEForExercise(exName);
   const repType = parseRepType(plannedReps);
   const repLabel = repType === 'reps' ? 'Reps' : repType === 'secs' ? 'Secs' : repType === 'mins' ? 'Mins' : repType.toUpperCase();
@@ -3500,10 +3506,9 @@ function buildSetRows(exIdx, count, lastSets, exName, plannedReps) {
     const prevReps = lastSets&&lastSets[s] ? lastSets[s].reps : '';
     const prevWeight = lastSets&&lastSets[s] ? lastSets[s].weight : '';
     const prevRPE = lastSets&&lastSets[s] ? (lastSets[s].rpe||'') : '';
-    const sugWeight = suggested[s]||'';
-    // Use suggestion as placeholder when it differs from prevWeight (rep-adjusted) or there's no history
+    const sugWeight = noWeight ? '' : (suggested[s]||'');
     const weightPlaceholder = sugWeight ? sugWeight+' lb' : (prevWeight ? prevWeight+' lb' : 'lb');
-    const showSuggestion = !prevWeight && sugWeight && weightSuggestOn();
+    const showSuggestion = !noWeight && !prevWeight && sugWeight && weightSuggestOn();
     const inputVal = '';
     const plateDesc = (useBarbell&&sugWeight) ? describePlates(sugWeight) : '';
     const rpeButtons = [6,7,8,9,10].map(r=>{
@@ -3517,13 +3522,16 @@ function buildSetRows(exIdx, count, lastSets, exName, plannedReps) {
       +'<input type="number" placeholder="'+(prevReps||repLabel)+'" value="" min="1" id="sr-reps-'+exIdx+'-'+s+'" style="width:68px;margin-top:2px;" />'
       +(repType !== 'reps' ? '<span style="font-size:10px;color:var(--text3);font-family:monospace;margin-top:2px;">'+repType+'</span>' : '')
       +'</div>'
-      +'<div style="display:flex;flex-direction:column;gap:2px;flex-shrink:0;">'
-      +'<div style="display:flex;align-items:center;gap:4px;">'
-      +'<input type="number" placeholder="'+weightPlaceholder+'" value="" min="0" id="sr-weight-'+exIdx+'-'+s+'" style="width:88px" oninput="updatePlateHint('+exIdx+','+s+',this.value,'+useBarbell+')" />'
-      +(showSuggestion?'<button type="button" class="suggest-use-btn" onclick="useSuggested('+exIdx+','+s+','+sugWeight+','+useBarbell+')" title="Use suggested"><span style="font-size:10px;color:var(--accent);white-space:nowrap;font-family:monospace;">'+(isFirstTime?'~':'')+sugWeight+'lb</span></button>':'')
-      +'</div>'
-      +'<div id="plate-hint-'+exIdx+'-'+s+'" style="font-size:10px;color:var(--text3);font-family:monospace;min-height:13px;padding-left:2px;'+(platesOn()?'':'display:none;')+'">'+(platesOn()?(showSuggestion&&plateDesc?plateDesc:(inputVal&&useBarbell?describePlates(parseFloat(inputVal)):'')):'')+'</div>'
-      +'</div>'
+      +(noWeight
+        ? '<input type="hidden" id="sr-weight-'+exIdx+'-'+s+'" value="0" />'
+        : '<div style="display:flex;flex-direction:column;gap:2px;flex-shrink:0;">'
+          +'<div style="display:flex;align-items:center;gap:4px;">'
+          +'<input type="number" placeholder="'+weightPlaceholder+'" value="" min="0" id="sr-weight-'+exIdx+'-'+s+'" style="width:88px" oninput="updatePlateHint('+exIdx+','+s+',this.value,'+useBarbell+')" />'
+          +(showSuggestion?'<button type="button" class="suggest-use-btn" onclick="useSuggested('+exIdx+','+s+','+sugWeight+','+useBarbell+')" title="Use suggested"><span style="font-size:10px;color:var(--accent);white-space:nowrap;font-family:monospace;">'+(isFirstTime?'~':'')+sugWeight+'lb</span></button>':'')
+          +'</div>'
+          +'<div id="plate-hint-'+exIdx+'-'+s+'" style="font-size:10px;color:var(--text3);font-family:monospace;min-height:13px;padding-left:2px;'+(platesOn()?'':'display:none;')+'">'+(platesOn()?(showSuggestion&&plateDesc?plateDesc:(inputVal&&useBarbell?describePlates(parseFloat(inputVal)):'')):'')+'</div>'
+          +'</div>'
+      )
       +'<div class="wli-rpe-block">'
       +'<div style="display:flex;align-items:center;gap:2px;">'+rpeButtons+'</div>'
       +'<div style="font-size:10px;color:var(--text3);font-family:monospace;padding-left:2px;">target RPE '+targetRPE+'</div>'
