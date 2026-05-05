@@ -237,6 +237,19 @@
   #wt-tbody td:nth-child(3) { text-align: right; font-family: monospace; font-size: 12px; padding-right: 10px; }
   #wt-tbody td:last-child { text-align: right; }
 
+  /* Recipe cards (read-only view) */
+  .recipe-card { background: var(--surface2); border: 1px solid var(--border); border-radius: var(--radius-lg); margin-bottom: 10px; overflow: hidden; }
+  .recipe-card-header { display: flex; align-items: center; gap: 12px; padding: 14px 16px; cursor: pointer; user-select: none; }
+  .recipe-card-header:hover { background: #1e1e1e; }
+  .recipe-card-name { font-size: 14px; font-weight: 500; color: var(--text); flex: 1; }
+  .recipe-card-macros { display: flex; gap: 10px; font-size: 11px; font-family: monospace; }
+  .recipe-card-meta { font-size: 11px; font-family: monospace; color: var(--text3); white-space: nowrap; }
+  .recipe-card-body { display: none; padding: 0 16px 16px; border-top: 1px solid var(--border); }
+  .recipe-card.open .recipe-card-body { display: block; }
+  .recipe-card.open .recipe-chevron { transform: rotate(90deg); }
+  .recipe-chevron { font-size: 10px; color: var(--text3); transition: transform 0.2s; }
+  .recipe-log-row { display: flex; align-items: center; gap: 8px; margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--border); flex-wrap: wrap; }
+
   @media (max-width: 700px) {
     .sidebar { display: none; }
     .mobile-nav { display: block; }
@@ -295,6 +308,10 @@
     <div class="nav-item" onclick="showPage('weight', this)">
       <svg class="nav-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 2a4 4 0 0 1 4 4c0 3-4 8-4 8S4 9 4 6a4 4 0 0 1 4-4z"/><circle cx="8" cy="6" r="1.5" fill="currentColor" stroke="none"/></svg>
       Weight
+    </div>
+    <div class="nav-item" onclick="showPage('recipes', this)">
+      <svg class="nav-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 2h8a1 1 0 011 1v10a1 1 0 01-1 1H4a1 1 0 01-1-1V3a1 1 0 011-1z"/><path d="M6 6h4M6 9h4M6 12h2"/></svg>
+      Recipes
     </div>
     <div class="nav-section">Settings</div>
     <div class="nav-item" onclick="showPage('goals', this)">
@@ -739,6 +756,15 @@
       </div>
     </div>
 
+    <!-- RECIPES PAGE -->
+    <div class="page" id="page-recipes">
+      <div class="page-header">
+        <div class="page-title">Recipes</div>
+        <div class="page-sub">Log saved recipes to today's calories</div>
+      </div>
+      <div id="cal-recipe-list"><div style="text-align:center;padding:40px 0;font-size:13px;color:var(--text3);font-family:monospace;">No recipes yet — create them in Meal Planner</div></div>
+    </div>
+
   </main>
 </div>
 
@@ -752,6 +778,10 @@
     <button class="mobile-nav-item" data-page="weight" onclick="showPage('weight',this)">
       <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 2a4 4 0 0 1 4 4c0 3-4 8-4 8S4 9 4 6a4 4 0 0 1 4-4z"/><circle cx="8" cy="6" r="1.5" fill="currentColor" stroke="none"/></svg>
       Weight
+    </button>
+    <button class="mobile-nav-item" data-page="recipes" onclick="showPage('recipes',this)">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 2h8a1 1 0 011 1v10a1 1 0 01-1 1H4a1 1 0 01-1-1V3a1 1 0 011-1z"/><path d="M6 6h4M6 9h4M6 12h2"/></svg>
+      Recipes
     </button>
     <button class="mobile-nav-item" data-page="goals" onclick="showPage('goals',this)">
       <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="8" r="3"/><circle cx="8" cy="8" r="6"/></svg>
@@ -836,6 +866,85 @@ function showPage(name, el) {
   const mobileBtn = document.querySelector('.mobile-nav-item[data-page="'+name+'"]');
   if (mobileBtn) mobileBtn.classList.add('active');
   if (name === 'weight') renderWeightPage();
+  if (name === 'recipes') renderRecipesPage();
+}
+
+function toggleCalRecipeCard(id) {
+  const el = document.getElementById('cal-recipe-card-' + id);
+  if (el) el.classList.toggle('open');
+}
+
+function renderRecipesPage() {
+  const el = document.getElementById('cal-recipe-list');
+  if (!el) return;
+  const recipes = state.recipes || [];
+  if (!recipes.length) {
+    el.innerHTML = '<div style="text-align:center;padding:40px 0;font-size:13px;color:var(--text3);font-family:monospace;">No recipes yet — create them in Meal Planner</div>';
+    return;
+  }
+  el.innerHTML = recipes.map(recipe => {
+    const tot = (recipe.ingredients || []).reduce((a, ing) => ({
+      cal: a.cal + ing.cal, p: a.p + ing.p, c: a.c + ing.c, f: a.f + ing.f
+    }), { cal:0, p:0, c:0, f:0 });
+    const srv = recipe.servings || 1;
+    const ps = { cal: Math.round(tot.cal/srv), p: Math.round(tot.p/srv*10)/10, c: Math.round(tot.c/srv*10)/10, f: Math.round(tot.f/srv*10)/10 };
+    const ingsHtml = (recipe.ingredients || []).map(ing =>
+      '<div style="display:flex;justify-content:space-between;align-items:center;padding:5px 0;border-bottom:1px solid var(--border);font-size:12px;">'
+      + '<span style="color:var(--text2);">' + ing.name + (ing.qty ? ' <span style="color:var(--text3);font-family:monospace;">' + ing.qty + (ing.unit ? ' ' + ing.unit : '') + '</span>' : '') + '</span>'
+      + '<span style="font-family:monospace;color:var(--text3);white-space:nowrap;margin-left:8px;">' + ing.cal + ' kcal</span>'
+      + '</div>'
+    ).join('');
+    return '<div class="recipe-card" id="cal-recipe-card-' + recipe.id + '">'
+      + '<div class="recipe-card-header" onclick="toggleCalRecipeCard(' + recipe.id + ')">'
+      +   '<div style="flex:1;min-width:0;">'
+      +     '<div class="recipe-card-name">' + recipe.name + '</div>'
+      +     '<div style="display:flex;align-items:center;gap:12px;margin-top:5px;flex-wrap:wrap;">'
+      +       '<div class="recipe-card-macros"><span style="color:var(--accent)">' + ps.cal + ' kcal</span><span style="color:var(--blue)">' + ps.p + 'p</span><span style="color:var(--amber)">' + ps.c + 'c</span><span style="color:var(--red)">' + ps.f + 'f</span><span style="font-size:10px;color:var(--text3);font-family:monospace;">/srv</span></div>'
+      +       '<span class="recipe-card-meta">' + srv + ' srv &middot; ' + (recipe.ingredients || []).length + ' ing</span>'
+      +     '</div>'
+      +   '</div>'
+      +   '<span class="recipe-chevron">&#9658;</span>'
+      + '</div>'
+      + '<div class="recipe-card-body">'
+      +   (ingsHtml ? '<div style="margin-top:8px;">' + ingsHtml + '</div>' : '')
+      +   '<div class="recipe-log-row">'
+      +     '<span style="font-size:12px;color:var(--text3);">Servings:</span>'
+      +     '<input type="number" id="cal-log-srv-' + recipe.id + '" value="1" min="0.25" step="0.25" style="width:70px;" />'
+      +     '<button class="btn btn-accent btn-sm" id="cal-log-btn-' + recipe.id + '" onclick="logRecipeFromCalories(' + recipe.id + ')">Log to today</button>'
+      +   '</div>'
+      + '</div>'
+      + '</div>';
+  }).join('');
+}
+
+function logRecipeFromCalories(id) {
+  const recipe = (state.recipes || []).find(r => r.id === id);
+  if (!recipe) return;
+  const srvEl = document.getElementById('cal-log-srv-' + id);
+  const n = Math.max(0.25, parseFloat(srvEl ? srvEl.value : 1) || 1);
+  const tot = (recipe.ingredients || []).reduce((a, ing) => ({
+    cal: a.cal + ing.cal, p: a.p + ing.p, c: a.c + ing.c, f: a.f + ing.f
+  }), { cal:0, p:0, c:0, f:0 });
+  const srv = recipe.servings || 1;
+  const ps = { cal: tot.cal/srv, p: tot.p/srv, c: tot.c/srv, f: tot.f/srv };
+  if (!state.foods[currentDate]) state.foods[currentDate] = [];
+  state.foods[currentDate].push({
+    id: Date.now() + Math.random(),
+    name: recipe.name + (n !== 1 ? ' (' + n + ' srv)' : ''),
+    cal: Math.round(ps.cal * n),
+    p:   Math.round(ps.p   * n * 10) / 10,
+    c:   Math.round(ps.c   * n * 10) / 10,
+    f:   Math.round(ps.f   * n * 10) / 10,
+  });
+  recordRecentFood({ name: recipe.name, cal: Math.round(ps.cal), p: Math.round(ps.p*10)/10, c: Math.round(ps.c*10)/10, f: Math.round(ps.f*10)/10 });
+  save();
+  const btn = document.getElementById('cal-log-btn-' + id);
+  if (btn) {
+    const orig = btn.textContent;
+    btn.textContent = 'Logged!';
+    btn.disabled = true;
+    setTimeout(() => { btn.textContent = orig; btn.disabled = false; }, 2000);
+  }
 }
 
 function changeDay(delta) {

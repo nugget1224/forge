@@ -2489,7 +2489,7 @@ const EXERCISE_MET = {
   'overhead tricep extension':3.5,'face pull':3.0,'face pull (rope)':3.0,
   'ez bar curl':3.5,'barbell curl':3.5,'dumbbell curl':3.0,'hammer curl':3.0,
   'incline dumbbell curl':3.0,'leg curl':3.5,'leg extension':3.5,
-  'standing calf raise':3.0,'seated calf raise':3.0,'plank':3.5,
+  'standing calf raise':3.0,'seated calf raise':3.0,'plank':3.5,'dead hang':2.5,
 };
 
 // Cardio MET values (by intensity)
@@ -2839,6 +2839,7 @@ const EXERCISE_LINKS = {
   'cable crunch':'https://www.youtube.com/results?search_query=cable+crunch+form+tutorial',
   'hanging leg raise':'https://www.youtube.com/results?search_query=hanging+leg+raise+form+tutorial',
   'hanging knee raise':'https://www.youtube.com/results?search_query=hanging+knee+raise+form+tutorial',
+  'dead hang':'https://www.youtube.com/results?search_query=dead+hang+exercise+benefits+tutorial',
   'decline crunch':'https://www.youtube.com/results?search_query=decline+crunch+form+tutorial',
   'crunch':'https://www.youtube.com/results?search_query=crunch+proper+form+tutorial',
   'sit-up':'https://www.youtube.com/results?search_query=sit+up+proper+form+tutorial',
@@ -2994,6 +2995,7 @@ const SPLITS = {
       {name:'Lateral raise',sets:3,reps:'15–20',note:'Side delt'},
       {name:'Tricep pushdown',sets:3,reps:'12–15',note:''},
       {name:'Plank',sets:3,reps:'30–60secs',note:'Full body tension, no hips sagging'},
+      {name:'Dead hang',sets:3,reps:'20–45secs',note:'Decompress the spine, build grip'},
     ]},
     { day:'Tuesday', type:'Pull', exercises:[
       {name:'Deadlift',sets:4,reps:'4–6',note:'Primary posterior chain'},
@@ -3002,6 +3004,7 @@ const SPLITS = {
       {name:'Face pull',sets:3,reps:'15–20',note:'Shoulder health'},
       {name:'Barbell curl',sets:3,reps:'10–12',note:''},
       {name:'Ab wheel rollout',sets:3,reps:'8–10',note:'Brace hard, slow eccentric'},
+      {name:'Dead hang',sets:3,reps:'20–45secs',note:'Decompress the spine, build grip'},
     ]},
     { day:'Thursday', type:'Push', exercises:[
       {name:'Barbell bench press',sets:4,reps:'8–12',note:'Volume day'},
@@ -3010,6 +3013,7 @@ const SPLITS = {
       {name:'Cable lateral raise',sets:4,reps:'15–20',note:''},
       {name:'Overhead tricep extension',sets:3,reps:'12–15',note:'Long head'},
       {name:'Pallof press',sets:3,reps:'10–12',note:'Anti-rotation, hold 1s at extension'},
+      {name:'Dead hang',sets:3,reps:'20–45secs',note:'Decompress the spine, build grip'},
     ]},
     { day:'Friday', type:'Pull', exercises:[
       {name:'Romanian deadlift',sets:3,reps:'8–10',note:'Hamstring focus'},
@@ -3018,6 +3022,7 @@ const SPLITS = {
       {name:'Dumbbell lateral raise',sets:3,reps:'15–20',note:''},
       {name:'Hammer curl',sets:3,reps:'12–15',note:'Brachialis focus'},
       {name:'Dead bug',sets:3,reps:'8–10',note:'Exhale at extension, keep lower back flat'},
+      {name:'Dead hang',sets:3,reps:'20–45secs',note:'Decompress the spine, build grip'},
     ]},
   ],
   ppl6: [
@@ -3364,7 +3369,7 @@ function isBarbell(exName) {
 function isBodyweightOnly(exName) {
   const n = (exName||'').toLowerCase();
   if (n.includes('weighted')) return false;
-  return ['plank','dead bug','hollow body','ab wheel','glute bridge','hanging knee raise','burpee','mountain climber','flutter kick','l-sit','v-sit'].some(p => n.includes(p));
+  return ['plank','dead bug','hollow body','ab wheel','glute bridge','hanging knee raise','dead hang','burpee','mountain climber','flutter kick','l-sit','v-sit'].some(p => n.includes(p));
 }
 function snapToBarbell(rawWeight) {
   if (rawWeight <= BAR_WEIGHT) return BAR_WEIGHT;
@@ -3594,11 +3599,20 @@ function addSetRow(exIdx) {
   const prevWeight = prevWeightEl ? (prevWeightEl.value||prevWeightEl.placeholder) : 'lb';
   const prevRepsEl = document.getElementById('sr-reps-'+exIdx+'-'+(current-1));
   const prevRepsHint = prevRepsEl ? (prevRepsEl.value||prevRepsEl.placeholder) : 'Reps';
+  const s = current;
+  const rpeButtons = [6,7,8,9,10].map(r=>{
+    const cls = rpeClass(r);
+    return '<button type="button" class="rpe-btn '+cls+'" id="rpe-'+exIdx+'-'+s+'-'+r+'" onclick="selectRPE('+exIdx+','+s+','+r+')" title="RPE '+r+'">'+r+'</button>';
+  }).join('');
   const newRow = document.createElement('div');
-  newRow.className='set-row'; newRow.id='set-row-'+exIdx+'-'+current;
-  newRow.innerHTML='<span class="set-num">set '+(current+1)+'</span>'
-    +'<input type="number" placeholder="'+prevRepsHint+'" value="" min="1" id="sr-reps-'+exIdx+'-'+current+'" style="width:75px" />'
-    +'<input type="number" placeholder="'+prevWeight+'" value="" min="0" id="sr-weight-'+exIdx+'-'+current+'" style="width:90px" />';
+  newRow.className='set-row'; newRow.id='set-row-'+exIdx+'-'+s;
+  newRow.innerHTML='<span class="set-num">set '+(s+1)+'</span>'
+    +'<input type="number" placeholder="'+prevRepsHint+'" value="" min="1" id="sr-reps-'+exIdx+'-'+s+'" style="width:75px" />'
+    +'<input type="number" placeholder="'+prevWeight+'" value="" min="0" id="sr-weight-'+exIdx+'-'+s+'" style="width:90px" />'
+    +'<div class="wli-rpe-block">'
+    +'<div style="display:flex;align-items:center;gap:2px;">'+rpeButtons+'</div>'
+    +'<div style="font-size:10px;color:var(--text3);font-family:monospace;padding-left:2px;">target RPE 8</div>'
+    +'</div>';
   container.appendChild(newRow);
 }
 function removeSetRow(exIdx) {

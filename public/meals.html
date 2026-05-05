@@ -536,13 +536,13 @@
 <!-- Mobile bottom tab bar -->
 <nav class="mobile-nav">
   <div class="mobile-nav-inner">
-    <button class="mobile-nav-item active" id="mob-tab-new" onclick="showTab('new')">
-      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="8" y1="3" x2="8" y2="13"/><line x1="3" y1="8" x2="13" y2="8"/></svg>
-      New
-    </button>
     <button class="mobile-nav-item" id="mob-tab-library" onclick="showTab('library')">
       <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 2h8a1 1 0 011 1v10a1 1 0 01-1 1H4a1 1 0 01-1-1V3a1 1 0 011-1z"/><path d="M6 6h4M6 9h4M6 12h2"/></svg>
       Recipes
+    </button>
+    <button class="mobile-nav-item" id="mob-tab-new" onclick="showTab('new')">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="8" y1="3" x2="8" y2="13"/><line x1="3" y1="8" x2="13" y2="8"/></svg>
+      New
     </button>
     <button class="mobile-nav-item" id="mob-tab-grocery" onclick="showTab('grocery')">
       <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 2h2l2.5 7h7l1.5-5H6"/><circle cx="7" cy="13" r="1"/><circle cx="12" cy="13" r="1"/></svg>
@@ -2182,6 +2182,7 @@ load().then(() => {
   currentDate = todayStr();
   document.getElementById('sidebar-date').textContent = formatDate(currentDate);
   renderRecipes();
+  if (window.innerWidth <= 700) showTab('library');
 });
 </script>
 </body>
