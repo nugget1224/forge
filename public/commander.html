@@ -274,7 +274,7 @@ textarea { resize: vertical; }
           <div id="commander-printing-row" style="display:none;margin-top:8px;min-width:200px;">
             <div class="form-label">Printing</div>
             <div id="commander-printing-loading" style="font-size:11px;color:var(--text3);font-family:monospace;margin-bottom:4px;">Loading…</div>
-            <select id="commander-printing-select" style="width:100%;font-size:12px;display:none;" onchange="onCommanderPrintingChange()"></select>
+            <div id="commander-printing-grid" class="print-grid" style="display:none;"></div>
           </div>
         </div>
       </div>
@@ -329,13 +329,9 @@ textarea { resize: vertical; }
           </div>
         </div>
         <div id="printing-row" style="display:none;margin-top:8px;">
-          <div style="display:flex;align-items:center;gap:10px;">
-            <div class="form-label" style="margin:0;white-space:nowrap;">Printing</div>
-            <div style="flex:1;">
-              <div id="printing-loading" style="font-size:11px;color:var(--text3);font-family:monospace;">Loading…</div>
-              <select id="printing-select" style="width:100%;font-size:12px;display:none;" onchange="onPrintingChange()"></select>
-            </div>
-          </div>
+          <div class="form-label" style="margin-bottom:6px;">Printing</div>
+          <div id="printing-loading" style="font-size:11px;color:var(--text3);font-family:monospace;">Loading…</div>
+          <div id="printing-grid" class="print-grid" style="display:none;"></div>
         </div>
       </div>
 
@@ -501,6 +497,38 @@ function printingOptionLabel(p) {
   return '[' + p.set.toUpperCase() + '] ' + p.set_name + ' #' + p.collector_number + (year ? ' (' + year + ')' : '');
 }
 
+// ── Printing grid helper ───────────────────────────────────────────────────────
+function buildPrintingGridInto(container, printings, selectedIdx, mkOnclick) {
+  container.innerHTML = printings.map((p, i) => {
+    const imgSmall  = p.image_uris ? p.image_uris.small  : (p.card_faces && p.card_faces[0].image_uris ? p.card_faces[0].image_uris.small  : '');
+    const imgNormal = p.image_uris ? p.image_uris.normal : (p.card_faces && p.card_faces[0].image_uris ? p.card_faces[0].image_uris.normal : '');
+    const year  = p.released_at ? p.released_at.slice(0, 4) : '';
+    const label = p.set.toUpperCase() + ' #' + p.collector_number;
+    const title = '[' + p.set.toUpperCase() + '] ' + p.set_name + ' #' + p.collector_number + (year ? ' (' + year + ')' : '');
+    const sel   = i === selectedIdx ? ' print-opt-sel' : '';
+    const imgHtml = imgSmall
+      ? '<img src="' + imgSmall.replace(/"/g, '&quot;') + '" onerror="this.replaceWith(Object.assign(document.createElement(\'div\'),{className:\'print-opt-placeholder\',textContent:\'' + p.set.toUpperCase().replace(/'/g, '') + '\'}))"/>'
+      : '<div class="print-opt-placeholder">' + p.set.toUpperCase() + '</div>';
+    return '<div class="print-opt' + sel + '" title="' + title.replace(/"/g, '&quot;') + '"'
+      + (imgNormal ? ' data-img="' + imgNormal.replace(/"/g, '&quot;') + '"' : '')
+      + ' onclick="' + mkOnclick(i) + '">'
+      + imgHtml + '<div class="print-opt-label">' + label + '</div></div>';
+  }).join('');
+  container.querySelectorAll('.print-opt[data-img]').forEach(opt => {
+    let t;
+    opt.addEventListener('mouseenter', e => {
+      clearTimeout(t);
+      t = setTimeout(() => {
+        document.getElementById('card-hover-img').src = opt.dataset.img;
+        document.getElementById('card-hover-preview').style.display = 'block';
+        positionPreview(e.clientX, e.clientY);
+      }, 120);
+    });
+    opt.addEventListener('mousemove', e => positionPreview(e.clientX, e.clientY));
+    opt.addEventListener('mouseleave', () => { clearTimeout(t); hideCardPreview(); });
+  });
+}
+
 // ── In-deck printing editor ────────────────────────────────────────────────────
 const _pickerPrintings = {}; // pickerId → raw Scryfall printings array
 
@@ -542,40 +570,8 @@ async function openCardPrinting(btn) {
     const idx = rawPrintings.findIndex(p => p.id === card.scryfallId);
     if (idx >= 0) selectedIdx = idx;
   }
-  el.innerHTML = '<div class="print-grid">'
-    + rawPrintings.map((p, i) => {
-        const imgSmall = p.image_uris ? p.image_uris.small
-          : (p.card_faces && p.card_faces[0].image_uris ? p.card_faces[0].image_uris.small : '');
-        const imgNormal = p.image_uris ? p.image_uris.normal
-          : (p.card_faces && p.card_faces[0].image_uris ? p.card_faces[0].image_uris.normal : '');
-        const year = p.released_at ? p.released_at.slice(0, 4) : '';
-        const label = p.set.toUpperCase() + ' #' + p.collector_number;
-        const title = '[' + p.set.toUpperCase() + '] ' + p.set_name + ' #' + p.collector_number + (year ? ' (' + year + ')' : '');
-        const sel = i === selectedIdx ? ' print-opt-sel' : '';
-        const imgHtml = imgSmall
-          ? '<img src="' + imgSmall.replace(/"/g, '&quot;') + '" onerror="this.replaceWith(Object.assign(document.createElement(\'div\'),{className:\'print-opt-placeholder\',textContent:\'' + p.set.toUpperCase().replace(/'/g, '') + '\'}))"/>'
-          : '<div class="print-opt-placeholder">' + p.set.toUpperCase() + '</div>';
-        return '<div class="print-opt' + sel + '" title="' + title.replace(/"/g, '&quot;') + '"'
-          + (imgNormal ? ' data-img="' + imgNormal.replace(/"/g, '&quot;') + '"' : '')
-          + ' onclick="applyCardPrinting(' + deckId + ',\'' + safeJs + '\',' + i + ')">'
-          + imgHtml
-          + '<div class="print-opt-label">' + label + '</div>'
-          + '</div>';
-      }).join('')
-    + '</div>';
-  el.querySelectorAll('.print-opt[data-img]').forEach(opt => {
-    let t;
-    opt.addEventListener('mouseenter', e => {
-      clearTimeout(t);
-      t = setTimeout(() => {
-        document.getElementById('card-hover-img').src = opt.dataset.img;
-        document.getElementById('card-hover-preview').style.display = 'block';
-        positionPreview(e.clientX, e.clientY);
-      }, 120);
-    });
-    opt.addEventListener('mousemove', e => positionPreview(e.clientX, e.clientY));
-    opt.addEventListener('mouseleave', () => { clearTimeout(t); hideCardPreview(); });
-  });
+  el.innerHTML = '<div class="print-grid"></div>';
+  buildPrintingGridInto(el.querySelector('.print-grid'), rawPrintings, selectedIdx, i => 'applyCardPrinting(' + deckId + ',\'' + safeJs + '\',' + i + ')');
 }
 
 function applyCardPrinting(deckId, cardName, idxStr) {
@@ -634,47 +630,46 @@ function applyCardCategory(deckId, cardName, newCategory) {
 
 async function loadCardPrintingOptions(name) {
   if (!name) return;
-  const row = document.getElementById('printing-row');
-  const sel = document.getElementById('printing-select');
+  const row     = document.getElementById('printing-row');
+  const grid    = document.getElementById('printing-grid');
   const loading = document.getElementById('printing-loading');
   row.style.display = '';
-  sel.style.display = 'none';
+  grid.style.display = 'none';
   loading.style.display = '';
   loading.textContent = 'Loading printings…';
   _cardPrintings = await scryfallPrintings(name);
   if (!_cardPrintings.length) { loading.textContent = 'No printings found'; return; }
-  sel.innerHTML = _cardPrintings.map((p, i) => '<option value="' + i + '">' + printingOptionLabel(p) + '</option>').join('');
   _selectedCardPrinting = printingFromCard(_cardPrintings[0]);
-  sel.value = '0';
-  sel.style.display = '';
   loading.style.display = 'none';
+  grid.style.display = '';
+  buildPrintingGridInto(grid, _cardPrintings, 0, i => 'selectFormPrinting(' + i + ')');
   const raw = _cardPrintings[0];
   const typeLine = raw.type_line || (raw.card_faces && raw.card_faces[0] && raw.card_faces[0].type_line) || '';
   const autoCategory = categoryFromTypeLine(typeLine);
   if (autoCategory) document.getElementById('card-category').value = autoCategory;
 }
 
-function onPrintingChange() {
-  const sel = document.getElementById('printing-select');
-  const idx = parseInt(sel.value);
-  _selectedCardPrinting = (!isNaN(idx) && _cardPrintings[idx]) ? printingFromCard(_cardPrintings[idx]) : null;
+function selectFormPrinting(idx) {
+  _selectedCardPrinting = _cardPrintings[idx] ? printingFromCard(_cardPrintings[idx]) : null;
+  document.querySelectorAll('#printing-grid .print-opt').forEach((el, i) => {
+    el.classList.toggle('print-opt-sel', i === idx);
+  });
 }
 
 async function loadCommanderPrintingOptions(name) {
   if (!name) return;
-  const row = document.getElementById('commander-printing-row');
-  const sel = document.getElementById('commander-printing-select');
+  const row     = document.getElementById('commander-printing-row');
+  const grid    = document.getElementById('commander-printing-grid');
   const loading = document.getElementById('commander-printing-loading');
   row.style.display = '';
-  sel.style.display = 'none';
+  grid.style.display = 'none';
   loading.style.display = '';
   loading.textContent = 'Loading printings…';
   _commanderPrintings = await scryfallPrintings(name);
   if (!_commanderPrintings.length) { loading.textContent = 'No printings found'; return; }
-  sel.innerHTML = _commanderPrintings.map((p, i) => '<option value="' + i + '">' + printingOptionLabel(p) + '</option>').join('');
-  sel.value = '0';
-  sel.style.display = '';
   loading.style.display = 'none';
+  grid.style.display = '';
+  buildPrintingGridInto(grid, _commanderPrintings, 0, i => 'selectCommanderPrinting(' + i + ')');
   if (_commanderPrintings[0] && _pendingCommander) {
     const p = printingFromCard(_commanderPrintings[0]);
     _pendingCommander.imageUri = p.imageUri;
@@ -687,19 +682,19 @@ async function loadCommanderPrintingOptions(name) {
   }
 }
 
-function onCommanderPrintingChange() {
-  const sel = document.getElementById('commander-printing-select');
-  const idx = parseInt(sel.value);
-  if (!isNaN(idx) && _commanderPrintings[idx] && _pendingCommander) {
-    const p = printingFromCard(_commanderPrintings[idx]);
-    _pendingCommander.imageUri = p.imageUri;
-    _pendingCommander.set = p.set;
-    if (p.imageUri) {
-      document.getElementById('commander-img').src = p.imageUri;
-      document.getElementById('commander-img').style.display = '';
-      document.getElementById('commander-img-placeholder').style.display = 'none';
-    }
+function selectCommanderPrinting(idx) {
+  if (!_commanderPrintings[idx] || !_pendingCommander) return;
+  const p = printingFromCard(_commanderPrintings[idx]);
+  _pendingCommander.imageUri = p.imageUri;
+  _pendingCommander.set = p.set;
+  if (p.imageUri) {
+    document.getElementById('commander-img').src = p.imageUri;
+    document.getElementById('commander-img').style.display = '';
+    document.getElementById('commander-img-placeholder').style.display = 'none';
   }
+  document.querySelectorAll('#commander-printing-grid .print-opt').forEach((el, i) => {
+    el.classList.toggle('print-opt-sel', i === idx);
+  });
 }
 
 // ── Card hover preview ─────────────────────────────────────────────────────────
@@ -1310,8 +1305,9 @@ function resetForm() {
   document.getElementById('commander-img').style.display = 'none';
   document.getElementById('commander-img-placeholder').style.display = '';
   document.getElementById('commander-printing-row').style.display = 'none';
-  document.getElementById('commander-printing-select').innerHTML = '';
+  document.getElementById('commander-printing-grid').innerHTML = '';
   document.getElementById('printing-row').style.display = 'none';
+  document.getElementById('printing-grid').innerHTML = '';
   document.getElementById('deck-form-title').textContent = 'New deck';
   document.getElementById('save-deck-btn').textContent = 'Save deck';
   document.getElementById('cancel-edit-btn').style.display = 'none';

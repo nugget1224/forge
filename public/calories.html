@@ -370,19 +370,21 @@
       </div>
 
       <div class="section">
-        <div class="section-head">
+        <div class="section-head" style="cursor:pointer;" onclick="toggleAddFood()">
           <div class="section-title">Add food</div>
-          <div style="display:flex;gap:6px;">
-            <button class="btn btn-ghost btn-sm" onclick="toggleBarcode()" id="barcode-toggle-btn">
+          <div style="display:flex;gap:6px;align-items:center;">
+            <button class="btn btn-ghost btn-sm" onclick="event.stopPropagation();toggleBarcode()" id="barcode-toggle-btn">
               <svg style="width:13px;height:13px;display:inline;vertical-align:middle;margin-right:4px;" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1" y="3" width="2" height="10"/><rect x="4" y="3" width="1" height="10"/><rect x="6" y="3" width="2" height="10"/><rect x="9" y="3" width="1" height="10"/><rect x="11" y="3" width="1" height="10"/><rect x="13" y="3" width="2" height="10"/></svg>
               Barcode
             </button>
-            <button class="btn btn-ghost btn-sm" onclick="toggleScanner()" id="scan-toggle-btn">
+            <button class="btn btn-ghost btn-sm" onclick="event.stopPropagation();toggleScanner()" id="scan-toggle-btn">
               <svg style="width:13px;height:13px;display:inline;vertical-align:middle;margin-right:4px;" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="4" width="12" height="9" rx="1"/><circle cx="8" cy="8.5" r="2.5"/><path d="M5 4V3a1 1 0 011-1h4a1 1 0 011 1v1"/></svg>
               Scan meal
             </button>
+            <svg id="add-food-chevron" style="width:14px;height:14px;color:var(--text3);flex-shrink:0;transition:transform 0.2s;" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4,6 8,10 12,6"/></svg>
           </div>
         </div>
+        <div id="add-food-body">
 
         <!-- CAMERA SCAN PANEL -->
         <div id="scan-panel" style="display:none;margin-bottom:12px;">
@@ -550,6 +552,7 @@
             </div>
           </div>
         </div>
+        </div><!-- /add-food-body -->
       </div>
 
       <div class="section">
@@ -958,6 +961,13 @@ function goToday() { currentDate = todayStr(); renderCalories(); }
 // ── BARCODE SCANNER ────────────────────────────────────────────────────────────
 let barcodeStream = null;
 let barcodeDetectorInterval = null;
+let _addFoodMinimized = false;
+
+function toggleAddFood() {
+  _addFoodMinimized = !_addFoodMinimized;
+  document.getElementById('add-food-body').style.display = _addFoodMinimized ? 'none' : '';
+  document.getElementById('add-food-chevron').style.transform = _addFoodMinimized ? 'rotate(-90deg)' : '';
+}
 
 function toggleBarcode() {
   const panel = document.getElementById('barcode-panel');
@@ -971,6 +981,7 @@ function toggleBarcode() {
     document.getElementById('scan-panel').style.display = 'none';
     document.getElementById('scan-toggle-btn').style.borderColor = '';
     document.getElementById('scan-toggle-btn').style.color = '';
+    startBarcodeCamera();
   }
 }
 
@@ -1278,10 +1289,13 @@ function fillFoodForm(food) {
   setV('food-name', food.name);
   const isPer100g = !!food.per100g;
   _foodBase = { cal: food.cal, p: food.p||0, c: food.c||0, f: food.f||0, per100g: isPer100g };
-  setV('food-amount', isPer100g ? 100 : 1);
+  setV('food-cal', food.cal);
+  setV('food-p',   food.p   || 0);
+  setV('food-c',   food.c   || 0);
+  setV('food-f',   food.f   || 0);
+  setV('food-amount', '');
   const unitEl = document.getElementById('food-unit');
   if (unitEl) unitEl.value = isPer100g ? 'g' : 'serving';
-  scaleFoodMacros();
   hideFoodAC();
 }
 
@@ -1805,7 +1819,8 @@ function renderWeightPage() {
       function trendSlope(entries) {
         if (entries.length < 2) return null;
         const n = entries.length;
-        const xs = entries.map((_, i) => i);
+        const t0 = new Date(entries[0].date + 'T00:00:00').getTime();
+        const xs = entries.map(e => (new Date(e.date + 'T00:00:00').getTime() - t0) / 86400000);
         const ys = entries.map(e => e.weight);
         const mx = xs.reduce((a, x) => a + x, 0) / n;
         const my = ys.reduce((a, y) => a + y, 0) / n;
