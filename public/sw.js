@@ -1,4 +1,4 @@
-const CACHE = 'forge-v27';
+const CACHE = 'forge-v28';
 const SHELL = [
   '/',
   '/calories.html',
@@ -34,15 +34,20 @@ self.addEventListener('fetch', e => {
     return;
   }
 
-  // HTML pages: network first, fall back to cache when offline
+  // HTML pages: stale-while-revalidate — serve cache instantly, refresh in background
   const isHTML = url.pathname === '/' || url.pathname.endsWith('.html');
   if (isHTML) {
     e.respondWith(
-      fetch(e.request).then(resp => {
-        const clone = resp.clone();
-        caches.open(CACHE).then(c => c.put(e.request, clone));
-        return resp;
-      }).catch(() => caches.match(e.request))
+      caches.open(CACHE).then(cache =>
+        cache.match(e.request).then(cached => {
+          const networkFetch = fetch(e.request).then(resp => {
+            cache.put(e.request, resp.clone());
+            return resp;
+          }).catch(() => null);
+          // Return cached instantly if available; otherwise wait for network
+          return cached || networkFetch;
+        })
+      )
     );
     return;
   }
