@@ -217,6 +217,26 @@
   .split-days { font-size: 11px; font-family: 'DM Mono', monospace; color: var(--accent); margin-bottom: 7px; }
   .split-desc { font-size: 12px; color: var(--text2); line-height: 1.5; margin-bottom: 10px; }
   .split-tags { display: flex; gap: 6px; flex-wrap: wrap; }
+
+  /* Plan builder */
+  .muscle-tabs { display: flex; gap: 5px; flex-wrap: wrap; margin-bottom: 10px; }
+  .muscle-tab { padding: 4px 11px; border-radius: 20px; border: 1px solid var(--border2); background: transparent; color: var(--text3); font-size: 11px; font-family: 'DM Mono', monospace; cursor: pointer; transition: all 0.12s; white-space: nowrap; }
+  .muscle-tab:hover:not(.active) { color: var(--text2); border-color: var(--border2); }
+  .muscle-tab.active { background: var(--surface2); color: var(--text); border-color: var(--accent); }
+  .ex-browser { display: flex; flex-wrap: wrap; gap: 5px; max-height: 152px; overflow-y: auto; padding: 2px 0 6px; }
+  .ex-chip { display: inline-flex; align-items: center; gap: 3px; padding: 3px 6px 3px 10px; background: var(--surface2); border: 1px solid var(--border); border-radius: 20px; font-size: 12px; color: var(--text2); transition: border-color 0.1s; }
+  .ex-chip.in-plan { border-color: var(--accent); color: var(--text); }
+  .ex-chip-add { background: none; border: none; color: var(--accent); cursor: pointer; font-size: 16px; line-height: 1; padding: 0 2px; font-weight: 300; }
+  .ex-chip-add:hover { color: var(--accent2); }
+  .plan-ex-row { display: flex; flex-direction: column; gap: 4px; padding: 8px 0; border-bottom: 1px solid var(--border); }
+  .plan-ex-row:last-child { border-bottom: none; }
+  .plan-ex-row-top { display: flex; align-items: center; gap: 6px; min-width: 0; }
+  .plan-ex-row-bot { display: flex; align-items: center; gap: 6px; }
+  .plan-ex-name { flex: 1; min-width: 0; font-size: 13px; color: var(--text); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .plan-ex-qty { display: flex; align-items: center; gap: 5px; flex-wrap: nowrap; }
+  .plan-ex-num { width: 52px !important; min-width: 0 !important; font-size: 12px !important; padding: 5px 7px !important; text-align: center; box-sizing: border-box; }
+  .plan-ex-sep { font-size: 11px; color: var(--text3); white-space: nowrap; }
+  .plan-ex-day { font-size: 12px !important; padding: 5px 6px !important; width: auto !important; flex-shrink: 0; }
   .stag { font-size: 10px; font-family: 'DM Mono', monospace; padding: 2px 8px; border-radius: 20px; }
   .stag-blue { background: var(--blue-dim); color: var(--blue); }
   .stag-green { background: var(--accent-dim); color: var(--accent); }
@@ -829,6 +849,44 @@
       <div class="page-header">
         <div class="page-title">Workout plan</div>
         <div class="page-sub">Load a suggested split or build your own</div>
+      </div>
+
+      <!-- MY PLANS -->
+      <div class="section">
+        <div class="section-head">
+          <div class="section-title">My plans</div>
+          <button class="btn btn-accent btn-sm" onclick="openPlanBuilder()">+ New plan</button>
+        </div>
+        <div id="custom-plans-list"></div>
+      </div>
+
+      <!-- PLAN BUILDER -->
+      <div class="section" id="plan-builder" style="display:none;">
+        <div class="section-head" style="margin-bottom:14px;">
+          <div class="section-title" id="plan-builder-title">New plan</div>
+          <button class="btn btn-ghost btn-sm" onclick="closePlanBuilder()">Cancel</button>
+        </div>
+
+        <div style="margin-bottom:16px;">
+          <div style="font-size:11px;color:var(--text3);font-family:'DM Mono',monospace;margin-bottom:4px;text-transform:uppercase;letter-spacing:.05em;">Plan name</div>
+          <input type="text" id="plan-name-input" placeholder="e.g. My Push / Pull / Legs" style="width:100%;max-width:360px;" />
+        </div>
+
+        <div style="font-size:11px;color:var(--text3);font-family:'DM Mono',monospace;text-transform:uppercase;letter-spacing:.05em;margin-bottom:7px;">Browse by muscle group</div>
+        <div class="muscle-tabs" id="muscle-tabs"></div>
+        <div class="ex-browser" id="ex-browser"></div>
+
+        <div style="margin-top:16px;margin-bottom:8px;display:flex;align-items:center;gap:8px;">
+          <div style="font-size:11px;color:var(--text3);font-family:'DM Mono',monospace;text-transform:uppercase;letter-spacing:.05em;">Exercises in plan</div>
+          <span id="plan-ex-count" style="font-size:11px;color:var(--text2);font-family:'DM Mono',monospace;"></span>
+        </div>
+        <div id="plan-ex-list" style="margin-bottom:16px;"></div>
+
+        <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+          <button class="btn btn-accent" onclick="savePlan()">Save plan</button>
+          <button class="btn btn-ghost btn-sm" onclick="closePlanBuilder()">Cancel</button>
+          <div id="plan-save-status" style="display:none;font-size:12px;font-family:'DM Mono',monospace;"></div>
+        </div>
       </div>
 
       <!-- SUGGESTED SPLITS -->
@@ -1485,6 +1543,8 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <script>
+const DAYS = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
+
 let reorderMode = false;
 let state = {
   foods: {},
@@ -1492,6 +1552,7 @@ let state = {
   sessions: [],
   weightLog: [],
   recipes: [],        // each recipe: { id, name, servings, ingredients[], instructions, notes }
+  customPlans: [],
   goals: { cal:2000, p:150, c:200, f:65 },
   bio: { age:'', sex:'male', ft:'', in:'', weight:'', activity:'1.55', goal:'1.0' }
 };
@@ -1540,10 +1601,11 @@ async function load() {
   }
 
   // Ensure required arrays/objects exist even if this is a fresh install
-  if (!state.weightLog)   state.weightLog   = [];
-  if (!state.recentFoods) state.recentFoods = [];
-  if (!state.savedFoods)  state.savedFoods  = [];
-  if (!state.recipes)     state.recipes     = [];
+  if (!state.weightLog)    state.weightLog    = [];
+  if (!state.recentFoods)  state.recentFoods  = [];
+  if (!state.savedFoods)   state.savedFoods   = [];
+  if (!state.recipes)      state.recipes      = [];
+  if (!state.customPlans)  state.customPlans  = [];
   if (!state.bio) state.bio = { age:'', sex:'male', ft:'', in:'', weight:'', activity:'1.55', goal:'1.0' };
 
   // Populate the Goals form inputs with stored values
@@ -2586,7 +2648,6 @@ function removeExercise(id) {
   openDays.forEach(day=>{ const el=document.getElementById('wd-'+day); if(el) el.classList.add('open'); });
 }
 function renderWorkout() {
-  const DAYS = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
   const typeClass = {Push:'badge-push',Pull:'badge-pull',Legs:'badge-legs',Other:'badge-other'};
   const container = document.getElementById('workout-schedule');
   container.innerHTML = DAYS.map(day => {
@@ -2956,6 +3017,214 @@ function getReplacements(name) {
   return EXERCISE_REPLACEMENTS[(name||'').toLowerCase()] || [];
 }
 
+// ── Plan builder data ──────────────────────────────────────────────────────────
+const EXERCISE_BY_MUSCLE = {
+  'Chest':               ['Barbell bench press','Incline barbell press','Incline dumbbell press','Dumbbell bench press','Cable fly','Cable fly (low to high)','Pec deck / cable fly','Push-up','Push-up (weighted)','Close-grip bench press','Decline bench press','Decline dumbbell press','Cable chest press','Machine chest press','Dumbbell fly','Incline dumbbell fly','Cable crossover','Dip (chest)','Smith machine bench press'],
+  'Shoulders':           ['Barbell OHP','Seated OHP','Dumbbell OHP','Seated dumbbell overhead press','Lateral raise','Cable lateral raise','Dumbbell lateral raise','Arnold press','Machine shoulder press','Smith machine OHP','Rear delt fly','Cable rear delt fly','Face pull','Face pull (rope)','Band face pull','Front raise','Machine lateral raise','Leaning lateral raise','Upright row'],
+  'Triceps':             ['Tricep pushdown','Tricep pushdown (rope)','Overhead tricep extension','Skull crusher','Dip (tricep)','Dip (bench)','Cable tricep kickback','Dumbbell tricep kickback','Tricep machine press','Diamond push-up'],
+  'Back':                ['Deadlift','Barbell row','Pendlay row','Pull-up / lat pulldown','Weighted pull-up','Lat pulldown','Seated cable row','Single-arm dumbbell row','Trap bar deadlift','Rack pull','Sumo deadlift','T-bar row','Chest-supported row','Cable row (single arm)','Straight-arm pulldown','Cable pullover','Dumbbell pullover','Assisted pull-up','Chin-up','Inverted row','Meadows row','Close-grip pulldown','Shrug','Dumbbell shrug'],
+  'Biceps':              ['EZ bar curl','Barbell curl','Dumbbell curl','Hammer curl','Incline dumbbell curl','Preacher curl','Concentration curl','Cable curl','Cable curl (low pulley)','Cable hammer curl','Reverse curl','Cross-body hammer curl','Zottman curl','Spider curl','Machine curl'],
+  'Quads':               ['Barbell back squat','Leg press','Walking lunge','Leg extension','Front squat','Goblet squat','Belt squat','Hack squat (machine)','Hack squat / leg press','Bulgarian split squat','Reverse lunge','Step-up','Sissy squat','Smith machine squat'],
+  'Hamstrings & Glutes': ['Romanian deadlift','Leg curl','Good morning','Nordic curl','Glute-ham raise','Hip thrust','Dumbbell hip thrust','Glute bridge','Cable kickback','Adductor machine','Abductor machine','Stiff-leg deadlift'],
+  'Calves':              ['Standing calf raise','Seated calf raise','Donkey calf raise','Leg press calf raise','Single-leg calf raise'],
+  'Core':                ['Plank','Plank (side)','Ab wheel rollout','Dead bug','Pallof press','Cable crunch','Hanging leg raise','Hanging knee raise','Dead hang','Decline crunch','Crunch','Sit-up','Bicycle crunch','Russian twist','V-up','Leg raise (lying)','Hollow body hold','Dragon flag','Wood chop','Landmine rotation','Suitcase carry','Farmer carry'],
+  'Full Body':           ['Clean and press','Power clean','Hang clean','Push press','Thruster','Kettlebell swing','Kettlebell goblet squat','Kettlebell clean','Kettlebell press','Kettlebell snatch','Burpee','Box jump','Medicine ball slam'],
+  'Cardio':              ['Run','Treadmill run','Rowing machine','Cycling','Elliptical','Stair climber','Jump rope','Battle ropes','Assault bike','Ski erg','Swim','Sled push','Sled pull'],
+};
+
+function muscleToType(muscle) {
+  if (['Chest','Shoulders','Triceps'].includes(muscle)) return 'Push';
+  if (['Back','Biceps'].includes(muscle)) return 'Pull';
+  if (['Quads','Hamstrings & Glutes','Calves'].includes(muscle)) return 'Legs';
+  if (muscle === 'Cardio') return 'Cardio';
+  return 'Other';
+}
+
+let _builderPlan    = { name: '', exercises: [] };
+let _builderMuscle  = 'Chest';
+let _editingPlanId  = null;
+
+function escHtml(s) {
+  return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+// ── Custom plan CRUD ───────────────────────────────────────────────────────────
+function renderCustomPlans() {
+  const plans = state.customPlans || [];
+  const el = document.getElementById('custom-plans-list');
+  if (!el) return;
+  if (!plans.length) {
+    el.innerHTML = '<div style="font-size:12px;color:var(--text3);font-family:\'DM Mono\',monospace;padding:4px 0 2px;">No saved plans yet — click <b style="color:var(--text2);">+ New plan</b> to build one.</div>';
+    return;
+  }
+  el.innerHTML = '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:8px;">'
+    + plans.map(p => {
+        const usedDays = [...new Set(p.exercises.map(e => e.day))].sort((a,b) => DAYS.indexOf(a)-DAYS.indexOf(b));
+        const dayStr   = usedDays.map(d => d.slice(0,3)).join(' · ');
+        const safeId   = JSON.stringify(p.id);
+        return '<div class="split-card" style="position:relative;cursor:default;">'
+          + '<div style="position:absolute;top:8px;right:8px;display:flex;gap:4px;">'
+          +   '<button class="btn btn-ghost btn-sm" style="padding:2px 8px;font-size:11px;" onclick="openPlanBuilder('+safeId+')">Edit</button>'
+          +   '<button class="btn btn-ghost btn-sm" style="padding:2px 7px;font-size:11px;color:var(--red);border-color:var(--red-dim);" onclick="deleteCustomPlan('+safeId+')">✕</button>'
+          + '</div>'
+          + '<div class="split-name" style="padding-right:80px;">'+escHtml(p.name)+'</div>'
+          + '<div class="split-days">'+escHtml(dayStr)+'</div>'
+          + '<div class="split-desc">'+p.exercises.length+' exercise'+(p.exercises.length!==1?'s':'')+'</div>'
+          + '<button class="btn btn-accent btn-sm" style="width:100%;margin-top:4px;" onclick="loadCustomPlan('+safeId+')">Load plan</button>'
+          + '</div>';
+      }).join('')
+    + '</div>';
+}
+
+function loadCustomPlan(planId) {
+  const plan = (state.customPlans || []).find(p => p.id === planId);
+  if (!plan) return;
+  if (state.exercises.length && !confirm('Replace current schedule with "'+plan.name+'"?')) return;
+  state.exercises = plan.exercises.map(e => ({ ...e, id: Date.now() + Math.random() }));
+  save(); renderWorkout(); populateExSelects();
+  showPage('workout', document.querySelector('[data-page="workout"]'));
+  const confirmEl = document.getElementById('split-confirm');
+  if (confirmEl) {
+    confirmEl.textContent = '✓ "'+plan.name+'" loaded — '+plan.exercises.length+' exercises scheduled';
+    confirmEl.style.display = 'block';
+    setTimeout(() => confirmEl.style.display = 'none', 4000);
+  }
+  document.getElementById('workout-schedule').scrollIntoView({ behavior:'smooth', block:'start' });
+}
+
+function deleteCustomPlan(planId) {
+  const plan = (state.customPlans || []).find(p => p.id === planId);
+  if (!plan || !confirm('Delete "'+plan.name+'"?')) return;
+  state.customPlans = state.customPlans.filter(p => p.id !== planId);
+  save(); renderCustomPlans();
+}
+
+// ── Plan builder open / close ──────────────────────────────────────────────────
+function openPlanBuilder(planId) {
+  if (planId != null) {
+    const plan = (state.customPlans || []).find(p => p.id === planId);
+    if (!plan) return;
+    _editingPlanId = plan.id;
+    _builderPlan   = { name: plan.name, exercises: plan.exercises.map(e => ({...e})) };
+    document.getElementById('plan-builder-title').textContent = 'Edit plan';
+  } else {
+    _editingPlanId = null;
+    _builderPlan   = { name: '', exercises: [] };
+    document.getElementById('plan-builder-title').textContent = 'New plan';
+  }
+  _builderMuscle = 'Chest';
+  document.getElementById('plan-name-input').value = _builderPlan.name;
+  document.getElementById('plan-builder').style.display = '';
+  document.getElementById('plan-save-status').style.display = 'none';
+  renderBuilderMuscles();
+  renderBuilderBrowser();
+  renderBuilderList();
+  document.getElementById('plan-builder').scrollIntoView({ behavior:'smooth', block:'start' });
+}
+
+function closePlanBuilder() {
+  document.getElementById('plan-builder').style.display = 'none';
+  _editingPlanId = null;
+  _builderPlan   = { name: '', exercises: [] };
+}
+
+// ── Plan builder render helpers ────────────────────────────────────────────────
+function renderBuilderMuscles() {
+  document.getElementById('muscle-tabs').innerHTML = Object.keys(EXERCISE_BY_MUSCLE).map(m =>
+    '<button class="muscle-tab'+(m === _builderMuscle ? ' active' : '')+'" onclick="setBuilderMuscle(\''+m.replace(/'/g,"\\'")+'\')">'+ m +'</button>'
+  ).join('');
+}
+
+function setBuilderMuscle(m) {
+  _builderMuscle = m;
+  renderBuilderMuscles();
+  renderBuilderBrowser();
+}
+
+function renderBuilderBrowser() {
+  const list = EXERCISE_BY_MUSCLE[_builderMuscle] || [];
+  document.getElementById('ex-browser').innerHTML = list.map(name => {
+    const inPlan = _builderPlan.exercises.some(e => e.name.toLowerCase() === name.toLowerCase());
+    const safe   = name.replace(/'/g,"\\'");
+    return '<div class="ex-chip'+(inPlan?' in-plan':'')+'">'
+      + '<span>'+escHtml(name)+'</span>'
+      + (inPlan
+          ? '<span style="font-size:11px;color:var(--accent);padding:0 4px;">✓</span>'
+          : '<button class="ex-chip-add" onclick="addExToPlan(\''+safe+'\')" title="Add to plan">+</button>')
+      + '</div>';
+  }).join('');
+}
+
+function addExToPlan(name) {
+  _builderPlan.exercises.push({
+    name,
+    sets: 3,
+    reps: '10',
+    day:  DAYS[0],
+    type: muscleToType(_builderMuscle),
+  });
+  renderBuilderBrowser();
+  renderBuilderList();
+}
+
+function removeExFromPlan(idx) {
+  _builderPlan.exercises.splice(idx, 1);
+  renderBuilderBrowser();
+  renderBuilderList();
+}
+
+function updateBuilderEx(idx, field, value) {
+  if (!_builderPlan.exercises[idx]) return;
+  _builderPlan.exercises[idx][field] = field === 'sets' ? (parseInt(value)||1) : value;
+}
+
+function renderBuilderList() {
+  const exs  = _builderPlan.exercises;
+  const list  = document.getElementById('plan-ex-list');
+  const count = document.getElementById('plan-ex-count');
+  if (count) count.textContent = exs.length ? '(' + exs.length + ')' : '';
+  if (!exs.length) {
+    list.innerHTML = '<div style="font-size:12px;color:var(--text3);font-family:\'DM Mono\',monospace;padding:10px 0;">No exercises yet — pick a muscle group above and click + to add.</div>';
+    return;
+  }
+  list.innerHTML = exs.map((e, i) => {
+    const dayOpts = DAYS.map(d => '<option'+(d===e.day?' selected':'')+'>'+d+'</option>').join('');
+    return '<div class="plan-ex-row">'
+      + '<div class="plan-ex-row-top">'
+      +   '<span class="plan-ex-name" title="'+escHtml(e.name)+'">'+escHtml(e.name)+'</span>'
+      +   '<select class="plan-ex-day" onchange="updateBuilderEx('+i+',\'day\',this.value)">'+ dayOpts +'</select>'
+      +   '<button class="del" onclick="removeExFromPlan('+i+')" style="opacity:0.5;flex-shrink:0;" title="Remove">✕</button>'
+      + '</div>'
+      + '<div class="plan-ex-row-bot">'
+      +   '<div class="plan-ex-qty">'
+      +     '<input type="text" inputmode="numeric" class="plan-ex-num" value="'+e.sets+'" title="Sets" placeholder="Sets" onchange="updateBuilderEx('+i+',\'sets\',this.value)" />'
+      +     '<span class="plan-ex-sep">sets ×</span>'
+      +     '<input type="text" class="plan-ex-num" value="'+escHtml(String(e.reps))+'" title="Reps" placeholder="Reps" onchange="updateBuilderEx('+i+',\'reps\',this.value)" />'
+      +     '<span class="plan-ex-sep">reps</span>'
+      +   '</div>'
+      + '</div>'
+      + '</div>';
+  }).join('');
+}
+
+// ── Plan save ──────────────────────────────────────────────────────────────────
+function savePlan() {
+  const name = (document.getElementById('plan-name-input').value || '').trim();
+  const statusEl = document.getElementById('plan-save-status');
+  const showErr  = msg => { statusEl.textContent=msg; statusEl.style.color='var(--red)'; statusEl.style.display='block'; setTimeout(()=>statusEl.style.display='none',3000); };
+  if (!name)                       { showErr('Plan name is required.'); return; }
+  if (!_builderPlan.exercises.length) { showErr('Add at least one exercise.'); return; }
+  if (!state.customPlans) state.customPlans = [];
+  const plan = { id: _editingPlanId || Date.now(), name, exercises: _builderPlan.exercises.map(e=>({...e})) };
+  if (_editingPlanId) {
+    const idx = state.customPlans.findIndex(p => p.id === _editingPlanId);
+    if (idx >= 0) state.customPlans[idx] = plan; else state.customPlans.unshift(plan);
+  } else {
+    state.customPlans.unshift(plan);
+  }
+  save(); renderCustomPlans(); closePlanBuilder();
+}
+
 
 const SPLITS = {
   ppl3: [
@@ -3120,7 +3389,6 @@ function loadSplit(key) {
 
 function renderPickerModal() {
   if (!_pendingPlan) return;
-  const DAYS = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
   const TYPES = ['Push','Pull','Legs','Other','Cardio'];
   const typeClass = {Push:'badge-push',Pull:'badge-pull',Legs:'badge-legs',Other:'badge-other',Cardio:'badge-other'};
   document.getElementById('picker-rows').innerHTML = _pendingPlan.map((session, si) => {
@@ -3621,6 +3889,27 @@ function removeSetRow(exIdx) {
   if(rows.length>1) container.removeChild(rows[rows.length-1]);
 }
 
+function updateTodayExSets(exIdx, exId, newVal) {
+  const count = Math.max(1, parseInt(newVal) || 1);
+  const ex = state.exercises.find(e => e.id === exId);
+  if (!ex) return;
+  ex.sets = count;
+  save();
+  const lastSession = [...state.sessions].filter(s => s.exName === ex.name && s.date !== todayStr()).pop();
+  const lastSets = lastSession && lastSession.setData ? lastSession.setData : null;
+  const container = document.getElementById('set-rows-' + exIdx);
+  if (container) container.innerHTML = buildSetRows(exIdx, count, lastSets, ex.name, ex.reps);
+  const inp = document.getElementById('today-sets-' + exIdx);
+  if (inp) inp.value = count;
+}
+
+function updateTodayExReps(exIdx, exId, newVal) {
+  const ex = state.exercises.find(e => e.id === exId);
+  if (!ex) return;
+  ex.reps = newVal.trim() || ex.reps;
+  save();
+}
+
 // TODAY'S WORKOUT
 function getDayName() {
   return new Date().toLocaleDateString('en-US', { timeZone: getTz(), weekday: 'long' });
@@ -3702,7 +3991,12 @@ function renderTodaysWorkout() {
       +'<span class="day-type-badge '+(typeClass[ex.type]||'badge-other')+'">'+ex.type+'</span>'
       +(ex.type==='Cardio'
         ? '<span class="wli-planned">'+(ex.duration||ex.reps)+' min &middot; '+(ex.intensity||'moderate')+(ex.distance?' &middot; '+ex.distance+' mi':'')+'</span>'
-        : '<span class="wli-planned">'+ex.sets+'\xd7'+ex.reps+' planned</span>')
+        : '<span class="wli-planned" style="display:inline-flex;align-items:center;gap:3px;">'
+          +'<input type="text" inputmode="numeric" id="today-sets-'+i+'" value="'+ex.sets+'" onclick="event.stopPropagation()" onchange="updateTodayExSets('+i+','+ex.id+',this.value)" style="width:30px;padding:1px 4px;font-size:11px;font-family:\'DM Mono\',monospace;text-align:center;border-radius:4px;" />'
+          +'<span style="font-size:11px;color:var(--text3);">\xd7</span>'
+          +'<input type="text" id="today-reps-'+i+'" value="'+ex.reps+'" onclick="event.stopPropagation()" onchange="updateTodayExReps('+i+','+ex.id+',this.value)" style="width:42px;padding:1px 4px;font-size:11px;font-family:\'DM Mono\',monospace;text-align:center;border-radius:4px;" />'
+          +'<span style="font-size:11px;color:var(--text3);font-family:\'DM Mono\',monospace;">planned</span>'
+          +'</span>')
       +(isLogged ? chevron : '')
       +'</div>'
       +(isLogged?'<div class="wli-summary">'+loggedSummaryLine+'</div>':'')
@@ -5703,6 +5997,7 @@ function hideCardTagAC(recipeId) {
 // ─── END RECIPES ──────────────────────────────────────────────────────────────
 
 function renderAll() {
+  renderCustomPlans();
   renderWorkout();
   renderTodaysWorkout();
   renderProgress();
