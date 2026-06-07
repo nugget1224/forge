@@ -581,8 +581,13 @@ function formatDate(s) {
   return d.toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric'});
 }
 
+const CACHE_KEY = 'forge_state_v1';
+function saveLocalCache(s) { try { localStorage.setItem(CACHE_KEY, JSON.stringify(s)); } catch(e) {} }
+function loadLocalCache() { try { return JSON.parse(localStorage.getItem(CACHE_KEY)); } catch(e) { return null; } }
+
 let _saveTimer = null;
 function save() {
+  saveLocalCache(state);
   clearTimeout(_saveTimer);
   _saveTimer = setTimeout(() => {
     fetch('/api/state', {
@@ -599,9 +604,14 @@ async function load() {
     if (res.ok) {
       const parsed = await res.json();
       state = Object.assign(state, parsed);
+      saveLocalCache(state);
+    } else {
+      throw new Error('non-ok');
     }
   } catch(e) {
-    console.error('Load failed:', e);
+    const cached = loadLocalCache();
+    if (cached) { state = Object.assign(state, cached); console.warn('Server unreachable — loaded from local cache.'); }
+    else console.error('Load failed and no local cache available:', e);
   }
   if (!state.recipes)     state.recipes     = [];
   if (!state.recentFoods) state.recentFoods = [];

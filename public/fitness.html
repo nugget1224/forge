@@ -1569,11 +1569,15 @@ function formatDate(s) {
   return d.toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric'});
 }
 
-// Debounced save — waits 400ms after the last change before sending to the server.
-// This prevents hammering the server when many fields change in quick succession
-// (e.g. logging a full workout set).
+const CACHE_KEY = 'forge_state_v1';
+function saveLocalCache(s) { try { localStorage.setItem(CACHE_KEY, JSON.stringify(s)); } catch(e) {} }
+function loadLocalCache() { try { return JSON.parse(localStorage.getItem(CACHE_KEY)); } catch(e) { return null; } }
+
+// Debounced server sync; local cache is written immediately so a quick
+// tab-close or network failure never loses the last change.
 let _saveTimer = null;
 function save() {
+  saveLocalCache(state);
   clearTimeout(_saveTimer);
   _saveTimer = setTimeout(() => {
     fetch('/api/state', {
@@ -1585,7 +1589,7 @@ function save() {
 }
 
 // Async load — fetches the full state from the server on page load.
-// Falls back to defaults if the server has no data yet.
+// Falls back to local cache when the server is unreachable (e.g. poor cell).
 // Because this is async, renderAll() must be called inside the .then() chain
 // (see the bottom of the script).
 async function load() {
@@ -1595,9 +1599,18 @@ async function load() {
       const parsed = await res.json();
       // Merge server data on top of defaults so missing keys get safe values
       state = Object.assign(state, parsed);
+      saveLocalCache(state); // keep local cache in sync with server
+    } else {
+      throw new Error('non-ok');
     }
   } catch(e) {
-    console.error('Load failed — server may not be running:', e);
+    const cached = loadLocalCache();
+    if (cached) {
+      state = Object.assign(state, cached);
+      console.warn('Server unreachable — loaded from local cache.');
+    } else {
+      console.error('Load failed and no local cache available:', e);
+    }
   }
 
   // Ensure required arrays/objects exist even if this is a fresh install
