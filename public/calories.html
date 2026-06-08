@@ -821,12 +821,18 @@ function formatDate(s) {
 }
 
 const CACHE_KEY = 'forge_state_v1';
-function saveLocalCache(s) { try { localStorage.setItem(CACHE_KEY, JSON.stringify(s)); } catch(e) {} }
+function saveLocalCache(s) {
+  try { localStorage.setItem(CACHE_KEY, JSON.stringify(s)); } catch(e) {
+    try { localStorage.setItem(CACHE_KEY, JSON.stringify({ exercises:s.exercises, customPlans:s.customPlans, goals:s.goals, bio:s.bio, savedFoods:s.savedFoods, recentFoods:s.recentFoods, weightLog:s.weightLog, recipes:s.recipes })); } catch(e2) {}
+  }
+}
 function loadLocalCache() { try { return JSON.parse(localStorage.getItem(CACHE_KEY)); } catch(e) { return null; } }
 
+let _serverStateLoaded = false;
 let _saveTimer = null;
 function save() {
   saveLocalCache(state);
+  if (!_serverStateLoaded) return;
   clearTimeout(_saveTimer);
   _saveTimer = setTimeout(() => {
     fetch('/api/state', {
@@ -839,18 +845,22 @@ function save() {
 
 async function load() {
   try {
-    const res = await fetch('/api/state');
+    const ctrl = new AbortController();
+    const t = setTimeout(() => ctrl.abort(), 4000);
+    const res = await fetch('/api/state', { signal: ctrl.signal });
+    clearTimeout(t);
     if (res.ok) {
       const parsed = await res.json();
       state = Object.assign(state, parsed);
       saveLocalCache(state);
+      _serverStateLoaded = true;
     } else {
       throw new Error('non-ok');
     }
   } catch(e) {
     const cached = loadLocalCache();
-    if (cached) { state = Object.assign(state, cached); console.warn('Server unreachable — loaded from local cache.'); }
-    else console.error('Load failed and no local cache available:', e);
+    if (cached) { state = Object.assign(state, cached); _serverStateLoaded = false; console.warn('Loaded from local cache.'); }
+    else { _serverStateLoaded = false; console.error('Load failed, no local cache:', e); }
   }
   if (!state.weightLog)   state.weightLog   = [];
   if (!state.recentFoods) state.recentFoods = [];

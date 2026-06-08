@@ -127,6 +127,16 @@ textarea { resize: vertical; }
 .pending-category-badge { font-size: 10px; font-family: 'DM Mono', monospace; color: var(--text3); background: var(--surface2); border: 1px solid var(--border); border-radius: 4px; padding: 1px 5px; flex-shrink: 0; }
 .card-set-badge { font-size: 10px; font-family: 'DM Mono', monospace; color: var(--purple); background: var(--purple-dim); border: 1px solid #2a1a40; border-radius: 4px; padding: 1px 5px; flex-shrink: 0; cursor: pointer; }
 .card-set-badge:hover { border-color: var(--purple); }
+.card-price { font-size: 10px; font-family: 'DM Mono', monospace; color: var(--accent); flex-shrink: 0; opacity: 0.7; }
+.card-price-missing { color: var(--text3); }
+.card-foil-btn { background: none; border: 1px solid transparent; border-radius: 4px; padding: 1px 4px; font-size: 11px; color: var(--text3); cursor: pointer; flex-shrink: 0; opacity: 0; transition: opacity 0.1s, color 0.1s, border-color 0.1s; }
+.card-row:hover .card-foil-btn { opacity: 0.5; }
+.card-foil-btn:hover { opacity: 1 !important; color: var(--amber); }
+.card-foil-btn.foil { opacity: 1 !important; color: var(--amber); border-color: var(--amber-dim); background: var(--amber-dim); }
+.grid-foil-badge { position: absolute; top: 26px; left: 4px; background: rgba(255,201,107,0.85); color: #3a2000; font-size: 10px; font-family: 'DM Mono', monospace; border-radius: 3px; padding: 1px 4px; line-height: 1.5; }
+.deck-total { font-size: 11px; font-family: 'DM Mono', monospace; color: var(--accent); }
+.settings-row { display: flex; flex-direction: column; gap: 6px; margin-bottom: 18px; }
+.settings-label { font-size: 11px; font-family: 'DM Mono', monospace; color: var(--text3); text-transform: uppercase; letter-spacing: .06em; }
 .card-set-dim { color: var(--text3); background: transparent; border-color: var(--border); opacity: 0; }
 .card-row:hover .card-set-dim { opacity: 0.6; }
 .card-set-dim:hover { opacity: 1 !important; color: var(--text2); }
@@ -134,7 +144,7 @@ textarea { resize: vertical; }
 .card-row:hover .card-cat-badge { opacity: 0.7; }
 .card-cat-badge:hover { opacity: 1 !important; color: var(--text2); border-color: var(--border2); }
 .card-printing-inline { padding: 2px 6px 8px 26px; }
-.print-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(64px, 1fr)); gap: 5px; padding: 4px 0; max-height: 340px; overflow-y: auto; }
+.print-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(var(--grid-min, 64px), 1fr)); gap: 5px; padding: 4px 0; max-height: 340px; overflow-y: auto; }
 .print-opt { cursor: pointer; border-radius: 6px; padding: 2px; border: 2px solid transparent; transition: border-color 0.1s, background 0.1s; }
 .print-opt:hover { border-color: var(--border2); background: var(--surface2); }
 .print-opt-sel { border-color: var(--accent) !important; }
@@ -159,12 +169,16 @@ textarea { resize: vertical; }
 .view-btn { padding: 3px 8px; border: 1px solid transparent; background: transparent; color: var(--text3); font-size: 11px; font-family: 'DM Mono', monospace; border-radius: 5px; cursor: pointer; transition: background 0.12s, color 0.12s; }
 .view-btn.active { background: var(--surface2); color: var(--text); border-color: var(--border2); }
 .view-btn:hover:not(.active) { color: var(--text2); }
-.grid-cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 6px; margin-bottom: 4px; }
+.grid-cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(var(--grid-min, 100px), 1fr)); gap: 6px; margin-bottom: 4px; }
+.grid-scale-slider { width: 72px; accent-color: var(--purple); cursor: pointer; vertical-align: middle; }
 .grid-card { position: relative; border-radius: 7px; overflow: hidden; aspect-ratio: 5/7; background: var(--surface2); cursor: default; }
 .grid-card img { width: 100%; height: 100%; object-fit: cover; border-radius: 7px; display: block; transition: opacity 0.3s; }
 .grid-card-overlay { position: absolute; inset: 0; background: transparent; border-radius: 7px; display: flex; flex-direction: column; justify-content: flex-end; padding: 5px; opacity: 0; transition: opacity 0.15s, background 0.15s; pointer-events: none; }
 .grid-card:hover .grid-card-overlay { background: rgba(0,0,0,0.65); opacity: 1; }
 .grid-card-name { font-size: 9px; color: #fff; font-family: 'DM Mono', monospace; line-height: 1.3; text-shadow: 0 1px 3px rgba(0,0,0,0.9); word-break: break-word; }
+.grid-foil-toggle { pointer-events: auto; margin-top: 3px; align-self: flex-start; background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.15); border-radius: 3px; color: var(--text3); font-size: 9px; font-family: 'DM Mono', monospace; padding: 1px 5px; cursor: pointer; line-height: 1.4; transition: color 0.12s, border-color 0.12s; }
+.grid-foil-toggle:hover { color: var(--amber); border-color: rgba(255,201,107,0.5); }
+.grid-foil-toggle.foil { color: var(--amber); border-color: rgba(255,201,107,0.5); background: rgba(60,35,0,0.6); }
 .grid-qty-badge { position: absolute; top: 4px; left: 4px; background: rgba(0,0,0,0.75); color: #fff; font-size: 10px; font-family: 'DM Mono', monospace; border-radius: 3px; padding: 1px 5px; line-height: 1.5; }
 .grid-card-remove { position: absolute; top: 4px; right: 4px; background: rgba(0,0,0,0.6); color: var(--red); border: none; border-radius: 50%; width: 18px; height: 18px; display: flex; align-items: center; justify-content: center; font-size: 13px; cursor: pointer; opacity: 0; transition: opacity 0.15s; padding: 0; line-height: 1; }
 .grid-card:hover .grid-card-remove { opacity: 0.8; pointer-events: auto; }
@@ -222,6 +236,7 @@ textarea { resize: vertical; }
   <div class="tabs">
     <button class="tab-btn active" id="tab-library" onclick="showTab('library')">My Decks</button>
     <button class="tab-btn" id="tab-build" onclick="showTab('build')">Build / Edit</button>
+    <button class="tab-btn" id="tab-settings" onclick="showTab('settings')">Settings</button>
   </div>
 
   <!-- LIBRARY TAB -->
@@ -369,6 +384,36 @@ textarea { resize: vertical; }
       <div id="deck-save-status" style="display:none;font-size:12px;font-family:monospace;"></div>
     </div>
   </div>
+
+  <!-- SETTINGS TAB -->
+  <div id="page-settings" style="display:none;">
+    <div class="section">
+      <div class="section-title" style="margin-bottom:14px;">Price</div>
+
+      <div class="settings-row">
+        <div class="settings-label">Source</div>
+        <select id="price-source-select" style="width:100%;max-width:360px;" onchange="setPriceSource(this.value)">
+          <option value="usd">USD — TCGPlayer (market)</option>
+          <option value="usd_foil">USD Foil — TCGPlayer</option>
+          <option value="usd_ck">USD — Card Kingdom</option>
+          <option value="eur">EUR — Cardmarket</option>
+          <option value="tix">MTGO Tickets</option>
+        </select>
+        <div style="font-size:12px;color:var(--text3);font-family:'DM Mono',monospace;">Prices are pulled from Scryfall and reflect the selected printing. Use the <b style="color:var(--text2);">$ Prices</b> button on each deck to fetch missing prices.</div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title" style="margin-bottom:14px;">Grid</div>
+      <div class="settings-row">
+        <div class="settings-label">Card size</div>
+        <div style="display:flex;align-items:center;gap:12px;">
+          <input type="range" min="60" max="200" step="10" id="grid-scale-global" style="width:200px;accent-color:var(--purple);" oninput="setGridScale(this.value);document.getElementById('grid-scale-val').textContent=this.value+'px'" />
+          <span id="grid-scale-val" style="font-size:12px;font-family:'DM Mono',monospace;color:var(--text3);min-width:36px;"></span>
+        </div>
+      </div>
+    </div>
+  </div>
 </main>
 
 <!-- Hover preview -->
@@ -414,8 +459,131 @@ let _selectedCardPrinting = null;
 let _cardPrintings = [];
 let _commanderPrintings = [];
 let _deckViewModes = {};
+let _gridScale = parseInt(localStorage.getItem('forge_grid_scale') || '100');
+function setGridScale(val) {
+  _gridScale = parseInt(val);
+  try { localStorage.setItem('forge_grid_scale', _gridScale); } catch(e) {}
+  document.documentElement.style.setProperty('--grid-min', _gridScale + 'px');
+}
 
 const CATEGORIES = ['Creatures','Instants','Sorceries','Enchantments','Artifacts','Planeswalkers','Lands','Ramp','Draw','Removal','Wipes','Protection','Win Conditions','Other'];
+
+// ── Pricing ────────────────────────────────────────────────────────────────────
+let _priceSource = localStorage.getItem('forge_price_source') || 'usd';
+
+function setPriceSource(val) {
+  _priceSource = val;
+  try { localStorage.setItem('forge_price_source', val); } catch(e) {}
+  const sel = document.getElementById('price-source-select');
+  if (sel) sel.value = val;
+  renderDecks();
+}
+
+function priceSymbol() {
+  if (_priceSource === 'eur') return '€';
+  if (_priceSource === 'tix') return '';
+  return '$';
+}
+
+function foilPriceSource() {
+  if (_priceSource === 'eur') return 'eur_foil';
+  if (_priceSource === 'usd' || _priceSource === 'usd_foil') return 'usd_foil';
+  return _priceSource; // tix and usd_ck have no distinct foil field
+}
+
+function getCardPrice(card) {
+  if (!card || !card.prices) return null;
+  const source = card.foil ? foilPriceSource() : _priceSource;
+  const v = card.prices[source];
+  return (v !== null && v !== undefined && v !== '') ? parseFloat(v) : null;
+}
+
+function toggleCardFoil(deckId, cardName) {
+  const deck = state.commanderDecks.find(d => d.id === deckId);
+  if (!deck) return;
+  const card = (deck.cards || []).find(c => c.name === cardName);
+  if (!card) return;
+  card.foil = !card.foil;
+  save();
+  setDeckView(deckId, _deckViewModes[deckId] || 'list');
+}
+
+async function fetchCKPricesForDeck(deckId) {
+  const deck = state.commanderDecks.find(d => d.id === deckId);
+  if (!deck) return;
+  const btn = document.getElementById('fetch-prices-btn-' + deckId);
+  if (btn) { btn.textContent = 'Fetching CK…'; btn.disabled = true; }
+  const cards = deck.cards || [];
+  const names = cards.map(c => c.name);
+  try {
+    const r = await fetch('/api/ck-prices', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ names }),
+    });
+    const result = await r.json();
+    if (!r.ok) throw new Error(result.error || 'CK fetch failed');
+    for (const card of cards) {
+      const price = result[card.name];
+      if (price !== null && price !== undefined) {
+        if (!card.prices) card.prices = {};
+        card.prices.usd_ck = String(price);
+      }
+    }
+    save();
+    setDeckView(deckId, _deckViewModes[deckId] || 'list');
+  } catch(e) {
+    if (btn) { btn.textContent = '$ Prices'; btn.disabled = false; }
+    alert('Card Kingdom price fetch failed: ' + e.message + '\n\nThe CK catalog endpoint may be unavailable or have changed.');
+  }
+}
+
+function formatPrice(val) {
+  if (val === null || val === undefined) return null;
+  if (_priceSource === 'tix') return val.toFixed(2) + ' tix';
+  return priceSymbol() + val.toFixed(2);
+}
+
+function getDeckTotal(deck) {
+  const cards = deck.cards || [];
+  let total = 0, priced = 0, unpriced = 0;
+  cards.forEach(c => {
+    const p = getCardPrice(c);
+    if (p !== null) { total += p * (c.qty || 1); priced++; }
+    else unpriced++;
+  });
+  return { total, priced, unpriced };
+}
+
+async function fetchDeckPrices(deckId) {
+  if (_priceSource === 'usd_ck') { fetchCKPricesForDeck(deckId); return; }
+  const deck = state.commanderDecks.find(d => d.id === deckId);
+  if (!deck) return;
+  const btn = document.getElementById('fetch-prices-btn-' + deckId);
+  if (btn) { btn.textContent = 'Fetching…'; btn.disabled = true; }
+  const cards = deck.cards || [];
+  const identifiers = cards.map(c => c.scryfallId ? { id: c.scryfallId } : { name: c.name });
+  for (let i = 0; i < identifiers.length; i += 75) {
+    try {
+      const r = await fetch('https://api.scryfall.com/cards/collection', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ identifiers: identifiers.slice(i, i + 75) }),
+      });
+      if (!r.ok) continue;
+      const data = await r.json();
+      for (const sc of (data.data || [])) {
+        const card = cards.find(c => c.scryfallId === sc.id || c.name.toLowerCase() === sc.name.toLowerCase());
+        if (card && sc.prices) {
+          card.prices = sc.prices;
+          if (!card.scryfallId) card.scryfallId = sc.id;
+        }
+      }
+    } catch(e) {}
+  }
+  save();
+  setDeckView(deckId, _deckViewModes[deckId] || 'list');
+}
 
 function categoryFromTypeLine(typeLine) {
   const t = (typeLine || '').toLowerCase();
@@ -431,18 +599,28 @@ function categoryFromTypeLine(typeLine) {
 
 // ── Persistence ────────────────────────────────────────────────────────────────
 const CACHE_KEY = 'forge_state_v1';
-function saveLocalCache(s) { try { localStorage.setItem(CACHE_KEY, JSON.stringify(s)); } catch(e) {} }
+function saveLocalCache(s) {
+  try { localStorage.setItem(CACHE_KEY, JSON.stringify(s)); } catch(e) {
+    try { localStorage.setItem(CACHE_KEY, JSON.stringify({ exercises:s.exercises, customPlans:s.customPlans, goals:s.goals, bio:s.bio, savedFoods:s.savedFoods, recentFoods:s.recentFoods, weightLog:s.weightLog, recipes:s.recipes, commanderDecks:s.commanderDecks })); } catch(e2) {}
+  }
+}
 function loadLocalCache() { try { return JSON.parse(localStorage.getItem(CACHE_KEY)); } catch(e) { return null; } }
+
+let _serverStateLoaded = false;
 
 async function load() {
   try {
-    const r = await fetch('/api/state');
+    const ctrl = new AbortController();
+    const t = setTimeout(() => ctrl.abort(), 4000);
+    const r = await fetch('/api/state', { signal: ctrl.signal });
+    clearTimeout(t);
     if (!r.ok) throw new Error('non-ok');
     state = await r.json();
     saveLocalCache(state);
+    _serverStateLoaded = true;
   } catch {
     const cached = loadLocalCache();
-    if (cached) { state = cached; console.warn('Server unreachable — loaded from local cache.'); }
+    if (cached) { state = cached; _serverStateLoaded = false; console.warn('Loaded from local cache.'); }
   }
   if (!state.commanderDecks) state.commanderDecks = [];
   renderDecks();
@@ -450,6 +628,7 @@ async function load() {
 
 async function save() {
   saveLocalCache(state);
+  if (!_serverStateLoaded) return;
   await fetch('/api/state', { method: 'PUT', headers: {'Content-Type':'application/json'}, body: JSON.stringify(state) });
 }
 
@@ -499,7 +678,7 @@ async function scryfallPrintings(name) {
 function printingFromCard(p) {
   const img = p.image_uris ? p.image_uris.normal
     : (p.card_faces && p.card_faces[0].image_uris ? p.card_faces[0].image_uris.normal : null);
-  return { set: p.set, setName: p.set_name, collectorNumber: p.collector_number, scryfallId: p.id, imageUri: img };
+  return { set: p.set, setName: p.set_name, collectorNumber: p.collector_number, scryfallId: p.id, imageUri: img, prices: p.prices || null };
 }
 
 function printingOptionLabel(p) {
@@ -600,6 +779,7 @@ function applyCardPrinting(deckId, cardName, idxStr) {
   card.collectorNumber = printing.collectorNumber;
   card.scryfallId = printing.scryfallId;
   card.imageUri = printing.imageUri;
+  if (printing.prices) card.prices = printing.prices;
   save();
   setDeckView(deckId, _deckViewModes[deckId] || 'list');
 }
@@ -794,10 +974,20 @@ async function importDeckFromUrl() {
 
 // ── Tabs ───────────────────────────────────────────────────────────────────────
 function showTab(name) {
-  document.getElementById('page-library').style.display = name === 'library' ? '' : 'none';
-  document.getElementById('page-build').style.display   = name === 'build'   ? '' : 'none';
+  document.getElementById('page-library').style.display  = name === 'library'  ? '' : 'none';
+  document.getElementById('page-build').style.display    = name === 'build'    ? '' : 'none';
+  document.getElementById('page-settings').style.display = name === 'settings' ? '' : 'none';
   document.getElementById('tab-library').classList.toggle('active', name === 'library');
   document.getElementById('tab-build').classList.toggle('active', name === 'build');
+  document.getElementById('tab-settings').classList.toggle('active', name === 'settings');
+  if (name === 'settings') {
+    const sel = document.getElementById('price-source-select');
+    if (sel) sel.value = _priceSource;
+    const slider = document.getElementById('grid-scale-global');
+    const label  = document.getElementById('grid-scale-val');
+    if (slider) slider.value = _gridScale;
+    if (label)  label.textContent = _gridScale + 'px';
+  }
   setMobTab(name);
 }
 
@@ -892,6 +1082,8 @@ function renderDeckHTML(deck) {
           + '<button class="card-set-badge' + (!c.set ? ' card-set-dim' : '') + '" data-row="' + rowId + '" data-deck="' + deck.id + '" data-card="' + safeAttr + '" onmouseenter="prefetchCardPrinting(+this.dataset.deck,this.dataset.card)" onclick="event.stopPropagation();openCardPrinting(this)" title="Change printing">'
           + (c.set ? c.set.toUpperCase() + ' #' + (c.collectorNumber || '') : 'ed.')
           + '</button>'
+          + '<button class="card-foil-btn' + (c.foil ? ' foil' : '') + '" onclick="event.stopPropagation();toggleCardFoil(' + deck.id + ',\'' + safeJs + '\')" title="' + (c.foil ? 'Remove foil' : 'Mark as foil') + '">✦</button>'
+          + (()=>{ const p=getCardPrice(c); const f=formatPrice(p); return f ? '<span class="card-price">'+(c.qty>1?c.qty+'×':'')+f+'</span>' : ''; })()
           + '<button class="card-remove" onclick="event.stopPropagation();removeCardFromDeck(' + deck.id + ',\'' + safeJs + '\')" title="Remove">×</button>'
           + '</div>';
       }).join('');
@@ -916,7 +1108,7 @@ function renderDeckHTML(deck) {
     + '<div style="flex:1;min-width:0;">'
     + '<div class="deck-name">' + deck.name + '</div>'
     + '<div class="deck-commander">' + (deck.commander || '—') + '</div>'
-    + '<div class="deck-meta"><div class="pips">' + colorPips(deck.colorIdentity) + '</div><span class="deck-count">' + totalWithCmd + '/100 cards</span></div>'
+    + (()=>{ const t=getDeckTotal(deck); const fmt=formatPrice(t.total); return '<div class="deck-meta"><div class="pips">'+colorPips(deck.colorIdentity)+'</div><span class="deck-count">'+totalWithCmd+'/100 cards</span>'+(fmt?'<span class="deck-total">'+fmt+(t.unpriced?' <span style="color:var(--text3);font-size:9px;">+'+t.unpriced+' unpriced</span>':'')+'</span>':'')+'</div>'; })()
     + '</div>'
     + '<span class="deck-chevron">&#9658;</span>'
     + '</div>'
@@ -924,9 +1116,11 @@ function renderDeckHTML(deck) {
     + '<div style="display:flex;gap:6px;padding:10px 0 4px;align-items:center;">'
     + '<button class="btn btn-ghost btn-sm" onclick="event.stopPropagation();editDeck(' + deck.id + ')">Edit</button>'
     + '<button class="btn btn-danger btn-sm" onclick="event.stopPropagation();deleteDeck(' + deck.id + ')">Delete</button>'
+    + '<button class="btn btn-ghost btn-sm" id="fetch-prices-btn-' + deck.id + '" onclick="event.stopPropagation();fetchDeckPrices(' + deck.id + ')" style="font-size:11px;" title="Fetch latest prices from Scryfall">$ Prices</button>'
     + '<div class="view-toggle">'
     + '<button class="view-btn' + (viewMode === 'list' ? ' active' : '') + '" onclick="event.stopPropagation();setDeckView(' + deck.id + ',\'list\')">≡ List</button>'
     + '<button class="view-btn' + (viewMode === 'grid' ? ' active' : '') + '" onclick="event.stopPropagation();setDeckView(' + deck.id + ',\'grid\')">⊞ Grid</button>'
+    + (viewMode === 'grid' ? '<input type="range" class="grid-scale-slider" min="60" max="200" step="10" value="' + _gridScale + '" onclick="event.stopPropagation()" oninput="event.stopPropagation();setGridScale(this.value)" title="Card size" />' : '')
     + '</div>'
     + '</div>'
     + bodyContent
@@ -942,8 +1136,12 @@ function renderGridCard(deckId, card) {
   return '<div class="grid-card" data-card="' + safeAttr + '"'
     + (card.imageUri ? ' data-card-img="' + card.imageUri.replace(/"/g, '&quot;') + '"' : '') + '>'
     + '<img src="' + imgSrc.replace(/"/g, '&quot;') + '" style="opacity:' + (imgSrc ? '1' : '0') + ';" />'
-    + '<div class="grid-card-overlay"><span class="grid-card-name">' + card.name + '</span></div>'
+    + '<div class="grid-card-overlay">'
+    +   '<span class="grid-card-name">' + card.name + '</span>'
+    +   '<button class="grid-foil-toggle' + (card.foil ? ' foil' : '') + '" onclick="event.stopPropagation();toggleCardFoil(' + deckId + ',\'' + safeJs + '\')" title="' + (card.foil ? 'Remove foil' : 'Mark as foil') + '">✦ ' + (card.foil ? 'foil' : 'foil?') + '</button>'
+    + '</div>'
     + (card.qty > 1 ? '<div class="grid-qty-badge">×' + card.qty + '</div>' : '')
+    + (card.foil ? '<div class="grid-foil-badge">✦</div>' : '')
     + '<button class="grid-card-remove" onclick="event.stopPropagation();removeCardFromDeck(' + deckId + ',\'' + safeJs + '\')" title="Remove">×</button>'
     + '</div>';
 }
@@ -1352,6 +1550,7 @@ function onACKeydown(event, dropdownId, selectFn) {
 }
 
 // ── Init ───────────────────────────────────────────────────────────────────────
+document.documentElement.style.setProperty('--grid-min', _gridScale + 'px');
 load();
 </script>
 </body>

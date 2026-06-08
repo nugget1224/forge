@@ -562,6 +562,10 @@
 </style>
 </head>
 <body>
+<div id="offline-banner" style="display:none;position:fixed;top:0;left:0;right:0;z-index:9999;background:#2a1e0a;border-bottom:1px solid var(--amber);padding:8px 16px;font-size:12px;font-family:'DM Mono',monospace;color:var(--amber);display:none;align-items:center;gap:10px;">
+  <span style="flex:1;">⚠ Server unreachable — showing cached data. Connect to Tailscale and <button onclick="location.reload()" style="background:none;border:none;color:var(--amber);font-family:inherit;font-size:inherit;cursor:pointer;text-decoration:underline;padding:0;">reload</button> to sync.</span>
+  <button onclick="document.getElementById('offline-banner').style.display='none'" style="background:none;border:none;color:var(--amber);font-size:14px;cursor:pointer;padding:0;line-height:1;">✕</button>
+</div>
 <div class="app">
   <nav class="sidebar">
     <div class="logo">
@@ -1570,14 +1574,31 @@ function formatDate(s) {
 }
 
 const CACHE_KEY = 'forge_state_v1';
-function saveLocalCache(s) { try { localStorage.setItem(CACHE_KEY, JSON.stringify(s)); } catch(e) {} }
+function saveLocalCache(s) {
+  const full = JSON.stringify(s);
+  try {
+    localStorage.setItem(CACHE_KEY, full);
+  } catch(e) {
+    // Quota exceeded — save only the fields that are painful to lose
+    try {
+      localStorage.setItem(CACHE_KEY, JSON.stringify({
+        exercises: s.exercises, customPlans: s.customPlans,
+        goals: s.goals, bio: s.bio,
+        savedFoods: s.savedFoods, recentFoods: s.recentFoods,
+        weightLog: s.weightLog, recipes: s.recipes,
+      }));
+    } catch(e2) {}
+  }
+}
 function loadLocalCache() { try { return JSON.parse(localStorage.getItem(CACHE_KEY)); } catch(e) { return null; } }
 
-// Debounced server sync; local cache is written immediately so a quick
-// tab-close or network failure never loses the last change.
+// Guard: only sync to server when state was actually loaded from it.
+// Prevents a failed/empty load from silently overwriting good server data.
+let _serverStateLoaded = false;
 let _saveTimer = null;
 function save() {
   saveLocalCache(state);
+  if (!_serverStateLoaded) return;
   clearTimeout(_saveTimer);
   _saveTimer = setTimeout(() => {
     fetch('/api/state', {
@@ -1588,18 +1609,17 @@ function save() {
   }, 400);
 }
 
-// Async load — fetches the full state from the server on page load.
-// Falls back to local cache when the server is unreachable (e.g. poor cell).
-// Because this is async, renderAll() must be called inside the .then() chain
-// (see the bottom of the script).
 async function load() {
   try {
-    const res = await fetch('/api/state');
+    const ctrl = new AbortController();
+    const t = setTimeout(() => ctrl.abort(), 4000);
+    const res = await fetch('/api/state', { signal: ctrl.signal });
+    clearTimeout(t);
     if (res.ok) {
       const parsed = await res.json();
-      // Merge server data on top of defaults so missing keys get safe values
       state = Object.assign(state, parsed);
-      saveLocalCache(state); // keep local cache in sync with server
+      saveLocalCache(state);
+      _serverStateLoaded = true;
     } else {
       throw new Error('non-ok');
     }
@@ -1607,9 +1627,13 @@ async function load() {
     const cached = loadLocalCache();
     if (cached) {
       state = Object.assign(state, cached);
-      console.warn('Server unreachable — loaded from local cache.');
+      _serverStateLoaded = false;
+      const b = document.getElementById('offline-banner');
+      if (b) b.style.display = 'flex';
     } else {
-      console.error('Load failed and no local cache available:', e);
+      _serverStateLoaded = false;
+      const b = document.getElementById('offline-banner');
+      if (b) { b.style.background='#2a1010'; b.style.borderColor='var(--red)'; b.style.color='var(--red)'; b.querySelector('span').innerHTML='✕ Server unreachable — no local cache. Connect to Tailscale and <button onclick="location.reload()" style="background:none;border:none;color:var(--red);font-family:inherit;font-size:inherit;cursor:pointer;text-decoration:underline;padding:0;">reload</button> to sync.'; b.style.display='flex'; }
     }
   }
 
