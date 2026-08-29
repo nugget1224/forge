@@ -116,6 +116,7 @@ select{border:0.5px solid var(--color-border-secondary);border-radius:var(--bord
 .pc-team-badge{font-size:10px;font-weight:500;padding:1px 5px;border-radius:3px;margin-left:auto;flex-shrink:0}
 .vor-b{font-size:10px;padding:1px 4px;border-radius:3px}
 .vpos{background:#0F6E3A;color:#fff}.vneg{background:#B92020;color:#fff}
+.adp-b{font-size:10px;padding:1px 4px;border-radius:3px;background:#5B4A6F;color:#fff}
 .heat-b{font-size:10px;padding:1px 4px;border-radius:3px}
 .hHOT{background:#C41515;color:#fff}.hWARM{background:#B86200;color:#fff}.hCOOL{background:#1A6B35;color:#fff}
 .pb{display:inline-block;font-size:11px;font-weight:500;padding:1px 5px;border-radius:3px}
@@ -405,20 +406,23 @@ function calcPts(s){
 }
 function ttd(s){return(s.rush_td||0)+(s.rec_td||0)+(s.pass_td||0)}
 
+const SEASON=2025;
+const DRAFT_SEASON=SEASON+1;
 let rawStats={},rawPlayers={};
-let allPlayers=[],filtered=[],weekCache={};
+let allPlayers=[],filtered=[],weekCache={},adpMap={};
 let teams=Array.from({length:N_TEAMS},(_,i)=>({id:i,name:TEAM_NAMES[i],picks:[]}));
 let draftedIds=new Set(),draftLog=[],activeTeam=0,viewedTeam=MY_TEAM;
 let draftOrder=Array.from({length:N_TEAMS},(_,i)=>i); // draftOrder[slot] = teamIdx
 let sortCol='ds',sortDir=-1,page=0,view='tiers',pendingPlayer=null;
 
 const WEIGHT_DEFS=[
-  {key:'vor',label:'Value over replacement',desc:'How far above the waiver-wire baseline this player scores.',color:'#534AB7',default:0.50},
-  {key:'scarcity',label:'Positional scarcity',desc:'How depleted the available pool is at this position league-wide.',color:'#0F6E56',default:0.20},
+  {key:'vor',label:'Value over replacement',desc:'How far above the waiver-wire baseline this player scores.',color:'#534AB7',default:0.40},
+  {key:'adp',label:'Market ADP',desc:'How early real drafters are taking this player this season — catches rookies, trades, and depth-chart moves last year\'s stats can\'t see.',color:'#9A3F5E',default:0.20},
+  {key:'scarcity',label:'Positional scarcity',desc:'How depleted the available pool is at this position league-wide.',color:'#0F6E56',default:0.15},
   {key:'leagueDemand',label:'League demand pressure',desc:'How urgently all 10 teams need players at this position right now.',color:'#BA7517',default:0.15},
-  {key:'myNeed',label:'My roster need',desc:'How badly your own team needs to fill this position.',color:'#185FA5',default:0.15},
+  {key:'myNeed',label:'My roster need',desc:'How badly your own team needs to fill this position.',color:'#185FA5',default:0.10},
 ];
-let weights={vor:0.50,scarcity:0.20,leagueDemand:0.15,myNeed:0.15};
+let weights={vor:0.40,adp:0.20,scarcity:0.15,leagueDemand:0.15,myNeed:0.10};
 
 const NFL_TEAMS={
   ARI:{pri:'#97233F',sec:'#FFB612',logo:'ARI'},
@@ -474,12 +478,43 @@ function playerCardHTML(p,rank){
         <div class="pc-bot">
           <span class="pc-pts">${p.pts.toFixed(1)}</span><span class="pc-sub">pts</span>
           <span class="vor-b ${vc}">VOR ${vs}</span>
+          <span class="adp-b">ADP ${p.adp!=null?p.adp.toFixed(1):'—'}</span>
           <span class="heat-b h${hl}">${hl}</span>
         </div>
         <span class="pc-team-badge" style="background:${tc.pri};color:#fff">${tc.logo}</span>
       </div>
     </div>
   </div>`;
+}
+
+function normalizeName(n){
+  let s=(n||'').toLowerCase();
+  s=s.replace(/[’']/g,'');
+  s=s.replace(/\./g,'');
+  s=s.replace(/-/g,' ');
+  s=s.replace(/\b(jr|sr|ii|iii|iv|v)\b/g,'');
+  s=s.replace(/[^a-z0-9\s]/g,'');
+  return s.replace(/\s+/g,' ').trim();
+}
+
+async function loadAdpMap(){
+  try{
+    const fmt=scoring==='ppr'?'ppr':scoring==='half'?'half-ppr':'standard';
+    const r=await fetch(`/api/adp?format=${fmt}&teams=${N_TEAMS}&year=${DRAFT_SEASON}`);
+    if(!r.ok)throw new Error('adp api '+r.status);
+    const data=await r.json();
+    const map={};
+    (data.players||[]).forEach(pl=>{
+      if(pl.position==='DEF')return;
+      const key=normalizeName(pl.name);
+      if(!key)return;
+      if(!(key in map)||pl.adp<map[key])map[key]=pl.adp;
+    });
+    adpMap=map;
+  }catch(e){
+    console.warn('ADP load failed, continuing without market data:',e.message);
+    adpMap={};
+  }
 }
 
 function buildPlayersFromRaw(){
@@ -490,9 +525,12 @@ function buildPlayersFromRaw(){
     if(!positions.has(pos))continue;
     const pts=calcPts(s);
     if(pts<1)continue;
-    ps.push({id,name:info.full_name||`Player ${id}`,team:info.team||s.team||'—',
+    const name=info.full_name||`Player ${id}`;
+    const adp=adpMap[normalizeName(name)];
+    ps.push({id,name,team:info.team||s.team||'—',
       pos,pts:Math.round(pts*10)/10,rec:s.rec||0,rec_yd:s.rec_yd||0,
-      rush_yd:s.rush_yd||0,pass_yd:s.pass_yd||0,td:ttd(s),vor:0,sc:0,ds:0});
+      rush_yd:s.rush_yd||0,pass_yd:s.pass_yd||0,td:ttd(s),
+      adp:adp!=null?adp:null,vor:0,sc:0,ds:0});
   }
   ps.sort((a,b)=>b.pts-a.pts);
   return ps;
@@ -500,8 +538,9 @@ function buildPlayersFromRaw(){
 
 async function loadSeason(){
   const[sr,pr]=await Promise.all([
-    fetch('https://api.sleeper.app/v1/stats/nfl/regular/2024?season_type=regular&position[]=QB&position[]=RB&position[]=WR&position[]=TE&position[]=K'),
-    fetch('https://api.sleeper.app/v1/players/nfl')
+    fetch(`https://api.sleeper.app/v1/stats/nfl/regular/${SEASON}?season_type=regular&position[]=QB&position[]=RB&position[]=WR&position[]=TE&position[]=K`),
+    fetch('https://api.sleeper.app/v1/players/nfl'),
+    loadAdpMap()
   ]);
   if(!sr.ok||!pr.ok)throw new Error('API');
   [rawStats,rawPlayers]=await Promise.all([sr.json(),pr.json()]);
@@ -510,8 +549,9 @@ async function loadSeason(){
 async function loadWeek(w){
   if(weekCache[w]){rawStats=weekCache[w].stats;rawPlayers=weekCache[w].players;return buildPlayersFromRaw();}
   const[sr,pr]=await Promise.all([
-    fetch(`https://api.sleeper.app/v1/stats/nfl/regular/2024/${w}?season_type=regular&position[]=QB&position[]=RB&position[]=WR&position[]=TE&position[]=K`),
-    fetch('https://api.sleeper.app/v1/players/nfl')
+    fetch(`https://api.sleeper.app/v1/stats/nfl/regular/${SEASON}/${w}?season_type=regular&position[]=QB&position[]=RB&position[]=WR&position[]=TE&position[]=K`),
+    fetch('https://api.sleeper.app/v1/players/nfl'),
+    loadAdpMap()
   ]);
   if(!sr.ok)throw new Error('API');
   [rawStats,rawPlayers]=await Promise.all([sr.json(),pr.ok?pr.json():{}]);
@@ -560,13 +600,21 @@ function computeAll(){
     p.sc=Math.max(0,Math.min(1,(dem-ap)/Math.max(dem,1)));
   });
   const maxVor=Math.max(...allPlayers.map(p=>p.vor),1);
+  const adpVals=allPlayers.filter(p=>p.adp!=null).map(p=>p.adp);
+  const minAdp=adpVals.length?Math.min(...adpVals):1;
+  const maxAdp=adpVals.length?Math.max(...adpVals):1;
   const myN=teamNeeds(MY_TEAM);
   allPlayers.forEach(p=>{
     const vn=Math.max(0,p.vor)/maxVor;
     const ldp=leagueDemandPressure(p.pos);
     const myBoost=myN[p.pos]?.us||0;
-    p.ds=Math.round((vn*weights.vor+p.sc*weights.scarcity+ldp*weights.leagueDemand+myBoost*weights.myNeed)*1000)/10;
+    const av=(p.adp!=null&&maxAdp>minAdp)?Math.max(0,1-(p.adp-minAdp)/(maxAdp-minAdp)):0;
+    p.ds=Math.round((vn*weights.vor+av*weights.adp+p.sc*weights.scarcity+ldp*weights.leagueDemand+myBoost*weights.myNeed)*1000)/10;
   });
+}
+function sortValue(p,col){
+  if(col==='adp')return p.adp==null?Infinity:p.adp;
+  return p[col];
 }
 function applyFilters(){
   const q=document.getElementById('search').value.toLowerCase();
@@ -576,7 +624,7 @@ function applyFilters(){
     (!q||p.name.toLowerCase().includes(q)||(p.team||'').toLowerCase().includes(q))
   );
   filtered.sort((a,b)=>{
-    let av=a[sortCol],bv=b[sortCol];
+    let av=sortValue(a,sortCol),bv=sortValue(b,sortCol);
     if(typeof av==='string')av=av.toLowerCase(),bv=bv.toLowerCase();
     return sortDir*(av<bv?-1:av>bv?1:0);
   });
@@ -588,8 +636,9 @@ function applyFilters(){
   else if(view==='teams')renderTeams();
   else if(view==='tracker')renderDraftTracker();
 }
-function rescoreAndRefresh(){
+async function rescoreAndRefresh(){
   if(!Object.keys(rawStats).length)return;
+  await loadAdpMap();
   const prevDraftOrder=draftLog.map(e=>({id:e.player.id,ti:e.teamIdx,isMine:e.isMine})).reverse();
   const savedNames=teams.map(t=>t.name);
   draftedIds=new Set();
@@ -867,7 +916,7 @@ function updateSubtitle(){
   if(FLEX>0)parts.push(`${FLEX}FLEX`);
   if(SFLEX>0)parts.push(`${SFLEX}SFLEX`);
   if(K>0)parts.push(`${K}K`);
-  document.getElementById('subtitle').textContent=`${N_TEAMS}-team · ${sc} · ${parts.join(' ')}`;
+  document.getElementById('subtitle').textContent=`${N_TEAMS}-team · ${sc} · ${parts.join(' ')} · ${SEASON} data`;
 }
 
 const TIER_STYLES=[
@@ -1077,6 +1126,7 @@ function renderList(){
       <td><span class="pb p${p.pos}">${p.pos}</span></td>
       <td><b>${p.ds.toFixed(1)}</b></td><td>${p.pts.toFixed(1)}</td>
       <td><span class="vor-b ${vc}">${vs}</span></td>
+      <td><span class="adp-b">${p.adp!=null?p.adp.toFixed(1):'—'}</span></td>
       <td><span class="heat-b h${hl}">${hl}</span></td>
       <td><span class="utag u${urg}">${urg}</span></td>
     </tr>`;
@@ -1091,6 +1141,7 @@ function renderList(){
       <th style="width:9%" data-col="ds" class="sorted">Score<span class="sa">↓</span></th>
       <th style="width:8%" data-col="pts">Pts<span class="sa">↕</span></th>
       <th style="width:8%" data-col="vor">VOR<span class="sa">↕</span></th>
+      <th style="width:8%" data-col="adp">ADP<span class="sa">↕</span></th>
       <th style="width:8%">Heat</th><th style="width:9%">My need</th>
     </tr></thead>
     <tbody>${rows}</tbody>
@@ -1106,11 +1157,11 @@ function renderList(){
     th.addEventListener('click',()=>{
       const col=th.dataset.col;
       if(sortCol===col)sortDir*=-1;
-      else{sortCol=col;sortDir=col==='name'||col==='team'||col==='pos'?1:-1}
+      else{sortCol=col;sortDir=col==='name'||col==='team'||col==='pos'||col==='adp'?1:-1}
       document.querySelectorAll('th').forEach(t=>{t.classList.remove('sorted');if(t.querySelector('.sa'))t.querySelector('.sa').textContent='↕'});
       th.classList.add('sorted');if(th.querySelector('.sa'))th.querySelector('.sa').textContent=sortDir===-1?'↓':'↑';
       filtered.sort((a,b)=>{
-        let av=a[sortCol],bv=b[sortCol];
+        let av=sortValue(a,sortCol),bv=sortValue(b,sortCol);
         if(typeof av==='string')av=av.toLowerCase(),bv=bv.toLowerCase();
         return sortDir*(av<bv?-1:av>bv?1:0);
       });
@@ -1125,7 +1176,7 @@ function exportListCSV(){
   const myN=teamNeeds(MY_TEAM);
   const scoringLabel=scoring==='ppr'?'PPR':scoring==='half'?'Half PPR':'Standard';
 
-  const headers=['Rank','Player','NFL Team','Position','Draft Score','PPR Pts','VOR','Scarcity','Heat','My Need','Receptions','Rec Yards','Rush Yards','Pass Yards','TDs','Scoring Format'];
+  const headers=['Rank','Player','NFL Team','Position','Draft Score','PPR Pts','VOR','ADP','Scarcity','Heat','My Need','Receptions','Rec Yards','Rush Yards','Pass Yards','TDs','Scoring Format'];
   const esc=v=>`"${String(v).replace(/"/g,'""')}"`;
 
   const rows=filtered.map(p=>{
@@ -1140,6 +1191,7 @@ function exportListCSV(){
       p.ds.toFixed(1),
       p.pts.toFixed(1),
       p.vor.toFixed(1),
+      p.adp!=null?p.adp.toFixed(1):'',
       (p.sc*100).toFixed(0)+'%',
       hl,
       urg,
