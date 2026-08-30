@@ -122,6 +122,7 @@ select{border:0.5px solid var(--color-border-secondary);border-radius:var(--bord
 .pb{display:inline-block;font-size:11px;font-weight:500;padding:1px 5px;border-radius:3px}
 .pQB{background:#1A56C4;color:#fff}.pRB{background:#1A8F4A;color:#fff}
 .pWR{background:#7C3AED;color:#fff}.pTE{background:#D14A00;color:#fff}.pK{background:#5F5E5A;color:#fff}
+.pDEF{background:#5C3A2E;color:#fff}
 .tw{border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);overflow:hidden}
 table{width:100%;border-collapse:collapse;font-size:13px;table-layout:fixed}
 thead tr{background:var(--color-background-secondary)}
@@ -148,6 +149,23 @@ tr:hover td{background:var(--color-background-secondary)}
 .log-entry:first-child{border-top:none}
 .log-mine{color:var(--color-text-info)}
 #pick-overlay{margin-bottom:10px}
+.modal-backdrop{position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:1000;display:flex;align-items:center;justify-content:center;padding:20px}
+.modal-panel{background:var(--color-background-primary);border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-lg);box-shadow:0 8px 32px rgba(0,0,0,0.3);max-width:440px;width:100%;max-height:80vh;overflow-y:auto;padding:16px}
+.modal-title{font-size:14px;font-weight:600;color:var(--color-text-primary);margin-bottom:12px;display:flex;align-items:center;justify-content:space-between}
+.modal-close{cursor:pointer;color:var(--color-text-secondary);font-size:18px;line-height:1;background:none;border:none;font-family:inherit;padding:0}
+.modal-close:hover{color:var(--color-text-primary)}
+.save-new-row{display:flex;gap:6px;margin-bottom:14px}
+.save-new-row input{flex:1;padding:6px 9px;font-size:13px;border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);background:var(--color-background-secondary);color:var(--color-text-primary);font-family:inherit}
+.saves-list-empty{font-size:12px;color:var(--color-text-tertiary);font-style:italic;padding:8px 0}
+.save-row{display:flex;align-items:center;gap:8px;padding:8px 0;border-top:0.5px solid var(--color-border-tertiary)}
+.save-row:first-child{border-top:none}
+.save-info{flex:1;min-width:0}
+.save-name{font-size:13px;color:var(--color-text-primary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.save-meta{font-size:11px;color:var(--color-text-secondary)}
+.save-actions{display:flex;gap:4px;flex-shrink:0}
+.save-btn{padding:3px 9px;font-size:11px;border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);background:transparent;color:var(--color-text-secondary);cursor:pointer;font-family:inherit}
+.save-btn:hover{background:var(--color-background-secondary);color:var(--color-text-primary)}
+.save-btn.danger:hover{color:var(--color-text-danger)}
 .ctx-menu{position:fixed;z-index:9999;background:var(--color-background-primary);border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-lg);box-shadow:0 4px 16px rgba(0,0,0,0.12);min-width:200px;max-width:240px;overflow:hidden}
 .ctx-header{padding:10px 14px 8px;border-bottom:0.5px solid var(--color-border-tertiary)}
 .ctx-player-name{font-size:13px;font-weight:500;color:var(--color-text-primary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -185,7 +203,21 @@ tr:hover td{background:var(--color-background-secondary)}
 .roster-strength-fill{height:100%;border-radius:2px;background:#378ADD}
 .roster-strength-val{font-size:11px;font-weight:500;color:var(--color-text-primary);min-width:28px;text-align:right}
 .rosters-empty{text-align:center;padding:3rem;color:var(--color-text-secondary);font-size:13px}
+.grade-rank{font-size:12px;font-weight:600;color:var(--color-text-secondary);min-width:20px}
+.grade-letter{font-size:12px;font-weight:600;color:#fff;padding:2px 9px;border-radius:4px;flex-shrink:0}
+.grade-body{padding:10px 13px 12px}
+.grade-power{font-size:12px;color:var(--color-text-secondary);margin-bottom:6px}
+.grade-value-row{font-size:11px;color:var(--color-text-secondary);margin-bottom:3px}
+.grade-value-pos{color:var(--color-text-success);font-weight:500}
+.grade-value-neg{color:var(--color-text-danger);font-weight:500}
+.grade-value-sub{color:var(--color-text-tertiary)}
+.grade-blurb{font-size:12px;color:var(--color-text-primary);line-height:1.5;margin-top:8px;padding-top:8px;border-top:0.5px solid var(--color-border-tertiary)}
+.grade-blurb.placeholder{color:var(--color-text-tertiary);font-style:italic}
 .weights-panel{max-width:600px}
+.data-refresh-row{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+.data-refresh-row .weight-reset-btn{margin-left:0;flex-shrink:0}
+.weight-reset-btn:disabled{opacity:0.5;cursor:default}
+.weight-reset-btn:disabled:hover{background:transparent;color:var(--color-text-secondary)}
 .weight-row{display:flex;align-items:center;gap:12px;padding:12px 0;border-top:0.5px solid var(--color-border-tertiary)}
 .weight-row:first-child{border-top:none;padding-top:4px}
 .weight-info{flex:0 0 200px}
@@ -273,13 +305,16 @@ tr:hover td{background:var(--color-background-secondary)}
         <option value="all">All positions</option>
         <option value="QB">QB</option><option value="RB">RB</option>
         <option value="WR">WR</option><option value="TE">TE</option><option value="K">K</option>
+        <option value="DEF">DEF</option>
       </select>
       <select id="ws"><option value="season">Full season</option></select>
+      <button class="theme-btn" id="saves-btn" title="Save or load a draft" onclick="openSavesModal()">💾</button>
       <button class="theme-btn" id="theme-btn" title="Toggle light/dark mode" onclick="toggleTheme()">☀</button>
       <div class="vtog">
         <button class="vb active" id="btn-tiers">Tiers</button>
         <button class="vb" id="btn-list">List</button>
         <button class="vb" id="btn-rosters">Rosters</button>
+        <button class="vb" id="btn-grades">Grades</button>
         <button class="vb" id="btn-weights">Weights</button>
         <button class="vb" id="btn-teams">Teams</button>
         <button class="vb" id="btn-tracker">Draft tracker</button>
@@ -321,6 +356,7 @@ tr:hover td{background:var(--color-background-secondary)}
       </div>
     </div>
   </div>
+  <div id="saves-overlay"></div>
 </div>
 
 <script>
@@ -344,7 +380,7 @@ const MY_TEAM=0,PAGE=25;
 const TEAM_NAMES=['My team','Team 2','Team 3','Team 4','Team 5','Team 6','Team 7','Team 8','Team 9','Team 10','Team 11','Team 12','Team 13','Team 14','Team 15','Team 16'];
 
 let scoring='ppr';
-let slotCounts={QB:1,RB:2,WR:2,TE:1,FLEX:1,SFLEX:1,K:1,BENCH:4};
+let slotCounts={QB:1,RB:2,WR:2,TE:1,FLEX:1,SFLEX:1,K:1,DEF:1,BENCH:4};
 
 const POS_DEFS=[
   {key:'QB',lbl:'QB',min:1,max:3},
@@ -354,33 +390,36 @@ const POS_DEFS=[
   {key:'FLEX',lbl:'FLEX',min:0,max:3},
   {key:'SFLEX',lbl:'S.FLEX',min:0,max:2},
   {key:'K',lbl:'K',min:0,max:2},
+  {key:'DEF',lbl:'DEF',min:0,max:2},
 ];
 
 function getTargets(){
-  const{QB,RB,WR,TE,FLEX,SFLEX,K}=slotCounts;
+  const{QB,RB,WR,TE,FLEX,SFLEX,K,DEF}=slotCounts;
   const fx=FLEX+SFLEX;
   return{
     QB:QB+Math.ceil(SFLEX*0.5)+1,
     RB:RB+Math.ceil(fx*0.4)+1,
     WR:WR+Math.ceil(fx*0.4)+1,
-    TE:TE+Math.ceil(fx*0.2)+1,
-    K:Math.max(K,1)+1
+    TE:TE,
+    K:K,
+    DEF:DEF
   };
 }
 function getReplRank(){
-  const{QB,RB,WR,TE,K}=slotCounts;
+  const{QB,RB,WR,TE,K,DEF}=slotCounts;
   const fx=slotCounts.FLEX+slotCounts.SFLEX;
   return{
     QB:Math.max(1,QB+Math.ceil(slotCounts.SFLEX*0.5))*N_TEAMS,
     RB:Math.max(1,RB+Math.ceil(fx*0.4))*N_TEAMS,
     WR:Math.max(1,WR+Math.ceil(fx*0.4))*N_TEAMS,
     TE:Math.max(1,TE+Math.ceil(fx*0.2))*N_TEAMS,
-    K:Math.max(1,K)*N_TEAMS
+    K:Math.max(1,K)*N_TEAMS,
+    DEF:Math.max(1,DEF)*N_TEAMS
   };
 }
 function getDemand(){
   const r=getReplRank();
-  return{QB:r.QB,RB:r.RB,WR:r.WR,TE:r.TE,K:r.K};
+  return{QB:r.QB,RB:r.RB,WR:r.WR,TE:r.TE,K:r.K,DEF:r.DEF};
 }
 function buildRosterSlots(){
   const s=[];
@@ -391,12 +430,18 @@ function buildRosterSlots(){
   for(let i=0;i<slotCounts.FLEX;i++) s.push({id:`fl${i}`,lbl:slotCounts.FLEX>1?`FLEX ${i+1}`:'FLEX',pos:['RB','WR','TE']});
   for(let i=0;i<slotCounts.SFLEX;i++) s.push({id:`sf${i}`,lbl:slotCounts.SFLEX>1?`S.FLEX ${i+1}`:'S.FLEX',pos:['QB','RB','WR','TE']});
   for(let i=0;i<slotCounts.K;i++) s.push({id:`k${i}`,lbl:'K',pos:['K']});
-  for(let i=0;i<slotCounts.BENCH;i++) s.push({id:`bn${i}`,lbl:'Bench',pos:['QB','RB','WR','TE','K']});
+  for(let i=0;i<slotCounts.DEF;i++) s.push({id:`de${i}`,lbl:'DEF',pos:['DEF']});
+  for(let i=0;i<slotCounts.BENCH;i++) s.push({id:`bn${i}`,lbl:'Bench',pos:['QB','RB','WR','TE','K','DEF']});
   return s;
 }
 
-function calcPts(s){
+function calcPts(s,pos){
   if(!s)return 0;
+  if(pos==='DEF'){
+    // Sleeper precomputes total defensive fantasy points per format — sacks, INTs,
+    // fumble recoveries, defensive/ST TDs, points-allowed tiers already baked in.
+    return scoring==='ppr'?(s.pts_ppr||0):scoring==='half'?(s.pts_half_ppr||0):(s.pts_std||0);
+  }
   const rm=scoring==='ppr'?1:scoring==='half'?0.5:0;
   return(s.pass_td||0)*4+(s.pass_yd||0)*0.04+(s.rush_yd||0)*0.1+(s.rush_td||0)*6
     +(s.rec||0)*rm+(s.rec_yd||0)*0.1+(s.rec_td||0)*6+(s.pass_2pt||0)*2
@@ -404,12 +449,13 @@ function calcPts(s){
     +(s.xpm||0)*1+(s.fgm_0_19||0)*3+(s.fgm_20_29||0)*3+(s.fgm_30_39||0)*3
     +(s.fgm_40_49||0)*4+(s.fgm_50p||0)*5;
 }
-function ttd(s){return(s.rush_td||0)+(s.rec_td||0)+(s.pass_td||0)}
+function ttd(s,pos){return pos==='DEF'?(s.def_td||0):(s.rush_td||0)+(s.rec_td||0)+(s.pass_td||0)}
 
 const SEASON=2025;
 const DRAFT_SEASON=SEASON+1;
 let rawStats={},rawPlayers={};
-let allPlayers=[],filtered=[],weekCache={},adpMap={};
+let allPlayers=[],filtered=[],weekCache={},adpMap={},lastDataUpdate=null,loadedWeek='season';
+let teamGrades=null,lastGradesUpdate=null;
 let teams=Array.from({length:N_TEAMS},(_,i)=>({id:i,name:TEAM_NAMES[i],picks:[]}));
 let draftedIds=new Set(),draftLog=[],activeTeam=0,viewedTeam=MY_TEAM;
 let draftOrder=Array.from({length:N_TEAMS},(_,i)=>i); // draftOrder[slot] = teamIdx
@@ -496,6 +542,11 @@ function normalizeName(n){
   s=s.replace(/[^a-z0-9\s]/g,'');
   return s.replace(/\s+/g,' ').trim();
 }
+// Team defenses are named inconsistently across sources ("Houston Texans" vs
+// "Houston Defense"), so match them by team abbreviation instead of fuzzy name.
+function adpKeyFor(pos,name,team){
+  return pos==='DEF'?'DEF:'+(team||''):normalizeName(name);
+}
 
 async function loadAdpMap(){
   try{
@@ -505,8 +556,7 @@ async function loadAdpMap(){
     const data=await r.json();
     const map={};
     (data.players||[]).forEach(pl=>{
-      if(pl.position==='DEF')return;
-      const key=normalizeName(pl.name);
+      const key=adpKeyFor(pl.position,pl.name,pl.team);
       if(!key)return;
       if(!(key in map)||pl.adp<map[key])map[key]=pl.adp;
     });
@@ -517,28 +567,56 @@ async function loadAdpMap(){
   }
 }
 
+function playerName(info,id){
+  return info.full_name||[info.first_name,info.last_name].filter(Boolean).join(' ')||`Player ${id}`;
+}
 function buildPlayersFromRaw(){
-  const ps=[],positions=new Set(['QB','RB','WR','TE','K']);
+  const ps=[],seen=new Set(),seenNames=new Set(),positions=new Set(['QB','RB','WR','TE','K','DEF']);
   for(const[id,s]of Object.entries(rawStats)){
     const info=rawPlayers[id]||{};
     const pos=info.position||s.pos||'';
     if(!positions.has(pos))continue;
-    const pts=calcPts(s);
+    const pts=calcPts(s,pos);
+    // Sleeper's stats endpoint includes a rank-only stub for every rostered player
+    // (incl. this year's rookies) even with zero real production — pts<1 here means
+    // "no real 2025 stat line", not "already represented", so don't mark seen yet.
     if(pts<1)continue;
-    const name=info.full_name||`Player ${id}`;
-    const adp=adpMap[normalizeName(name)];
+    seen.add(id);
+    const name=playerName(info,id);
+    seenNames.add(normalizeName(name));
+    const adp=adpMap[adpKeyFor(pos,name,info.team||s.team)];
     ps.push({id,name,team:info.team||s.team||'—',
       pos,pts:Math.round(pts*10)/10,rec:s.rec||0,rec_yd:s.rec_yd||0,
-      rush_yd:s.rush_yd||0,pass_yd:s.pass_yd||0,td:ttd(s),
+      rush_yd:s.rush_yd||0,pass_yd:s.pass_yd||0,td:ttd(s,pos),
       adp:adp!=null?adp:null,vor:0,sc:0,ds:0});
   }
+  // Rookies and other players with no prior-season stats have nothing in rawStats,
+  // so they'd otherwise never appear. Inject anyone real 2026 mock drafts are
+  // actually taking (i.e. present in adpMap) using Sleeper's full player directory.
+  // Sleeper's directory has obscure duplicate-name entries (practice squad, etc.) —
+  // skip any name already claimed by a real stat-having player above, so a fringe
+  // duplicate can't steal a star's ADP by normalized-name collision.
+  Object.entries(rawPlayers).forEach(([id,info])=>{
+    if(seen.has(id))return;
+    const pos=info.position||'';
+    if(!positions.has(pos))return;
+    const name=playerName(info,id);
+    const nameKey=normalizeName(name);
+    if(seenNames.has(nameKey))return;
+    const adp=adpMap[adpKeyFor(pos,name,info.team)];
+    if(adp==null)return;
+    seenNames.add(nameKey);
+    ps.push({id,name,team:info.team||'—',
+      pos,pts:0,rec:0,rec_yd:0,rush_yd:0,pass_yd:0,td:0,
+      adp,vor:0,sc:0,ds:0});
+  });
   ps.sort((a,b)=>b.pts-a.pts);
   return ps;
 }
 
 async function loadSeason(){
   const[sr,pr]=await Promise.all([
-    fetch(`https://api.sleeper.app/v1/stats/nfl/regular/${SEASON}?season_type=regular&position[]=QB&position[]=RB&position[]=WR&position[]=TE&position[]=K`),
+    fetch(`https://api.sleeper.app/v1/stats/nfl/regular/${SEASON}?season_type=regular&position[]=QB&position[]=RB&position[]=WR&position[]=TE&position[]=K&position[]=DEF`),
     fetch('https://api.sleeper.app/v1/players/nfl'),
     loadAdpMap()
   ]);
@@ -549,7 +627,7 @@ async function loadSeason(){
 async function loadWeek(w){
   if(weekCache[w]){rawStats=weekCache[w].stats;rawPlayers=weekCache[w].players;return buildPlayersFromRaw();}
   const[sr,pr]=await Promise.all([
-    fetch(`https://api.sleeper.app/v1/stats/nfl/regular/${SEASON}/${w}?season_type=regular&position[]=QB&position[]=RB&position[]=WR&position[]=TE&position[]=K`),
+    fetch(`https://api.sleeper.app/v1/stats/nfl/regular/${SEASON}/${w}?season_type=regular&position[]=QB&position[]=RB&position[]=WR&position[]=TE&position[]=K&position[]=DEF`),
     fetch('https://api.sleeper.app/v1/players/nfl'),
     loadAdpMap()
   ]);
@@ -561,7 +639,7 @@ async function loadWeek(w){
 
 function teamNeeds(ti){
   const TARGETS=getTargets();
-  const filled={QB:0,RB:0,WR:0,TE:0,K:0};
+  const filled={QB:0,RB:0,WR:0,TE:0,K:0,DEF:0};
   teams[ti].picks.forEach(p=>{filled[p.pos]=(filled[p.pos]||0)+1});
   const needs={};
   Object.entries(TARGETS).forEach(([pos,tgt])=>{
@@ -632,33 +710,202 @@ function applyFilters(){
   if(view==='tiers')renderTiers();
   else if(view==='list')renderList();
   else if(view==='rosters')renderRosters();
+  else if(view==='grades')renderGrades();
   else if(view==='weights')renderWeights();
   else if(view==='teams')renderTeams();
   else if(view==='tracker')renderDraftTracker();
 }
-async function rescoreAndRefresh(){
-  if(!Object.keys(rawStats).length)return;
-  await loadAdpMap();
+function reapplyDraftLog(newPlayers){
   const prevDraftOrder=draftLog.map(e=>({id:e.player.id,ti:e.teamIdx,isMine:e.isMine})).reverse();
   const savedNames=teams.map(t=>t.name);
   draftedIds=new Set();
   teams=Array.from({length:N_TEAMS},(_,i)=>({id:i,name:savedNames[i]||(TEAM_NAMES[i]||`Team ${i+1}`),picks:[]}));
   draftLog=[];
-  allPlayers=buildPlayersFromRaw();
+  allPlayers=newPlayers;
   prevDraftOrder.forEach(({id,ti,isMine})=>{
     if(ti>=N_TEAMS)return;
     const p=allPlayers.find(x=>x.id===id);
     if(p){draftedIds.add(id);teams[ti].picks.push(p);draftLog.unshift({player:p,teamIdx:ti,isMine});}
   });
+}
+async function rescoreAndRefresh(){
+  if(!Object.keys(rawStats).length)return;
+  await loadAdpMap();
+  reapplyDraftLog(buildPlayersFromRaw());
   computeAll();applyFilters();
 }
+async function refreshData(){
+  if(draftLog.length>0&&!confirm(`Refresh live stats and market ADP? Your ${draftLog.length} pick${draftLog.length===1?'':'s'} will be kept. Continue?`))return;
+  const btn=document.getElementById('refresh-data-btn');
+  if(btn){btn.disabled=true;btn.textContent='Refreshing…';}
+  try{
+    const wsEl=document.getElementById('ws');
+    const w=wsEl?wsEl.value:'season';
+    if(w!=='season')delete weekCache[w];
+    const newPlayers=w==='season'?await loadSeason():await loadWeek(w);
+    reapplyDraftLog(newPlayers);
+    computeAll();applyFilters();
+    lastDataUpdate=new Date();
+  }catch(e){
+    console.warn('Data refresh failed:',e.message);
+    alert('Failed to refresh data. Check your connection and try again.');
+  }finally{
+    if(view==='weights')renderWeights();
+  }
+}
 
+function buildSnapshot(){
+  return{
+    settings:{
+      N_TEAMS,scoring,
+      slotCounts:{...slotCounts},
+      weights:{...weights},
+      draftOrder:[...draftOrder],
+      teamNames:teams.map(t=>t.name),
+      week:document.getElementById('ws')?.value||'season'
+    },
+    // Chronological order (oldest first) — draftLog itself is kept newest-first.
+    draftLog:[...draftLog].reverse().map(e=>({playerId:e.player.id,teamIdx:e.teamIdx,isMine:e.isMine})),
+    teamGrades:teamGrades||null,
+    lastGradesUpdate:lastGradesUpdate?lastGradesUpdate.toISOString():null
+  };
+}
+async function restoreSnapshot(snap){
+  const s=snap.settings||{};
+  N_TEAMS=s.N_TEAMS||N_TEAMS;
+  scoring=s.scoring||scoring;
+  slotCounts=Object.assign({},slotCounts,s.slotCounts||{});
+  weights=Object.assign({},weights,s.weights||{});
+  draftOrder=(s.draftOrder&&s.draftOrder.length===N_TEAMS)?[...s.draftOrder]:Array.from({length:N_TEAMS},(_,i)=>i);
+  const names=s.teamNames||[];
+  teams=Array.from({length:N_TEAMS},(_,i)=>({id:i,name:names[i]||TEAM_NAMES[i]||`Team ${i+1}`,picks:[]}));
+  draftedIds=new Set();draftLog=[];
+  teamGrades=snap.teamGrades||null;
+  lastGradesUpdate=snap.lastGradesUpdate?new Date(snap.lastGradesUpdate):null;
+
+  const wsEl=document.getElementById('ws');
+  const week=s.week||'season';
+  if(wsEl)wsEl.value=week;
+
+  const newPlayers=week==='season'?await loadSeason():await loadWeek(week);
+  loadedWeek=week;
+  // Replay picks in chronological order via minimal stand-ins — reapplyDraftLog
+  // looks each player up fresh by id from the data we just fetched.
+  draftLog=(snap.draftLog||[]).map(e=>({player:{id:e.playerId},teamIdx:e.teamIdx,isMine:e.isMine})).reverse();
+  reapplyDraftLog(newPlayers);
+
+  computeAll();
+  updateSubtitle();
+  const nEl=document.getElementById('nteams-val');if(nEl)nEl.textContent=N_TEAMS;
+  applyFilters();
+  if(view==='teams')renderTeams();
+  else if(view==='weights')renderWeights();
+}
+
+let savedDraftsCache=[];
+async function openSavesModal(){
+  const el=document.getElementById('saves-overlay');
+  el.innerHTML='<div class="modal-backdrop"><div class="modal-panel"><div class="modal-title">Saved drafts<button class="modal-close" onclick="closeSavesModal()">×</button></div><div class="saves-list-empty">Loading…</div></div></div>';
+  try{
+    const r=await fetch('/api/draft-saves');
+    const data=await r.json();
+    savedDraftsCache=data.saves||[];
+  }catch(e){
+    savedDraftsCache=[];
+    console.warn('Failed to load saved drafts:',e.message);
+  }
+  renderSavesModal();
+}
+function closeSavesModal(){
+  document.getElementById('saves-overlay').innerHTML='';
+}
+function renderSavesModal(){
+  const el=document.getElementById('saves-overlay');
+  if(!el.innerHTML)return; // modal not open
+  const rows=savedDraftsCache.length
+    ?[...savedDraftsCache].sort((a,b)=>b.updatedAt-a.updatedAt).map(s=>{
+      const picks=(s.snapshot.draftLog||[]).length;
+      const nTeams=s.snapshot.settings?.N_TEAMS||'?';
+      const when=new Date(s.updatedAt).toLocaleString([],{month:'short',day:'numeric',hour:'numeric',minute:'2-digit'});
+      return`<div class="save-row">
+        <div class="save-info">
+          <div class="save-name" title="${s.name}">${s.name}</div>
+          <div class="save-meta">${picks} picks · ${nTeams}-team · saved ${when}</div>
+        </div>
+        <div class="save-actions">
+          <button class="save-btn" onclick="loadSavedDraft('${s.id}')">Load</button>
+          <button class="save-btn danger" onclick="deleteSavedDraft('${s.id}')">Delete</button>
+        </div>
+      </div>`;
+    }).join('')
+    :'<div class="saves-list-empty">No saved drafts yet.</div>';
+  el.innerHTML=`<div class="modal-backdrop" onclick="if(event.target===this)closeSavesModal()">
+    <div class="modal-panel">
+      <div class="modal-title">Saved drafts<button class="modal-close" onclick="closeSavesModal()">×</button></div>
+      <div class="save-new-row">
+        <input type="text" id="save-name-input" placeholder="Name this draft…" maxlength="60" onkeydown="if(event.key==='Enter')saveDraftAs()">
+        <button class="save-btn" onclick="saveDraftAs()">Save current</button>
+      </div>
+      ${rows}
+    </div>
+  </div>`;
+}
+async function saveDraftAs(){
+  const input=document.getElementById('save-name-input');
+  const name=(input?.value||'').trim();
+  if(!name){input?.focus();return;}
+  const now=Date.now();
+  const snapshot=buildSnapshot();
+  const existing=savedDraftsCache.find(s=>s.name===name);
+  if(existing){existing.snapshot=snapshot;existing.updatedAt=now;}
+  else savedDraftsCache.push({id:'d'+now+Math.random().toString(36).slice(2,8),name,createdAt:now,updatedAt:now,snapshot});
+  try{
+    await fetch('/api/draft-saves',{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify({saves:savedDraftsCache})});
+  }catch(e){
+    alert('Failed to save: '+e.message);
+    return;
+  }
+  renderSavesModal();
+}
+async function loadSavedDraft(id){
+  const entry=savedDraftsCache.find(s=>s.id===id);
+  if(!entry)return;
+  if(!confirm(`Load "${entry.name}"? This replaces your current draft in progress.`))return;
+  closeSavesModal();
+  document.getElementById('main').innerHTML='<div class="loading">Loading saved draft…</div>';
+  try{
+    await restoreSnapshot(entry.snapshot);
+  }catch(e){
+    document.getElementById('main').innerHTML='<div class="err">Failed to load saved draft.</div>';
+    console.warn('Restore failed:',e.message);
+  }
+}
+async function deleteSavedDraft(id){
+  const entry=savedDraftsCache.find(s=>s.id===id);
+  if(!entry)return;
+  if(!confirm(`Delete "${entry.name}"? This cannot be undone.`))return;
+  savedDraftsCache=savedDraftsCache.filter(s=>s.id!==id);
+  try{
+    await fetch('/api/draft-saves',{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify({saves:savedDraftsCache})});
+  }catch(e){
+    alert('Failed to delete: '+e.message);
+  }
+  renderSavesModal();
+}
+
+// Snake order: even rounds go 0→N-1 through draftOrder, odd rounds reverse.
+function onClockTeam(totalPicks){
+  const round=Math.floor(totalPicks/N_TEAMS);
+  const slot=round%2===0?totalPicks%N_TEAMS:N_TEAMS-1-totalPicks%N_TEAMS;
+  return draftOrder[slot];
+}
 function assignPick(playerId,teamIdx){
   const p=allPlayers.find(x=>x.id===playerId);
   if(!p||draftedIds.has(playerId))return;
   draftedIds.add(playerId);
   teams[teamIdx].picks.push(p);
   draftLog.unshift({player:p,teamIdx,isMine:teamIdx===MY_TEAM});
+  activeTeam=onClockTeam(draftLog.length);
   computeAll();applyFilters();
 }
 function undoPick(playerId){
@@ -667,6 +914,7 @@ function undoPick(playerId){
   draftedIds.delete(playerId);
   teams[entry.teamIdx].picks=teams[entry.teamIdx].picks.filter(p=>p.id!==playerId);
   draftLog=draftLog.filter(e=>e.player.id!==playerId);
+  activeTeam=onClockTeam(draftLog.length);
   computeAll();applyFilters();
 }
 
@@ -741,7 +989,6 @@ function hideContextMenu(){
 
 function ctxAssign(playerId,teamIdx){
   hideContextMenu();
-  activeTeam=(teamIdx+1)%N_TEAMS;
   assignPick(playerId,teamIdx);
 }
 
@@ -817,7 +1064,6 @@ function confirmPick(){
   const sel=document.getElementById('team-sel');
   if(!sel||pendingPlayer===null)return;
   const ti=parseInt(sel.value);
-  activeTeam=(ti+1)%N_TEAMS;
   assignPick(pendingPlayer,ti);
   pendingPlayer=null;
   document.getElementById('pick-overlay').innerHTML='';
@@ -911,11 +1157,12 @@ function updateStats(){
 }
 function updateSubtitle(){
   const sc=scoring==='ppr'?'PPR':scoring==='half'?'Half PPR':'Standard';
-  const{QB,RB,WR,TE,FLEX,SFLEX,K}=slotCounts;
+  const{QB,RB,WR,TE,FLEX,SFLEX,K,DEF}=slotCounts;
   let parts=[`${QB}QB`,`${RB}RB`,`${WR}WR`,`${TE}TE`];
   if(FLEX>0)parts.push(`${FLEX}FLEX`);
   if(SFLEX>0)parts.push(`${SFLEX}SFLEX`);
   if(K>0)parts.push(`${K}K`);
+  if(DEF>0)parts.push(`${DEF}DEF`);
   document.getElementById('subtitle').textContent=`${N_TEAMS}-team · ${sc} · ${parts.join(' ')} · ${SEASON} data`;
 }
 
@@ -1242,7 +1489,12 @@ function renderWeights(){
     const pct=Math.round(weights[key]*100);
     return`<div class="wbar-seg" style="width:${pct}%;background:${color}"></div>`;
   }).join('');
+  const updatedLabel=lastDataUpdate?`Last updated ${lastDataUpdate.toLocaleTimeString([],{hour:'numeric',minute:'2-digit'})}`:'Not refreshed this session';
   m.innerHTML=`<div class="weights-panel">
+    <div class="data-refresh-row">
+      <button class="weight-reset-btn" id="refresh-data-btn" onclick="refreshData()">↻ Update data</button>
+      <span class="weight-desc" id="refresh-status">${updatedLabel} · pulls fresh stats + market ADP</span>
+    </div>
     <div class="weight-note">
       Weights control how the draft score is calculated. They should add up to 100%. Drag a slider to change emphasis — rankings and tiers update instantly.
     </div>
@@ -1428,7 +1680,7 @@ function renderDraftTracker(){
 
   const currentPick=totalPicks+1;
   const currentSlot=totalPicks%N_TEAMS+1;
-  const nextTeamIdx=draftOrder[currentRound%2===0?totalPicks%N_TEAMS:N_TEAMS-1-totalPicks%N_TEAMS];
+  const nextTeamIdx=onClockTeam(totalPicks);
 
   m.innerHTML=`<div>
     <div class="tracker-controls">
@@ -1445,15 +1697,16 @@ function renderDraftTracker(){
 
 function showView(v){
   view=v;
-  ['tiers','list','rosters','weights','teams','tracker'].forEach(tab=>{
+  ['tiers','list','rosters','grades','weights','teams','tracker'].forEach(tab=>{
     document.getElementById(`btn-${tab}`).classList.toggle('active',v===tab);
   });
-  const hideSearch=v==='rosters'||v==='weights'||v==='teams'||v==='tracker';
+  const hideSearch=v==='rosters'||v==='grades'||v==='weights'||v==='teams'||v==='tracker';
   document.getElementById('search').style.display=hideSearch?'none':'';
   document.getElementById('pf').style.display=hideSearch?'none':'';
   if(v==='tiers')renderTiers();
   else if(v==='list')renderList();
   else if(v==='rosters')renderRosters();
+  else if(v==='grades')renderGrades();
   else if(v==='teams')renderTeams();
   else if(v==='tracker')renderDraftTracker();
   else renderWeights();
@@ -1466,7 +1719,7 @@ function renderRosters(){
     m.innerHTML='<div class="rosters-empty">No picks made yet. Start drafting to see rosters here.</div>';
     return;
   }
-  const posOrder=['QB','RB','WR','TE','K'];
+  const posOrder=['QB','RB','WR','TE','K','DEF'];
   const maxTeamPts=Math.max(...teams.map(t=>t.picks.reduce((s,p)=>s+p.pts,0)),1);
   const html=teams.map((t,ti)=>{
     const isMe=ti===MY_TEAM;
@@ -1520,8 +1773,134 @@ function undoPickFromRoster(playerId,teamIdx){
   draftedIds.delete(playerId);
   teams[teamIdx].picks=teams[teamIdx].picks.filter(p=>p.id!==playerId);
   draftLog=draftLog.filter(e=>!(e.player.id===playerId&&e.teamIdx===teamIdx));
+  activeTeam=onClockTeam(draftLog.length);
   computeAll();applyFilters();
   if(view==='rosters')renderRosters();
+}
+
+function letterGrade(rank,total){
+  const pct=total>1?(rank-1)/(total-1):0;
+  if(pct<=0.10)return'A+';
+  if(pct<=0.25)return'A';
+  if(pct<=0.40)return'B+';
+  if(pct<=0.55)return'B';
+  if(pct<=0.70)return'C+';
+  if(pct<=0.85)return'C';
+  if(pct<=0.95)return'D';
+  return'F';
+}
+function gradeColor(g){
+  if(g.startsWith('A'))return'#0F6E3A';
+  if(g.startsWith('B'))return'#1A56C4';
+  if(g.startsWith('C'))return'#BA7517';
+  if(g==='D')return'#B86200';
+  return'#B92020';
+}
+function computePickNumbers(){
+  const order=[...draftLog].reverse();
+  const map=new Map();
+  order.forEach((e,i)=>map.set(e.player.id,i+1));
+  return map;
+}
+// Ranks teams by starter-lineup VOR (not raw points — keeps positions comparable)
+// and flags each team's best-value pick and biggest reach vs. market ADP.
+function computeTeamSummaries(){
+  const pickNumbers=computePickNumbers();
+  const slots=buildRosterSlots();
+  const summaries=teams.map((t,ti)=>{
+    const starterIds=new Set();
+    let vor=0;
+    slots.forEach((s,i)=>{
+      if(s.id.startsWith('bn'))return;
+      const p=getSlotPlayer(slots,i,ti);
+      if(p){starterIds.add(p.id);vor+=p.vor;}
+    });
+    const starters=t.picks.filter(p=>starterIds.has(p.id));
+    const bench=t.picks.filter(p=>!starterIds.has(p.id));
+    let bestValue=null,biggestReach=null;
+    t.picks.forEach(p=>{
+      if(p.adp==null)return;
+      const pickNo=pickNumbers.get(p.id);
+      if(pickNo==null)return;
+      const diff=pickNo-p.adp;
+      if(!bestValue||diff>bestValue.diff)bestValue={player:p,pickNo,diff};
+      if(!biggestReach||diff<biggestReach.diff)biggestReach={player:p,pickNo,diff};
+    });
+    return{teamIdx:ti,name:t.name,vor:Math.round(vor*10)/10,starters,bench,bestValue,biggestReach};
+  });
+  const ranked=[...summaries].sort((a,b)=>b.vor-a.vor);
+  ranked.forEach((s,i)=>{s.rank=i+1;s.grade=letterGrade(i+1,summaries.length);});
+  return summaries;
+}
+function renderGrades(){
+  const m=document.getElementById('main');
+  const hasAnyPicks=teams.some(t=>t.picks.length>0);
+  if(!hasAnyPicks){
+    m.innerHTML='<div class="rosters-empty">No picks made yet. Draft grades appear once teams have picks.</div>';
+    return;
+  }
+  const summaries=computeTeamSummaries().sort((a,b)=>a.rank-b.rank);
+  const genLabel=lastGradesUpdate?`Generated ${lastGradesUpdate.toLocaleTimeString([],{hour:'numeric',minute:'2-digit'})}`:'Not generated yet';
+  const cards=summaries.map(s=>{
+    const isMe=s.teamIdx===MY_TEAM;
+    const gc=gradeColor(s.grade);
+    const blurb=teamGrades&&teamGrades[s.teamIdx]
+      ?`<div class="grade-blurb">${teamGrades[s.teamIdx]}</div>`
+      :'<div class="grade-blurb placeholder">Click "Generate scouting reports" for an AI-written blurb on this roster.</div>';
+    const valueLine=s.bestValue&&s.bestValue.diff>3?`<div class="grade-value-row"><span class="grade-value-pos">↑ Steal:</span> ${s.bestValue.player.name} <span class="grade-value-sub">(pick #${s.bestValue.pickNo}, ADP ${s.bestValue.player.adp.toFixed(1)})</span></div>`:'';
+    const reachLine=s.biggestReach&&s.biggestReach.diff<-3?`<div class="grade-value-row"><span class="grade-value-neg">↓ Reach:</span> ${s.biggestReach.player.name} <span class="grade-value-sub">(pick #${s.biggestReach.pickNo}, ADP ${s.biggestReach.player.adp.toFixed(1)})</span></div>`:'';
+    return`<div class="roster-card grade-card${isMe?' me-card':''}">
+      <div class="roster-card-hdr">
+        <div style="display:flex;align-items:center;gap:8px">
+          <span class="grade-rank">#${s.rank}</span>
+          <div class="roster-hdr-name">${s.name}${isMe?' (you)':''}</div>
+        </div>
+        <span class="grade-letter" style="background:${gc}">${s.grade}</span>
+      </div>
+      <div class="grade-body">
+        <div class="grade-power">Starter VOR: <b>${s.vor>=0?'+':''}${s.vor.toFixed(1)}</b></div>
+        ${valueLine}${reachLine}
+        ${blurb}
+      </div>
+    </div>`;
+  }).join('');
+  m.innerHTML=`<div class="data-refresh-row">
+      <button class="weight-reset-btn" id="generate-grades-btn" onclick="generateGrades()">✎ Generate scouting reports</button>
+      <span class="weight-desc">${genLabel} · rank &amp; grade update live; reports need a manual refresh</span>
+    </div>
+    <div class="rosters-grid">${cards}</div>`;
+}
+async function generateGrades(){
+  const btn=document.getElementById('generate-grades-btn');
+  if(btn){btn.disabled=true;btn.textContent='Generating…';}
+  try{
+    const summaries=computeTeamSummaries();
+    const scoringLabel=scoring==='ppr'?'PPR':scoring==='half'?'Half PPR':'Standard';
+    const fmtP=p=>({pos:p.pos,name:p.name,pts:p.pts,vor:p.vor,adp:p.adp});
+    const payload={
+      scoringLabel,nTeams:N_TEAMS,
+      teams:summaries.map(s=>({
+        name:s.name,rank:s.rank,grade:s.grade,
+        starters:s.starters.map(fmtP),
+        bench:s.bench.map(fmtP),
+        bestValue:s.bestValue?{name:s.bestValue.player.name,pickNo:s.bestValue.pickNo,adp:s.bestValue.player.adp}:null,
+        biggestReach:s.biggestReach?{name:s.biggestReach.player.name,pickNo:s.biggestReach.pickNo,adp:s.biggestReach.player.adp}:null
+      }))
+    };
+    const r=await fetch('/api/roster-grades',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
+    const data=await r.json();
+    if(data.error)throw new Error(data.error);
+    if(!Array.isArray(data.blurbs)||data.blurbs.length!==summaries.length)throw new Error('Unexpected response from server');
+    const next={};
+    summaries.forEach((s,i)=>{next[s.teamIdx]=data.blurbs[i];});
+    teamGrades=next;
+    lastGradesUpdate=new Date();
+  }catch(e){
+    console.warn('Scouting report generation failed:',e.message);
+    alert('Failed to generate scouting reports: '+e.message);
+  }finally{
+    if(view==='grades')renderGrades();
+  }
 }
 
 function renderPosControls(){
@@ -1623,24 +2002,39 @@ async function init(){
   }
   ws.addEventListener('change',async()=>{
     const w=ws.value;
+    if(draftLog.length>0&&!confirm(`Switching weeks reloads player stats. Your ${draftLog.length} pick${draftLog.length===1?'':'s'} will be kept. Continue?`)){
+      ws.value=loadedWeek;
+      return;
+    }
     document.getElementById('main').innerHTML='<div class="loading">Loading…</div>';
     try{
-      allPlayers=w==='season'?await loadSeason():await loadWeek(w);
+      const newPlayers=w==='season'?await loadSeason():await loadWeek(w);
+      reapplyDraftLog(newPlayers);
       computeAll();applyFilters();
-    }catch(e){document.getElementById('main').innerHTML='<div class="err">Failed to load week data.</div>'}
+      loadedWeek=w;
+    }catch(e){
+      document.getElementById('main').innerHTML='<div class="err">Failed to load week data.</div>';
+      ws.value=loadedWeek;
+    }
   });
   document.getElementById('search').addEventListener('input',applyFilters);
   document.getElementById('pf').addEventListener('change',applyFilters);
   document.addEventListener('click',e=>{if(_ctxMenu&&!_ctxMenu.contains(e.target))hideContextMenu();});
-  document.addEventListener('keydown',e=>{if(e.key==='Escape')hideContextMenu();});
+  document.addEventListener('keydown',e=>{if(e.key==='Escape'){hideContextMenu();closeSavesModal();}});
   document.addEventListener('contextmenu',e=>{if(_ctxMenu&&!_ctxMenu.contains(e.target))hideContextMenu();});
   document.getElementById('btn-tiers').addEventListener('click',()=>showView('tiers'));
   document.getElementById('btn-list').addEventListener('click',()=>showView('list'));
   document.getElementById('btn-rosters').addEventListener('click',()=>showView('rosters'));
+  document.getElementById('btn-grades').addEventListener('click',()=>showView('grades'));
   document.getElementById('btn-weights').addEventListener('click',()=>showView('weights'));
   document.getElementById('btn-teams').addEventListener('click',()=>showView('teams'));
   document.getElementById('btn-tracker').addEventListener('click',()=>showView('tracker'));
 }
+window.addEventListener('beforeunload',e=>{
+  if(draftLog.length===0)return;
+  e.preventDefault();
+  e.returnValue=''; // browsers show their own generic message, custom text is ignored
+});
 init();
 </script>
 </body>
