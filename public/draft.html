@@ -237,6 +237,12 @@ tr:hover td{background:var(--color-background-secondary)}
 .weight-reset-btn:hover{background:var(--color-background-secondary);color:var(--color-text-primary)}
 .weight-note{font-size:12px;color:var(--color-text-secondary);background:var(--color-background-secondary);border-radius:var(--border-radius-md);padding:8px 12px;margin-bottom:14px;line-height:1.5}
 .teams-panel{max-width:600px}
+.season-panel{max-width:760px}
+.yahoo-status{display:flex;align-items:center;gap:10px;margin-bottom:14px;flex-wrap:wrap}
+.yahoo-badge{font-size:11px;font-weight:500;padding:3px 9px;border-radius:12px}
+.yahoo-badge.connected{background:var(--color-background-success);color:var(--color-text-success)}
+.yahoo-badge.disconnected{background:var(--color-background-secondary);color:var(--color-text-secondary)}
+.yahoo-json{background:var(--color-background-secondary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);padding:10px;font-size:11px;font-family:monospace;white-space:pre-wrap;word-break:break-all;max-height:520px;overflow-y:auto;margin-top:12px}
 .teams-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:16px}
 .team-name-row{display:flex;align-items:center;gap:8px;background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);padding:7px 10px}
 .team-name-row.me-row{border-color:var(--color-border-info);background:var(--color-background-info)}
@@ -318,6 +324,7 @@ tr:hover td{background:var(--color-background-secondary)}
         <button class="vb" id="btn-weights">Weights</button>
         <button class="vb" id="btn-teams">Teams</button>
         <button class="vb" id="btn-tracker">Draft tracker</button>
+        <button class="vb" id="btn-season">Season</button>
       </div>
     </div>
   </div>
@@ -1695,12 +1702,75 @@ function renderDraftTracker(){
   </div>`;
 }
 
+let yahooConnected=null; // null = unknown yet, checked on first render
+async function renderSeason(){
+  const m=document.getElementById('main');
+  m.innerHTML='<div class="loading">Checking Yahoo connection…</div>';
+  try{
+    const r=await fetch('/api/yahoo/status');
+    const data=await r.json();
+    yahooConnected=!!data.connected;
+  }catch(e){
+    yahooConnected=false;
+  }
+  if(view!=='season')return; // user navigated away while this was loading
+
+  if(!yahooConnected){
+    m.innerHTML=`<div class="season-panel">
+      <div class="yahoo-status"><span class="yahoo-badge disconnected">Not connected</span></div>
+      <div class="weight-note">
+        Connect your Yahoo league to track roster moves and get waiver-wire recommendations through the season.
+        Requires a Yahoo developer app (Client ID/Secret in <code>.env</code>) with Fantasy Sports read access —
+        this is a one-time setup on your end at developer.yahoo.com.
+      </div>
+      <a href="/api/yahoo/auth" class="weight-reset-btn" style="display:inline-block;text-decoration:none;margin-left:0">Connect Yahoo</a>
+    </div>`;
+    return;
+  }
+
+  m.innerHTML=`<div class="season-panel">
+    <div class="yahoo-status">
+      <span class="yahoo-badge connected">Connected</span>
+      <button class="weight-reset-btn" style="margin-left:0" onclick="disconnectYahoo()">Disconnect</button>
+    </div>
+    <div class="weight-note">
+      Stage 1: this pulls your raw Yahoo league list so we can see the real response shape before building
+      roster sync and waiver recommendations on top of it.
+    </div>
+    <button class="weight-reset-btn" id="yahoo-leagues-btn" style="margin-left:0" onclick="fetchYahooLeagues()">Fetch my leagues</button>
+    <div id="yahoo-debug-out"></div>
+  </div>`;
+}
+async function disconnectYahoo(){
+  if(!confirm('Disconnect Yahoo? You can reconnect any time.'))return;
+  try{
+    await fetch('/api/yahoo/disconnect',{method:'DELETE'});
+  }catch(e){}
+  yahooConnected=false;
+  if(view==='season')renderSeason();
+}
+async function fetchYahooLeagues(){
+  const btn=document.getElementById('yahoo-leagues-btn');
+  const out=document.getElementById('yahoo-debug-out');
+  if(btn){btn.disabled=true;btn.textContent='Fetching…';}
+  try{
+    const r=await fetch('/api/yahoo/leagues');
+    const data=await r.json();
+    if(!r.ok||data.error)throw new Error(data.error||('HTTP '+r.status));
+    out.innerHTML=`<div class="yahoo-json">${JSON.stringify(data,null,2).replace(/&/g,'&amp;').replace(/</g,'&lt;')}</div>`;
+  }catch(e){
+    out.innerHTML=`<div class="err" style="padding:1rem 0">Failed to fetch leagues: ${e.message}</div>`;
+  }finally{
+    if(btn){btn.disabled=false;btn.textContent='Fetch my leagues';}
+  }
+}
+
 function showView(v){
   view=v;
-  ['tiers','list','rosters','grades','weights','teams','tracker'].forEach(tab=>{
+  ['tiers','list','rosters','grades','weights','teams','tracker','season'].forEach(tab=>{
     document.getElementById(`btn-${tab}`).classList.toggle('active',v===tab);
   });
-  const hideSearch=v==='rosters'||v==='grades'||v==='weights'||v==='teams'||v==='tracker';
+  const hideSearch=v==='rosters'||v==='grades'||v==='weights'||v==='teams'||v==='tracker'||v==='season';
   document.getElementById('search').style.display=hideSearch?'none':'';
   document.getElementById('pf').style.display=hideSearch?'none':'';
   if(v==='tiers')renderTiers();
@@ -1709,6 +1779,7 @@ function showView(v){
   else if(v==='grades')renderGrades();
   else if(v==='teams')renderTeams();
   else if(v==='tracker')renderDraftTracker();
+  else if(v==='season')renderSeason();
   else renderWeights();
 }
 
@@ -2029,6 +2100,7 @@ async function init(){
   document.getElementById('btn-weights').addEventListener('click',()=>showView('weights'));
   document.getElementById('btn-teams').addEventListener('click',()=>showView('teams'));
   document.getElementById('btn-tracker').addEventListener('click',()=>showView('tracker'));
+  document.getElementById('btn-season').addEventListener('click',()=>showView('season'));
 }
 window.addEventListener('beforeunload',e=>{
   if(draftLog.length===0)return;
