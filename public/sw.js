@@ -1,10 +1,11 @@
-const CACHE = 'forge-v48';
+const CACHE = 'forge-v81';
 const SHELL = [
   '/',
   '/calories.html',
   '/fitness.html',
   '/meals.html',
   '/plants.html',
+  '/calendar.html',
   '/draft.html',
   '/settings.html',
   '/commander.html',

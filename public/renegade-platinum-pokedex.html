@@ -335,7 +335,273 @@ th.sortable[aria-sort="descending"]::after { content: " ▼"; opacity: 1 }
 .mktip b { font-size: 13px }
 .mktip .sub { color: #5d6578; font-size: 11px }
 .mktip .rp { color: #b4501c; font-size: 11px; margin-top: 3px }
+.amodal { position: fixed; inset: 0; z-index: 2000; background: rgba(10, 12, 18, .62); display: flex; align-items: center; justify-content: center; padding: 24px }
+.amodal[hidden] { display: none }
+.abox { background: var(--panel); color: var(--ink); border-radius: 14px; width: min(1100px, 100%); height: min(820px, 100%); display: grid; grid-template-rows: auto 1fr; overflow: hidden; box-shadow: 0 20px 60px rgba(0, 0, 0, .45) }
+.abox header { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 14px; padding: 12px 16px; border-bottom: 1px solid var(--line) }
+.abox h2 { font: 700 1.35rem var(--font-display); margin: 0 }
+.abox .ameta { color: var(--muted); font-size: .82rem }
+.abox .abtns { margin-left: auto; display: flex; gap: 8px }
+#amap { background: #2f5d8a; min-height: 0 }
+#amap .leaflet-tile, #amap .leaflet-image-layer { image-rendering: pixelated }
+.amsg { color: #fff; padding: 20px }
+@media (max-width: 760px) { .amodal { padding: 0 } .abox { border-radius: 0; width: 100%; height: 100% } }
 .maphint { position: absolute; z-index: 500; left: 12px; bottom: 12px; font-size: .75rem; color: #fff; background: rgba(16, 20, 28, .7); padding: 4px 10px; border-radius: 999px; pointer-events: none }
+.nsum { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px }
+.nsum span { font: 500 .74rem var(--font-data); border: 1px solid var(--line); border-radius: 999px; padding: 3px 10px; color: var(--muted) }
+.nsum b { color: var(--ink) }
+.nsum span.bad, .nsum span.bad b { color: var(--chg); border-color: var(--chg) }
+.ncap { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 16px }
+.ncap .lv { font: 700 2.4rem var(--font-display); line-height: 1; color: var(--accent) }
+.ncap .who { min-width: 140px }
+.ncap .heads { display: flex; gap: 2px; flex-wrap: wrap }
+.ncap .heads img { width: 40px; height: 40px; image-rendering: pixelated }
+.ncap .tbtns { margin-left: auto }
+.nn { font-weight: 700; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap }
+.sp { font-size: .72rem; color: var(--muted); font-weight: 400 }
+.nparty { display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 8px }
+.nmon { border: 1px solid var(--line); border-radius: 10px; padding: 8px; display: grid; grid-template-columns: 40px 1fr; gap: 0 8px; align-items: center; min-width: 0 }
+.nmon img { width: 40px; height: 40px; image-rendering: pixelated; grid-row: span 2; cursor: pointer }
+.nmon .sp { overflow: hidden; text-overflow: ellipsis; white-space: nowrap }
+.nmon .acts { grid-column: 1 / -1; display: flex; gap: 4px; margin-top: 6px }
+.nmon .acts button { flex: 1; font: 600 .7rem var(--font-body); padding: 4px; border-radius: 6px; border: 1px solid var(--line); background: var(--bg); color: var(--ink); cursor: pointer }
+.nmon .acts button:hover { border-color: var(--accent) }
+.nmon .acts button[data-to="dead"]:hover { border-color: var(--chg); color: var(--chg) }
+.nmon.over { border-color: var(--chg); background: var(--chg-soft) }
+.nmon.dead img { filter: grayscale(1); opacity: .6 }
+.nhead { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-bottom: 4px }
+.nhead h3 { margin: 0 auto 0 0 !important }
+.nhead select, .nrules textarea { font: 500 .82rem var(--font-body); padding: 5px 7px; border-radius: 7px; border: 1px solid var(--line); background: var(--bg); color: var(--ink) }
+.ndiv { font: 600 .7rem var(--font-display); text-transform: uppercase; letter-spacing: .1em; color: var(--muted); padding: 14px 0 4px; border-bottom: 1px solid var(--line) }
+.enc { display: grid; grid-template-columns: minmax(130px, 1.1fr) 36px minmax(140px, 1.4fr) minmax(90px, 1fr) 58px 96px; gap: 6px; align-items: center; padding: 6px 0 6px 8px; border-bottom: 1px solid var(--line) }
+.enc:last-child { border-bottom: 0 }
+.enc .an { font: 600 .85rem var(--font-body); background: none; border: 0; color: inherit; text-align: left; cursor: pointer; padding: 0; min-width: 0 }
+button.an:hover { color: var(--accent); text-decoration: underline }
+.enc .an small { display: block; font-weight: 400; color: var(--muted); font-size: .7rem }
+div.an { display: flex; gap: 2px; cursor: default }
+.enc img.sp, .enc span.sp { width: 36px; height: 36px; image-rendering: pixelated }
+.enc select, .enc input { font: 500 .82rem var(--font-body); padding: 5px 7px; border-radius: 7px; border: 1px solid var(--line); background: var(--bg); color: var(--ink); min-width: 0; width: 100% }
+.enc .ms { min-width: 0; display: flex; flex-direction: column; gap: 4px }
+.enc .clabel[readonly] { border-color: transparent; background: none; font-weight: 600; padding-left: 0 }
+.enc .x { border: 0; background: none; color: var(--muted); font-size: 1.1rem; cursor: pointer; padding: 0 6px; border-radius: 6px }
+.enc .x:hover { color: var(--chg); background: var(--chg-soft) }
+.enc .dupe { font-size: .7rem; color: var(--chg) }
+.enc .cause { grid-column: 3 / -1 }
+.enc.st-party { box-shadow: inset 3px 0 0 var(--new) }
+.enc.st-box { box-shadow: inset 3px 0 0 var(--accent) }
+.enc.st-dead { box-shadow: inset 3px 0 0 var(--chg) }
+.enc.st-missed .an, .enc.st-skipped .an { color: var(--muted) }
+.bteam { display: grid; grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); gap: 10px }
+.bmon { border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px; min-width: 0; display: flex; flex-direction: column; gap: 9px }
+.bhd { display: grid; grid-template-columns: 56px 1fr; gap: 10px; align-items: center }
+.bhd .stypes { display: flex; gap: 4px; margin-top: 4px }
+.pk.bpk { width: 56px; height: 56px; padding: 0; background: var(--accent-soft); border-radius: 8px }
+.pk.bpk img { width: 56px; height: 56px }
+.bfacts { display: grid; grid-template-columns: auto 1fr; gap: 4px 10px; margin: 0; font-size: .8rem; align-items: baseline }
+.bfacts dt { color: var(--muted) }
+.bfacts dd { margin: 0; font-weight: 600; display: flex; flex-wrap: wrap; gap: 3px; align-items: baseline }
+.bfacts small { flex-basis: 100%; font-weight: 400; color: var(--muted); font-size: .72rem }
+.bstats { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 4px }
+.nbst { position: relative; text-align: center; font-size: .64rem; color: var(--muted); padding-bottom: 6px; white-space: nowrap }
+.nbst b { display: block; font: 600 .8rem var(--font-data); color: var(--ink) }
+.nbst i { position: absolute; left: 0; bottom: 0; height: 3px; border-radius: 2px; background: var(--accent) }
+.nbst.tot b { color: var(--accent) }
+.bmoves { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 5px }
+.bmv { border-left: 4px solid var(--mvc); background: var(--bg); border-radius: 6px; padding: 6px 8px }
+.bmh { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 6px }
+.bmh .nm { font-weight: 700; font-size: .84rem; margin-right: auto }
+.bmh .cat { font: 600 .62rem var(--font-data); color: var(--muted); border: 1px solid var(--line); border-radius: 4px; padding: 1px 4px }
+.bnums { flex-basis: 100%; font: 400 .7rem var(--font-data); color: var(--muted) }
+.bmd { font-size: .72rem; color: var(--muted); margin-top: 3px }
+.bse { font-size: .72rem; color: var(--chg); font-weight: 600; margin-top: 3px }
+.nbteam { margin-top: 12px; border-top: 1px solid var(--line) }
+.enc.ev .an { font-weight: 500 }
+.evhow { font-size: .72rem; color: var(--muted) }
+.evhow summary { cursor: pointer; width: max-content }
+.evhow ol { margin: 4px 0 2px; padding-left: 18px }
+.pslots { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 10px }
+.nzone.dropping { outline: 2px dashed var(--accent); outline-offset: -2px }
+.pmon .shead { cursor: grab; grid-template-columns: 56px minmax(0, 1fr) auto }
+.pmon .shead > div { min-width: 0 }
+.pmon .sname { overflow: hidden; text-overflow: ellipsis; white-space: nowrap }
+.pmon .shead:active { cursor: grabbing }
+.pmon .grip { color: var(--muted); font-size: 1.1rem; align-self: start }
+.pmon .sp { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; display: block }
+.pmon .sname .sp { display: inline }
+.pmon.over { border-color: var(--chg); background: var(--chg-soft) }
+.pmon input.bad { border-color: var(--chg); color: var(--chg) }
+.pacts { display: flex; gap: 6px; margin-top: 8px }
+.tslot .pacts button, .tslot .pacts select { flex: 1; width: auto; font: 600 .74rem var(--font-body); padding: 5px; border-radius: 7px; border: 1px solid var(--line); background: var(--bg); color: var(--ink); cursor: pointer }
+.pacts button:hover { border-color: var(--accent) }
+.pacts button[data-to="dead"]:hover { border-color: var(--chg); color: var(--chg) }
+.pgrid { display: grid; grid-template-columns: 1fr 1fr; gap: 0 8px }
+.pgrid.nl { grid-template-columns: 1fr 76px }
+.tslot label small { text-transform: none; letter-spacing: 0; font-size: .66rem }
+.pstats { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 4px }
+.pst { display: flex; flex-direction: column; align-items: center; gap: 1px; font-size: .64rem; color: var(--muted); min-width: 0 }
+.pst i { font: 400 .64rem var(--font-data) }
+.pst.up span { color: var(--new); font-weight: 700 }
+.pst.dn span { color: var(--chg); font-weight: 700 }
+.tslot .pst input { padding: 4px 1px; text-align: center; font: 600 .78rem var(--font-data) }
+.pst em { font: 400 .58rem var(--font-data); font-style: normal; white-space: nowrap }
+.pmore summary { cursor: pointer; font-size: .76rem; color: var(--muted); margin-top: 8px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap }
+.pmv { display: flex; flex-direction: column; gap: 3px }
+.pmv .bmv { margin-left: 4px }
+.bgood { font-size: .72rem; color: var(--new); font-weight: 600; margin-top: 3px }
+.pweak { margin-top: 2px }
+.pthreat { margin-top: 6px }
+.tslot .mvs { gap: 8px }
+.gbtn { font: 700 .78rem var(--font-body); line-height: 1; border: 1px solid var(--line); background: var(--panel); border-radius: 999px; min-width: 18px; height: 18px; padding: 0 3px;
+  display: inline-flex; align-items: center; justify-content: center; vertical-align: middle; margin-left: 5px; color: var(--muted) }
+button.gbtn { cursor: pointer }
+button.gbtn:hover { border-color: var(--accent) }
+.gbtn.gM { color: #3d7be0 }
+.gbtn.gF { color: #d64585 }
+.gbtn.gN { font-weight: 400 }
+.enc span.sp.spg { height: auto; display: flex; flex-direction: column; align-items: center; gap: 2px }
+.enc .spg img { width: 36px; height: 36px; image-rendering: pixelated; display: block }
+.enc .spg .gbtn { margin: 0; min-width: 18px; height: 16px; font-size: .68rem }
+.pmon.drop-before { box-shadow: -4px 0 0 var(--accent) }
+.pmon.drop-after { box-shadow: 4px 0 0 var(--accent) }
+@media (max-width: 760px) { .pmon.drop-before { box-shadow: 0 -4px 0 var(--accent) } .pmon.drop-after { box-shadow: 0 4px 0 var(--accent) } }
+.tslot .pacts .pord { flex: 0 0 34px }
+.tslot .pacts .pord:disabled { opacity: .35; cursor: default }
+.calc .cdir { display: inline-flex; border: 1px solid var(--line); border-radius: 8px; overflow: hidden; margin-bottom: 10px; max-width: 100% }
+.calc .cdir button { font: 600 .8rem var(--font-body); border: 0; background: var(--panel); color: var(--muted); padding: 7px 12px; cursor: pointer }
+.calc .cdir button[aria-pressed="true"] { background: var(--ink); color: var(--bg) }
+.ccontrols { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 8px }
+.calc label { font-size: .66rem; text-transform: uppercase; letter-spacing: .07em; color: var(--muted); display: flex; flex-direction: column; gap: 3px; min-width: 0 }
+.calc select, .calc input[type=number] { font: 500 .85rem var(--font-body); padding: 6px 8px; border-radius: 7px; border: 1px solid var(--line); background: var(--bg); color: var(--ink); min-width: 0; text-transform: none; letter-spacing: 0 }
+.copts { display: flex; flex-wrap: wrap; gap: 8px 14px; margin-top: 10px; align-items: flex-end }
+.copts label { width: 112px }
+.copts label.cb { width: auto; flex-direction: row; align-items: center; gap: 6px; text-transform: none; letter-spacing: 0; font-size: .82rem; color: var(--ink) }
+.cres { margin-top: 12px; border-top: 1px solid var(--line); padding-top: 12px }
+.cline { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 12px }
+.cres .big { font: 700 1.9rem var(--font-display); line-height: 1 }
+.cres .pct { font: 600 .85rem var(--font-data); color: var(--muted) }
+.cbar { position: relative; height: 10px; border-radius: 5px; background: var(--bg); border: 1px solid var(--line); margin: 8px 0; overflow: hidden }
+.cbar i { position: absolute; top: 0; bottom: 0; left: 0; background: var(--chg) }
+.cbar b { position: absolute; top: 0; bottom: 0; background: color-mix(in srgb, var(--chg) 40%, transparent) }
+.cres .ko { font-weight: 700 }
+.cres .ko.k1 { color: var(--chg) }
+.cwho { font-size: .8rem; margin-top: 6px }
+.cwhy { font-size: .74rem; color: var(--muted); margin-top: 4px; overflow-wrap: anywhere }
+section.card[data-sec] > h3, section.card[data-sec] .nhead > h3 { display: flex; align-items: center; gap: 8px }
+.nhead > h3 { flex: 1 }
+.nhide { margin-left: auto; font: 600 .7rem var(--font-body); text-transform: none; letter-spacing: 0; border: 1px solid var(--line); background: var(--panel); color: var(--muted);
+  border-radius: 999px; padding: 3px 10px; cursor: pointer }
+.nhide:hover { border-color: var(--accent); color: var(--ink) }
+section.ncoll > :not(h3):not(.nhead), section.ncoll .nhead > :not(h3) { display: none }
+section.ncoll h3 { margin-bottom: 0 !important }
+.ivgo { float: right; font: 600 .66rem var(--font-body); text-transform: none; letter-spacing: 0; border: 1px solid var(--line); background: var(--panel); color: var(--ink); border-radius: 999px; padding: 1px 8px; cursor: pointer }
+.ivgo:hover { border-color: var(--accent) }
+.pivs { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 4px }
+.piv { text-align: center; font: 700 .7rem var(--font-data); border-radius: 6px; padding: 4px 0; color: #fff; background: var(--muted); white-space: nowrap; overflow: hidden }
+.piv.g4 { background: var(--new) } .piv.g3 { background: var(--accent) } .piv.g2 { background: #b9822a } .piv.g1 { background: var(--chg) }
+.piv.none { background: transparent; color: var(--muted); border: 1px dashed var(--line) }
+.pivnote { font-size: .7rem; color: var(--muted); margin-top: 5px }
+.phist { margin-top: 6px; font-size: .74rem }
+.phist summary { cursor: pointer; color: var(--muted); width: max-content }
+.phist table { width: 100%; border-collapse: collapse; margin-top: 4px; font: .72rem var(--font-data) }
+.phist th, .phist td { padding: 3px 2px; text-align: center; border-bottom: 1px solid var(--line) }
+.phist th { color: var(--muted); font-weight: 600 }
+.phist button { border: 0; background: none; color: var(--muted); cursor: pointer; font-size: .9rem; padding: 0 4px; border-radius: 4px }
+.phist button:hover { color: var(--chg); background: var(--chg-soft) }
+/* fixed-height parts so party cards line up */
+.pmon .pab { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; line-height: 1.3 }
+.pmon .pab:empty { display: none }
+.pmon .pitem { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; line-height: 1.3; height: calc(1.3 * .74rem) }
+.pmxs { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 3px }
+.pmx { display: flex; justify-content: space-between; align-items: center; gap: 2px; font: 600 .62rem var(--font-data); padding: 3px 4px 3px 5px; border-radius: 4px; border-left: 3px solid var(--tc); color: var(--muted); background: var(--bg); white-space: nowrap; overflow: hidden }
+.pmx b { font-weight: 700; letter-spacing: .02em }
+.pmx.x1 { opacity: .55 }
+.pmx.x2 { background: var(--chg-soft); color: var(--chg) }
+.pmx.x4 { background: var(--chg); color: #fff }
+.pmx.xh { background: color-mix(in srgb, var(--new) 16%, transparent); color: var(--new) }
+.pmx.xq, .pmx.x0 { background: color-mix(in srgb, var(--new) 34%, transparent); color: var(--ink) }
+.pmon .pthreat { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; line-height: 1.3; margin-top: 6px }
+.pmon .pthreat:empty { display: none }
+.pmon .pmv .bmv { display: flex; flex-direction: column }
+.pmon .pmv .bmh { height: 36px; overflow: hidden; align-content: flex-start }
+.pmon .pmv .bmd { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; line-height: 1.3; height: calc(2 * 1.3 * .72rem) }
+.pmon .pmv .pvs { font-size: .72rem; font-weight: 600; line-height: 1.3; height: calc(1.3 * .72rem); margin-top: 3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis }
+.pmon .pmv .pvs .sp { display: inline; font-weight: 400 }
+.pmon .pmv .pvs .bgood, .pmon .pmv .pvs .bse { margin: 0 }
+.pmon .pempty { opacity: .5 }
+.tslot.pmon .mvs { grid-template-columns: minmax(0, 1fr) }
+.pst input::-webkit-inner-spin-button, .pst input::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0 }
+.pst input { -moz-appearance: textfield; appearance: textfield }
+.pmon .pmv, .pmon .pmv .bmv, .pmon .pmv select { min-width: 0; max-width: 100% }
+.phist-none, .phist summary { font-size: .74rem; line-height: 1.4; margin-top: 6px }
+.phist-none { color: var(--muted) }
+.pmon .pivlab { white-space: nowrap; overflow: hidden; text-overflow: ellipsis }
+/* Weak / Resists / Immune: type-coloured badges; 85px fits every species and ability at card width */
+.pweak2 { display: flex; flex-direction: column; gap: 3px }
+.pwr { display: flex; flex-wrap: wrap; gap: 2px; align-items: center }
+.pwl { font-size: .7rem; color: var(--muted); line-height: 15px; margin-right: 2px }
+.pwb { display: contents }
+.pwb .mtype { font-size: .55rem; padding: 0 4px; line-height: 15px; border-radius: 3px; letter-spacing: .03em }
+.pwb .mtype i { font-style: normal; margin-left: 3px; font-weight: 800 }
+.pwb .sp { line-height: 15px; font-size: .7rem }
+/* party cards share row tracks (subgrid), so each section lines up with its neighbours and only takes the space the tallest of them needs */
+@supports (grid-template-rows: subgrid) {
+  .nzone[data-zone="party"] .pslots { row-gap: 0 }
+  .nzone[data-zone="party"] .pslots > .pmon { display: grid; grid-template-rows: subgrid; row-gap: 0; align-content: start; margin-bottom: 10px }
+  .nzone[data-zone="party"] .pslots > .pmon > * { align-self: start; min-width: 0 }
+}
+.bmh .hpsel { font: 600 .66rem var(--font-body); padding: 1px 4px; border-radius: 5px; border: 1px solid var(--line); background: var(--panel); color: var(--ink); width: auto; max-width: 130px }
+.nbosses { list-style: none; margin: 0; padding: 0; columns: 2 240px; column-gap: 24px; font-size: .84rem }
+.nbosses li { break-inside: avoid; padding: 3px 0 }
+.nbosses label { display: flex; gap: 8px; align-items: center; cursor: pointer }
+.nbosses small { color: var(--muted) }
+.nbosses .cap { font: 600 .75rem var(--font-data); color: var(--muted); margin-left: auto }
+.nbosses li.next { font-weight: 700 }
+.nbosses li.next .cap { color: var(--accent) }
+.nbosses li.done span:not(.cap) { text-decoration: line-through; color: var(--muted) }
+.nrules label.chk { display: flex; gap: 8px; align-items: flex-start; font-size: .85rem; margin-bottom: 8px }
+.nrules textarea { width: 100%; resize: vertical }
+.ivsub { font-size: .84rem; color: var(--muted); margin: 0 }
+.ivtop { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 10px; margin-top: 12px }
+#ivdetail label { display: flex; flex-direction: column; gap: 3px; font-size: .66rem; text-transform: uppercase; letter-spacing: .07em; color: var(--muted); min-width: 0 }
+#ivdetail label small { text-transform: none; letter-spacing: 0 }
+#ivdetail input, #ivdetail select { font: 500 .88rem var(--font-body); padding: 7px 8px; border-radius: 7px; border: 1px solid var(--line); background: var(--bg); color: var(--ink); min-width: 0; width: 100%; text-transform: none; letter-spacing: 0 }
+.ivmon { display: flex; gap: 10px; align-items: center; margin-top: 12px }
+.ivmon img { width: 56px; height: 56px; image-rendering: pixelated }
+.ivmon .stypes { display: flex; gap: 4px; margin-top: 4px }
+.ivrows { display: flex; flex-direction: column; gap: 10px }
+.ivrow { display: grid; grid-template-columns: 72px repeat(6, minmax(0, 1fr)) 28px; gap: 6px; align-items: end; padding-bottom: 10px; border-bottom: 1px solid var(--line) }
+.ivrow:last-child { border-bottom: 0 }
+#ivdetail .ivrow input { text-align: center; font-family: var(--font-data) }
+#ivdetail .ivrow label.up { color: var(--new); font-weight: 700 }
+#ivdetail .ivrow label.dn { color: var(--chg); font-weight: 700 }
+.ivrow .x { border: 0; background: none; color: var(--muted); font-size: 1.2rem; cursor: pointer; border-radius: 6px; padding: 4px }
+.ivrow .x:hover { color: var(--chg); background: var(--chg-soft) }
+.ivev { grid-column: 1 / -1; font-size: .76rem; color: var(--muted) }
+.ivev summary { cursor: pointer; width: max-content }
+.ivevs { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 6px; margin-top: 6px }
+.ivsum { display: flex; gap: 14px; align-items: center; margin-bottom: 12px }
+.ivgrade { font: 700 2.4rem var(--font-display); width: 64px; height: 64px; border-radius: 12px; display: grid; place-items: center; color: #fff; background: var(--muted); flex: none }
+.ivgrade.gS, .ivgrade.gA { background: var(--new) } .ivgrade.gB { background: var(--accent) } .ivgrade.gC, .ivgrade.gD { background: #b9822a } .ivgrade.gE { background: var(--chg) }
+.ivsum .sp { margin-top: 3px; display: flex; flex-wrap: wrap; gap: 4px; align-items: center }
+.ivtable { width: 100%; font-size: .86rem; border-collapse: collapse }
+.ivtable th, .ivtable td { text-align: left; padding: 7px 8px; border-bottom: 1px solid var(--line); vertical-align: middle }
+.ivtable thead th { font: 600 .68rem var(--font-body); text-transform: uppercase; letter-spacing: .07em; color: var(--muted) }
+.ivtable td.b { font-family: var(--font-data); color: var(--muted) }
+.ivtable td.iv { font: 700 .95rem var(--font-data) }
+.ivtable .bar { width: 34% }
+.ivtable tr.bad td { color: var(--chg) }
+.ivbar { position: relative; height: 10px; border-radius: 5px; background: var(--bg); border: 1px solid var(--line); overflow: hidden }
+.ivbar i { position: absolute; top: 0; bottom: 0; border-radius: 4px }
+.ivbar i.g4, .ivj.g4 { background: var(--new) } .ivbar i.g3, .ivj.g3 { background: var(--accent) } .ivbar i.g2, .ivj.g2 { background: #b9822a } .ivbar i.g1, .ivj.g1 { background: var(--chg) }
+.ivj { color: #fff; font: 700 .7rem var(--font-body); padding: 2px 8px; border-radius: 999px; white-space: nowrap }
+@media (max-width: 760px) {
+  .ivrow { grid-template-columns: repeat(4, minmax(0, 1fr)) }
+  .ivrow > span, .ivrow .x { grid-column: 4; grid-row: 1; justify-self: end; align-self: start }
+  .ivevs { grid-template-columns: repeat(3, minmax(0, 1fr)) }
+  .ivtable .bar { display: none }
+  .ivtable th, .ivtable td { padding: 6px 4px }
+  .ivj { white-space: normal; display: inline-block; line-height: 1.3 }
+}
 .rnote { font-size: .85rem; color: var(--muted); border-left: 3px solid var(--accent); padding: 2px 10px; margin: 0 0 10px }
 
 @media (max-width: 760px) {
@@ -344,10 +610,17 @@ th.sortable[aria-sort="descending"]::after { content: " ▼"; opacity: 1 }
   .app:not(.showing) #dexMain .detail { display: none }
   .app.rshowing #routeMain .roster { display: none }
   .app:not(.rshowing) #routeMain .detail { display: none }
-  .ver.views { margin-left: 0 }
+  .ver.views { margin-left: 0; display: grid; grid-template-columns: repeat(4, 1fr); width: 100%; border-radius: 12px }
+  .ver.views button { padding: 7px 4px }
   .wrow, .vrow { grid-template-columns: 1fr; gap: 4px }
   .app.tshowing #teamMain .roster { display: none }
   .app:not(.tshowing) #teamMain .detail { display: none }
+  .app.nshowing #nuzMain .roster { display: none }
+  .app:not(.nshowing) #nuzMain .detail { display: none }
+  .enc { grid-template-columns: 36px 1fr 58px; grid-template-areas: "an an st" "sp ms ms" "sp nick lv"; padding-left: 8px }
+  .enc .an { grid-area: an } .enc .sp { grid-area: sp } .enc .ms { grid-area: ms } .enc .nick { grid-area: nick } .enc .lv { grid-area: lv } .enc .st { grid-area: st; width: 96px; justify-self: end }
+  .enc .cause { grid-column: 2 / -1 }
+  .ncap .tbtns { margin-left: 0 }
   .slots { grid-template-columns: 1fr }
   .tygrid { grid-template-columns: 1fr }
   .maphint { display: none }
@@ -378,6 +651,8 @@ th.sortable[aria-sort="descending"]::after { content: " ▼"; opacity: 1 }
       <button id="view-moves" aria-pressed="false">Moves</button>
       <button id="view-types" aria-pressed="false">Types</button>
       <button id="view-team" aria-pressed="false">Team</button>
+      <button id="view-nuz" aria-pressed="false">Nuzlocke</button>
+      <button id="view-iv" aria-pressed="false">IVs</button>
     </div>
     <div class="ver" role="group" aria-label="Patch version">
       <button id="v-complete" aria-pressed="true">Complete</button>
@@ -436,7 +711,24 @@ th.sortable[aria-sort="descending"]::after { content: " ▼"; opacity: 1 }
     </aside>
     <main class="detail" id="tdetail"></main>
   </div>
+  <div class="main" id="nuzMain" hidden>
+    <aside class="roster">
+      <div class="tbtns"><button class="btn primary" id="nnew">+ New run</button></div>
+      <div class="count" id="ncount"></div>
+      <div class="list tlist" id="nlist" role="list"></div>
+      <div class="syncnote" id="nsync"></div>
+    </aside>
+    <main class="detail" id="ndetail"></main>
+  </div>
+  <div class="main single" id="ivMain" hidden>
+    <main class="detail" id="ivdetail"></main>
+  </div>
   <datalist id="monlist"></datalist>
+  <div class="amodal" id="amodal" hidden role="dialog" aria-modal="true" aria-labelledby="atitle">
+    <div class="abox"><header><div><h2 id="atitle"></h2><div class="ameta" id="ameta"></div></div>
+      <div class="abtns"><button class="btn" id="adetails">Open full details</button><button class="btn primary" id="aclose" aria-label="Close">Close ✕</button></div></header>
+      <div id="amap"></div></div>
+  </div>
 </div>
 
 <script>
@@ -478,6 +770,8 @@ function setVer(v) {
   if (typeof renderTeam === 'function' && view === 'team') { renderTeamList(); renderTeam() }
   if (typeof renderMove === 'function' && view === 'moves') { renderMoveList(); renderMove() }
   if (typeof renderTypes === 'function' && view === 'types') renderTypes();
+  if (typeof renderIv === 'function' && view === 'ivs') renderIv();
+  if (typeof renderRun === 'function' && view === 'nuzlocke') renderRun();
 }
 document.getElementById('v-complete').onclick = () => setVer('complete');
 document.getElementById('v-classic').onclick = () => setVer('classic');
@@ -675,6 +969,12 @@ function setView(v) {
   document.getElementById('dexMain').hidden = v !== 'dex';
   document.getElementById('routeMain').hidden = v !== 'routes';
   document.getElementById('teamMain').hidden = v !== 'team';
+  document.getElementById('view-nuz').setAttribute('aria-pressed', v === 'nuzlocke');
+  document.getElementById('nuzMain').hidden = v !== 'nuzlocke';
+  document.getElementById('view-iv').setAttribute('aria-pressed', v === 'ivs');
+  document.getElementById('ivMain').hidden = v !== 'ivs';
+  if (v === 'ivs') renderIv();
+  if (v === 'nuzlocke') { renderRunList(); renderRun() }
   if (v === 'routes') { renderRouteList(); renderRoute() }
   if (v === 'team') { renderTeamList(); renderTeam() }
   if (v === 'moves') { renderMoveList(); renderMove() }
@@ -684,6 +984,8 @@ function setView(v) {
 document.getElementById('view-dex').onclick = () => setView('dex');
 document.getElementById('view-routes').onclick = () => setView('routes');
 document.getElementById('view-team').onclick = () => setView('team');
+document.getElementById('view-nuz').onclick = () => setView('nuzlocke');
+document.getElementById('view-iv').onclick = () => setView('ivs');
 document.getElementById('view-moves').onclick = () => setView('moves');
 document.getElementById('view-types').onclick = () => setView('types');
 document.getElementById('view-map').onclick = () => setView('map');
@@ -749,7 +1051,7 @@ function renderRoute() {
   const meta = [L.counts.w && L.counts.w + ' wild species', L.counts.t && L.counts.t + (L.counts.t === 1 ? ' trainer' : ' trainers') + (L.counts.re ? ` (+${L.counts.re} rematch${L.counts.re === 1 ? '' : 'es'})` : ''), L.counts.i && L.counts.i + (L.counts.i === 1 ? ' notable item' : ' notable items')].filter(Boolean).join(' · ');
   let html = `<button class="back" id="rback">← All areas</button>
   <div class="rhero"><h2>${esc(L.n)}</h2><div class="sub" style="color:var(--muted);font-size:.85rem">${meta || 'No wild Pokémon, trainers or notable items listed.'}</div>
-    ${RIMG[L.n] ? `<figure class="rshot"><a href="pokedex-img/${RIMG[L.n]}" target="_blank" rel="noopener" title="Open full size"><img src="pokedex-img/${RIMG[L.n]}" alt="In-game screenshot of ${esc(L.n)}" loading="lazy" onerror="this.closest('figure').remove()"></a><figcaption>In-game screenshot (Pokémon Platinum) · Bulbagarden Archives</figcaption></figure>` : ''}
+    ${RIMG[L.n] ? `<figure class="rshot"><a href="pokedex-img/${RIMG[L.n]}" data-area="${esc(L.n)}" title="Zoom in"><img src="pokedex-img/${RIMG[L.n]}" alt="In-game screenshot of ${esc(L.n)}" loading="lazy" onerror="this.closest('figure').remove()"></a><figcaption>In-game screenshot (Pokémon Platinum) · Bulbagarden Archives</figcaption></figure>` : ''}
     ${multi && L.subs.length > 1 ? `<nav class="jump">${L.subs.map((x, i) => `<a href="#${subId(i)}">${esc(x.n || 'Main area')}</a>`).join('')}${L.items.length ? '<a href="#sub-items">Items</a>' : ''}</nav>` : ''}</div>`;
   L.subs.forEach((x, i) => {
     if (multi) html += `<h3 class="subhead" id="${subId(i)}">${esc(x.n || 'Main area')}</h3>`;
@@ -760,6 +1062,7 @@ function renderRoute() {
     ${L.items.map(it => `<tr><td>${esc(it.i)}</td><td>${esc(it.w)}</td><td>${esc(it.h || '—')}</td></tr>`).join('')}</tbody></table></div>
     <div class="foot">Held items, TMs, key items and plates that Renegade Platinum adds or moves. Standard pickups (Potions, Poké Balls, etc.) are as in vanilla Platinum.</div></section>`;
   const d = document.getElementById('rdetail'); d.innerHTML = html;
+  const shot = d.querySelector('.rshot a'); if (shot) shot.onclick = e => { e.preventDefault(); openAreaPopup(shot.dataset.area) };
   document.getElementById('rback').onclick = () => document.getElementById('app').classList.remove('rshowing');
 }
 document.getElementById('rdetail').addEventListener('click', e => {
@@ -829,7 +1132,7 @@ function analyze(team) {
     const xs = mem.map(({ p, m }) => defMult(m.v[ver].types, p.ab, t));
     return { t, xs, weak: xs.filter(x => x > 1).length, res: xs.filter(x => x < 1).length };
   });
-  const attacks = mem.flatMap(({ p, m }) => (p.moves || []).filter(isAttack).map(mv => ({ m, mv, t: MV[mv].t, stab: m.v[ver].types.includes(MV[mv].t) })));
+  const attacks = mem.flatMap(({ p, m }) => (p.moves || []).filter(isAttack).map(mv => { const t = mv === 'Hidden Power' && p.hpt ? p.hpt : MV[mv].t; return { m, mv, t, stab: m.v[ver].types.includes(t) } }));
   const off = TYPES.map(d => {
     let best = attacks.length ? 0 : null; const by = [];
     attacks.forEach(a => { const x = (CH[a.t] || {})[d] ?? 1; if (x > best) best = x; if (x > 1) by.push(a) });
@@ -934,6 +1237,895 @@ function renderTeam() {
   });
 }
 
+
+// ---- Nuzlocke tracker: one encounter per area, dupes clause, level caps from boss teams, party / box / graveyard ----
+// Saved in this browser and synced to the Forge server (/api/pokedex-nuzlocke) when it's available.
+const NKEY = 'rp-nuzlocke';
+// Areas in rough story order; areas not listed here are appended at the end
+const NORDER = ['Twinleaf Town', 'Route 201', 'Lake Verity', 'Sandgem Town', 'Route 202', 'Jubilife City', 'Route 204', 'Ravaged Path', 'Route 203', 'Oreburgh Gate', 'Oreburgh City', 'Oreburgh Mine',
+  'Floaroma Town', 'Floaroma Meadow', 'Valley Windworks', 'Route 205', 'Eterna Forest', 'Old Chateau', 'Eterna City', 'Route 211', 'Route 206', 'Wayward Cave', 'Route 207', 'Mt. Coronet', 'Route 208',
+  'Hearthome City', 'Route 209', 'Lost Tower', 'Solaceon Town', 'Solaceon Ruins', 'Route 210', 'Route 215', 'Veilstone City', 'Route 214', 'Maniac Tunnel', 'Valor Lakefront', 'Route 213', 'Pastoria City',
+  'Great Marsh', 'Route 212', 'Trophy Garden', 'Celestic Town', 'Fuego Ironworks', 'Canalave City', 'Route 218', 'Iron Island', 'Lake Valor', 'Lake Acuity', 'Route 216', 'Route 217', 'Acuity Lakefront',
+  'Snowpoint City', 'Snowpoint Temple', 'Galactic HQ', 'Spear Pillar', 'Distortion World', 'Sunyshore City', 'Route 222', 'Route 219', 'Route 220', 'Route 221', 'Route 223', 'Victory Road', 'Pokémon League',
+  'Fight Area', 'Route 225', 'Survival Area', 'Route 226', 'Route 227', 'Stark Mountain', 'Route 228', 'Route 229', 'Route 230', 'Resort Area', 'Route 224', 'Seven Stars Restaurant', 'Sendoff Spring',
+  'Turnback Cave', 'Fullmoon Island'];
+const NSKIP = new Set(['Battle Marathon Only', 'Pokémon Center', 'Pal Park']);
+const nkey = s => s.normalize('NFC');
+// gifts, eggs, special and legendary encounters from the Pokédex event data: one encounter row per event, filed under
+// its area. Pokémon that share an event (the Interviewer's starters, the Trainers' School egg, the fossils) share a row.
+// Trades and the Sinnoh starters (the Starter row) are left out.
+const NLOCMAP = { 'Eterna Galactic Building': 'Eterna City', 'Acuity Cavern': 'Lake Acuity', 'Verity Cavern': 'Lake Verity', 'Valor Cavern': 'Lake Valor', 'Pokémon Mansion': 'Route 212' };
+const NEVBY = {};
+(() => {
+  const names = ROUTES.map(L => L.n).sort((a, b) => b.length - a.length), groups = new Map();
+  mons.forEach(m => (m.events || []).forEach(e => {
+    if (e.kind === 'In-game trade' || [387, 390, 393].includes(m.num)) return;
+    const a = NLOCMAP[e.loc] || names.find(n => nkey(e.loc).startsWith(nkey(n))); if (!a) return;
+    const gk = [e.kind, e.loc, e.lv, (e.steps || []).join(' ')].join('|');
+    if (!groups.has(gk)) groups.set(gk, { k: 'ev:' + e.loc + '|' + m.num, area: a, loc: e.loc, lv: e.lv || '', steps: e.steps || [],
+      tag: /Egg/.test(e.lv || '') ? 'Egg' : e.kind === 'Gift' ? 'Gift' : e.kind === 'Legendary encounter' ? 'Legendary' : 'Special encounter', opts: [] });
+    groups.get(gk).opts.push({ n: m.num, how: [e.kind] });
+  }));
+  groups.forEach(g => (NEVBY[nkey(g.area)] = NEVBY[nkey(g.area)] || []).push(g));
+})();
+const evLabel = ev => nkey(ev.loc) === nkey(ev.area) ? ev.area + ' ' + ev.tag.toLowerCase() : ev.loc;
+const evMeta = ev => [ev.tag, ev.tag === 'Egg' ? 'hatches at Lv. 1' : /^\d/.test(ev.lv) ? 'Lv. ' + ev.lv : '', ev.opts.length > 1 ? 'pick 1 of ' + ev.opts.length : ''].filter(Boolean).join(' · ');
+const NAREAS = (() => {
+  const ok = L => !NSKIP.has(nkey(L.n)) && (L.subs.some(x => x.wild.length) || NEVBY[nkey(L.n)]), by = {};
+  ROUTES.forEach(L => by[nkey(L.n)] = L);
+  const out = NORDER.map(n => by[nkey(n)]).filter(L => L && ok(L));
+  ROUTES.forEach(L => { if (ok(L) && !out.includes(L)) out.push(L) });
+  return out;
+})();
+const NPOST = NAREAS.findIndex(L => nkey(L.n) === nkey('Fight Area'));
+// species you can meet in an area, with how (method / sub-area)
+function areaMons(L) {
+  const o = new Map();
+  L.subs.forEach(x => x.wild.forEach(w => w.mons.forEach(([n]) => {
+    const how = (x.n ? x.n + ' · ' : '') + w.m.replace(/^[^\p{L}\p{N}]+/u, '');
+    if (!o.has(n)) o.set(n, []); if (!o.get(n).includes(how)) o.get(n).push(how);
+  })));
+  return [...o].map(([n, how]) => ({ n, how }));
+}
+
+// Story bosses in order; the cap is the highest level on their team (from the Routes trainer data)
+const NBOSS = [
+  ['Rival Barry', 'Route 203', '', 'PKMN Trainer Barry'], ['Leader Roark', 'Oreburgh City', 'Gym', 'Leader Roark'], ['Commander Mars', 'Valley Windworks', '', 'Commander Mars'],
+  ['Leader Gardenia', 'Eterna City', 'Gym', 'Leader Gardenia'], ['Commander Jupiter', 'Eterna City', 'Galactic Building', 'Commander Jupiter'], ['Rival Barry', 'Hearthome City', 'Gym', 'PKMN Trainer Barry'],
+  ['Leader Fantina', 'Hearthome City', 'Gym', 'Leader Fantina'], ['Leader Maylene', 'Veilstone City', 'Gym', 'Leader Maylene'], ['Rival Barry', 'Pastoria City', '', 'PKMN Trainer Barry'],
+  ['Leader Wake', 'Pastoria City', 'Gym', 'Leader Wake'], ['Boss Cyrus', 'Celestic Town', '', 'Galactic Boss Cyrus'], ['Rival Barry', 'Canalave City', '', 'PKMN Trainer Barry'],
+  ['Leader Byron', 'Canalave City', 'Gym', 'Leader Byron'], ['Commander Mars', 'Lake Verity', '', 'Commander Mars'], ['Commander Saturn', 'Lake Valor', '', 'Commander Saturn'],
+  ['Leader Candice', 'Snowpoint City', 'Gym', 'Leader Candice'], ['Commander Saturn', 'Galactic HQ', '', 'Commander Saturn'], ['Boss Cyrus', 'Galactic HQ', '', 'Galactic Boss Cyrus'],
+  ['Mars & Jupiter', 'Spear Pillar', '', 'Commander Mars'], ['Boss Cyrus', 'Distortion World', '', 'Galactic Boss Cyrus'], ['Leader Volkner', 'Sunyshore City', 'Gym', 'Leader Volkner'],
+  ['Rival Barry', 'Pokémon League', '', 'PKMN Trainer Barry'], ['Elite Four Aaron', 'Pokémon League', '', 'Elite Four Aaron R1'], ['Elite Four Bertha', 'Pokémon League', '', 'Elite Four Bertha R1'],
+  ['Elite Four Flint', 'Pokémon League', '', 'Elite Four Flint R1'], ['Elite Four Lucian', 'Pokémon League', '', 'Elite Four Lucian R1'], ['Champion Cynthia', 'Pokémon League', '', 'Champion Cynthia R1'],
+].map(([label, area, sub, name]) => {
+  const L = ROUTES.find(r => nkey(r.n) === nkey(area));
+  const trs = L ? L.subs.filter(x => x.n === sub).flatMap(x => x.tr.filter(t => t.name === name)) : [];
+  const t = [...trs].sort((a, b) => b.team.length - a.team.length)[0];
+  return t && { label, area: L.n, sub, cap: Math.max(...t.team.map(p => parseInt(p.lv) || 0)), team: t.team, trs };
+}).filter(Boolean);
+
+// evolution family root, for the dupes clause
+const famRoot = {};
+mons.forEach(m => { const walk = (e, root) => { if (!e || !e.num) return; if (!famRoot[e.num]) famRoot[e.num] = root; (e.k || []).forEach(c => walk(c, root)) }; if (m.evo) walk(m.evo, m.evo.num) });
+const fam = n => famRoot[n] || n;
+// a boss's team variants; rival teams depend on your starter's type
+const STYPE = { 387: 'Grass', 390: 'Fire', 393: 'Water' };
+function bossTeams(b, r) {
+  const st = r.enc.starter && STYPE[fam(r.enc.starter.n)], m = st ? b.trs.filter(t => t.var === 'Your starter: ' + st) : [];
+  return m.length ? m : b.trs;
+}
+let nShowBoss = false;
+const nimg = n => SPR[n] ? img(n) : '';
+
+// Renegade Platinum keeps the Sinnoh starters
+const NSTARTERS = [387, 390, 393].map(n => ({ n, how: ["Starter"] }));
+// Gen 1–4 gender rules (the Pokédex data doesn't carry gender ratios)
+const NGL = new Set([81, 82, 100, 101, 120, 121, 132, 137, 144, 145, 146, 150, 151, 201, 233, 243, 244, 245, 249, 250, 251, 292, 337, 338, 343, 344, 374, 375, 376, 377, 378, 379,
+  382, 383, 384, 385, 386, 436, 437, 462, 474, 479, 480, 481, 482, 483, 484, 486, 487, 489, 490, 491, 492, 493]);
+const NMALE = new Set([32, 33, 34, 106, 107, 128, 236, 237, 313, 381, 414, 475]);
+const NFEM = new Set([29, 30, 31, 113, 115, 124, 238, 241, 242, 314, 380, 413, 416, 440, 478, 488]);
+const gOf = e => NGL.has(e.n) ? 'N' : NMALE.has(e.n) ? 'M' : NFEM.has(e.n) ? 'F' : e.g || '';
+function gBtn(e) {
+  const g = gOf(e);
+  if (g === 'N') return '<span class="gbtn gN" title="Genderless">–</span>';
+  if (NMALE.has(e.n) || NFEM.has(e.n)) return `<span class="gbtn g${g}" title="Always ${g === 'M' ? 'male' : 'female'}">${g === 'M' ? '♂' : '♀'}</span>`;
+  return `<button class="gbtn g${g || 'U'}" title="${g ? (g === 'M' ? 'Male' : 'Female') + ' · click to change' : 'Set gender'}" aria-label="Gender: ${g === 'M' ? 'male' : g === 'F' ? 'female' : 'not set'}, click to change">${g === 'M' ? '♂' : g === 'F' ? '♀' : '?'}</button>`;
+}
+const NST = { party: 'Party', box: 'Box', dead: 'Dead', missed: 'Missed', skipped: 'Skipped' };
+const newRun = name => ({ id: 'n' + Date.now(), name, created: Date.now(), rules: { dupes: true, caps: true }, enc: {}, custom: [{ k: 'starter', label: 'Starter' }], beat: 0, notes: '' });
+let NZ = store.get(NKEY, null) || { runs: [], cur: null, updated: 0 };
+if (!NZ.runs.length) { NZ.runs.push(newRun('Run 1')); NZ.cur = NZ.runs[0].id }
+const curRun = () => NZ.runs.find(r => r.id === NZ.cur) || NZ.runs[0];
+function nMigrate() {
+  NZ.runs.forEach(r => Object.values(r.enc).forEach(e => { if (!e.hist && +e.lv && e.stats && Object.keys(e.stats).length) nLog(e) }));
+  NZ.runs.forEach(r => NAREAS.forEach(L => {
+    const e = r.enc[L.n]; if (!e || !e.n || areaMons(L).some(o => o.n === e.n)) return;
+    const ev = (NEVBY[nkey(L.n)] || []).find(g => g.opts.some(o => o.n === e.n));
+    if (ev && !r.enc[ev.k]) { r.enc[ev.k] = { ...e, other: false }; delete r.enc[L.n] }
+  }));
+}
+nMigrate();
+let nsyncState = 'local', nsyncTimer = null;
+function saveRuns() {
+  NZ.updated = Date.now(); store.set(NKEY, NZ);
+  clearTimeout(nsyncTimer);
+  nsyncTimer = setTimeout(() => fetch('/api/pokedex-nuzlocke', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(NZ) })
+    .then(r => { nsyncState = r.ok ? 'synced' : 'local'; showNSync() }).catch(() => { nsyncState = 'local'; showNSync() }), 600);
+}
+function showNSync() {
+  const el = document.getElementById('nsync'); if (!el) return;
+  el.textContent = nsyncState === 'synced' ? 'Runs sync across your devices through Forge.' : 'Runs are saved in this browser.';
+}
+fetch('/api/pokedex-nuzlocke', { cache: 'no-store' }).then(r => r.ok ? r.json() : null).then(d => {
+  if (!d || !Array.isArray(d.runs)) return;
+  nsyncState = 'synced';
+  if (d.runs.length && (d.updated || 0) > (NZ.updated || 0)) { NZ = d; nMigrate(); store.set(NKEY, NZ); if (view === 'nuzlocke') { renderRunList(); renderRun() } }
+  else if (NZ.updated) saveRuns();
+  showNSync();
+}).catch(() => {});
+
+const isCaught = e => e && e.n && (e.st === 'party' || e.st === 'box' || e.st === 'dead');
+const runRows = r => [...r.custom.map(c => ({ k: c.k, label: c.label, custom: true })), ...NAREAS.flatMap((L, i) => {
+  const post = NPOST >= 0 && i >= NPOST;
+  return [...(L.subs.some(x => x.wild.length) ? [{ k: L.n, label: L.n, L, area: L.n, post }] : []),
+    ...(NEVBY[nkey(L.n)] || []).map(ev => ({ k: ev.k, label: evLabel(ev), ev, area: L.n, post }))];
+})];
+const placed = r => runRows(r).map(row => ({ row, e: r.enc[row.k] })).filter(x => x.e && x.e.n);
+function partyOf(r) {
+  const ord = r.porder || [], at = k => { const i = ord.indexOf(k); return i < 0 ? 1e9 : i };
+  return placed(r).filter(x => x.e.st === 'party').sort((a, b) => at(a.row.k) - at(b.row.k));
+}
+// move party key k to index i (keys not in the party are dropped from the order)
+function nPlace(r, k, i) { const ks = partyOf(r).map(x => x.row.k).filter(x => x !== k); ks.splice(Math.max(0, Math.min(i, ks.length)), 0, k); r.porder = ks }
+// key "into" takes the party slot of key "out"
+function nTakeSlot(r, out, into) { r.porder = partyOf(r).map(x => x.row.k === out ? into : x.row.k) }
+function runStats(r) {
+  const es = Object.values(r.enc), c = st => es.filter(e => e.n && e.st === st).length;
+  return { party: c('party'), box: c('box'), dead: c('dead'), used: es.filter(e => e.n || e.st === 'missed' || e.st === 'skipped').length };
+}
+let nfilter = 'all';
+
+function renderRunList() {
+  document.getElementById('ncount').textContent = `${NZ.runs.length} run${NZ.runs.length === 1 ? '' : 's'}`;
+  document.getElementById('nlist').innerHTML = NZ.runs.map(r => {
+    const s = runStats(r), party = partyOf(r);
+    return `<button class="trow" role="listitem" data-r="${r.id}" ${r.id === NZ.cur ? 'aria-current="true"' : ''}><span class="nm">${esc(r.name)}</span><span class="meta">${r.beat}/${NBOSS.length} bosses · ${s.dead} dead</span>
+      <span class="heads">${party.map(({ e }) => `<img src="${nimg(e.n)}" alt="${esc(monName(e.n))}" title="${esc(e.nick || monName(e.n))}">`).join('')}</span></button>`;
+  }).join('');
+  showNSync();
+}
+
+function encRow(r, row, taken) {
+  const e = r.enc[row.k] || {}, opts = row.L ? areaMons(row.L) : row.ev ? row.ev.opts : row.k === "starter" ? NSTARTERS : [];
+  const other = row.L && opts.length && (e.other || (e.n && !opts.some(o => o.n === e.n)));
+  const allDupes = r.rules.dupes && opts.length && opts.every(o => taken.has(fam(o.n)));
+  const dupe = e.n && r.rules.dupes && taken.has(fam(e.n));
+  const sel = opts.length ? `<select class="msel" aria-label="Pokémon"><option value="">— not yet —</option>${opts.map(o => `<option value="${o.n}" ${o.n === e.n && !other ? 'selected' : ''} title="${esc(o.how.join(', '))}">${esc(monName(o.n))}${o.tag ? ' · ' + o.tag : ''}${r.rules.dupes && taken.has(fam(o.n)) ? ' (dupe)' : ''}</option>`).join('')}${row.L ? `<option value="other" ${other ? 'selected' : ''}>Other…</option>` : ''}</select>` : '';
+  const inp = !opts.length || other ? `<input class="mother" list="monlist" placeholder="Pokémon (name or #)" value="${e.n ? esc(monName(e.n)) : ''}" autocomplete="off" aria-label="Pokémon">` : '';
+  const an = row.custom
+    ? `<div class="an"><input class="clabel" value="${esc(row.label)}" maxlength="30" aria-label="Encounter name" ${row.k === 'starter' ? 'readonly' : ''}>${row.k === 'starter' ? '' : '<button class="x" title="Remove this row" aria-label="Remove">×</button>'}</div>`
+    : `<button class="an" data-area="${esc(row.area)}" title="Open ${esc(row.area)} in Routes">${esc(row.label)}<small>${row.ev ? esc(evMeta(row.ev)) : opts.length + ' species'}${allDupes ? ' · all dupes, free pick' : ''}</small></button>`;
+  return `<div class="enc st-${e.st || 'none'}${row.ev ? ' ev' : ''}" data-k="${esc(row.k)}">${an}
+    ${e.n ? `<span class="sp spg"><img src="${nimg(e.n)}" alt="">${gBtn(e)}</span>` : '<span class="sp"></span>'}
+    <div class="ms">${sel}${inp}${row.ev && row.ev.steps.length ? `<details class="evhow"><summary>How to get it</summary><ol>${row.ev.steps.map(s => `<li>${esc(s)}</li>`).join('')}</ol></details>` : ''}${dupe ? '<div class="dupe">Dupe: you already have this evolution line</div>' : ''}</div>
+    <input class="nick" placeholder="Nickname" value="${esc(e.nick || '')}" maxlength="12" aria-label="Nickname">
+    <input class="lv" type="number" min="1" max="100" placeholder="Lv" value="${esc(e.lv || '')}" aria-label="Level">
+    <select class="st" aria-label="Status"><option value="">—</option>${Object.entries(NST).map(([k, v]) => `<option value="${k}" ${e.st === k ? 'selected' : ''}>${v}</option>`).join('')}</select>
+    ${e.st === 'dead' ? `<input class="cause" placeholder="Cause of death (optional)" value="${esc(e.cause || '')}" aria-label="Cause of death">` : ''}</div>`;
+}
+
+// a boss Pokémon in full: types, item, ability, nature, weaknesses, base stats and move details,
+// with each attack checked against your current party
+function bossMonHtml(p, party) {
+  const m = mons[p.n - 1]; if (!m) return '';
+  const v = m.v[ver], ab = p.ab && p.ab !== '?' ? p.ab : '', abKey = abName(ab.replace(/ \(.*\)$/, ''));
+  const mult = TYPES.map(t => [t, defMult(v.types, abKey, t)]);
+  const w4 = mult.filter(x => x[1] >= 4).map(x => x[0]), w2 = mult.filter(x => x[1] >= 2 && x[1] < 4).map(x => x[0]), im = mult.filter(x => x[1] === 0).map(x => x[0]);
+  const tl = ts => ts.map(t => `<span class="mtype" style="background:${TC[t]}">${t}</span>`).join('');
+  const st = v.stats, bst = Object.values(st).reduce((a, b) => a + b, 0);
+  const stats = Object.entries({ hp: "HP", atk: "Atk", def: "Def", spa: "SpA", spd: "SpD", spe: "Spe" }).map(([k, lab]) => `<div class="nbst"><span>${lab}</span><b>${st[k]}</b><i style="width:${Math.min(100, st[k] / 1.8)}%"></i></div>`).join('');
+  const moves = (p.mv || []).filter(Boolean).map(mv => {
+    const d = MV[mv] || {};
+    const se = isAttack(mv) ? party.filter(e => mons[e.n - 1] && defMult(mons[e.n - 1].v[ver].types, '', d.t) >= 2) : [];
+    return `<li class="bmv" style="--mvc:${TC[d.t] || 'var(--line)'}"><div class="bmh"><span class="nm">${esc(mv)}</span>${d.t ? `<span class="mtype" style="background:${TC[d.t]}">${d.t}</span>` : ''}${d.c ? `<span class="cat">${catLabel(d.c)}</span>` : ''}
+        <span class="bnums">Power ${d.p || '—'} · Accuracy ${d.a ? d.a + '%' : '—'} · ${d.pp || '—'} PP</span></div>
+      ${MDESC[mv] ? `<div class="bmd">${esc(MDESC[mv])}</div>` : ''}
+      ${se.length ? `<div class="bse">Super effective on your ${se.map(e => esc(e.nick || monName(e.n))).join(', ')}</div>` : ''}</li>`;
+  }).join('');
+  return `<div class="bmon"><div class="bhd"><button class="pk bpk" data-n="${p.n}" title="Open ${esc(m.name)} in the Pokédex"><img src="${nimg(p.n)}" alt=""></button>
+      <div><div class="nn">${esc(m.name)} <span class="sp">Lv. ${esc(p.lv)}</span></div><div class="stypes">${v.types.map(typeBadge).join('')}</div></div></div>
+    <dl class="bfacts">${p.item ? `<dt>Item</dt><dd>${esc(p.item)}</dd>` : ''}${ab ? `<dt>Ability</dt><dd>${esc(ab)}${ABD[abKey] ? `<small>${esc(ABD[abKey])}</small>` : ''}</dd>` : ''}${p.nat && p.nat !== '?' ? `<dt>Nature</dt><dd>${esc(p.nat)}</dd>` : ''}
+      ${w4.length ? `<dt>4× weak</dt><dd>${tl(w4)}</dd>` : ''}${w2.length ? `<dt>Weak to</dt><dd>${tl(w2)}</dd>` : ''}${im.length ? `<dt>Immune</dt><dd>${tl(im)}</dd>` : ''}</dl>
+    <div class="bstats">${stats}<div class="nbst tot"><span>Total</span><b>${bst}</b></div></div>
+    ${moves ? `<ul class="bmoves">${moves}</ul>` : ''}</div>`;
+}
+function bossHtml(t, party) {
+  return `<div class="trainer"><div class="th"><span class="tn">${esc(t.name)}</span>${t.var ? `<span class="chip">${esc(t.var)}</span>` : ''}</div>
+    <div class="bteam">${t.team.map(p => bossMonHtml(p, party)).join('')}</div></div>`;
+}
+
+// Gen 4 natures, in index order: row = raised stat, column = lowered stat (Atk, Def, Spe, SpA, SpD)
+const NATURES = ['Hardy', 'Lonely', 'Brave', 'Adamant', 'Naughty', 'Bold', 'Docile', 'Relaxed', 'Impish', 'Lax', 'Timid', 'Hasty', 'Serious', 'Jolly', 'Naive',
+  'Modest', 'Mild', 'Quiet', 'Bashful', 'Rash', 'Calm', 'Gentle', 'Sassy', 'Careful', 'Quirky'];
+const NAT_ORDER = ['atk', 'def', 'spe', 'spa', 'spd'];
+const natUpDown = nat => { const i = NATURES.indexOf(nat); return i < 0 ? [] : [NAT_ORDER[Math.floor(i / 5)], NAT_ORDER[i % 5]] };
+const natMod = (nat, k) => { const [up, dn] = natUpDown(nat); return up === dn ? 1 : k === up ? 1.1 : k === dn ? .9 : 1 };
+const natDesc = nat => { const [up, dn] = natUpDown(nat); return up === dn ? 'neutral' : '+' + SL[up] + ' −' + SL[dn] };
+// Gen 4 stat formula with no EVs, for the "what should this be" range shown in each stat box
+const calcStat = (k, base, lv, iv, nat) => k === 'hp' ? (base === 1 ? 1 : Math.floor((2 * base + iv) * lv / 100) + lv + 10) : Math.floor((Math.floor((2 * base + iv) * lv / 100) + 5) * natMod(nat, k));
+const nAb = e => { const v = mons[e.n - 1].v[ver]; return v.abilities.includes(e.ab) ? e.ab : v.abilities[0] };
+const nOpen = new Set();   // box cards with their details expanded
+
+function monEditor(row, e, r, ctx) {
+  const m = mons[e.n - 1], v = m.v[ver], ab = nAb(e), lv = +e.lv || 0, k = esc(row.k);
+  const sol = nSolveIVs(e);
+  const stats = Object.entries(SL).map(([s, lab]) => { const b = v.stats[s], mod = natMod(e.nat, s), ivc = sol && sol.s[s] && sol.s[s].c.length ? sol.s[s].c : [0, 31], e0 = calcStat(s, b, lv, ivc[0], e.nat), e1 = calcStat(s, b, lv, ivc[ivc.length - 1], e.nat);
+    return `<div class="pst ${mod > 1 ? 'up' : mod < 1 ? 'dn' : ''}" title="Base ${b}${lv ? ' · Lv. ' + lv + ' range ' + calcStat(s, b, lv, 0, e.nat) + '–' + calcStat(s, b, lv, 31, e.nat) + ' (no EVs)' : ''}"><span>${lab}</span><i>${b}</i>
+      <input type="number" min="1" max="999" data-f="stat" data-s="${s}" value="${esc((e.stats || {})[s] || '')}" aria-label="${lab}">${lv ? `<em>${e0 === e1 ? e0 : e0 + '–' + e1}</em>` : ''}</div>`;
+  }).join('');
+  const hpI = (e.moves || []).includes('Hidden Power') ? nHP(e) : null;
+  const mvs = [0, 1, 2, 3].map(i => { const mv = (e.moves || [])[i] || '', d = mv === 'Hidden Power' && MV[mv] ? Object.assign({}, MV[mv], { t: hpI.t, p: hpI.p || (hpI.pr ? Math.round((hpI.pr[0] + hpI.pr[1]) / 2) : 0) }) : MV[mv];
+    const sel = `<div class="mv" style="--mvc:${d ? TC[d.t] : 'transparent'}"><select data-f="move" data-i="${i}" aria-label="Move ${i + 1}">${moveOptions(m, mv)}</select></div>`;
+    if (!d) return `<div class="pmv">${sel}<div class="bmv pempty"><div class="bmh"></div><div class="bmd">Empty move slot</div><div class="pvs"></div></div></div>`;
+    // how this move lands on the next boss's team
+    const vs = isAttack(mv) && d.t ? ctx.boss.map(p => ({ p, x: defMult(mons[p.n - 1].v[ver].types, abName((p.ab || '').replace(/ (.*)$/, '')), d.t) })) : [];
+    const se = vs.filter(o => o.x >= 2), no = vs.filter(o => o.x === 0);
+    return `<div class="pmv">${sel}<div class="bmv" style="--mvc:${TC[d.t]}"><div class="bmh"><span class="mtype" style="background:${TC[d.t] || 'var(--muted)'}">${d.t || '?'}</span><span class="cat">${catLabel(d.c)}</span>${mv === 'Hidden Power' ? nHpSelect(e, hpI) : ''}
+        <span class="bnums">Power ${mv === 'Hidden Power' && hpI.pr && hpI.pr[0] !== hpI.pr[1] ? hpI.pr[0] + '–' + hpI.pr[1] : d.p || '—'} · Accuracy ${d.a ? d.a + '%' : '—'} · ${d.pp || '—'} PP${v.types.includes(d.t) && isAttack(mv) ? ' · STAB' : ''}</span></div>
+      <div class="bmd" title="${esc(MDESC[mv] || '')}">${esc(MDESC[mv] || '')}</div>
+      ${(() => { const good = se.length ? `Super effective on ${se.map(o => monName(o.p.n) + (o.x >= 4 ? ' (4×)' : '')).join(', ')}` : '', bad = no.length ? `No effect on ${no.map(o => monName(o.p.n)).join(', ')}` : '';
+        return `<div class="pvs" title="${esc([good, bad].filter(Boolean).join(' · '))}">${good ? `<span class="bgood">${esc(good)}</span>` : ''}${good && bad ? ' · ' : ''}${bad ? `<span class="bse">${esc(bad)}</span>` : ''}${!good && !bad && isAttack(mv) && ctx.boss.length ? `<span class="sp">Neutral or resisted by ${esc(ctx.bossName)}'s team</span>` : ''}</div>` })()}</div></div>`;
+  }).join('');
+  const mult = TYPES.map(t => [t, defMult(v.types, ab, t)]);
+  const chip = ([t, x]) => `<span class="mtype" style="background:${TC[t]}" title="${t} attacks: ${x === 0 ? 'no effect' : x + '×'}">${t}${x >= 4 ? '<i>4×</i>' : x > 0 && x <= .25 ? '<i>¼</i>' : ''}</span>`;
+  const wrow = (lab, xs) => `<div class="pwr"><span class="pwl">${lab}</span><span class="pwb">${xs.length ? xs.map(chip).join('') : '<span class="sp">none</span>'}</span></div>`;
+  const pw = `<div class="pweak2">${wrow('Weak to', mult.filter(([, x]) => x > 1).sort((a, b) => b[1] - a[1]))}${wrow('Resists', mult.filter(([, x]) => x > 0 && x < 1).sort((a, b) => a[1] - b[1]))}${(() => { const im = mult.filter(([, x]) => x === 0); return im.length > 6 ? `<div class="pwr"><span class="pwl">Immune</span><span class="pwb"><span class="sp">everything else (${esc(abName(ab))})</span></span></div>` : wrow('Immune', im) })()}</div>`;
+  const threats = ctx.boss.flatMap(p => (p.mv || []).filter(mv => isAttack(mv) && defMult(v.types, ab, MV[mv].t) >= 2).map(mv => `${monName(p.n)}'s ${mv}`));
+  const tText = threats.length ? 'Threats from ' + ctx.bossName + ': ' + threats.join(', ') : ctx.boss.length ? 'No super-effective moves from ' + ctx.bossName : '';
+  const matchup = `${pw}<div class="${threats.length ? 'bse' : 'bmd'} pthreat" title="${esc(tText)}">${esc(tText)}</div>`;
+  const full = ctx.partyFull && e.st === 'box';
+  const pi = ctx.party.findIndex(x => x.row.k === row.k);
+  const acts = e.st === 'party' ? `<button class="pord" data-mv="-1" title="Move earlier in the party" aria-label="Move earlier" ${pi === 0 ? 'disabled' : ''}>←</button><button class="pord" data-mv="1" title="Move later in the party" aria-label="Move later" ${pi === ctx.party.length - 1 ? 'disabled' : ''}>→</button><button data-to="box">To box</button>`
+    : full ? `<select data-f="swap" aria-label="Swap into party"><option value="">Swap with…</option>${ctx.party.map(x => `<option value="${esc(x.row.k)}">${esc(x.e.nick || monName(x.e.n))}</option>`).join('')}</select>`
+    : '<button data-to="party">To party</button>';
+  const body = `<div class="pgrid nl"><div><label>Nickname</label><input data-f="nick" value="${esc(e.nick || '')}" maxlength="12" placeholder="${esc(m.name)}"></div>
+      <div><label>Level</label><input type="number" min="1" max="100" data-f="lv" value="${esc(e.lv || '')}" class="${ctx.over(e) ? 'bad' : ''}"></div></div>
+    <label>Ability</label><select data-f="ab">${v.abilities.map(a => `<option value="${esc(a)}" ${a === ab ? 'selected' : ''}>${esc(abName(a))}</option>`).join('')}</select>
+    <div class="abd pab" title="${esc(ABD[ab] || '')}">${esc(ABD[ab] || '')}</div>
+    <label>Damage taken</label>${matchup}
+    <div class="pgrid"><div><label>Nature</label><select data-f="nat"><option value="">—</option>${NATURES.map(n => `<option value="${n}" ${n === e.nat ? 'selected' : ''}>${n} (${natDesc(n)})</option>`).join('')}</select></div>
+      <div><label>Item</label>${nItemSelect(e.item || '')}</div></div>
+    <div class="abd pitem" title="${esc(e.item ? e.item + ': ' + nItemNote(e.item) : '')}">${e.item ? esc(e.item) + ': ' + esc(nItemNote(e.item)) : 'No held item'}</div>
+    <label>Stats <small>base · yours at this level · expected</small><button class="ivgo" data-ivgo title="Work out this Pokémon's IVs from the stats you entered">Grade IVs</button></label><div class="pstats">${stats}</div>${nIvBlock(row, e, sol)}
+    <label>Moves</label><div class="mvs">${mvs}</div>`;
+  const movesLine = (e.moves || []).filter(Boolean).join(' · ');
+  return `<div class="tslot pmon ${ctx.over(e) ? 'over' : ''}" data-k="${k}">
+    <div class="shead" draggable="true" title="Drag between party and box"><img src="${nimg(e.n)}" alt="" class="goto" title="Open ${esc(m.name)} in the Pokédex">
+      <div><div class="sname">${esc(e.nick || m.name)}${gBtn(e)}${lv ? ` <span class="sp">Lv. ${lv}</span>` : ''}</div><div class="sp">${e.nick ? esc(m.name) + ' · ' : ''}${esc(row.label)}</div>
+      <div class="stypes">${v.types.map(typeBadge).join('')}</div></div><span class="grip" aria-hidden="true">⠿</span></div>
+    <div class="pacts">${acts}<button data-to="dead">Died</button></div>
+    ${e.st === 'box' ? `<details class="pmore" ${nOpen.has(row.k) ? 'open' : ''}><summary>${movesLine ? esc(movesLine) : 'Stats, ability & moves'}</summary>${body}</details>` : body}</div>`;
+}
+
+// ---- Damage calculator (Gen 4 formula; RP move data) ----
+const NTYPEITEM = { 'Charcoal': 'Fire', 'Mystic Water': 'Water', 'Miracle Seed': 'Grass', 'Magnet': 'Electric', 'Never-Melt Ice': 'Ice', 'Black Belt': 'Fighting', 'Poison Barb': 'Poison',
+  'Soft Sand': 'Ground', 'Sharp Beak': 'Flying', 'Twisted Spoon': 'Psychic', 'Silver Powder': 'Bug', 'Hard Stone': 'Rock', 'Spell Tag': 'Ghost', 'Dragon Fang': 'Dragon', 'Black Glasses': 'Dark',
+  'Metal Coat': 'Steel', 'Silk Scarf': 'Normal', 'Flame Plate': 'Fire', 'Splash Plate': 'Water', 'Meadow Plate': 'Grass', 'Zap Plate': 'Electric', 'Icicle Plate': 'Ice', 'Fist Plate': 'Fighting',
+  'Toxic Plate': 'Poison', 'Earth Plate': 'Ground', 'Sky Plate': 'Flying', 'Mind Plate': 'Psychic', 'Insect Plate': 'Bug', 'Stone Plate': 'Rock', 'Spooky Plate': 'Ghost', 'Draco Plate': 'Dragon',
+  'Dread Plate': 'Dark', 'Iron Plate': 'Steel', 'Pixie Plate': 'Fairy', 'Sea Incense': 'Water', 'Wave Incense': 'Water', 'Odd Incense': 'Psychic', 'Rock Incense': 'Rock', 'Rose Incense': 'Grass' };
+const NBERRY = { 'Occa Berry': 'Fire', 'Passho Berry': 'Water', 'Wacan Berry': 'Electric', 'Rindo Berry': 'Grass', 'Yache Berry': 'Ice', 'Chople Berry': 'Fighting', 'Kebia Berry': 'Poison',
+  'Shuca Berry': 'Ground', 'Coba Berry': 'Flying', 'Payapa Berry': 'Psychic', 'Tanga Berry': 'Bug', 'Charti Berry': 'Rock', 'Kasib Berry': 'Ghost', 'Haban Berry': 'Dragon', 'Colbur Berry': 'Dark',
+  'Babiri Berry': 'Steel', 'Chilan Berry': 'Normal', 'Roseli Berry': 'Fairy' };
+const NPUNCH = new Set(['Fire Punch', 'Ice Punch', 'Thunder Punch', 'Mach Punch', 'Bullet Punch', 'Drain Punch', 'Focus Punch', 'Dynamic Punch', 'Mega Punch', 'Comet Punch', 'Dizzy Punch',
+  'Hammer Arm', 'Meteor Mash', 'Shadow Punch', 'Sky Uppercut']);
+let nCalc = Object.assign({ dir: 'in', bi: 0, mk: '', mv: '', crit: false, wx: '', scr: false, brn: false, pinch: false, as: 0, ds: 0, biv: 31, pw: '' }, store.get('rp-ncalc', {}));
+
+function nMineMon(e) {
+  const m = mons[e.n - 1], v = m.v[ver], lv = +e.lv || 0, stats = {}, est = [];
+  const sol = nSolveIVs(e);
+  Object.keys(SL).forEach(k => { const u = +(e.stats || {})[k]; if (u) { stats[k] = u; return }
+    const c = sol && sol.s[k] && sol.s[k].c.length ? sol.s[k].c : null;
+    stats[k] = calcStat(k, v.stats[k], lv, c ? Math.round((c[0] + c[c.length - 1]) / 2) : 15, e.nat); est.push(SL[k] + (c ? '' : '*')) });
+  return { n: e.n, name: e.nick || m.name, lv, types: v.types, ab: abName(nAb(e)), item: e.item || '', stats, est, hp: (e.moves || []).includes('Hidden Power') ? nHP(e) : null };
+}
+function nBossMon(p, iv) {
+  const m = mons[p.n - 1], v = m.v[ver], lv = parseInt(p.lv) || 1, nat = NATURES.includes(p.nat) ? p.nat : '', stats = {};
+  Object.keys(SL).forEach(k => stats[k] = calcStat(k, v.stats[k], lv, iv, nat));
+  return { name: m.name, lv, types: v.types, ab: abName((p.ab || '').replace(/ \(.*\)$/, '')), item: p.item || '', nat, stats, est: [], n: p.n };
+}
+// 16 damage rolls (85–100%) for attacker A using move mv on defender D
+function nDamage(A, D, mv, o) {
+  let d = MV[mv];
+  if (mv === 'Hidden Power' && A.hp) {
+    if (!A.hp.t) return { note: `Set ${A.name}'s Hidden Power type on its card (or log enough IVs) to calculate.` };
+    d = Object.assign({}, d, { t: A.hp.t, p: A.hp.p || (A.hp.pr ? Math.round((A.hp.pr[0] + A.hp.pr[1]) / 2) : 0) });
+  }
+  if (!d || !d.t) return { note: 'Unknown move.' };
+  if (d.c === 'St') return { note: `${mv} is a status move, so it does no direct damage.` };
+  let mult = 1; D.types.forEach(t => { const v = (CH[d.t] || {})[t]; if (v !== undefined) mult *= v });
+  const aab = A.ab, dab = D.ab, why = [];
+  if ((dab === 'Levitate' && d.t === 'Ground') || (dab === 'Flash Fire' && d.t === 'Fire') || ((dab === 'Water Absorb' || dab === 'Dry Skin') && d.t === 'Water')
+    || ((dab === 'Volt Absorb' || dab === 'Motor Drive') && d.t === 'Electric') || (dab === 'Wonder Guard' && mult <= 1)) { mult = 0; why.push(`${D.name}'s ${dab} blocks it`) }
+  const fixed = { 'Seismic Toss': A.lv, 'Night Shade': A.lv, 'Dragon Rage': 40, 'Sonic Boom': 20, 'Super Fang': Math.max(1, Math.floor(D.stats.hp / 2)) }[mv];
+  if (fixed !== undefined) { why.push('Fixed damage, ignores stats'); return { rolls: Array(16).fill(mult === 0 ? 0 : fixed), mult, why } }
+  let P = +o.pw || d.p;
+  if (!P && mv === 'Hidden Power') return { note: `Hidden Power's power (30–70) depends on IVs. Log more stats, or enter its power below.`, needPower: true };
+  if (!P) return { note: `${mv}'s power depends on the situation (weight, HP, speed, etc.). Enter its power below to calculate.`, needPower: true };
+  const phys = d.c === 'P', ak = phys ? 'atk' : 'spa', dk = phys ? 'def' : 'spd', stg = s => s >= 0 ? (2 + s) / 2 : 2 / (2 - s);
+  let as = +o.as, ds = +o.ds; if (o.crit) { as = Math.max(0, as); ds = Math.min(0, ds) }
+  let Atk = Math.floor(A.stats[ak] * stg(as)), Def = Math.floor(D.stats[dk] * stg(ds));
+  if (o.wx === 'sand' && !phys && D.types.includes('Rock')) { Def = Math.floor(Def * 1.5); why.push('Sandstorm ×1.5 Sp.Def (Rock)') }
+  if (phys && (aab === 'Huge Power' || aab === 'Pure Power')) { Atk *= 2; why.push(aab + ' ×2 Atk') }
+  if (phys && aab === 'Hustle') { Atk = Math.floor(Atk * 1.5); why.push('Hustle ×1.5 Atk') }
+  if ((phys && A.item === 'Choice Band') || (!phys && A.item === 'Choice Specs')) { Atk = Math.floor(Atk * 1.5); why.push(A.item + ' ×1.5') }
+  if (A.item === 'Light Ball' && A.n === 25) { Atk *= 2; why.push('Light Ball ×2') }
+  if (A.item === 'Thick Club' && phys && (A.n === 104 || A.n === 105)) { Atk *= 2; why.push('Thick Club ×2 Atk') }
+  if (A.item === 'Deep Sea Tooth' && !phys && A.n === 366) { Atk *= 2; why.push('Deep Sea Tooth ×2 Sp.Atk') }
+  if (A.item === 'Soul Dew' && !phys && (A.n === 380 || A.n === 381)) { Atk = Math.floor(Atk * 1.5); why.push('Soul Dew ×1.5 Sp.Atk') }
+  if (D.item === 'Deep Sea Scale' && !phys && D.n === 366) { Def *= 2; why.push('Deep Sea Scale ×2 Sp.Def') }
+  if (D.item === 'Soul Dew' && !phys && (D.n === 380 || D.n === 381)) { Def = Math.floor(Def * 1.5); why.push('Soul Dew ×1.5 Sp.Def') }
+  if (dab === 'Thick Fat' && (d.t === 'Fire' || d.t === 'Ice')) { Atk = Math.floor(Atk / 2); why.push('Thick Fat ×0.5') }
+  if (aab === 'Technician' && P <= 60) { P = Math.floor(P * 1.5); why.push('Technician ×1.5 power') }
+  if (NTYPEITEM[A.item] === d.t) { P = Math.floor(P * 1.2); why.push(A.item + ' ×1.2 power') }
+  const orb = { 'Adamant Orb': [483, 'Dragon', 'Steel'], 'Lustrous Orb': [484, 'Water', 'Dragon'], 'Griseous Orb': [487, 'Ghost', 'Dragon'] }[A.item];
+  if (orb && A.n === orb[0] && orb.includes(d.t)) { P = Math.floor(P * 1.2); why.push(A.item + ' ×1.2 power') }
+  if ((phys && A.item === 'Muscle Band') || (!phys && A.item === 'Wise Glasses')) { P = Math.floor(P * 1.1); why.push(A.item + ' ×1.1 power') }
+  if (aab === 'Iron Fist' && NPUNCH.has(mv)) { P = Math.floor(P * 1.2); why.push('Iron Fist ×1.2 power') }
+  if (o.pinch && ((aab === 'Blaze' && d.t === 'Fire') || (aab === 'Torrent' && d.t === 'Water') || (aab === 'Overgrow' && d.t === 'Grass') || (aab === 'Swarm' && d.t === 'Bug'))) { P = Math.floor(P * 1.5); why.push(aab + ' ×1.5 (low HP)') }
+  if (dab === 'Heatproof' && d.t === 'Fire') { P = Math.floor(P / 2); why.push('Heatproof ×0.5') }
+  if (dab === 'Dry Skin' && d.t === 'Fire') { P = Math.floor(P * 1.25); why.push('Dry Skin ×1.25') }
+  let base = Math.floor(Math.floor(Math.floor(2 * A.lv / 5 + 2) * P * Atk / Def) / 50);
+  if (o.brn && phys && aab !== 'Guts') { base = Math.floor(base / 2); why.push('Burn ×0.5') }
+  if (o.scr && !o.crit) { base = Math.floor(base / 2); why.push((phys ? 'Reflect' : 'Light Screen') + ' ×0.5') }
+  if (o.wx === 'sun' && (d.t === 'Fire' || d.t === 'Water')) { base = Math.floor(base * (d.t === 'Fire' ? 1.5 : .5)); why.push('Sun ×' + (d.t === 'Fire' ? '1.5' : '0.5')) }
+  if (o.wx === 'rain' && (d.t === 'Fire' || d.t === 'Water')) { base = Math.floor(base * (d.t === 'Water' ? 1.5 : .5)); why.push('Rain ×' + (d.t === 'Water' ? '1.5' : '0.5')) }
+  base += 2;
+  if (o.crit) { base *= aab === 'Sniper' ? 3 : 2; why.push('Critical hit ×' + (aab === 'Sniper' ? 3 : 2)) }
+  if (A.item === 'Life Orb') { base = Math.floor(base * 1.3); why.push('Life Orb ×1.3') }
+  const stab = A.types.includes(d.t) ? (aab === 'Adaptability' ? 2 : 1.5) : 1; if (stab > 1) why.push('STAB ×' + stab);
+  const effs = D.types.map(t => (CH[d.t] || {})[t] ?? 1), se = mult > 1;
+  if (mult !== 1) why.push((mult === 0 ? 'No effect' : 'Type ×' + mult));
+  const filt = se && (dab === 'Filter' || dab === 'Solid Rock'), belt = se && A.item === 'Expert Belt', tint = mult > 0 && mult < 1 && aab === 'Tinted Lens';
+  const berry = NBERRY[D.item] === d.t && (se || d.t === 'Normal') && mult > 0;
+  if (filt) why.push(dab + ' ×0.75'); if (belt) why.push('Expert Belt ×1.2'); if (tint) why.push('Tinted Lens ×2'); if (berry) why.push(D.item + ' ×0.5 (first hit)');
+  const rolls = [];
+  for (let rr = 85; rr <= 100; rr++) {
+    let x = Math.floor(base * rr / 100);
+    x = Math.floor(x * stab);
+    if (mult === 0) x = 0; else effs.forEach(e => { x = Math.floor(x * e) });
+    if (filt) x = Math.floor(x * .75);
+    if (belt) x = Math.floor(x * 1.2);
+    if (tint) x *= 2;
+    if (berry) x = Math.floor(x / 2);
+    if (mult > 0 && x < 1) x = 1;
+    rolls.push(x);
+  }
+  return { rolls, mult, why, P, Atk, Def };
+}
+
+function renderCalc() {
+  const el = document.getElementById('ncalc'); if (!el) return;
+  const r = curRun(), next = NBOSS[r.beat];
+  const team = next ? bossTeams(next, r)[0].team.filter(p => mons[p.n - 1]) : [];
+  const mine = [...partyOf(r), ...placed(r).filter(x => x.e.st === 'box')];
+  if (!team.length || !mine.length) { el.innerHTML = ''; return }
+  if (!(nCalc.bi >= 0 && nCalc.bi < team.length)) nCalc.bi = 0;
+  if (!mine.some(x => x.row.k === nCalc.mk)) nCalc.mk = mine[0].row.k;
+  const bp = team[nCalc.bi], me = mine.find(x => x.row.k === nCalc.mk).e, inc = nCalc.dir === 'in';
+  const moves = (inc ? bp.mv || [] : me.moves || []).filter(Boolean);
+  if (!moves.includes(nCalc.mv)) nCalc.mv = moves.find(isAttack) || moves[0] || '';
+  const B = nBossMon(bp, +nCalc.biv), M = nMineMon(me), A = inc ? B : M, D = inc ? M : B;
+  const opt = (v, lab, cur) => `<option value="${esc(v)}" ${String(v) === String(cur) ? 'selected' : ''}>${esc(lab)}</option>`;
+  const stages = cur => [6, 5, 4, 3, 2, 1, 0, -1, -2, -3, -4, -5, -6].map(s => opt(s, (s > 0 ? '+' : '') + s, cur)).join('');
+  let res = '';
+  if (!M.lv) res = `<p class="empty">Set a level for ${esc(M.name)} on its card to calculate.</p>`;
+  else if (!nCalc.mv) res = `<p class="empty">${inc ? esc(B.name) + ' has no moves listed.' : 'Pick moves for ' + esc(M.name) + ' on its card first.'}</p>`;
+  else {
+    const x = nDamage(A, D, nCalc.mv, nCalc), d = nCalc.mv === 'Hidden Power' && A.hp && A.hp.t ? Object.assign({}, MV[nCalc.mv], { t: A.hp.t }) : MV[nCalc.mv] || {};
+    if (x.note) res = `<p class="empty">${esc(x.note)}</p>`;
+    else {
+      const hp = D.stats.hp, mn = Math.min(...x.rolls), mx = Math.max(...x.rolls), pct = v => (v / hp * 100).toFixed(1);
+      const ohko = x.rolls.filter(v => v >= hp).length, best = mx ? Math.ceil(hp / mx) : 0, worst = mn ? Math.ceil(hp / mn) : 0;
+      const ko = !mx ? 'No damage' : mn >= hp ? 'Guaranteed one-hit KO' : ohko ? `${ohko} in 16 chance to one-hit KO` : best === worst ? `Guaranteed ${best}-hit KO` : `${best} to ${worst} hits to KO`;
+      const estNote = M.est.length ? `<p class="rnote" style="margin:10px 0 0">${esc(M.name)}'s ${esc(M.est.join(', '))} ${M.est.length === 1 ? 'is' : 'are'} estimated from its logged IVs (IV 15 where marked *), with no EVs. Enter its current stats on its card for exact numbers.</p>` : '';
+      res = `<div class="cres"><div class="cline"><span class="big">${mn}–${mx}</span><span class="pct">${pct(mn)}–${pct(mx)}% of ${esc(D.name)}'s ${hp} HP</span></div>
+        <div class="cbar" aria-hidden="true"><i style="width:${Math.min(100, mn / hp * 100)}%"></i><b style="left:${Math.min(100, mn / hp * 100)}%;width:${Math.max(0, Math.min(100, mx / hp * 100) - Math.min(100, mn / hp * 100))}%"></b></div>
+        <div class="ko ${mn >= hp || ohko ? 'k1' : ''}">${ko}</div>
+        <div class="cwho">${esc(A.name)} (Lv. ${A.lv}, ${d.c === 'P' ? 'Atk' : 'Sp.Atk'} ${A.stats[d.c === 'P' ? 'atk' : 'spa']}${A.item ? ', ' + esc(A.item) : ''}) → ${esc(D.name)} (Lv. ${D.lv}, ${d.c === 'P' ? 'Def' : 'Sp.Def'} ${D.stats[d.c === 'P' ? 'def' : 'spd']}, HP ${hp})</div>
+        ${x.why.length ? `<div class="cwhy">${esc(nCalc.mv)} ${d.t ? '(' + d.t + ', ' + (x.P || d.p || 'fixed') + ' power)' : ''}: ${esc(x.why.join(' · '))}</div>` : ''}
+        <div class="cwhy">Rolls: ${x.rolls.join(', ')}</div>${estNote}</div>`;
+    }
+  }
+  const needPw = nCalc.mv && MV[nCalc.mv] && MV[nCalc.mv].c !== 'St' && !MV[nCalc.mv].p;
+  el.innerHTML = `<section class="card full calc" data-sec="calc"><h3>Damage calculator</h3>
+    <div class="cdir" role="group" aria-label="Who attacks"><button data-cdir="in" aria-pressed="${inc}">${esc(next.label)} attacks you</button><button data-cdir="out" aria-pressed="${!inc}">You attack</button></div>
+    <div class="ccontrols">
+      <label>${esc(next.label)}'s Pokémon<select data-c="bi">${team.map((p, i) => opt(i, monName(p.n) + ' · Lv. ' + p.lv, nCalc.bi)).join('')}</select></label>
+      <label>Your Pokémon<select data-c="mk">${mine.map(x => opt(x.row.k, (x.e.nick || monName(x.e.n)) + (x.e.lv ? ' · Lv. ' + x.e.lv : '') + (x.e.st === 'box' ? ' (box)' : ''), nCalc.mk)).join('')}</select></label>
+      <label>Move<select data-c="mv">${moves.length ? moves.map(mv => opt(mv, mv + (mv === 'Hidden Power' && !inc ? ' · ' + (M.hp && M.hp.t || 'type not set') : MV[mv] ? ' · ' + MV[mv].t + (MV[mv].p ? ' ' + MV[mv].p : '') : ''), nCalc.mv)).join('') : '<option value="">— no moves —</option>'}</select></label>
+    </div>
+    <div class="copts">
+      <label class="cb"><input type="checkbox" data-c="crit" ${nCalc.crit ? 'checked' : ''}> Critical hit</label>
+      <label class="cb"><input type="checkbox" data-c="scr" ${nCalc.scr ? 'checked' : ''}> Reflect / Light Screen</label>
+      <label class="cb"><input type="checkbox" data-c="brn" ${nCalc.brn ? 'checked' : ''}> Attacker burned</label>
+      <label class="cb"><input type="checkbox" data-c="pinch" ${nCalc.pinch ? 'checked' : ''}> Attacker at low HP</label>
+      <label>Weather<select data-c="wx">${opt('', 'None', nCalc.wx)}${opt('sun', 'Sun', nCalc.wx)}${opt('rain', 'Rain', nCalc.wx)}${opt('sand', 'Sandstorm', nCalc.wx)}</select></label>
+      <label>Atk stage<select data-c="as">${stages(nCalc.as)}</select></label>
+      <label>Def stage<select data-c="ds">${stages(nCalc.ds)}</select></label>
+      <label title="Renegade Platinum bosses usually have perfect IVs">Boss IVs<select data-c="biv">${[31, 20, 10, 0].map(v => opt(v, v, nCalc.biv)).join('')}</select></label>
+      ${needPw || nCalc.pw ? `<label>Power override<input type="number" min="1" max="250" data-c="pw" value="${esc(nCalc.pw)}" placeholder="${MV[nCalc.mv] && MV[nCalc.mv].p || '?'}"></label>` : ''}
+    </div>${res}</section>`;
+  nDecorate();
+}
+
+// sections the viewer has collapsed (by data-sec id)
+const nHidden = new Set(store.get('rp-nhide', []));
+function nDecorate() {
+  ND.querySelectorAll('section.card[data-sec]').forEach(s => {
+    const id = s.dataset.sec, h3 = s.querySelector('h3'), hid = nHidden.has(id); if (!h3) return;
+    s.classList.toggle('ncoll', hid);
+    let b = h3.querySelector('.nhide');
+    if (!b) { b = document.createElement('button'); b.className = 'nhide'; b.dataset.hide = id; h3.appendChild(b) }
+    b.textContent = hid ? 'Show' : 'Hide'; b.setAttribute('aria-expanded', String(!hid));
+  });
+}
+
+// ---- Stat log: one entry per level (e.hist), IVs solved from all of them ----
+function nLog(e) {
+  if (!+e.lv) return;
+  const st = {}; Object.entries(e.stats || {}).forEach(([k, v]) => { if (+v) st[k] = +v });
+  e.hist = (e.hist || []).filter(x => +x.lv !== +e.lv);
+  if (Object.keys(st).length) e.hist.push({ lv: +e.lv, st });
+  e.hist.sort((a, b) => a.lv - b.lv);
+}
+// a new level starts a fresh set of stats; the old level's stats stay in the log
+function nSetLevel(e, lv) { if (String(lv) !== String(e.lv || '')) { nLog(e); e.stats = {} } e.lv = lv }
+// IVs consistent with every logged level (exact, no EVs); if battles' EVs make that impossible, a looser range
+function nSolveIVs(e) {
+  const m = mons[e.n - 1], H = e.hist || []; if (!m || !H.length) return null;
+  const b = m.v[ver].stats, s = {}; let evs = false;
+  IVSTATS.forEach(k => {
+    const ent = H.filter(x => +x.st[k]); if (!ent.length) { s[k] = null; return }
+    let c = [...Array(32).keys()].filter(iv => ent.every(x => ivStat(k, b[k], x.lv, iv, 0, e.nat) === +x.st[k])), loose = false;
+    if (!c.length) {   // EVs only build up, so keep as many early levels exact as possible and loosen the rest
+      loose = evs = true;
+      const ex = (x, iv) => ivStat(k, b[k], x.lv, iv, 0, e.nat) === +x.st[k], lz = (x, iv) => ivStat(k, b[k], x.lv, iv, 0, e.nat) <= +x.st[k] && +x.st[k] <= ivStat(k, b[k], x.lv, iv, 255, e.nat);
+      for (let n = ent.length - 1; n >= 0 && !c.length; n--) c = [...Array(32).keys()].filter(iv => ent.every((x, i) => i < n ? ex(x, iv) : lz(x, iv)));
+    }
+    s[k] = { c, loose };
+  });
+  return { s, evs, levels: H.length };
+}
+const nOpenLog = new Set();
+function nIvBlock(row, e, sol) {
+  const H = e.hist || [];
+  if (!H.length) return `<label class="pivlab">IVs <small>enter its stats to start a log</small></label><div class="pivs">${IVSTATS.map(k => `<div class="piv none" title="${SL[k]}: not logged yet">—</div>`).join('')}</div><div class="phist-none">Each level you record narrows its IVs.</div>`;
+  const cells = IVSTATS.map(k => { const x = sol.s[k];
+    if (!x) return `<div class="piv none" title="${SL[k]}: not logged yet">—</div>`;
+    if (!x.c.length) return `<div class="piv g1" title="${SL[k]}: no IV fits. Check the log for a typo.">?</div>`;
+    const lo = x.c[0], hi = x.c[x.c.length - 1], j = ivJudge(lo) === ivJudge(hi) ? ivJudge(lo) : ivJudge(lo) + ' – ' + ivJudge(hi);
+    return `<div class="piv ${ivTone(Math.round((lo + hi) / 2))}" title="${SL[k]} IV ${ivList(x.c)} · ${j}${x.loose ? ' · approximate, its stats include EVs' : ''}">${lo === hi ? lo : lo + '–' + hi}${x.loose ? '*' : ''}</div>` }).join('');
+  let grade = '';
+  if (IVSTATS.every(k => sol.s[k] && sol.s[k].c.length)) {
+    const t0 = IVSTATS.reduce((a, k) => a + sol.s[k].c[0], 0), t1 = IVSTATS.reduce((a, k) => a + sol.s[k].c[sol.s[k].c.length - 1], 0), pct = (t0 + t1) / 2 / 186 * 100;
+    grade = ` · grade <b>${pct >= 90 ? 'S' : pct >= 75 ? 'A' : pct >= 60 ? 'B' : pct >= 45 ? 'C' : pct >= 30 ? 'D' : 'E'}</b> (${t0 === t1 ? t0 : t0 + '–' + t1}/186)`;
+  }
+  const sh = { hp: 'HP', atk: 'Atk', def: 'Def', spa: 'SpA', spd: 'SpD', spe: 'Spe' };
+  return `<label class="pivlab">IVs <small>from ${H.length} logged level${H.length === 1 ? '' : 's'}${grade}${sol.evs ? ' · <span title="Later stats include EVs from battles, so those IVs are a range rather than exact">* has battle EVs</span>' : ''}</small></label><div class="pivs">${cells}</div>
+    <details class="phist" data-hk="${esc(row.k)}" ${nOpenLog.has(row.k) ? 'open' : ''}><summary>Stat log · ${H.length} level${H.length === 1 ? '' : 's'}</summary>
+      <table><thead><tr><th>Lv</th>${IVSTATS.map(k => `<th>${sh[k]}</th>`).join('')}<th></th></tr></thead>
+      <tbody>${H.map(x => `<tr><td>${x.lv}</td>${IVSTATS.map(k => `<td>${x.st[k] || '·'}</td>`).join('')}<td><button data-hdel="${x.lv}" title="Remove Lv. ${x.lv} from the log" aria-label="Remove level ${x.lv}">×</button></td></tr>`).join('')}</tbody></table></details>`;
+}
+
+// ---- Held items: grouped list for the card dropdown; effects match the damage calculator ----
+const NITEMFX = { 'Choice Band': 'Atk ×1.5, locked into one move', 'Choice Specs': 'Sp.Atk ×1.5, locked into one move', 'Life Orb': 'Damage ×1.3, loses 10% HP per hit',
+  'Expert Belt': 'Super-effective hits ×1.2', 'Muscle Band': 'Physical moves ×1.1', 'Wise Glasses': 'Special moves ×1.1',
+  'Light Ball': 'Pikachu only: Atk and Sp.Atk ×2', 'Thick Club': 'Cubone and Marowak only: Atk ×2', 'Deep Sea Tooth': 'Clamperl only: Sp.Atk ×2', 'Deep Sea Scale': 'Clamperl only: Sp.Def ×2',
+  'Soul Dew': 'Latias and Latios only: Sp.Atk and Sp.Def ×1.5', 'Adamant Orb': 'Dialga only: Dragon and Steel moves ×1.2', 'Lustrous Orb': 'Palkia only: Water and Dragon moves ×1.2',
+  'Griseous Orb': 'Giratina only: Ghost and Dragon moves ×1.2' };
+const NITEMOTHER = ['Leftovers', 'Black Sludge', 'Shell Bell', 'Sitrus Berry', 'Oran Berry', 'Lum Berry', 'Focus Sash', 'Focus Band', 'Choice Scarf', 'Quick Claw', "King's Rock", 'Razor Fang',
+  'Scope Lens', 'Razor Claw', 'Wide Lens', 'Zoom Lens', 'Bright Powder', 'Lax Incense', 'White Herb', 'Mental Herb', 'Power Herb', 'Big Root', 'Light Clay', 'Damp Rock', 'Heat Rock',
+  'Smooth Rock', 'Icy Rock', 'Flame Orb', 'Toxic Orb', 'Lucky Egg', 'Exp. Share', 'Amulet Coin', 'Everstone'];
+let NITEMGROUPS = null;
+function nItemGroups() {
+  if (NITEMGROUPS) return NITEMGROUPS;
+  const byType = o => Object.keys(o).sort((a, b) => TYPES.indexOf(o[a]) - TYPES.indexOf(o[b]) || a.localeCompare(b));
+  const known = new Set([...Object.keys(NITEMFX), ...Object.keys(NTYPEITEM), ...Object.keys(NBERRY), ...NITEMOTHER]);
+  const bossItems = [...new Set(ROUTES.flatMap(L => L.subs.flatMap(x => x.tr.flatMap(t => t.team.map(p => p.item)))).filter(i => i && i !== '?' && !known.has(i)))];
+  return NITEMGROUPS = [
+    ['Boost damage', ['Choice Band', 'Choice Specs', 'Life Orb', 'Expert Belt', 'Muscle Band', 'Wise Glasses'].map(i => [i, i])],
+    ['Boost one type (×1.2)', byType(NTYPEITEM).filter(i => !/Plate|Incense/.test(i)).map(i => [i, i + ' · ' + NTYPEITEM[i]])],
+    ['Plates and incenses (×1.2)', byType(NTYPEITEM).filter(i => /Plate|Incense/.test(i)).map(i => [i, i + ' · ' + NTYPEITEM[i]])],
+    ['Resist berries (halve one hit)', byType(NBERRY).map(i => [i, i + ' · ' + NBERRY[i]])],
+    ['Species items', ['Light Ball', 'Thick Club', 'Deep Sea Tooth', 'Deep Sea Scale', 'Soul Dew', 'Adamant Orb', 'Lustrous Orb', 'Griseous Orb'].map(i => [i, i])],
+    ['Other', [...NITEMOTHER, ...bossItems].sort((a, b) => a.localeCompare(b)).map(i => [i, i])]];
+}
+function nItemNote(it) {
+  if (!it) return '';
+  if (NTYPEITEM[it]) return NTYPEITEM[it] + ' moves ×1.2';
+  if (NBERRY[it]) return it === 'Chilan Berry' ? 'Halves one Normal hit' : 'Halves one super-effective ' + NBERRY[it] + ' hit';
+  return NITEMFX[it] || 'No effect on damage';
+}
+function nItemSelect(cur) {
+  const groups = nItemGroups(), all = new Set(groups.flatMap(g => g[1].map(x => x[0])));
+  return `<select data-f="item" aria-label="Held item"><option value="">— none —</option>${cur && !all.has(cur) ? `<option value="${esc(cur)}" selected>${esc(cur)}</option>` : ''}
+    ${groups.map(([lab, items]) => `<optgroup label="${esc(lab)}">${items.map(([v, t]) => `<option value="${esc(v)}" ${v === cur ? 'selected' : ''}>${esc(t)}</option>`).join('')}</optgroup>`).join('')}</select>`;
+}
+
+// ---- Hidden Power: type and power come from IVs; the move data's "Normal" is only a placeholder ----
+function nHP(e) {
+  const sol = nSolveIVs(e), auto = sol && IVSTATS.every(k => sol.s[k] && sol.s[k].c.length) ? ivHiddenPower(sol.s) : null;
+  return { t: e.hpt || (auto && auto.types.length === 1 ? auto.types[0] : ''), auto, p: auto && auto.pmin === auto.pmax ? auto.pmin : 0, pr: auto ? [auto.pmin, auto.pmax] : null };
+}
+function nHpSelect(e, hp) {
+  const autoT = hp.auto && hp.auto.types.length === 1 ? hp.auto.types[0] : '';
+  const lab = autoT ? 'Auto: ' + autoT : hp.auto ? 'Auto: ' + hp.auto.types.length + ' possible' : 'Set type';
+  const tip = e.hpt && autoT && e.hpt !== autoT ? 'Your logged IVs point to ' + autoT + '. Check the log or nature.' : 'Hidden Power type, as shown on its summary screen';
+  return `<select class="hpsel" data-f="hpt" aria-label="Hidden Power type" title="${esc(tip)}"><option value="">${esc(lab)}</option>${HPTYPES.map(t => `<option value="${t}" ${t === e.hpt ? 'selected' : ''}>${t}</option>`).join('')}</select>`;
+}
+
+function renderRunTop() {
+  const r = curRun(), s = runStats(r), next = NBOSS[r.beat], all = placed(r);
+  const party = partyOf(r), box = all.filter(x => x.e.st === 'box'), dead = all.filter(x => x.e.st === 'dead');
+  const over = e => r.rules.caps && next && (+e.lv || 0) > next.cap;
+  const card = ({ row, e }) => { const m = mons[e.n - 1];
+    return `<div class="nmon ${e.st === 'dead' ? 'dead' : over(e) ? 'over' : ''}" data-k="${esc(row.k)}"><img src="${nimg(e.n)}" alt="" class="goto" title="Open ${esc(m.name)} in the Pokédex">
+      <div class="nn">${esc(e.nick || m.name)}${gBtn(e)}${e.lv ? ` <span class="sp">Lv. ${esc(e.lv)}</span>` : ''}</div>
+      <div class="sp">${e.nick ? esc(m.name) + ' · ' : ''}${esc(row.label)}${e.st === 'dead' && e.cause ? ' · ' + esc(e.cause) : ''}</div>
+      ${e.st === 'dead' ? '' : `<div class="acts">${e.st === 'party' ? '<button data-to="box">To box</button>' : '<button data-to="party">To party</button>'}<button data-to="dead">Died</button></div>`}</div>` };
+  const overs = party.filter(x => over(x.e));
+  const ctx = { over, party, partyFull: party.length >= 6, boss: next ? bossTeams(next, r)[0].team.filter(p => mons[p.n - 1]) : [], bossName: next ? next.label : '' };
+  const a = party.length ? analyze({ members: party.map(({ e }) => ({ n: e.n, ab: nAb(e), moves: e.moves || [], hpt: (e.moves || []).includes('Hidden Power') ? nHP(e).t : '' })) }) : null;
+  const tl = ts => ts.map(x => `<span class="mtype" style="background:${TC[x]}">${x}</span>`).join(' ');
+  const verdicts = a ? `<div class="verdicts"><div><b>Shared weaknesses:</b> ${a.shared.length ? tl(a.shared) : 'none'}</div><div><b>Nothing resists:</b> ${a.unres.length ? tl(a.unres) : 'every type is resisted by someone'}</div>
+    ${a.attacks.length ? `<div><b>No super-effective hit on:</b> ${a.gaps.length ? tl(a.gaps) : 'none'}</div>` : ''}</div>` : '';
+  const cap = next ? `<section class="card full" data-sec="cap"><h3>Next level cap</h3><div class="ncap"><div class="lv">${next.cap}</div>
+      <div class="who"><div class="nn">${esc(next.label)}</div><div class="sp">${esc(next.area)}${next.sub ? ' · ' + esc(next.sub) : ''} · ${next.team.length} Pokémon</div></div>
+      <div class="heads">${bossTeams(next, r)[0].team.map(p => `<img src="${nimg(p.n)}" alt="${esc(monName(p.n))}" title="${esc(monName(p.n))} · Lv. ${esc(p.lv)}">`).join('')}</div>
+      <div class="tbtns"><button class="btn" id="nboss" aria-expanded="${nShowBoss}">${nShowBoss ? 'Hide their team' : 'View their team'}</button><button class="btn primary" id="nbeat">Beaten ✓</button></div></div>
+      ${nShowBoss ? `<div class="nbteam">${bossTeams(next, r).map(t => bossHtml(t, party.map(x => x.e))).join('')}</div>` : ''}
+      ${overs.length ? `<p class="rnote" style="margin:10px 0 0">Over the cap: ${overs.map(x => esc(x.e.nick || monName(x.e.n))).join(', ')}</p>` : ''}</section>`
+    : `<section class="card full" data-sec="cap"><h3>Level caps</h3><p class="empty">Every boss is beaten. Congratulations!</p></section>`;
+  document.getElementById('ntop').innerHTML = `<div class="rhero"><input class="tname" id="nname" value="${esc(r.name)}" aria-label="Run name" maxlength="40">
+      <div class="nsum"><span><b>${s.used}</b>/${runRows(r).length} encounters</span><span class="${s.party > 6 ? 'bad' : ''}"><b>${s.party}</b>/6 party</span><span><b>${s.box}</b> boxed</span><span><b>${s.dead}</b> dead</span><span><b>${r.beat}</b>/${NBOSS.length} bosses</span></div>
+      <div class="tbtns" style="margin-top:10px"><button class="btn primary" id="nteam" ${s.party ? '' : 'disabled'}>Check party in Team builder</button><button class="btn" id="ndup">Duplicate</button><button class="btn danger" id="ndel" ${NZ.runs.length < 2 ? 'disabled' : ''}>Delete</button></div></div>
+    ${cap}
+    <div id="ncalc"></div>
+    <section class="card full nzone" data-zone="party" data-sec="party"><h3>Party · ${party.length}/6</h3>${verdicts}${party.length ? `<div class="pslots">${party.map(x => monEditor(x.row, x.e, r, ctx)).join('')}</div>` : '<p class="empty">Pick a Pokémon on an encounter below and it joins your party.</p>'}
+      ${s.party > 6 ? '<p class="rnote" style="margin:10px 0 0">That\'s more than 6. Box one.</p>' : ''}</section>
+    ${box.length || party.length ? `<section class="card full nzone" data-zone="box" data-sec="box"><h3>Box · ${box.length}</h3>${box.length ? `<div class="pslots">${box.map(x => monEditor(x.row, x.e, r, ctx)).join('')}</div>` : '<p class="empty">Drag a party Pokémon here, or use “To box”.</p>'}</section>` : ''}
+    ${dead.length ? `<section class="card full" data-sec="grave"><h3>Graveyard · ${dead.length}</h3><div class="nparty">${dead.map(card).join('')}</div></section>` : ''}`;
+  renderCalc(); nDecorate();
+  ND.querySelectorAll('[data-zone="party"] .pslots').forEach(g => {
+    const cards = [...g.children].filter(c => c.classList.contains('pmon')), n = Math.max(0, ...cards.map(c => c.children.length));
+    cards.forEach(c => c.style.gridRow = 'span ' + n);
+  });
+}
+
+function renderRun(full = true) {
+  const r = curRun(); NZ.cur = r.id;
+  const nd = document.getElementById('ndetail');
+  if (!full && document.getElementById('ntop')) return renderRunTop();
+  nd.innerHTML = '<button class="back" id="nback">← All runs</button><div id="ntop"></div><div id="nenc"></div><div id="nbot"></div>';
+  renderRunTop();
+  const caught = new Map(); Object.entries(r.enc).forEach(([k, e]) => { if (isCaught(e)) caught.set(k, fam(e.n)) });
+  const takenFor = k => new Set([...caught].filter(([kk]) => kk !== k).map(([, f]) => f));
+  let html = '', section = '';
+  runRows(r).forEach(row => {
+    const e = r.enc[row.k] || {}, used = !!(e.n || e.st === 'missed' || e.st === 'skipped');
+    if ((nfilter === 'open' && used) || (nfilter === 'used' && !used)) return;
+    const sec = row.custom ? 'Starter, gifts & statics' : row.post ? 'Post-game' : 'Wild encounters';
+    if (sec !== section) { html += `<div class="ndiv">${sec}</div>`; section = sec }
+    html += encRow(r, row, takenFor(row.k));
+  });
+  document.getElementById('nenc').innerHTML = `<section class="card full" data-sec="enc"><div class="nhead"><h3>Encounters</h3>
+      <select id="nfilter" aria-label="Show"><option value="all" ${nfilter === 'all' ? 'selected' : ''}>All areas</option><option value="open" ${nfilter === 'open' ? 'selected' : ''}>Still open</option><option value="used" ${nfilter === 'used' ? 'selected' : ''}>Used</option></select>
+      <button class="btn" id="naddc">+ Gift / static</button></div>
+    <div class="enclist">${html || '<p class="empty">Nothing here.</p>'}</div></section>`;
+  document.getElementById('nbot').innerHTML = `<section class="card full" data-sec="bosses"><h3>Bosses · ${r.beat}/${NBOSS.length}</h3><ol class="nbosses">${NBOSS.map((b, i) =>
+      `<li class="${i < r.beat ? 'done' : i === r.beat ? 'next' : ''}"><label><input type="checkbox" data-b="${i}" ${i < r.beat ? 'checked' : ''}><span>${esc(b.label)} <small>${esc(b.area)}</small></span><span class="cap">${b.cap}</span></label></li>`).join('')}</ol></section>
+    <section class="card full nrules" data-sec="rules"><h3>Rules &amp; notes</h3>
+      <label class="chk"><input type="checkbox" data-rule="dupes" ${r.rules.dupes ? 'checked' : ''}> Dupes clause: flag species whose evolution line you already caught</label>
+      <label class="chk"><input type="checkbox" data-rule="caps" ${r.rules.caps ? 'checked' : ''}> Level caps: warn when a party member is above the next boss's highest level</label>
+      <textarea id="nnotes" rows="3" placeholder="Run notes, house rules…">${esc(r.notes || '')}</textarea></section>`;
+  nDecorate();
+}
+
+const ND = document.getElementById('ndetail');
+const nOpenArea = n => { setView('routes'); selectRoute(n) };
+const partyCount = r => Object.values(r.enc).filter(e => e.n && e.st === 'party').length;
+function ncommit(full) { saveRuns(); renderRunList(); renderRun(full) }
+function toTeam(r) {
+  const party = partyOf(r).slice(0, 6).map(x => x.e);
+  let t = TS.teams.find(x => x.id === r.teamId);
+  if (!t) { t = { id: 't' + Date.now(), name: (r.name + ' party').slice(0, 40), members: [] }; TS.teams.push(t); r.teamId = t.id; saveRuns() }
+  t.members = [0, 1, 2, 3, 4, 5].map(i => { const e = party[i]; if (!e) return null; return { n: e.n, ab: nAb(e), moves: [0, 1, 2, 3].map(j => (e.moves || [])[j] || ''), hpt: (e.moves || []).includes('Hidden Power') ? nHP(e).t : '' } });
+  TS.cur = t.id; saveTeams(); setView('team'); document.getElementById('app').classList.add('tshowing');
+}
+// re-render the party/box after the browser has moved focus (Tab), then put focus back on the same field
+function nRefreshTop() {
+  setTimeout(() => {
+    const a = document.activeElement, card = a && a.closest && a.closest('.pmon');
+    const key = card && a.dataset.f ? `.pmon[data-k="${CSS.escape(card.dataset.k)}"] [data-f="${a.dataset.f}"]${a.dataset.s ? `[data-s="${a.dataset.s}"]` : ''}${a.dataset.i ? `[data-i="${a.dataset.i}"]` : ''}` : null;
+    const sc = ND.scrollTop, wy = window.scrollY;
+    renderRunTop(); ND.scrollTop = sc; window.scrollTo(0, wy);
+    const el = key && ND.querySelector(key); if (el) el.focus({ preventScroll: true });
+  }, 0);
+}
+ND.addEventListener('toggle', ev => { const d = ev.target; if (d.classList && d.classList.contains('phist')) { d.open ? nOpenLog.add(d.dataset.hk) : nOpenLog.delete(d.dataset.hk); return }
+  if (!d.classList || !d.classList.contains('pmore')) return;
+  const k = d.closest('.pmon').dataset.k; d.open ? nOpen.add(k) : nOpen.delete(k) }, true);
+let nDrag = null;
+ND.addEventListener('dragstart', ev => { const hd = ev.target.closest && ev.target.closest('.pmon .shead'); if (!hd) return;
+  nDrag = hd.closest('.pmon').dataset.k; ev.dataTransfer.effectAllowed = 'move'; ev.dataTransfer.setData('text/plain', nDrag) });
+ND.addEventListener('dragover', ev => { const z = nDrag && ev.target.closest && ev.target.closest('.nzone'); if (!z) return;
+  ev.preventDefault(); ND.querySelectorAll('.dropping').forEach(x => x !== z && x.classList.remove('dropping')); z.classList.add('dropping');
+  const tc = ev.target.closest('.pmon'), r = curRun(), e = r.enc[nDrag], te = tc && r.enc[tc.dataset.k];
+  ND.querySelectorAll('.drop-before, .drop-after').forEach(x => x.classList.remove('drop-before', 'drop-after'));
+  if (te && te !== e && te.st === 'party' && e && e.st === 'party') tc.classList.add(nAfter(ev, tc) ? 'drop-after' : 'drop-before') });
+// drop on the second half of a card (right half in a multi-column grid, lower half when cards stack) = after it
+function nAfter(ev, card) {
+  const b = card.getBoundingClientRect(), cols = getComputedStyle(card.parentElement).gridTemplateColumns.split(' ').length;
+  return cols > 1 ? ev.clientX > b.left + b.width / 2 : ev.clientY > b.top + b.height / 2;
+}
+ND.addEventListener('dragend', () => { nDrag = null; ND.querySelectorAll('.dropping, .drop-before, .drop-after').forEach(x => x.classList.remove('dropping', 'drop-before', 'drop-after')) });
+ND.addEventListener('drop', ev => {
+  const z = nDrag && ev.target.closest('.nzone'); if (!z) return; ev.preventDefault();
+  const r = curRun(), e = r.enc[nDrag], to = z.dataset.zone, tc = ev.target.closest('.pmon'), te = tc && r.enc[tc.dataset.k];
+  const dk = nDrag; nDrag = null; ND.querySelectorAll('.dropping, .drop-before, .drop-after').forEach(x => x.classList.remove('dropping', 'drop-before', 'drop-after'));
+  if (!e) return;
+  if (te && te !== e && te.st === 'party' && e.st === 'party') {   // reorder within the party
+    const i = partyOf(r).filter(x => x.row.k !== dk).findIndex(x => x.row.k === tc.dataset.k);
+    nPlace(r, dk, i + (nAfter(ev, tc) ? 1 : 0)); return ncommit(true);
+  }
+  if (te && te !== e && te.st !== e.st) {   // dropped on someone in the other section: swap, keeping the party slot
+    if (te.st === 'party') nTakeSlot(r, tc.dataset.k, dk); else nTakeSlot(r, dk, tc.dataset.k);
+    [te.st, e.st] = [e.st, te.st]; return ncommit(true);
+  }
+  if (e.st === to) return;
+  if (to === 'party' && partyCount(r) >= 6) return alert('Your party is full. Drop onto a party member to swap them.');
+  e.st = to; ncommit(true);
+});
+ND.addEventListener('change', ev => {
+  const t = ev.target, r = curRun();
+  if (t.dataset.c) {
+    const c = t.dataset.c; nCalc[c] = t.type === 'checkbox' ? t.checked : ['bi', 'as', 'ds', 'biv'].includes(c) ? +t.value : t.value;
+    if (c === 'bi' || c === 'mk') nCalc.mv = '';
+    if (c === 'mv' || c === 'bi' || c === 'mk') nCalc.pw = '';
+    store.set('rp-ncalc', nCalc); return renderCalc();
+  }
+  if (t.id === 'nname') { r.name = t.value.trim() || 'Untitled run'; return ncommit(false) }
+  if (t.id === 'nnotes') { r.notes = t.value; return saveRuns() }
+  if (t.id === 'nfilter') { nfilter = t.value; return renderRun() }
+  if (t.dataset.rule) { r.rules[t.dataset.rule] = t.checked; return ncommit(true) }
+  if (t.dataset.b !== undefined) { const i = +t.dataset.b; r.beat = t.checked ? i + 1 : i; return ncommit(true) }
+  const pm = t.closest('.pmon');
+  if (pm && t.dataset.f) {
+    const k = pm.dataset.k, e = r.enc[k], fld = t.dataset.f; if (!e) return;
+    if (fld === 'swap') { const o = r.enc[t.value]; if (o) { nTakeSlot(r, t.value, k); o.st = 'box'; e.st = 'party' } return ncommit(true) }
+    if (fld === 'lv') nSetLevel(e, t.value);
+    else if (fld === 'nick') e.nick = t.value.trim();
+    else if (fld === 'ab') e.ab = t.value;
+    else if (fld === 'nat') e.nat = t.value;
+    else if (fld === 'item') e.item = t.value.trim();
+    else if (fld === 'hpt') e.hpt = t.value;
+    else if (fld === 'stat') { e.stats = e.stats || {}; if (t.value) e.stats[t.dataset.s] = +t.value; else delete e.stats[t.dataset.s]; nLog(e) }
+    else if (fld === 'move') { e.moves = [0, 1, 2, 3].map(i => (e.moves || [])[i] || ''); e.moves[+t.dataset.i] = t.value }
+    saveRuns(); renderRunList();
+    const er = ND.querySelector(`.enc[data-k="${CSS.escape(k)}"]`);
+    if (er && fld === 'lv') er.querySelector('.lv').value = e.lv || '';
+    if (er && fld === 'nick') er.querySelector('.nick').value = e.nick || '';
+    return nRefreshTop();
+  }
+  const rowEl = t.closest('.enc'); if (!rowEl) return;
+  const k = rowEl.dataset.k, e = r.enc[k] || (r.enc[k] = {}), cls = t.classList[0];
+  const placeNew = () => { if (e.n && !e.st) e.st = partyCount(r) < 6 ? 'party' : 'box' };
+  if (cls === 'msel') { if (t.value === 'other') { e.other = true; e.n = null } else { e.other = false; e.n = t.value ? +t.value : null; placeNew() } }
+  else if (cls === 'mother') {
+    const m = t.value.trim() ? monByName(t.value) : null;
+    if (t.value.trim() && !m) { t.setCustomValidity('Pick a Pokémon from the list'); t.reportValidity(); return }
+    e.n = m ? m.num : null; placeNew();
+  }
+  else if (cls === 'st') e.st = t.value;
+  else if (cls === 'nick') e.nick = t.value.trim();
+  else if (cls === 'lv') nSetLevel(e, t.value);
+  else if (cls === 'cause') e.cause = t.value.trim();
+  else if (cls === 'clabel') { const c = r.custom.find(c => c.k === k); if (c) c.label = t.value.trim() || 'Gift' }
+  if (!e.n && !e.st && !e.nick && !e.lv && !e.other) delete r.enc[k];
+  // text fields only refresh the summary so tabbing to the next field keeps focus
+  const full = cls === 'msel' || cls === 'mother' || cls === 'st';
+  ncommit(full);
+  if (full) { const el = ND.querySelector(`.enc[data-k="${CSS.escape(k)}"] .${cls === 'msel' && e.other ? 'mother' : cls}`); if (el) el.focus() }
+});
+ND.addEventListener('click', ev => {
+  const t = ev.target, r = curRun(), app = document.getElementById('app');
+  if (t.id === 'nback') return app.classList.remove('nshowing');
+  if (t.id === 'nbeat') { r.beat = Math.min(NBOSS.length, r.beat + 1); return ncommit(true) }
+  if (t.id === 'nboss') { nShowBoss = !nShowBoss; return renderRunTop() }
+  const pk = t.closest('.pk'); if (pk) { setView('dex'); return select(+pk.dataset.n) }
+  if (t.id === 'nteam') return toTeam(r);
+  if (t.id === 'naddc') { const k = 'c' + Date.now(); r.custom.push({ k, label: 'Gift' }); ncommit(true); const el = ND.querySelector(`.enc[data-k="${k}"] .clabel`); if (el) { el.focus(); el.select() } return }
+  if (t.id === 'ndup') { const c = JSON.parse(JSON.stringify(r)); c.id = 'n' + Date.now(); c.name = (r.name + ' (copy)').slice(0, 40); delete c.teamId; NZ.runs.push(c); NZ.cur = c.id; return ncommit(true) }
+  if (t.id === 'ndel') { if (NZ.runs.length < 2 || !confirm(`Delete “${r.name}”? This can't be undone.`)) return; NZ.runs = NZ.runs.filter(x => x !== r); NZ.cur = NZ.runs[0].id; return ncommit(true) }
+  const hb = t.closest('button.nhide');
+  if (hb) { const id = hb.dataset.hide; nHidden.has(id) ? nHidden.delete(id) : nHidden.add(id); store.set('rp-nhide', [...nHidden]); return nDecorate() }
+  const hd = t.closest('button[data-hdel]');
+  if (hd) { const e = r.enc[hd.closest('.pmon').dataset.k]; if (!e) return; const lv = +hd.dataset.hdel;
+    e.hist = (e.hist || []).filter(x => +x.lv !== lv); if (+e.lv === lv) e.stats = {}; saveRuns(); return nRefreshTop() }
+  const ig = t.closest('button[data-ivgo]');
+  if (ig) { const e = r.enc[ig.closest('.pmon').dataset.k]; if (e) { ivLoad(e); setView('ivs') } return }
+  const cd = t.closest('button[data-cdir]');
+  if (cd) { nCalc.dir = cd.dataset.cdir; nCalc.mv = ''; nCalc.pw = ''; store.set('rp-ncalc', nCalc); return renderCalc() }
+  const pmv = t.closest('button[data-mv]');
+  if (pmv) { const k = pmv.closest('.pmon').dataset.k, i = partyOf(r).findIndex(x => x.row.k === k); nPlace(r, k, i + +pmv.dataset.mv); return ncommit(true) }
+  const gb = t.closest('button.gbtn');
+  if (gb) { const e = r.enc[gb.closest('[data-k]').dataset.k]; if (!e) return; e.g = e.g === 'M' ? 'F' : e.g === 'F' ? '' : 'M'; return ncommit(true) }
+  const an = t.closest('button.an'); if (an) return nOpenArea(an.dataset.area);
+  if (t.closest('.enc .x')) { const k = t.closest('.enc').dataset.k; r.custom = r.custom.filter(c => c.k !== k); delete r.enc[k]; return ncommit(true) }
+  const k = (t.closest('[data-k]') || {}).dataset?.k, e = k && r.enc[k];
+  if (!e) return;
+  if (t.dataset.to) {
+    if (t.dataset.to === 'dead') { const c = prompt(`What happened to ${e.nick || monName(e.n)}? (optional)`, ''); if (c === null) return; e.cause = c.trim() }
+    e.st = t.dataset.to; return ncommit(true);
+  }
+  if (t.classList.contains('goto')) { setView('dex'); select(e.n) }
+});
+document.getElementById('nlist').addEventListener('click', e => { const b = e.target.closest('.trow'); if (!b) return;
+  NZ.cur = b.dataset.r; store.set(NKEY, NZ); renderRunList(); renderRun();
+  document.getElementById('app').classList.add('nshowing'); ND.scrollTop = 0 });
+document.getElementById('nnew').onclick = () => {
+  const r = newRun('Run ' + (NZ.runs.length + 1)); NZ.runs.push(r); NZ.cur = r.id; ncommit(true); document.getElementById('app').classList.add('nshowing');
+};
+
+// ---- IV grading: possible IVs from stats at one or more levels (Gen 4 formulas), graded with the in-game judge's wording ----
+const IVKEY = 'rp-ivcalc';
+let IVS = Object.assign({ n: 0, nat: '', ch: '', rows: [{ lv: '', st: {}, ev: {} }] }, store.get(IVKEY, {}));
+const IVSTATS = Object.keys(SL);
+// Gen 4 characteristics: highest IV's stat, then that IV mod 5
+const IVCHAR = { hp: ['Loves to eat', 'Often dozes off', 'Often scatters things', 'Scatters things often', 'Likes to relax'],
+  atk: ['Proud of its power', 'Likes to thrash about', 'A little quick tempered', 'Likes to fight', 'Quick tempered'],
+  def: ['Sturdy body', 'Capable of taking hits', 'Highly persistent', 'Good endurance', 'Good perseverance'],
+  spa: ['Highly curious', 'Mischievous', 'Thoroughly cunning', 'Often lost in thought', 'Very finicky'],
+  spd: ['Strong willed', 'Somewhat vain', 'Strongly defiant', 'Hates to lose', 'Somewhat stubborn'],
+  spe: ['Likes to run', 'Alert to sounds', 'Impetuous and silly', 'Somewhat of a clown', 'Quick to flee'] };
+const HPTYPES = ['Fighting', 'Flying', 'Poison', 'Ground', 'Rock', 'Bug', 'Ghost', 'Steel', 'Fire', 'Water', 'Grass', 'Electric', 'Psychic', 'Ice', 'Dragon', 'Dark'];
+const ivStat = (k, b, lv, iv, ev, nat) => { const e = Math.floor((ev || 0) / 4);
+  return k === 'hp' ? (b === 1 ? 1 : Math.floor((2 * b + iv + e) * lv / 100) + lv + 10) : Math.floor((Math.floor((2 * b + iv + e) * lv / 100) + 5) * natMod(nat, k)) };
+const ivJudge = iv => iv === 31 ? 'Best' : iv === 30 ? 'Fantastic' : iv >= 26 ? 'Very good' : iv >= 16 ? 'Pretty good' : iv >= 1 ? 'Decent' : 'No good';
+const ivTone = iv => iv >= 26 ? 'g4' : iv >= 16 ? 'g3' : iv >= 1 ? 'g2' : 'g1';
+const ivList = c => { const out = []; for (let i = 0; i < c.length; i++) { let j = i; while (j + 1 < c.length && c[j + 1] === c[j] + 1) j++; out.push(j > i ? c[i] + '–' + c[j] : '' + c[i]); i = j } return out.join(', ') };
+const ivSave = () => store.set(IVKEY, IVS);
+
+function ivSolve() {
+  const m = mons[IVS.n - 1]; if (!m) return null;
+  const v = m.v[ver], rows = IVS.rows.filter(r => +r.lv), out = {};
+  IVSTATS.forEach(k => {
+    let c = [...Array(32).keys()], used = false;
+    const ent = rows.filter(r => +(r.st || {})[k]).sort((a, b) => +a.lv - +b.lv); used = ent.length > 0;
+    // exact with the EVs entered (0 if blank); if nothing fits, blank EVs may be anything 0–255
+    const fits = (iv, r, loose) => { const s = +r.st[k], ev = (r.ev || {})[k], b = v.stats[k];
+      return !loose || ev !== undefined ? ivStat(k, b, +r.lv, iv, +ev || 0, IVS.nat) === s : ivStat(k, b, +r.lv, iv, 0, IVS.nat) <= s && s <= ivStat(k, b, +r.lv, iv, 255, IVS.nat) };
+    c = c.filter(iv => ent.every(r => fits(iv, r, false))); let loose = false;
+    if (!c.length && ent.length > 1) { loose = true; for (let n = ent.length - 1; n >= 0 && !c.length; n--) c = [...Array(32).keys()].filter(iv => ent.every((r, i) => fits(iv, r, i >= n))) }
+    out[k] = { c, used, loose };
+  });
+  if (IVS.ch) {   // the characteristic's stat holds the highest IV, and that IV mod 5 is known
+    const [ck, mod] = IVS.ch.split(':'), others = IVSTATS.filter(k => k !== ck);
+    out[ck].c = out[ck].c.filter(iv => iv % 5 === +mod);
+    for (let pass = 0; pass < 3; pass++) {
+      const top = out[ck].c.length ? Math.max(...out[ck].c) : -1;
+      others.forEach(k => out[k].c = out[k].c.filter(iv => iv <= top));
+      const floor = Math.max(0, ...others.map(k => out[k].c.length ? Math.min(...out[k].c) : 0));
+      out[ck].c = out[ck].c.filter(iv => iv >= floor);
+    }
+  }
+  return out;
+}
+// the first level above the latest entry where this stat's candidate IVs would give different stats
+function ivNarrowAt(k, c) {
+  const m = mons[IVS.n - 1], b = m.v[ver].stats[k], rows = IVS.rows.filter(r => +r.lv);
+  const last = rows.reduce((a, r) => +r.lv > +a.lv ? r : a, rows[0] || { lv: 0, ev: {} });
+  for (let L = (+last.lv || 0) + 1; L <= 100; L++) if (new Set(c.map(iv => ivStat(k, b, L, iv, +(last.ev || {})[k], IVS.nat))).size > 1) return L;
+  return 0;
+}
+function ivHiddenPower(sol) {
+  const lists = IVSTATS.map(k => sol[k].c); if (lists.some(l => !l.length) || lists.reduce((a, l) => a * l.length, 1) > 50000) return null;
+  // Gen 4 bit order: HP, Atk, Def, Spe, SpA, SpD
+  const order = ['hp', 'atk', 'def', 'spe', 'spa', 'spd'].map(k => IVSTATS.indexOf(k)), types = new Set(); let pmin = 99, pmax = 0;
+  const walk = (i, acc) => {
+    if (i === 6) { const ivs = order.map(j => acc[j]);
+      const t = Math.floor(ivs.reduce((s, iv, b) => s + ((iv & 1) << b), 0) * 15 / 63), p = Math.floor(ivs.reduce((s, iv, b) => s + (((iv >> 1) & 1) << b), 0) * 40 / 63) + 30;
+      types.add(HPTYPES[t]); pmin = Math.min(pmin, p); pmax = Math.max(pmax, p); return }
+    lists[i].forEach(iv => { acc[i] = iv; walk(i + 1, acc) });
+  };
+  walk(0, []);
+  return { types: [...types], pmin, pmax };
+}
+
+function renderIv() {
+  const d = document.getElementById('ivdetail'), m = IVS.n && mons[IVS.n - 1];
+  const r = curRun(), nz = [...partyOf(r), ...placed(r).filter(x => x.e.st === 'box')];
+  const chOpts = IVSTATS.map(k => `<optgroup label="Highest IV: ${SL[k]}">${IVCHAR[k].map((t, i) => `<option value="${k}:${i}" ${IVS.ch === k + ':' + i ? 'selected' : ''}>${t}</option>`).join('')}</optgroup>`).join('');
+  const row = (rw, i) => {
+    const hasEv = IVSTATS.some(k => +(rw.ev || {})[k]);
+    return `<div class="ivrow" data-r="${i}"><label>Level<input type="number" min="1" max="100" data-iv="lv" value="${esc(rw.lv || '')}"></label>
+      ${IVSTATS.map(k => { const md = natMod(IVS.nat, k); return `<label class="${md > 1 ? 'up' : md < 1 ? 'dn' : ''}">${SL[k]}<input type="number" min="1" max="999" data-iv="st" data-s="${k}" value="${esc((rw.st || {})[k] || '')}"></label>` }).join('')}
+      ${IVS.rows.length > 1 ? `<button class="x" data-ivdel="${i}" title="Remove this level" aria-label="Remove">×</button>` : '<span></span>'}
+      <details class="ivev" ${hasEv ? 'open' : ''}><summary>EVs (if known)</summary><div class="ivevs">${IVSTATS.map(k => `<label>${SL[k]}<input type="number" min="0" max="255" data-iv="ev" data-s="${k}" value="${esc((rw.ev || {})[k] || '')}" placeholder="0"></label>`).join('')}</div></details></div>`;
+  };
+  d.innerHTML = `<div class="rhero"><h2>IV grading</h2>
+      <p class="ivsub">Work out a Pokémon's IVs (0–31) from its stats, level and nature. Add its stats again after it levels up to narrow them down.</p>
+      <div class="ivtop">
+        <label>Pokémon<input id="ivmon" list="monlist" value="${m ? esc(m.name) : ''}" placeholder="Name or #" autocomplete="off"></label>
+        <label>Nature<select id="ivnat"><option value="">— pick —</option>${NATURES.map(n => `<option value="${n}" ${n === IVS.nat ? 'selected' : ''}>${n} (${natDesc(n)})</option>`).join('')}</select></label>
+        <label>Characteristic (optional)<select id="ivch"><option value="">—</option>${chOpts}</select></label>
+        ${nz.length ? `<label>Load from Nuzlocke<select id="ivload"><option value="">${esc(r.name)}…</option>${nz.map(x => `<option value="${esc(x.row.k)}">${esc(x.e.nick || monName(x.e.n))}${x.e.lv ? ' · Lv. ' + esc(x.e.lv) : ''}${x.e.st === 'box' ? ' (box)' : ''}</option>`).join('')}</select></label>` : ''}
+      </div>${m ? `<div class="ivmon"><img src="${nimg(m.num)}" alt=""><div><div class="nn">${esc(m.name)}</div><div class="stypes">${m.v[ver].types.map(typeBadge).join('')}</div></div></div>` : ''}</div>
+    ${m ? `<section class="card full"><h3>Stats from the summary screen</h3><div class="ivrows">${IVS.rows.map(row).join('')}</div>
+        <div class="tbtns" style="margin-top:10px"><button class="btn" id="ivadd">+ Stats at another level</button><button class="btn" id="ivclear">Clear</button></div>
+        <p class="ivsub" style="margin-top:10px">Wild Pokémon start with no EVs, but every battle adds some. If it has fought, enter its EVs, or use stats from right after you caught it.</p></section>
+      <div id="ivres"></div>` : '<p class="empty" style="margin-top:16px">Pick a Pokémon to start, or load one from your Nuzlocke run.</p>'}`;
+  renderIvResults();
+}
+
+function renderIvResults() {
+  const el = document.getElementById('ivres'); if (!el) return;
+  const m = mons[IVS.n - 1], sol = ivSolve(); if (!m || !sol) { el.innerHTML = ''; return }
+  if (!IVS.rows.some(r => +r.lv)) { el.innerHTML = '<p class="empty" style="margin-top:12px">Enter its level and at least one stat.</p>'; return }
+  const base = m.v[ver].stats;
+  const rows = IVSTATS.map(k => {
+    const { c, used, loose } = sol[k];
+    if (!used) return `<tr><th>${SL[k]}</th><td class="b">${base[k]}</td><td colspan="3" class="sp">Enter this stat</td></tr>`;
+    if (!c.length) return `<tr class="bad"><th>${SL[k]}</th><td class="b">${base[k]}</td><td colspan="3">No IV fits. Check the level, nature, EVs and stat.</td></tr>`;
+    const lo = c[0], hi = c[c.length - 1], at = c.length > 1 ? ivNarrowAt(k, c) : 0;
+    const judge = ivJudge(lo) === ivJudge(hi) ? ivJudge(lo) : ivJudge(lo) + ' – ' + ivJudge(hi);
+    return `<tr><th>${SL[k]}</th><td class="b">${base[k]}</td><td class="iv">${ivList(c)}${loose ? '<div class="sp" title="Later stats only fit with EVs from battles, so this is a range rather than exact">approx. (EVs)</div>' : ''}</td>
+      <td class="bar"><div class="ivbar"><i class="${ivTone(Math.round((lo + hi) / 2))}" style="left:${lo / 32 * 100}%;width:${(hi - lo + 1) / 32 * 100}%"></i></div></td>
+      <td><span class="ivj ${ivTone(Math.round((lo + hi) / 2))}">${judge}</span>${at ? `<div class="sp">Recheck at Lv. ${at} to narrow</div>` : ''}</td></tr>`;
+  }).join('');
+  const done = IVSTATS.every(k => sol[k].used && sol[k].c.length);
+  let total = '';
+  if (done) {
+    const tmin = IVSTATS.reduce((a, k) => a + sol[k].c[0], 0), tmax = IVSTATS.reduce((a, k) => a + sol[k].c[sol[k].c.length - 1], 0), mid = (tmin + tmax) / 2;
+    const overall = t => t >= 151 ? 'Outstanding' : t >= 121 ? 'Relatively superior' : t >= 91 ? 'Above average' : 'Decent';
+    const pct = mid / 186 * 100, letter = pct >= 90 ? 'S' : pct >= 75 ? 'A' : pct >= 60 ? 'B' : pct >= 45 ? 'C' : pct >= 30 ? 'D' : 'E';
+    const best = IVSTATS.filter(k => sol[k].c[0] >= 30).map(k => SL[k]), hp = ivHiddenPower(sol);
+    total = `<div class="ivsum"><div class="ivgrade g${letter}">${letter}</div><div><div class="nn">${overall(tmin) === overall(tmax) ? overall(tmin) : overall(tmin) + ' – ' + overall(tmax)} potential</div>
+        <div class="sp">IV total ${tmin === tmax ? tmin : tmin + '–' + tmax} of 186 (${Math.round(pct)}%)${best.length ? ' · 30+ in ' + best.join(', ') : ''}</div>
+        ${hp && hp.types.length > 4 ? `<div class="sp">Hidden Power: could be any of ${hp.types.length} types. Narrow the IVs to pin it down.</div>` : ''}${hp && hp.types.length <= 4 ? `<div class="sp">Hidden Power: ${hp.types.map(t => `<span class="mtype" style="background:${TC[t]}">${t}</span>`).join(' ')} ${hp.pmin === hp.pmax ? hp.pmin : hp.pmin + '–' + hp.pmax} power</div>` : ''}</div></div>`;
+  }
+  el.innerHTML = `<section class="card full"><h3>Results</h3>${total}
+    <div class="tablewrap"><table class="ivtable"><thead><tr><th>Stat</th><th>Base</th><th>Possible IVs</th><th class="bar">0 ··· 31</th><th>Judge</th></tr></thead><tbody>${rows}</tbody></table></div>
+    <div class="legend"><span>Judge wording follows the in-game IV judge: Best 31 · Fantastic 30 · Very good 26–29 · Pretty good 16–25 · Decent 1–15 · No good 0.</span></div></section>`;
+}
+
+function ivLoad(e) {
+  const H = e.hist && e.hist.length ? e.hist : +e.lv ? [{ lv: +e.lv, st: e.stats || {} }] : [];
+  IVS = { n: e.n, nat: e.nat || '', ch: '', rows: H.length ? H.map(x => ({ lv: String(x.lv), st: Object.assign({}, x.st), ev: {} })) : [{ lv: e.lv || '', st: {}, ev: {} }] }; ivSave();
+}
+const IVD = document.getElementById('ivdetail');
+IVD.addEventListener('input', ev => {
+  const t = ev.target, rw = t.closest('.ivrow'); if (!rw || !t.dataset.iv) return;
+  const r = IVS.rows[+rw.dataset.r], f = t.dataset.iv;
+  if (f === 'lv') r.lv = t.value; else { r[f] = r[f] || {}; if (t.value) r[f][t.dataset.s] = +t.value; else delete r[f][t.dataset.s] }
+  ivSave(); renderIvResults();
+});
+IVD.addEventListener('change', ev => {
+  const t = ev.target;
+  if (t.id === 'ivmon') { const m = monByName(t.value); if (!m) { t.setCustomValidity('Pick a Pokémon from the list'); t.reportValidity(); return } t.setCustomValidity(''); IVS.n = m.num; ivSave(); return renderIv() }
+  if (t.id === 'ivnat') { IVS.nat = t.value; ivSave(); return renderIv() }
+  if (t.id === 'ivch') { IVS.ch = t.value; ivSave(); return renderIvResults() }
+  if (t.id === 'ivload') { const e = curRun().enc[t.value]; if (e) { ivLoad(e); renderIv() } }
+});
+IVD.addEventListener('click', ev => {
+  const t = ev.target;
+  if (t.id === 'ivadd') { const last = IVS.rows[IVS.rows.length - 1]; IVS.rows.push({ lv: last && +last.lv ? String(+last.lv + 1) : '', st: {}, ev: Object.assign({}, last ? last.ev : {}) }); ivSave(); renderIv();
+    const ins = IVD.querySelectorAll('.ivrow'); const s = ins[ins.length - 1].querySelector('[data-iv="st"]'); if (s) s.focus(); return }
+  if (t.id === 'ivclear') { IVS.rows = [{ lv: '', st: {}, ev: {} }]; IVS.ch = ''; ivSave(); return renderIv() }
+  if (t.dataset.ivdel !== undefined) { IVS.rows.splice(+t.dataset.ivdel, 1); ivSave(); return renderIv() }
+});
 
 // ---- Moves view: every move Pokémon can learn in RP, with filters and who learns it ----
 // Descriptions are Platinum's in-game text (later-gen moves use Ultra Sun/Ultra Moon text); RP changes from the Platinum Renegade wiki.
@@ -1060,7 +2252,77 @@ document.getElementById('tydetail').addEventListener('click', e => { const b = e
 // Layout from pret/pokeplatinum's overworld map matrix; screenshots from Bulbagarden Archives; Leaflet served from /pokedex-map/.
 const MAPMARK = [["item",5443,901,"Ultra Ball","Acuity Lakefront"],["item",5175,964,"Reaper Cloth","Acuity Lakefront"],["item",5960,1110,"Ultra Ball","Snowpoint City"],["hidden",6104,773,"Rare Candy","Snowpoint City"],["item",11848,1136,"Life Orb","Stark Mountain"],["item",12200,927,"Max Elixir","Stark Mountain"],["item",4740,1870,"HM08","Route 217"],["item",4889,2181,"Iron","Route 217"],["item",4806,2007,"TM07","Route 217"],["rock",5021,1498,"Ice Rock","Route 217"],["item",4757,2528,"Blue Shard","Route 217"],["item",4988,2429,"Ultra Ball","Route 217"],["item",5070,1920,"Rare Candy","Route 217"],["hidden",4674,2206,"Iron","Route 217"],["hidden",5070,1697,"Max Revive","Route 217"],["hidden",4658,1796,"Ultra Ball","Route 217"],["hidden",4872,2479,"Revival Herb","Route 217"],["hidden",4889,1908,"Max Repel","Route 217"],["hidden",5021,2106,"Ultra Ball","Route 217"],["hidden",4790,2044,"Protein","Route 217"],["hidden",5103,1846,"Max Potion","Route 217"],["hidden",5037,2404,"Full Heal","Route 217"],["hidden",4608,2268,"Nugget","Route 217"],["item",12152,1582,"Charcoal","Route 227"],["item",11928,1739,"Zinc","Route 227"],["item",12024,1425,"Yellow Shard","Route 227"],["hidden",11864,1333,"Star Piece","Route 227"],["hidden",11992,1542,"Max Repel","Route 227"],["hidden",11912,2144,"Rare Candy","Route 227"],["item",9784,3222,"Razor Fang","Route 225"],["item",10200,3012,"Rare Candy","Route 225"],["item",9896,3078,"HP Up","Route 225"],["item",9768,2672,"Lax Incense","Route 225"],["item",9768,2436,"Dubious Disc","Route 225"],["item",10056,2057,"Dawn Stone","Route 225"],["berry",9768,2266,"Tamato Berry ×1","Route 225"],["berry",9816,2266,"Tamato Berry ×1","Route 225"],["berry",9784,2266,"Kelpsy Berry ×1","Route 225"],["berry",9800,2266,"Kelpsy Berry ×1","Route 225"],["item",9784,2934,"Revive","Route 225"],["cut",10120,3012,"Cut tree","Route 225"],["cut",10120,3026,"Cut tree","Route 225"],["cut",9816,2672,"Cut tree","Route 225"],["cut",9816,2685,"Cut tree","Route 225"],["cut",9832,2292,"Cut tree","Route 225"],["cut",9832,2305,"Cut tree","Route 225"],["cut",10152,2580,"Cut tree","Route 225"],["cut",10168,2580,"Cut tree","Route 225"],["item",10088,2279,"Green Shard","Route 225"],["hidden",10040,2698,"Rare Candy","Route 225"],["hidden",10184,2947,"Big Mushroom","Route 225"],["hidden",9832,2738,"Leaf Stone","Route 225"],["hidden",9944,2188,"Ultra Ball","Route 225"],["item",10616,2248,"Rare Candy","Survival Area"],["item",10376,2087,"Red Shard","Survival Area"],["hidden",10376,2409,"PP Up","Survival Area"],["item",11480,2308,"TM53","Route 226"],["item",11048,2383,"Carbos","Route 226"],["item",11096,2218,"Lagging Tail","Route 226"],["berry",11032,2143,"Qualot Berry ×1","Route 226"],["berry",11080,2143,"Qualot Berry ×1","Route 226"],["berry",11048,2143,"Pomeg Berry ×1","Route 226"],["berry",11064,2143,"Pomeg Berry ×1","Route 226"],["hidden",11448,2398,"Heart Scale","Route 226"],["hidden",11512,2218,"TINYMUSHROOM","Route 226"],["hidden",11592,2233,"Big Mushroom","Route 226"],["hidden",11576,2188,"PP Max","Route 226"],["hidden",11912,2113,"Rare Candy","Route 226"],["rock",12696,2723,"Breakable rock","Route 228"],["rock",12505,2466,"Breakable rock","Route 228"],["rock",12521,2466,"Breakable rock","Route 228"],["rock",12537,2479,"Breakable rock","Route 228"],["item",12584,2222,"Protector","Route 228"],["item",12744,2389,"Iron","Route 228"],["item",12712,2891,"Shiny Stone","Route 228"],["item",12489,2376,"Shed Shell","Route 228"],["item",12473,2826,"TM37","Route 228"],["berry",12473,2942,"Hondew Berry ×1","Route 228"],["berry",12521,2942,"Hondew Berry ×1","Route 228"],["berry",12489,2942,"Tamato Berry ×1","Route 228"],["berry",12505,2942,"Tamato Berry ×1","Route 228"],["hidden",12696,3109,"Calcium","Route 228"],["hidden",12393,2530,"Full Restore","Route 228"],["hidden",12505,2633,"Star Piece","Route 228"],["hidden",12489,2235,"Rare Candy","Route 228"],["hidden",12457,2132,"Max Repel","Route 228"],["hidden",12409,3135,"PP Max","Route 228"],["item",6040,2976,"TM13","Route 216"],["item",5480,3029,"Full Heal","Route 216"],["item",5736,2936,"Mental Herb","Route 216"],["item",5880,2896,"HP Up","Route 216"],["item",5912,3042,"Max Potion","Route 216"],["item",5304,3228,"Revive","Route 216"],["hidden",5720,3202,"PP Up","Route 216"],["berry",10232,3455,"Pomeg Berry ×1","Fight Area"],["berry",10248,3455,"Pomeg Berry ×1","Fight Area"],["berry",10264,3455,"Hondew Berry ×2","Fight Area"],["berry",10280,3455,"Hondew Berry ×2","Fight Area"],["rock",11368,3405,"Breakable rock","Route 230"],["rock",11464,3330,"Breakable rock","Route 230"],["rock",11608,3442,"Breakable rock","Route 230"],["rock",11672,3479,"Breakable rock","Route 230"],["item",11640,3429,"Rare Candy","Route 230"],["berry",10952,3343,"Kelpsy Berry ×2","Route 230"],["berry",10968,3343,"Kelpsy Berry ×2","Route 230"],["berry",10984,3343,"Grepa Berry ×1","Route 230"],["berry",11000,3343,"Grepa Berry ×1","Route 230"],["item",11336,3479,"Blue Shard","Route 230"],["hidden",11496,3330,"Ultra Ball","Route 230"],["hidden",11608,3429,"Water Stone","Route 230"],["cut",13129,3571,"Cut tree","Route 229"],["cut",13129,3559,"Cut tree","Route 229"],["cut",12937,3434,"Cut tree","Route 229"],["cut",13145,3548,"Cut tree","Route 229"],["cut",13225,3548,"Cut tree","Route 229"],["item",13065,3422,"Reaper Cloth","Route 229"],["item",13257,3353,"Full Restore","Route 229"],["item",13257,3559,"Protein","Route 229"],["berry",12969,3514,"Grepa Berry ×1","Route 229"],["berry",12985,3514,"Grepa Berry ×1","Route 229"],["berry",13001,3514,"Qualot Berry ×1","Route 229"],["berry",13017,3514,"Qualot Berry ×1","Route 229"],["hidden",13161,3639,"THUNDERSTONE","Route 229"],["item",13048,3874,"Nugget","Resort Area"],["berry",13256,3973,"Lum Berry ×1","Resort Area"],["berry",13064,3973,"Leppa Berry ×1","Resort Area"],["berry",13080,3973,"Qualot Berry ×2","Resort Area"],["berry",13240,3973,"Grepa Berry ×2","Resort Area"],["hidden",13160,4030,"Nugget","Resort Area"],["hidden",13160,3631,"THUNDERSTONE","Resort Area"],["hidden",1833,4412,"Star Piece","Iron Island"],["item",14152,5239,"Razor Claw","Route 224"],["item",13912,4746,"Rare Candy","Route 224"],["item",14520,4487,"Destiny Knot","Route 224"],["berry",14504,4647,"Sitrus Berry ×2","Route 224"],["berry",14520,4647,"Bluk Berry ×3","Route 224"],["berry",14536,4647,"Nanab Berry ×3","Route 224"],["berry",14552,4647,"Wepear Berry ×3","Route 224"],["item",14776,4413,"Repeat Ball","Route 224"],["item",14472,4672,"PP Max","Route 224"],["item",14632,4487,"Ultra Ball","Route 224"],["item",14040,4882,"Upgrade","Route 224"],["hidden",14104,4746,"Rare Candy","Route 224"],["hidden",14392,4808,"Pearl","Route 224"],["hidden",14536,4746,"Heart Scale","Route 224"],["hidden",14632,4783,"Big Pearl","Route 224"],["hidden",14680,4734,"Pearl","Route 224"],["hidden",14136,5153,"Zinc","Route 224"],["hidden",14536,4709,"Ultra Ball","Route 224"],["berry",3671,5018,"Bluk Berry ×2","Eterna Forest"],["berry",3659,5018,"Razz Berry ×2","Eterna Forest"],["berry",3682,5018,"Cheri Berry ×1","Eterna Forest"],["berry",3694,5018,"Oran Berry ×2","Eterna Forest"],["cut",3844,4888,"Cut tree","Eterna Forest"],["cut",3856,4888,"Cut tree","Eterna Forest"],["cut",3497,5130,"Cut tree","Eterna Forest"],["cut",3497,5140,"Cut tree","Eterna Forest"],["item",3809,5158,"TM82","Eterna Forest"],["item",3636,5177,"Silver Powder","Eterna Forest"],["item",4207,5036,"Guard Spec.","Route 205"],["berry",4239,4818,"Cheri Berry ×1","Route 205"],["berry",4250,4818,"Pecha Berry ×1","Route 205"],["berry",4261,4818,"Oran Berry ×1","Route 205"],["berry",4271,4818,"Oran Berry ×1","Route 205"],["hidden",4324,4828,"Super Potion","Route 205"],["cut",4872,4629,"Cut tree","Eterna City"],["cut",4888,4629,"Cut tree","Eterna City"],["cut",4904,4629,"Cut tree","Eterna City"],["cut",5016,4551,"Cut tree","Eterna City"],["item",5240,4564,"TM46","Eterna City"],["item",5080,5108,"Super Potion","Eterna City"],["hidden",5240,4629,"Draco Plate","Eterna City"],["hidden",4568,4616,"Super Potion","Eterna City"],["hidden",5688,4629,"Great Ball","Eterna City"],["hidden",5560,4577,"Moon Stone","Eterna City"],["rock",6167,4709,"Breakable rock","Route 211"],["item",6042,4819,"TM12","Route 211"],["hidden",5895,4626,"Great Ball","Route 211"],["hidden",5804,4571,"Moon Stone","Route 211"],["cut",6667,4791,"Cut tree","Route 211"],["rock",6837,4640,"Breakable rock","Route 211"],["rock",6758,4598,"Breakable rock","Route 211"],["rock",6735,4598,"Breakable rock","Route 211"],["rock",6803,4640,"Breakable rock","Route 211"],["rock",6746,4612,"Breakable rock","Route 211"],["item",6678,4529,"TM29","Route 211"],["berry",6803,4667,"Pecha Berry ×1","Route 211"],["berry",6814,4667,"Aspear Berry ×1","Route 211"],["berry",6826,4667,"Iapapa Berry ×1","Route 211"],["berry",6837,4667,"Grepa Berry ×1","Route 211"],["rock",6837,4612,"Breakable rock","Route 211"],["item",6780,4819,"Carbos","Route 211"],["hidden",6758,4529,"Calcium","Route 211"],["item",7512,4795,"Dragon Fang","Celestic Town"],["rock",7960,4883,"Breakable rock","Route 210"],["cut",8952,4770,"Cut tree","Route 210"],["item",8440,4820,"Smoke Ball","Route 210"],["item",7960,4795,"Wave Incense","Route 210"],["item",7896,4883,"TM30","Route 210"],["berry",7880,4631,"Sitrus Berry ×1","Route 210"],["berry",7896,4631,"Chesto Berry ×1","Route 210"],["berry",7912,4631,"Wiki Berry ×1","Route 210"],["berry",7928,4631,"Aguav Berry ×1","Route 210"],["rock",7976,4896,"Breakable rock","Route 210"],["item",9000,4707,"Zinc","Route 210"],["item",8824,4833,"Red Shard","Route 210"],["hidden",8760,4694,"Shiny Stone","Route 210"],["hidden",8424,4618,"Meadow Plate","Route 210"],["item",8744,5361,"Max Repel","Route 210"],["item",8872,5613,"Super Repel","Route 210"],["item",9208,4958,"Nest Ball","Route 210"],["berry",9128,5979,"Aspear Berry ×1","Route 210"],["berry",9144,5979,"Aspear Berry ×1","Route 210"],["berry",9160,5979,"Razz Berry ×1","Route 210"],["berry",9176,5979,"Pinap Berry ×1","Route 210"],["item",9000,5198,"Hyper Potion","Route 210"],["hidden",8792,5299,"Full Heal","Route 210"],["hidden",8888,5160,"Ultra Ball","Route 210"],["hidden",9048,5727,"Rare Candy","Route 210"],["hidden",9064,5273,"Hyper Potion","Route 210"],["hidden",9176,5147,"Ultra Ball","Route 210"],["hidden",13483,5400,"Sky Plate","Pokémon League"],["berry",2696,5571,"Sitrus Berry ×1","Fuego Ironworks"],["berry",2712,5571,"Wepear Berry ×2","Fuego Ironworks"],["berry",2728,5571,"Wepear Berry ×2","Fuego Ironworks"],["berry",2744,5571,"Kelpsy Berry ×1","Fuego Ironworks"],["hidden",2872,5571,"Ultra Ball","Fuego Ironworks"],["hidden",2840,5343,"Big Mushroom","Fuego Ironworks"],["item",3463,5797,"Heal Ball","Route 205"],["item",3559,6015,"X Sp. Def","Route 205"],["berry",3442,6193,"Chesto Berry ×1","Route 205"],["berry",3452,6193,"Pecha Berry ×1","Route 205"],["berry",3537,5757,"Oran Berry ×1","Route 205"],["berry",3548,5757,"Pecha Berry ×1","Route 205"],["item",3622,5698,"Super Potion","Route 205"],["item",3452,5649,"Repel","Route 205"],["hidden",3548,5886,"Stardust","Route 205"],["cut",4952,6807,"Cut tree","Route 206"],["cut",4966,6807,"Cut tree","Route 206"],["cut",4979,6664,"Cut tree","Route 206"],["item",4708,5936,"Poison Barb","Route 206"],["item",4993,6664,"PP Up","Route 206"],["berry",4722,5988,"Rawst Berry ×1","Route 206"],["berry",4735,5988,"Rawst Berry ×1","Route 206"],["berry",4749,6820,"Razz Berry ×1","Route 206"],["berry",4762,6820,"Razz Berry ×1","Route 206"],["item",4844,6313,"Burn Heal","Route 206"],["item",5006,6040,"Super Repel","Route 206"],["hidden",4993,6248,"Ether","Route 206"],["hidden",4749,6092,"TINYMUSHROOM","Route 206"],["cut",9784,5375,"Cut tree","Route 215"],["cut",9944,5565,"Cut tree","Route 215"],["cut",10152,5375,"Cut tree","Route 215"],["cut",10520,5493,"Cut tree","Route 215"],["cut",10520,5505,"Cut tree","Route 215"],["berry",10056,5541,"Pecha Berry ×2","Route 215"],["berry",10072,5541,"Bluk Berry ×2","Route 215"],["berry",10568,5553,"Wiki Berry ×1","Route 215"],["berry",10584,5553,"Mago Berry ×1","Route 215"],["item",10024,5624,"Hyper Potion","Route 215"],["item",10200,5588,"Full Heal","Route 215"],["item",9608,5529,"Max Ether","Route 215"],["item",10584,5482,"TM34","Route 215"],["item",9928,5398,"Fist Plate","Route 215"],["item",10568,5351,"HP Up","Route 215"],["hidden",9832,5422,"Revive","Route 215"],["hidden",10552,5434,"Ultra Ball","Route 215"],["hidden",10296,5529,"Iron","Route 215"],["item",11048,5812,"Full Incense","Veilstone City"],["item",11368,5432,"Rare Candy","Veilstone City"],["item",11096,5432,"Star Piece","Veilstone City"],["hidden",11016,5537,"Calcium","Veilstone City"],["hidden",11176,5628,"PP Up","Veilstone City"],["berry",2856,6295,"Oran Berry ×1","Floaroma Town"],["berry",2920,6295,"Cheri Berry ×1","Floaroma Town"],["item",13448,6715,"TM18","Route 223"],["item",13608,6282,"Ultra Ball","Route 223"],["item",13480,6121,"Dive Ball","Route 223"],["item",13736,6046,"Rare Candy","Route 223"],["hidden",13592,7247,"Heart Scale","Route 223"],["item",3880,6209,"TM24","Valley Windworks"],["item",3944,6413,"Potion","Valley Windworks"],["item",3720,6273,"Electirizer","Valley Windworks"],["hidden",3784,6298,"Max Elixir","Valley Windworks"],["berry",9045,6452,"Persim Berry ×1","Solaceon Town"],["berry",9061,6452,"Nanab Berry ×1","Solaceon Town"],["berry",9077,6452,"Nanab Berry ×1","Solaceon Town"],["berry",9094,6452,"Figy Berry ×1","Solaceon Town"],["item",9356,6439,"PP Up","Solaceon Town"],["item",9519,6323,"Rare Candy","Solaceon Town"],["hidden",9519,6155,"Big Mushroom","Solaceon Town"],["rock",11413,6688,"Breakable rock","Route 214"],["rock",11399,6700,"Breakable rock","Route 214"],["berry",11642,6439,"Cheri Berry ×1","Route 214"],["berry",11657,6439,"Sitrus Berry ×1","Route 214"],["berry",11671,6439,"Chesto Berry ×1","Route 214"],["berry",11685,6439,"Pomeg Berry ×1","Route 214"],["item",11685,6296,"Rare Candy","Route 214"],["item",11599,6653,"Max Repel","Route 214"],["item",11556,7235,"Red Shard","Route 214"],["item",11585,6926,"Big Root","Route 214"],["item",11399,6760,"Magmarizer","Route 214"],["hidden",11585,6855,"Carbos","Route 214"],["hidden",11728,6688,"Big Mushroom","Route 214"],["hidden",11556,6962,"Razor Fang","Route 214"],["cut",2904,6642,"Cut tree","Route 204"],["item",2603,6694,"TM09","Route 204"],["item",2888,6861,"Awakening","Route 204"],["hidden",7527,6693,"Big Mushroom","Hearthome City"],["cut",9182,6791,"Cut tree","Route 209"],["item",8437,7030,"Great Ball","Route 209"],["item",8923,7189,"Hyper Potion","Route 209"],["item",9165,6818,"TM47","Route 209"],["item",8777,6579,"Calcium","Route 209"],["item",9101,7268,"TM19","Route 209"],["berry",8485,7083,"Leppa Berry ×1","Route 209"],["berry",8502,7083,"Chesto Berry ×1","Route 209"],["berry",9068,6884,"Razz Berry ×1","Route 209"],["berry",9084,6884,"Razz Berry ×1","Route 209"],["item",8906,6963,"Ether","Route 209"],["hidden",9052,6844,"Stardust","Route 209"],["hidden",8356,7109,"Great Ball","Route 209"],["hidden",8809,7056,"Revive","Route 209"],["hidden",8631,7215,"Super Repel","Route 209"],["item",559,7701,"TM89","Canalave City"],["hidden",590,7592,"Big Pearl","Canalave City"],["item",2603,7336,"Sea Incense","Route 204"],["item",3030,7131,"HP Up","Route 204"],["item",2840,7208,"PARLYZ_HEAL","Route 204"],["item",4664,7065,"Poké Ball","Route 207"],["item",5176,7312,"Revive","Route 207"],["item",5368,7247,"Iron","Route 207"],["berry",4648,7000,"Oran Berry ×1","Route 207"],["berry",4664,7000,"Cheri Berry ×1","Route 207"],["berry",4680,7000,"Bluk Berry ×1","Route 207"],["berry",4696,7000,"Oran Berry ×1","Route 207"],["item",5240,7117,"Super Potion","Route 207"],["item",5576,7273,"Timer Ball","Route 207"],["hidden",5016,7169,"Rare Candy","Route 207"],["hidden",5592,7247,"Red Shard","Route 207"],["hidden",4792,7065,"Poké Ball","Route 207"],["hidden",5400,7078,"Great Ball","Route 207"],["hidden",5416,7156,"Nugget","Route 207"],["rock",6712,7084,"Breakable rock","Route 208"],["rock",6728,7098,"Breakable rock","Route 208"],["rock",6728,7112,"Breakable rock","Route 208"],["berry",6968,7098,"Nanab Berry ×2","Route 208"],["berry",6984,7098,"Razz Berry ×2","Route 208"],["berry",7000,7098,"Bluk Berry ×2","Route 208"],["berry",7016,7098,"Pinap Berry ×2","Route 208"],["item",6664,7098,"Ether","Route 208"],["item",6424,6972,"Carbos","Route 208"],["item",6392,7182,"Great Ball","Route 208"],["rock",6248,7140,"Breakable rock","Route 208"],["rock",6264,7154,"Breakable rock","Route 208"],["hidden",6232,7140,"Star Piece","Route 208"],["hidden",6856,7336,"TINYMUSHROOM","Route 208"],["item",1880,7495,"Rare Candy","Route 218"],["item",1496,7675,"Hyper Potion","Route 218"],["berry",1400,7591,"Rawst Berry ×1","Route 218"],["berry",1416,7591,"Persim Berry ×1","Route 218"],["berry",1432,7591,"Figy Berry ×1","Route 218"],["berry",1448,7591,"Pinap Berry ×2","Route 218"],["item",1672,7543,"X Accuracy","Route 218"],["item",2271,7771,"Potion","Jubilife City"],["hidden",2700,8133,"Stardust","Jubilife City"],["item",3561,7510,"Repel","Route 203"],["item",3393,7568,"Poké Ball","Route 203"],["item",3698,7614,"X Defense","Route 203"],["item",4728,7875,"Dire Hit","Oreburgh City"],["item",4664,7862,"Yellow Shard","Oreburgh City"],["hidden",4664,7849,"Pearl","Oreburgh City"],["cut",7279,8298,"Cut tree","Route 212"],["item",7311,8090,"Rose Incense","Route 212"],["item",7216,7907,"TM11","Route 212"],["berry",7374,8168,"Aspear Berry ×1","Route 212"],["berry",7390,8168,"Sitrus Berry ×1","Route 212"],["berry",7184,8429,"Lum Berry ×1","Route 212"],["berry",7200,8429,"Tamato Berry ×1","Route 212"],["item",7359,8481,"Elixir","Route 212"],["item",7628,7790,"Green Shard","Route 212"],["item",7390,7764,"Iron","Route 212"],["hidden",7613,8246,"Ultra Ball","Route 212"],["hidden",7486,7933,"Pearl","Route 212"],["item",11400,7967,"TM85","Valor Lakefront"],["item",11480,7567,"Ultra Ball","Valor Lakefront"],["item",11400,7933,"Iron","Valor Lakefront"],["hidden",11528,8093,"Sun Stone","Valor Lakefront"],["hidden",11688,7853,"PP Up","Valor Lakefront"],["hidden",11080,8173,"Max Revive","Valor Lakefront"],["hidden",11464,7533,"Big Mushroom","Valor Lakefront"],["item",14104,7939,"THUNDERSTONE","Sunyshore City"],["hidden",13688,7680,"Carbos","Sunyshore City"],["hidden",14232,8107,"Zap Plate","Sunyshore City"],["rock",12632,8019,"Breakable rock","Route 222"],["rock",12871,8126,"Breakable rock","Route 222"],["cut",13030,7865,"Cut tree","Route 222"],["item",12568,7957,"Full Restore","Route 222"],["item",13062,7988,"Carbos","Route 222"],["berry",12170,7819,"Wiki Berry ×2","Route 222"],["berry",12186,7819,"Mago Berry ×2","Route 222"],["berry",12202,7819,"Aguav Berry ×2","Route 222"],["berry",12218,7819,"Qualot Berry ×1","Route 222"],["item",12951,8095,"Quick Ball","Route 222"],["item",12775,7972,"PP Up","Route 222"],["hidden",12903,8126,"Full Restore","Route 222"],["hidden",11692,7834,"PP Up","Route 222"],["hidden",13014,8126,"TINYMUSHROOM","Route 222"],["hidden",12537,7850,"Ultra Ball","Route 222"],["hidden",1170,8690,"TINYMUSHROOM","Lake Verity"],["item",2559,8271,"Potion","Route 202"],["hidden",2673,8115,"Stardust","Route 202"],["item",10008,8577,"Mystic Water","Pastoria City"],["berry",9736,8564,"Persim Berry ×1","Pastoria City"],["berry",9784,8564,"Persim Berry ×1","Pastoria City"],["berry",9752,8564,"Nanab Berry ×1","Pastoria City"],["berry",9768,8564,"Nanab Berry ×1","Pastoria City"],["hidden",9336,8945,"Zinc","Pastoria City"],["rock",10487,8562,"Breakable rock","Route 213"],["rock",10840,8548,"Breakable rock","Route 213"],["rock",10648,8713,"Breakable rock","Route 213"],["rock",10712,8754,"Breakable rock","Route 213"],["rock",10600,8767,"Breakable rock","Route 213"],["rock",10616,8781,"Breakable rock","Route 213"],["berry",10504,8288,"Aguav Berry ×1","Route 213"],["berry",10520,8288,"Rawst Berry ×1","Route 213"],["berry",10536,8288,"Rawst Berry ×1","Route 213"],["berry",10552,8288,"Iapapa Berry ×1","Route 213"],["item",10840,8603,"TM40","Route 213"],["item",11209,8425,"Yellow Shard","Route 213"],["item",10984,8877,"Max Revive","Route 213"],["item",11626,8685,"Water Stone","Route 213"],["item",11033,8535,"TM05","Route 213"],["item",11049,8329,"PP Up","Route 213"],["item",11481,8357,"Protein","Route 213"],["hidden",11065,8439,"HP Up","Route 213"],["hidden",11562,8945,"Big Pearl","Route 213"],["hidden",10680,8740,"Pearl","Route 213"],["hidden",10407,8521,"Hyper Potion","Route 213"],["hidden",10856,8644,"Pearl","Route 213"],["hidden",11241,8589,"Pearl","Route 213"],["hidden",11081,8193,"Max Revive","Route 213"],["hidden",11433,8603,"Heart Scale","Route 213"],["hidden",10936,8945,"Big Pearl","Route 213"],["hidden",10584,8795,"Heart Scale","Route 213"],["hidden",11289,8343,"Suite Key","Route 213"],["cut",7422,8833,"Cut tree","Route 212"],["cut",7946,8729,"Cut tree","Route 212"],["cut",7946,8742,"Cut tree","Route 212"],["cut",8406,8676,"Cut tree","Route 212"],["cut",8533,8689,"Cut tree","Route 212"],["cut",8581,8703,"Cut tree","Route 212"],["cut",8787,8716,"Cut tree","Route 212"],["cut",8962,8976,"Cut tree","Route 212"],["cut",8978,8976,"Cut tree","Route 212"],["item",7295,8989,"Full Heal","Route 212"],["item",7613,8885,"TM84","Route 212"],["item",8121,8807,"TM62","Route 212"],["item",8359,8755,"Zinc","Route 212"],["item",8724,8663,"Hyper Potion","Route 212"],["item",8756,9015,"TM06","Route 212"],["item",8930,8781,"Revive","Route 212"],["berry",8946,8911,"Pecha Berry ×1","Route 212"],["berry",8962,8911,"Pinap Berry ×1","Route 212"],["berry",8978,8911,"Pinap Berry ×1","Route 212"],["berry",8994,8911,"Pinap Berry ×1","Route 212"],["item",8502,8846,"Elixir","Route 212"],["item",7247,8729,"Blue Shard","Route 212"],["hidden",7898,8963,"Max Ether","Route 212"],["hidden",8978,8663,"Dawn Stone","Route 212"],["hidden",8549,8872,"Full Heal","Route 212"],["hidden",8533,8950,"Rare Candy","Route 212"],["hidden",9137,8716,"Hyper Potion","Route 212"],["hidden",8438,8820,"Max Repel","Route 212"],["hidden",9121,8663,"Ultra Ball","Route 212"],["hidden",7549,8937,"Big Mushroom","Route 212"],["hidden",1722,9385,"Odd Keystone","Twinleaf Town"],["item",2715,9194,"Antidote","Route 219"],["hidden",2808,9346,"Zinc","Route 219"],["item",3192,9705,"Carbos","Route 220"],["item",2744,9718,"Splash Plate","Route 220"],["item",2888,9616,"Max Repel","Route 220"],["hidden",2904,9769,"Big Pearl","Route 220"],["hidden",2808,9348,"Zinc","Route 220"],["item",3832,9589,"Protein","Route 221"],["item",4728,9773,"TM81","Route 221"],["item",4104,9694,"Ultra Ball","Route 221"],["berry",4456,9720,"Leppa Berry ×1","Route 221"],["berry",4472,9720,"Pecha Berry ×1","Route 221"],["berry",4488,9720,"Mago Berry ×1","Route 221"],["berry",4504,9720,"Hondew Berry ×1","Route 221"],["item",4008,9510,"Pure Incense","Route 221"],["hidden",4280,9786,"Hyper Potion","Route 221"],["hidden",4232,9445,"Big Mushroom","Route 221"],["hidden",4488,9760,"Ultra Ball","Route 221"],["hidden",4936,9733,"Carbos","Route 221"],["hidden",4360,9707,"Max Revive","Route 221"],["honey",4298,4863,"Honey tree","Route 205"],["honey",6786,4743,"Honey tree","Route 211"],["honey",9120,4726,"Honey tree","Route 210"],["honey",3561,5051,"Honey tree","Eterna Forest"],["honey",2976,5592,"Honey tree","Fuego Ironworks"],["honey",9456,5393,"Honey tree","Route 215"],["honey",9120,5746,"Honey tree","Route 210"],["honey",3553,6128,"Honey tree","Route 205"],["honey",3936,6368,"Honey tree","Valley Windworks"],["honey",4945,6254,"Honey tree","Route 206"],["honey",4976,7032,"Honey tree","Route 207"],["honey",6928,7329,"Honey tree","Route 208"],["honey",8834,7036,"Honey tree","Route 209"],["honey",11592,7170,"Honey tree","Route 214"],["honey",1376,7597,"Honey tree","Route 218"],["honey",7208,7522,"Honey tree","Route 212"],["honey",13213,7934,"Honey tree","Route 222"],["honey",10351,8514,"Honey tree","Route 213"],["honey",8573,8787,"Honey tree","Route 212"],["honey",4400,9622,"Honey tree","Route 221"]];
 const MAPDATA = {"W":15360,"H":10250,"Z":5,"labels":[["Acuity Lakefront",5120,820.5,[4616,422,1008,797]],["Snowpoint City",5888,820,[5632,388,512,864]],["Flower Paradise",14592,615,[14336,429,512,372]],["Stark Mountain",12032,1025,[11776,816,512,418]],["Seabreak Path",14592,2460,[14464,872,256,3176]],["Fullmoon Island",768,1435,[512,1237,512,396]],["Newmoon Island",2304,1435,[2048,1237,512,396]],["Route 217",4864,2050.5,[4600,1256,528,1589]],["Route 227",12032,1640.5,[11776,1222,512,837]],["Route 225",9984,2665.5,[9728,2037,512,1257]],["Survival Area",10496,2255,[10201,2021,590,468]],["Route 226",11520,2255,[10752,2015,1536,480]],["Route 228",12544.5,2665.5,[12289,2048,511,1235]],["Route 216",5376,3075.5,[4608,2863,1536,425]],["Fight Area",10240,3485,[9732,3291,1016,388]],["Route 230",11520,3485,[10752,3287,1536,396]],["Route 229",12800.5,3485,[12288,3302,1025,366]],["Resort Area",13056,3895,[12800,3667,512,456]],["Iron Island",1792,4305,[1532,4103,520,404]],["Route 224",14336,4715,[13824,4123,1024,1184]],["Eterna Forest",3584,4920.5,[3214,4622,740,597]],["Route 205",3840.5,5535,[3330,4744,1021,1582]],["Eterna City",5120,4920,[4608,4506,1024,828]],["Route 211",6400,4715.5,[5855,4495,1090,441]],["Celestic Town",7424,4715,[7168,4481,512,468]],["Route 210",8448,5330,[7680,4524,1536,1612]],["Pokémon League",13568,5330,[13320,4832,496,996]],["Fuego Ironworks",2816,5535,[2560,5307,512,456]],["Route 206",4864,6150.5,[4647,5319,434,1663]],["Route 215",9984,5535,[9216,5345,1536,380]],["Veilstone City",11264,5740,[10752,5320,1024,840]],["Floaroma Town",2816,6150,[2559,5746,514,808]],["Route 223",13568,6560,[13312,5768,512,1584]],["Valley Windworks",3840,6355.5,[3584,6152,512,407]],["Solaceon Town",9216.5,6355,[8693,6149,1047,412]],["Route 214",11520.5,6765.5,[11291,6195,459,1141]],["Route 204",2816.5,6970,[2563,6559,507,822]],["Hearthome City",7680.5,6970,[7165,6576,1031,788]],["Route 209",8704,6970,[8186,6546,1036,848]],["Sendoff Spring",12288,6970,[12048,6850,480,240]],["Canalave City",768,7380.5,[520,6993,496,775]],["Route 207",5120,7175,[4608,6967,1024,416]],["Route 208",6656,7175,[6144,6951,1024,448]],["Route 218",1536,7585,[1024,7393,1024,384]],["Jubilife City",2560,7790,[2032,7391,1056,798]],["Route 203",3584,7585,[3096,7401,976,368]],["Oreburgh City",4608,7790,[4096,7374,1024,832]],["Route 212",8192,8200.5,[7176,7366,2032,1669]],["Valor Lakefront",11264,7790,[10752,7424,1024,732]],["Sunyshore City",13824,7790,[13312,7376,1024,828]],["Route 222",12544.5,7995.5,[11780,7750,1529,491]],["Lake Verity",1024,8610.5,[816,8465,416,291]],["Route 202",2816,8405,[2511,8179,610,452]],["Pastoria City",9728,8610,[9216,8190,1024,840]],["Route 213",11008.5,8610,[10239,8172,1539,876]],["Route 201",2048,8815,[1528,8639,1040,352]],["Sandgem Town",2816,8815,[2568,8614,496,402]],["Twinleaf Town",1792,9225.5,[1544,9037,496,377]],["Route 219",2816,9225.5,[2568,9022,496,407]],["Route 220",3072,9635,[2560,9431,1024,408]],["Route 221",4352,9635,[3584,9425,1536,420]],["Mt. Coronet",6144,5945,null]],"tiles":["0/0/0","1/0/0","1/0/1","1/1/0","1/1/1","2/0/0","2/0/1","2/0/2","2/0/3","2/1/0","2/1/1","2/1/2","2/1/3","2/2/0","2/2/1","2/2/2","2/2/3","3/0/0","3/0/1","3/0/2","3/0/4","3/0/5","3/0/7","3/1/2","3/1/4","3/1/5","3/1/6","3/1/7","3/2/0","3/2/1","3/2/2","3/2/3","3/2/4","3/2/5","3/2/6","3/2/7","3/3/0","3/3/1","3/3/2","3/3/3","3/3/4","3/3/5","3/3/6","3/4/0","3/4/1","3/4/2","3/4/3","3/4/4","3/4/5","3/4/6","4/0/11","4/0/14","4/0/4","4/0/5","4/1/0","4/1/10","4/1/11","4/1/14","4/1/2","4/1/4","4/1/5","4/1/9","4/2/10","4/2/11","4/2/12","4/2/14","4/2/4","4/2/5","4/2/9","4/3/10","4/3/11","4/3/12","4/3/13","4/3/14","4/3/4","4/3/5","4/3/9","4/4/1","4/4/12","4/4/13","4/4/14","4/4/2","4/4/3","4/4/4","4/4/5","4/4/6","4/4/7","4/4/8","4/5/10","4/5/11","4/5/13","4/5/14","4/5/2","4/5/3","4/5/4","4/5/5","4/5/8","4/5/9","4/6/0","4/6/10","4/6/11","4/6/12","4/6/13","4/6/2","4/6/3","4/6/4","4/6/5","4/6/6","4/6/7","4/6/8","4/6/9","4/7/0","4/7/1","4/7/10","4/7/11","4/7/12","4/7/13","4/7/2","4/7/3","4/7/4","4/7/5","4/7/6","4/7/7","4/7/8","4/7/9","4/8/0","4/8/1","4/8/10","4/8/11","4/8/12","4/8/13","4/8/2","4/8/3","4/8/4","4/8/7","4/8/8","4/8/9","4/9/1","4/9/2","4/9/3","4/9/4","5/0/10","5/0/11","5/0/28","5/0/9","5/1/10","5/1/11","5/1/23","5/1/28","5/1/9","5/10/10","5/10/17","5/10/18","5/10/19","5/10/20","5/10/21","5/10/22","5/10/26","5/10/27","5/10/28","5/10/5","5/10/6","5/10/7","5/10/8","5/10/9","5/11/17","5/11/18","5/11/19","5/11/20","5/11/21","5/11/22","5/11/26","5/11/4","5/11/5","5/11/6","5/11/7","5/11/9","5/12/13","5/12/14","5/12/15","5/12/16","5/12/17","5/12/18","5/12/19","5/12/21","5/12/22","5/12/26","5/12/4","5/12/5","5/12/6","5/12/7","5/12/9","5/13/1","5/13/10","5/13/12","5/13/13","5/13/14","5/13/15","5/13/16","5/13/17","5/13/18","5/13/22","5/13/23","5/13/24","5/13/26","5/13/5","5/13/9","5/14/1","5/14/10","5/14/12","5/14/13","5/14/14","5/14/15","5/14/16","5/14/17","5/14/18","5/14/2","5/14/21","5/14/22","5/14/26","5/14/27","5/14/3","5/14/4","5/14/5","5/14/6","5/14/7","5/14/8","5/14/9","5/15/1","5/15/14","5/15/15","5/15/18","5/15/19","5/15/2","5/15/20","5/15/21","5/15/22","5/15/23","5/15/24","5/15/25","5/15/26","5/15/27","5/15/3","5/15/4","5/15/5","5/15/6","5/15/7","5/15/8","5/15/9","5/16/1","5/16/14","5/16/15","5/16/16","5/16/17","5/16/18","5/16/19","5/16/2","5/16/20","5/16/21","5/16/22","5/16/23","5/16/24","5/16/25","5/16/26","5/16/27","5/16/3","5/16/4","5/16/5","5/16/6","5/16/8","5/16/9","5/17/1","5/17/14","5/17/15","5/17/16","5/17/17","5/17/18","5/17/19","5/17/2","5/17/20","5/17/21","5/17/22","5/17/23","5/17/3","5/17/4","5/17/5","5/18/3","5/18/5","5/18/6","5/18/7","5/18/8","5/18/9","5/19/5","5/19/6","5/19/7","5/19/8","5/19/9","5/2/1","5/2/10","5/2/11","5/2/23","5/2/28","5/2/4","5/2/8","5/2/9","5/3/1","5/3/10","5/3/19","5/3/20","5/3/21","5/3/22","5/3/23","5/3/28","5/3/4","5/3/8","5/3/9","5/4/10","5/4/19","5/4/20","5/4/21","5/4/22","5/4/23","5/4/24","5/4/28","5/4/8","5/4/9","5/5/10","5/5/11","5/5/19","5/5/24","5/5/28","5/5/8","5/5/9","5/6/10","5/6/11","5/6/19","5/6/20","5/6/21","5/6/22","5/6/23","5/6/24","5/6/25","5/6/26","5/6/28","5/6/9","5/7/19","5/7/20","5/7/21","5/7/22","5/7/23","5/7/24","5/7/25","5/7/26","5/7/28","5/8/10","5/8/11","5/8/12","5/8/13","5/8/14","5/8/15","5/8/16","5/8/17","5/8/2","5/8/25","5/8/27","5/8/28","5/8/3","5/8/4","5/8/9","5/9/10","5/9/11","5/9/12","5/9/13","5/9/14","5/9/15","5/9/16","5/9/17","5/9/26","5/9/27","5/9/28","5/9/6","5/9/7","5/9/8","5/9/9"]};
-let lmap = null;
+// marker types and tooltip text, shared by the main map and the area pop-up
+const MKT = {
+  item: ['Items', '#e0443e'], hidden: ['Hidden items', '#9b59d0'], berry: ['Berry plots', '#e36fa4'],
+  honey: ['Honey trees', '#e0a92a'], cut: ['Cut trees', '#3f9b4b'], rock: ['Breakable rocks', '#8f8fae'] };
+const rpExtra = {}; // RP-listed items for an area that no vanilla ball/hidden item there accounts for
+ROUTES.forEach(r => { const have = new Set(MAPMARK.filter(m => m[4] === r.n).map(m => m[3].replace(/ ×\d+$/, '')));
+  const ex = [...new Set(r.items.map(i => i.i).filter(i => !have.has(i.replace(/^((TM|HM)\d+) .*/, '$1'))))]; if (ex.length) rpExtra[r.n] = ex });
+const honeyMons = a => { const r = ROUTES.find(x => x.n === a); if (!r) return '';
+  const rows = r.subs.flatMap(x => x.wild.filter(w => /Honey/.test(w.m))).flatMap(w => w.mons.map(([n, rt]) => monName(n) + (rt ? ' ' + rt : '')));
+  return rows.length ? 'Honey-tree Pokémon here: ' + [...new Set(rows)].join(', ') : '' };
+const tmText = n => { const m = n.match(/^(TM|HM)(\d+)$/); if (!m) return n; const slot = +m[2] + (m[1] === 'HM' ? 100 : 0); return DATA.tms[slot] ? n + ' ' + DATA.tms[slot][0] : n };
+const tip = ([t, x, y, n, a]) => {
+  const where = `<div class="sub">${esc(a)}</div>`;
+  if (t === 'item' || t === 'hidden') return `<b>${t === 'hidden' ? 'Hidden: ' : ''}${esc(tmText(n))}</b>${where}<div class="sub">${t === 'hidden' ? 'Invisible — use the Dowsing MCHN' : 'Item ball'} · vanilla Platinum item</div>${rpExtra[a] ? `<div class="rp">RP also lists here: ${esc(rpExtra[a].join(', '))}</div>` : ''}`;
+  if (t === 'berry') return `<b>Berry plot</b>${where}<div class="sub">Starts with ${esc(n)}</div>`;
+  if (t === 'honey') return `<b>Honey tree</b>${where}<div class="sub">Slather Honey, come back later for a wild Pokémon.</div>${honeyMons(a) ? `<div class="rp">${esc(honeyMons(a))}</div>` : ''}`;
+  if (t === 'cut') return `<b>Cut tree</b>${where}<div class="sub">Needs HM01 Cut</div>`;
+  return `<b>${esc(n)}</b>${where}<div class="sub">${n === 'Ice Rock' ? 'Special rock' : 'Needs HM06 Rock Smash'}</div>`;
+};
+const mkCircle = (m, at) => { const [t] = m, c = MKT[t][1];
+  const mk = L.circleMarker(at, { renderer: m.ren, radius: t === 'honey' ? 8 : 6, color: '#fff', weight: 2, fillColor: c, fillOpacity: t === 'hidden' ? .55 : .95, dashArray: t === 'hidden' ? '3 2' : null });
+  mk.bindTooltip(() => tip(m), { className: 'mktip', direction: 'top', offset: [0, -6] }); mk.on('click', () => mk.openTooltip()); return mk };
+let lmap = null, amap = null;
+// Area pop-up: a zoomed, pannable view of one area without leaving the current tab
+function closeAreaPopup() {
+  if (amap) { amap.remove(); amap = null }
+  document.getElementById('amodal').hidden = true; document.body.style.overflow = '';
+}
+function openAreaPopup(n) {
+  const R = ROUTES.find(r => r.n === n), lab = MAPDATA.labels.find(l => l[0] === n), file = RIMG[n];
+  const modal = document.getElementById('amodal');
+  document.getElementById('atitle').textContent = n;
+  const c = R && R.counts, mk = MAPMARK.filter(m => m[4] === n);
+  document.getElementById('ameta').textContent = [c && c.w && c.w + ' wild species', c && c.t && c.t + (c.t === 1 ? ' trainer' : ' trainers'),
+    mk.filter(m => m[0] === 'item' || m[0] === 'hidden').length && mk.filter(m => m[0] === 'item' || m[0] === 'hidden').length + ' items on the map',
+    c && c.i && c.i + ' notable RP items'].filter(Boolean).join(' · ') || 'Zoom with scroll or pinch · drag to pan';
+  const det = document.getElementById('adetails'); det.hidden = !R;
+  det.onclick = () => { closeAreaPopup(); setView('routes'); selectRoute(n) };
+  modal.hidden = false; document.body.style.overflow = 'hidden';
+  document.getElementById('aclose').focus();
+  loadLeaflet().then(() => {
+    if (amap) amap.remove();
+    const host = document.getElementById('amap'); host.innerHTML = '';
+    amap = L.map(host, { crs: L.CRS.Simple, zoomSnap: .25, minZoom: -6, attributionControl: true });
+    if (lab && lab[3]) { // overworld area: the stitched tiles, framed on this area, with its markers
+      const { px } = mapTiles(amap), r = lab[3];
+      const area = L.latLngBounds(px(r[0], r[1] + r[3]), px(r[0] + r[2], r[1]));
+      amap.invalidateSize(); amap.setMaxZoom(MAPDATA.Z + 1.5); amap.fitBounds(area, { padding: [10, 10] });
+      amap.setMinZoom(amap.getZoom() - 1); amap.setMaxBounds(area.pad(.6));
+      const ren = L.canvas({ padding: .3 });
+      mk.forEach(m => { m.ren = ren; mkCircle(m, px(m[1], m[2])).addTo(amap) });
+    } else if (file) { // cave / building: its screenshot as a zoomable image
+      const im = new Image(); im.onload = () => {
+        const b = [[0, 0], [-im.naturalHeight, im.naturalWidth]];
+        L.imageOverlay('pokedex-img/' + file, b).addTo(amap);
+        amap.attributionControl.setPrefix('<a href="https://leafletjs.com" target="_blank" rel="noopener">Leaflet</a>').addAttribution('Screenshot: Bulbagarden Archives');
+        amap.invalidateSize(); amap.fitBounds(b); amap.setMinZoom(amap.getZoom() - 1); amap.setMaxZoom(amap.getZoom() + 3); amap.setMaxBounds(L.latLngBounds(b).pad(.4));
+      }; im.src = 'pokedex-img/' + file;
+    } else host.innerHTML = '<p class="amsg">No screenshot for this area yet.</p>';
+  }).catch(() => { document.getElementById('amap').innerHTML = '<p class="amsg">The map viewer couldn&rsquo;t load. Check your connection to Forge and reload.</p>' });
+}
+document.getElementById('aclose').onclick = closeAreaPopup;
+document.getElementById('amodal').addEventListener('click', e => { if (e.target.id === 'amodal') closeAreaPopup() });
+document.addEventListener('keydown', e => { if (e.key === 'Escape' && !document.getElementById('amodal').hidden) closeAreaPopup() });
+const mapTiles = map => { const have = new Set(MAPDATA.tiles), Z = MAPDATA.Z, px = (x, y) => map.unproject([x, y], Z);
+  const bounds = L.latLngBounds(px(0, MAPDATA.H), px(MAPDATA.W, 0));
+  const Tiles = L.TileLayer.extend({ getTileUrl(c) { const k = c.z + '/' + c.y + '/' + c.x; return have.has(k) ? 'pokedex-map/tiles/' + k + '.jpg' : 'pokedex-map/tiles/blank.png' } });
+  new Tiles('', { tileSize: 512, maxNativeZoom: Z, maxZoom: Z + 1, noWrap: true, bounds,
+    attribution: 'Screenshots: <a href="https://archives.bulbagarden.net" target="_blank" rel="noopener">Bulbagarden Archives</a> · layout: pret/pokeplatinum' }).addTo(map);
+  map.attributionControl.setPrefix('<a href="https://leafletjs.com" target="_blank" rel="noopener">Leaflet</a>');
+  return { px, bounds } };
 function loadLeaflet() {
   if (window.L) return Promise.resolve();
   return new Promise((ok, fail) => {
@@ -1071,26 +2333,20 @@ function loadLeaflet() {
 function openMap() {
   if (lmap) { setTimeout(() => lmap.invalidateSize(), 0); return }
   loadLeaflet().then(() => {
-    const have = new Set(MAPDATA.tiles), Z = MAPDATA.Z;
-    lmap = L.map('mapbox', { crs: L.CRS.Simple, minZoom: 0, maxZoom: Z + 1, zoomSnap: .5, attributionControl: true });
-    const px = (x, y) => lmap.unproject([x, y], Z);
-    const bounds = L.latLngBounds(px(0, MAPDATA.H), px(MAPDATA.W, 0));
-    const Tiles = L.TileLayer.extend({ getTileUrl(c) { const k = c.z + '/' + c.y + '/' + c.x; return have.has(k) ? 'pokedex-map/tiles/' + k + '.jpg' : 'pokedex-map/tiles/blank.png' } });
-    new Tiles('', { tileSize: 512, maxNativeZoom: Z, maxZoom: Z + 1, noWrap: true, bounds,
-      attribution: 'Screenshots: <a href="https://archives.bulbagarden.net" target="_blank" rel="noopener">Bulbagarden Archives</a> · layout: pret/pokeplatinum' }).addTo(lmap);
-    lmap.attributionControl.setPrefix('<a href="https://leafletjs.com" target="_blank" rel="noopener">Leaflet</a>');
+    lmap = L.map('mapbox', { crs: L.CRS.Simple, minZoom: 0, maxZoom: MAPDATA.Z + 1, zoomSnap: .5, attributionControl: true });
+    const { px, bounds } = mapTiles(lmap);
     lmap.setMaxBounds(bounds.pad(.15));
     lmap.fitBounds(bounds);
     const known = new Set(ROUTES.map(r => r.n));
     let outline = null;
     MAPDATA.labels.forEach(([n, x, y, r]) => {
       const link = known.has(n), town = /(City|Town)$/.test(n) || n === 'Pokémon League';
-      const m = L.marker(px(x, y), { icon: L.divIcon({ className: 'maplbl' + (town ? ' town' : '') + (link ? '' : ' nolink'), html: `<span>${esc(n)}</span>`, iconSize: null }), keyboard: false, title: link ? 'Open ' + n : n }).addTo(lmap);
+      const m = L.marker(px(x, y), { icon: L.divIcon({ className: 'maplbl' + (town ? ' town' : ''), html: `<span>${esc(n)}</span>`, iconSize: null }), keyboard: false, title: 'Zoom in on ' + n }).addTo(lmap);
       if (r) {
         m.on('mouseover', () => { outline = L.rectangle([px(r[0], r[1] + r[3]), px(r[0] + r[2], r[1])], { color: '#d9b552', weight: 3, fill: false, interactive: false }).addTo(lmap) });
         m.on('mouseout', () => { if (outline) { outline.remove(); outline = null } });
       }
-      if (link) m.on('click', () => { setView('routes'); selectRoute(n) });
+      m.on('click', () => openAreaPopup(n));
     });
     const box = document.getElementById('mapbox');
     const zcls = () => box.classList.toggle('zfar', lmap.getZoom() < 2.5);
@@ -1100,37 +2356,13 @@ function openMap() {
     const other = ROUTES.map(r => r.n).filter(n => !onMap.has(n) && n !== 'Battle Marathon Only').sort();
     const sel = document.createElement('select'); sel.className = 'mapother'; sel.setAttribute('aria-label', 'Caves and buildings');
     sel.innerHTML = '<option value="">Caves &amp; buildings…</option>' + other.map(n => `<option>${esc(n)}</option>`).join('');
-    sel.onchange = () => { if (sel.value) { setView('routes'); selectRoute(sel.value) } sel.value = '' };
+    sel.onchange = () => { if (sel.value) openAreaPopup(sel.value); sel.value = '' };
     ['mousedown', 'dblclick', 'wheel', 'touchstart'].forEach(ev => sel.addEventListener(ev, e => e.stopPropagation()));
     box.appendChild(sel);
     // interactive objects from the game's event data (vanilla Platinum contents; RP may swap some ball items)
-    const MKT = {
-      item: ['Items', '#e0443e'], hidden: ['Hidden items', '#9b59d0'], berry: ['Berry plots', '#e36fa4'],
-      honey: ['Honey trees', '#e0a92a'], cut: ['Cut trees', '#3f9b4b'], rock: ['Breakable rocks', '#8f8fae'] };
     const ren = L.canvas({ padding: .3 }), mlayers = {};
     Object.keys(MKT).forEach(k => mlayers[k] = L.layerGroup());
-    const rpExtra = {}; // RP-listed items for an area that no vanilla ball/hidden item there accounts for
-    ROUTES.forEach(r => { const have = new Set(MAPMARK.filter(m => m[4] === r.n).map(m => m[3].replace(/ ×\d+$/, '')));
-      const ex = [...new Set(r.items.map(i => i.i).filter(i => !have.has(i.replace(/^((TM|HM)\d+) .*/, '$1'))))]; if (ex.length) rpExtra[r.n] = ex });
-    const honeyMons = a => { const r = ROUTES.find(x => x.n === a); if (!r) return '';
-      const rows = r.subs.flatMap(x => x.wild.filter(w => /Honey/.test(w.m))).flatMap(w => w.mons.map(([n, rt]) => monName(n) + (rt ? ' ' + rt : '')));
-      return rows.length ? 'Honey-tree Pokémon here: ' + [...new Set(rows)].join(', ') : '' };
-    const tmText = n => { const m = n.match(/^(TM|HM)(\d+)$/); if (!m) return n; const slot = +m[2] + (m[1] === 'HM' ? 100 : 0); return DATA.tms[slot] ? n + ' ' + DATA.tms[slot][0] : n };
-    const tip = ([t, x, y, n, a]) => {
-      const where = `<div class="sub">${esc(a)}</div>`;
-      if (t === 'item' || t === 'hidden') return `<b>${t === 'hidden' ? 'Hidden: ' : ''}${esc(tmText(n))}</b>${where}<div class="sub">${t === 'hidden' ? 'Invisible — use the Dowsing MCHN' : 'Item ball'} · vanilla Platinum item</div>${rpExtra[a] ? `<div class="rp">RP also lists here: ${esc(rpExtra[a].join(', '))}</div>` : ''}`;
-      if (t === 'berry') return `<b>Berry plot</b>${where}<div class="sub">Starts with ${esc(n)}</div>`;
-      if (t === 'honey') return `<b>Honey tree</b>${where}<div class="sub">Slather Honey, come back later for a wild Pokémon.</div>${honeyMons(a) ? `<div class="rp">${esc(honeyMons(a))}</div>` : ''}`;
-      if (t === 'cut') return `<b>Cut tree</b>${where}<div class="sub">Needs HM01 Cut</div>`;
-      return `<b>${esc(n)}</b>${where}<div class="sub">${n === 'Ice Rock' ? 'Special rock' : 'Needs HM06 Rock Smash'}</div>`;
-    };
-    MAPMARK.forEach(m => {
-      const [t, x, y] = m, c = MKT[t][1];
-      const mk = L.circleMarker(px(x, y), { renderer: ren, radius: t === 'honey' ? 8 : 6, color: '#fff', weight: 2, fillColor: c, fillOpacity: t === 'hidden' ? .55 : .95, dashArray: t === 'hidden' ? '3 2' : null });
-      mk.bindTooltip(() => tip(m), { className: 'mktip', direction: 'top', offset: [0, -6] });
-      mk.on('click', () => mk.openTooltip());
-      mlayers[t].addLayer(mk);
-    });
+    MAPMARK.forEach(m => { m.ren = ren; mlayers[m[0]].addLayer(mkCircle(m, px(m[1], m[2]))) });
     const shown = new Set(store.get('rp-mapmk', Object.keys(MKT)));
     const syncMk = () => Object.keys(MKT).forEach(k => { const on = shown.has(k) && lmap.getZoom() >= 2.5; if (on && !lmap.hasLayer(mlayers[k])) mlayers[k].addTo(lmap); if (!on && lmap.hasLayer(mlayers[k])) mlayers[k].remove() });
     const ctl = L.control({ position: 'topright' });
