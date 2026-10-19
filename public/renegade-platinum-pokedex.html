@@ -373,7 +373,7 @@ th.sortable[aria-sort="descending"]::after { content: " ▼"; opacity: 1 }
 .nhead h3 { margin: 0 auto 0 0 !important }
 .nhead select, .nrules textarea { font: 500 .82rem var(--font-body); padding: 5px 7px; border-radius: 7px; border: 1px solid var(--line); background: var(--bg); color: var(--ink) }
 .ndiv { font: 600 .7rem var(--font-display); text-transform: uppercase; letter-spacing: .1em; color: var(--muted); padding: 14px 0 4px; border-bottom: 1px solid var(--line) }
-.enc { display: grid; grid-template-columns: minmax(130px, 1.1fr) 36px minmax(140px, 1.4fr) minmax(90px, 1fr) 58px 96px; gap: 6px; align-items: center; padding: 6px 0 6px 8px; border-bottom: 1px solid var(--line) }
+.enc { display: grid; grid-template-columns: minmax(130px, 1.1fr) 36px minmax(140px, 1.4fr) minmax(90px, 1fr) 58px 112px; gap: 6px; align-items: center; padding: 6px 0 6px 8px; border-bottom: 1px solid var(--line) }
 .enc:last-child { border-bottom: 0 }
 .enc .an { font: 600 .85rem var(--font-body); background: none; border: 0; color: inherit; text-align: left; cursor: pointer; padding: 0; min-width: 0 }
 button.an:hover { color: var(--accent); text-decoration: underline }
@@ -390,7 +390,10 @@ div.an { display: flex; gap: 2px; cursor: default }
 .enc.st-party { box-shadow: inset 3px 0 0 var(--new) }
 .enc.st-box { box-shadow: inset 3px 0 0 var(--accent) }
 .enc.st-dead { box-shadow: inset 3px 0 0 var(--chg) }
-.enc.st-missed .an, .enc.st-skipped .an { color: var(--muted) }
+.enc.st-missed .an, .enc.st-ko .an, .enc.st-skipped .an { color: var(--muted) }
+.enc.st-ko { box-shadow: inset 3px 0 0 var(--muted) }
+.enc.st-ko .spg img, .enc.st-missed .spg img { filter: grayscale(1); opacity: .55 }
+.enc .kotag { font: 700 .58rem var(--font-body); letter-spacing: .04em; color: var(--muted); border: 1px solid var(--line); border-radius: 4px; padding: 0 3px; line-height: 14px }
 .bteam { display: grid; grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); gap: 10px }
 .bmon { border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px; min-width: 0; display: flex; flex-direction: column; gap: 9px }
 .bhd { display: grid; grid-template-columns: 56px 1fr; gap: 10px; align-items: center }
@@ -550,6 +553,23 @@ section.ncoll h3 { margin-bottom: 0 !important }
   .nzone[data-zone="party"] .pslots > .pmon > * { align-self: start; min-width: 0 }
 }
 .bmh .hpsel { font: 600 .66rem var(--font-body); padding: 1px 4px; border-radius: 5px; border: 1px solid var(--line); background: var(--panel); color: var(--ink); width: auto; max-width: 130px }
+.nrshow { display: none }
+#nuzMain.rcoll { grid-template-columns: minmax(0, 1fr) }
+#nuzMain.rcoll .roster { display: none }
+#nuzMain.rcoll .nrshow { display: inline-flex; margin-bottom: 10px }
+.pchar { display: flex; align-items: center; flex-wrap: wrap; gap: 4px 8px; margin-top: 10px; font-size: .78rem; min-height: 26px }
+.pchar b { font-weight: 700 }
+.pchar .sp { display: inline }
+.pchar label { flex: 1; margin: 0 !important }
+.pchedit { margin-left: auto; font: 600 .66rem var(--font-body); border: 1px solid var(--line); background: var(--panel); color: var(--ink); border-radius: 999px; padding: 1px 8px; cursor: pointer }
+.pchedit:hover { border-color: var(--accent) }
+.phist input[type=checkbox] { width: auto; padding: 0; margin: 0; accent-color: var(--accent) }
+#ivdetail label.ivfresh { grid-column: 1 / -1; flex-direction: row; align-items: center; gap: 6px; text-transform: none; letter-spacing: 0; font-size: .8rem; color: var(--ink) }
+#ivdetail label.ivfresh input { width: auto }
+.phist td small { color: var(--muted); font-size: .62rem }
+.pivnote.bad { color: var(--chg); font-weight: 600 }
+.phist > .pivnote { margin: 6px 0 2px }
+.phist td.hbad { background: var(--chg-soft); color: var(--chg); font-weight: 700; border-radius: 3px }
 .nbosses { list-style: none; margin: 0; padding: 0; columns: 2 240px; column-gap: 24px; font-size: .84rem }
 .nbosses li { break-inside: avoid; padding: 3px 0 }
 .nbosses label { display: flex; gap: 8px; align-items: center; cursor: pointer }
@@ -616,9 +636,11 @@ section.ncoll h3 { margin-bottom: 0 !important }
   .app.tshowing #teamMain .roster { display: none }
   .app:not(.tshowing) #teamMain .detail { display: none }
   .app.nshowing #nuzMain .roster { display: none }
+  #nuzMain.rcoll .roster { display: flex }
+  .nrhide, #nuzMain.rcoll .nrshow { display: none }
   .app:not(.nshowing) #nuzMain .detail { display: none }
   .enc { grid-template-columns: 36px 1fr 58px; grid-template-areas: "an an st" "sp ms ms" "sp nick lv"; padding-left: 8px }
-  .enc .an { grid-area: an } .enc .sp { grid-area: sp } .enc .ms { grid-area: ms } .enc .nick { grid-area: nick } .enc .lv { grid-area: lv } .enc .st { grid-area: st; width: 96px; justify-self: end }
+  .enc .an { grid-area: an } .enc .sp { grid-area: sp } .enc .ms { grid-area: ms } .enc .nick { grid-area: nick } .enc .lv { grid-area: lv } .enc .st { grid-area: st; width: 116px; justify-self: end }
   .enc .cause { grid-column: 2 / -1 }
   .ncap .tbtns { margin-left: 0 }
   .slots { grid-template-columns: 1fr }
@@ -713,7 +735,7 @@ section.ncoll h3 { margin-bottom: 0 !important }
   </div>
   <div class="main" id="nuzMain" hidden>
     <aside class="roster">
-      <div class="tbtns"><button class="btn primary" id="nnew">+ New run</button></div>
+      <div class="tbtns"><button class="btn primary" id="nnew">+ New run</button><button class="btn nrhide" id="nrhide" title="Hide the runs list" aria-controls="nlist">« Hide</button></div>
       <div class="count" id="ncount"></div>
       <div class="list tlist" id="nlist" role="list"></div>
       <div class="syncnote" id="nsync"></div>
@@ -1172,7 +1194,8 @@ function teamAdd(n) {
 function moveOptions(m, sel) {
   const { lu, tm } = learnable(m);
   const opt = ([mv, how]) => { const d = MV[mv] || {}; return `<option value="${esc(mv)}" ${mv === sel ? 'selected' : ''}>${esc(mv)} · ${d.t || '?'}${d.p ? ' ' + d.p : ''} (${how})</option>` };
-  return `<option value="">— move —</option><optgroup label="Level-up">${lu.map(opt).join('')}</optgroup>${tm.length ? `<optgroup label="TM / HM">${tm.map(opt).join('')}</optgroup>` : ''}`;
+  const other = sel && ![...lu, ...tm].some(([mv]) => mv === sel) ? `<optgroup label="Other">${opt([sel, 'not in its list'])}</optgroup>` : '';
+  return `<option value="">— move —</option><optgroup label="Level-up">${lu.map(opt).join('')}</optgroup>${tm.length ? `<optgroup label="TM / HM">${tm.map(opt).join('')}</optgroup>` : ''}${other}`;
 }
 
 function slotHtml(p, i) {
@@ -1242,13 +1265,14 @@ function renderTeam() {
 // Saved in this browser and synced to the Forge server (/api/pokedex-nuzlocke) when it's available.
 const NKEY = 'rp-nuzlocke';
 // Areas in rough story order; areas not listed here are appended at the end
-const NORDER = ['Twinleaf Town', 'Route 201', 'Lake Verity', 'Sandgem Town', 'Route 202', 'Jubilife City', 'Route 204', 'Ravaged Path', 'Route 203', 'Oreburgh Gate', 'Oreburgh City', 'Oreburgh Mine',
+const NORDER = ['Twinleaf Town', 'Route 201', 'Lake Verity', 'Sandgem Town', 'Route 202', 'Jubilife City', 'Route 204 South', 'Ravaged Path', 'Route 203', 'Oreburgh Gate', 'Oreburgh City', 'Oreburgh Mine', 'Route 204 North',
   'Floaroma Town', 'Floaroma Meadow', 'Valley Windworks', 'Route 205', 'Eterna Forest', 'Old Chateau', 'Eterna City', 'Route 211', 'Route 206', 'Wayward Cave', 'Route 207', 'Mt. Coronet', 'Route 208',
   'Hearthome City', 'Route 209', 'Lost Tower', 'Solaceon Town', 'Solaceon Ruins', 'Route 210', 'Route 215', 'Veilstone City', 'Route 214', 'Maniac Tunnel', 'Valor Lakefront', 'Route 213', 'Pastoria City',
   'Great Marsh', 'Route 212', 'Trophy Garden', 'Celestic Town', 'Fuego Ironworks', 'Canalave City', 'Route 218', 'Iron Island', 'Lake Valor', 'Lake Acuity', 'Route 216', 'Route 217', 'Acuity Lakefront',
   'Snowpoint City', 'Snowpoint Temple', 'Galactic HQ', 'Spear Pillar', 'Distortion World', 'Sunyshore City', 'Route 222', 'Route 219', 'Route 220', 'Route 221', 'Route 223', 'Victory Road', 'Pokémon League',
   'Fight Area', 'Route 225', 'Survival Area', 'Route 226', 'Route 227', 'Stark Mountain', 'Route 228', 'Route 229', 'Route 230', 'Resort Area', 'Route 224', 'Seven Stars Restaurant', 'Sendoff Spring',
   'Turnback Cave', 'Fullmoon Island'];
+const NSPLIT = { 'Route 204': ['South', 'North'] };
 const NSKIP = new Set(['Battle Marathon Only', 'Pokémon Center', 'Pal Park']);
 const nkey = s => s.normalize('NFC');
 // gifts, eggs, special and legendary encounters from the Pokédex event data: one encounter row per event, filed under
@@ -1266,18 +1290,39 @@ const NEVBY = {};
       tag: /Egg/.test(e.lv || '') ? 'Egg' : e.kind === 'Gift' ? 'Gift' : e.kind === 'Legendary encounter' ? 'Legendary' : 'Special encounter', opts: [] });
     groups.get(gk).opts.push({ n: m.num, how: [e.kind] });
   }));
+  // availability: the area after which the event can be done, and a short "when" note
+  groups.forEach(g => { const s = g.steps.join(' ').toLowerCase();
+    if (/as part of the story/.test(s)) { g.when = 'story encounter' }
+    else if (/after the credits|become the champion|see the credits|after completing the stark mountain|quests option|cresselia/.test(s)) { g.anchor = '@post'; g.when = 'after the credits' }
+    else if (/distortion world events/.test(s)) { g.anchor = 'Distortion World'; g.when = 'after Distortion World' }
+    else if (/gs ball/.test(s)) { g.anchor = 'Celestic Town'; g.when = 'needs the GS Ball (Celestic Town)' }
+    else if (/old gateau|dazzling gleam tm/.test(s)) { g.anchor = 'Pastoria City'; g.when = 'quest finishes after Pastoria City' }
+    else if (/odd keystone/.test(s)) { g.anchor = 'Route 208'; g.when = 'needs the Odd Keystone' }
+  });
   groups.forEach(g => (NEVBY[nkey(g.area)] = NEVBY[nkey(g.area)] || []).push(g));
 })();
 const evLabel = ev => nkey(ev.loc) === nkey(ev.area) ? ev.area + ' ' + ev.tag.toLowerCase() : ev.loc;
-const evMeta = ev => [ev.tag, ev.tag === 'Egg' ? 'hatches at Lv. 1' : /^\d/.test(ev.lv) ? 'Lv. ' + ev.lv : '', ev.opts.length > 1 ? 'pick 1 of ' + ev.opts.length : ''].filter(Boolean).join(' · ');
+const evMeta = ev => [ev.tag, ev.tag === 'Egg' ? 'hatches at Lv. 1' : /^\d/.test(ev.lv) ? 'Lv. ' + ev.lv : '', ev.opts.length > 1 ? 'pick 1 of ' + ev.opts.length : '', ev.when || ''].filter(Boolean).join(' · ');
 const NAREAS = (() => {
   const ok = L => !NSKIP.has(nkey(L.n)) && (L.subs.some(x => x.wild.length) || NEVBY[nkey(L.n)]), by = {};
   ROUTES.forEach(L => by[nkey(L.n)] = L);
+  // routes you reach in two separate visits get one encounter per part (each part keeps only its own sub-area)
+  Object.entries(NSPLIT).forEach(([n, parts]) => { const L = by[nkey(n)]; if (L) parts.forEach(p => by[nkey(n + ' ' + p)] = Object.assign({}, L, { n: n + ' ' + p, parent: L.n, subs: L.subs.filter(x => x.n === p) })) });
   const out = NORDER.map(n => by[nkey(n)]).filter(L => L && ok(L));
-  ROUTES.forEach(L => { if (ok(L) && !out.includes(L)) out.push(L) });
+  ROUTES.forEach(L => { if (ok(L) && !out.includes(L) && !NSPLIT[L.n]) out.push(L) });
   return out;
 })();
-const NPOST = NAREAS.findIndex(L => nkey(L.n) === nkey('Fight Area'));
+const NPOST = (() => { const ord = n => NORDER.findIndex(x => nkey(x) === nkey(n)), league = ord('Pokémon League'); return NAREAS.findIndex(L => ord(L.n) > league) })();
+const NEVPOS = (() => {
+  const at = n => NAREAS.findIndex(L => nkey(L.n) === nkey(n)), pos = {};
+  NAREAS.forEach((L, i) => (NEVBY[nkey(L.n)] || []).forEach(ev => {
+    // "after the credits" events from story areas open the post-game section, ahead of its first area
+    const post = ev.anchor === '@post' && NPOST >= 0, p = post ? Math.max(i, NPOST) : Math.max(i, ev.anchor ? at(ev.anchor) : -1);
+    (pos[p] = pos[p] || []).push({ ev, own: p === i, pre: post && i < NPOST });
+  }));
+  Object.values(pos).forEach(list => list.sort((a, b) => b.own - a.own));
+  return pos;
+})();
 // species you can meet in an area, with how (method / sub-area)
 function areaMons(L) {
   const o = new Map();
@@ -1333,12 +1378,16 @@ function gBtn(e) {
   if (NMALE.has(e.n) || NFEM.has(e.n)) return `<span class="gbtn g${g}" title="Always ${g === 'M' ? 'male' : 'female'}">${g === 'M' ? '♂' : '♀'}</span>`;
   return `<button class="gbtn g${g || 'U'}" title="${g ? (g === 'M' ? 'Male' : 'Female') + ' · click to change' : 'Set gender'}" aria-label="Gender: ${g === 'M' ? 'male' : g === 'F' ? 'female' : 'not set'}, click to change">${g === 'M' ? '♂' : g === 'F' ? '♀' : '?'}</button>`;
 }
-const NST = { party: 'Party', box: 'Box', dead: 'Dead', missed: 'Missed', skipped: 'Skipped' };
+const NST = { party: 'Party', box: 'Box', dead: 'Dead', missed: 'Missed', ko: 'Knocked out', skipped: 'Skipped' };
+const NLOST = new Set(['missed', 'ko', 'skipped']);   // encounter used up without a catch
 const newRun = name => ({ id: 'n' + Date.now(), name, created: Date.now(), rules: { dupes: true, caps: true }, enc: {}, custom: [{ k: 'starter', label: 'Starter' }], beat: 0, notes: '' });
 let NZ = store.get(NKEY, null) || { runs: [], cur: null, updated: 0 };
-if (!NZ.runs.length) { NZ.runs.push(newRun('Run 1')); NZ.cur = NZ.runs[0].id }
+if (!NZ.runs.length) { NZ.runs.push(Object.assign(newRun('Run 1'), { created: 0, placeholder: true })); NZ.cur = NZ.runs[0].id }
 const curRun = () => NZ.runs.find(r => r.id === NZ.cur) || NZ.runs[0];
 function nMigrate() {
+  NZ.runs.forEach(r => Object.values(r.enc).forEach(e => (e.hist || []).forEach(x => { if (!x.n) x.n = e.caught || e.n })));
+  NZ.runs.forEach(r => Object.entries(NSPLIT).forEach(([n, parts]) => { const e = r.enc[n], to = n + ' ' + parts[0]; if (!e) return;
+    if (!r.enc[to]) r.enc[to] = e; delete r.enc[n]; if (r.porder) r.porder = r.porder.map(k => k === n ? to : k) }));
   NZ.runs.forEach(r => Object.values(r.enc).forEach(e => { if (!e.hist && +e.lv && e.stats && Object.keys(e.stats).length) nLog(e) }));
   NZ.runs.forEach(r => NAREAS.forEach(L => {
     const e = r.enc[L.n]; if (!e || !e.n || areaMons(L).some(o => o.n === e.n)) return;
@@ -1349,28 +1398,47 @@ function nMigrate() {
 nMigrate();
 let nsyncState = 'local', nsyncTimer = null;
 function saveRuns() {
-  NZ.updated = Date.now(); store.set(NKEY, NZ);
+  NZ.updated = Date.now(); const cr = NZ.runs.find(r => r.id === NZ.cur); if (cr) cr.updated = NZ.updated; store.set(NKEY, NZ);
   clearTimeout(nsyncTimer);
   nsyncTimer = setTimeout(() => fetch('/api/pokedex-nuzlocke', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(NZ) })
-    .then(r => { nsyncState = r.ok ? 'synced' : 'local'; showNSync() }).catch(() => { nsyncState = 'local'; showNSync() }), 600);
+    .then(r => r.ok ? r.json() : Promise.reject()).then(d => { nsyncState = 'synced'; nAdopt(d, false); showNSync() }).catch(() => { nsyncState = 'local'; showNSync() }), 600);
 }
 function showNSync() {
   const el = document.getElementById('nsync'); if (!el) return;
   el.textContent = nsyncState === 'synced' ? 'Runs sync across your devices through Forge.' : 'Runs are saved in this browser.';
 }
-fetch('/api/pokedex-nuzlocke', { cache: 'no-store' }).then(r => r.ok ? r.json() : null).then(d => {
+// merge two copies of the run list: newest version of each run wins (a run's own stamp, else its copy's), deletions stick
+function nMerge(local, remote) {
+  const del = new Set([...(local.deleted || []), ...(remote.deleted || [])]), by = new Map();
+  const add = (r, t) => { if (!r || !r.id || del.has(r.id)) return; const o = by.get(r.id), rt = r.updated || t; if (!o || rt > o.t) by.set(r.id, { r, t: rt }) };
+  (remote.runs || []).forEach(r => add(r, remote.updated || 0)); (local.runs || []).forEach(r => add(r, local.updated || 0));
+  const all = [...by.values()].map(x => x.r).sort((a, b) => (a.created || 0) - (b.created || 0)), real = all.filter(r => !(r.placeholder && !r.updated)), runs = real.length ? real : all;
+  return { runs, cur: runs.some(r => r.id === local.cur) ? local.cur : (runs[0] || {}).id, deleted: [...del], updated: Math.max(local.updated || 0, remote.updated || 0) };
+}
+// take in the server's copy; push back if we hold anything it doesn't
+function nAdopt(d, push) {
   if (!d || !Array.isArray(d.runs)) return;
-  nsyncState = 'synced';
-  if (d.runs.length && (d.updated || 0) > (NZ.updated || 0)) { NZ = d; nMigrate(); store.set(NKEY, NZ); if (view === 'nuzlocke') { renderRunList(); renderRun() } }
-  else if (NZ.updated) saveRuns();
-  showNSync();
-}).catch(() => {});
+  const m = nMerge(NZ, d), changed = JSON.stringify(m.runs) !== JSON.stringify(NZ.runs);
+  if (!m.runs.length) { m.runs.push(newRun('Run 1')); m.cur = m.runs[0].id }
+  NZ = m; nMigrate(); store.set(NKEY, NZ);
+  if (changed && view === 'nuzlocke') { renderRunList(); renderRun() }
+  if (push && JSON.stringify(m.runs) !== JSON.stringify(d.runs)) saveRuns();
+}
+function nPull() {
+  fetch('/api/pokedex-nuzlocke', { cache: 'no-store' }).then(r => r.ok ? r.json() : null).then(d => {
+    if (!d || !Array.isArray(d.runs)) return;
+    nsyncState = 'synced'; nAdopt(d, true); showNSync();
+  }).catch(() => {});
+}
+nPull();
+document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible') nPull() });
+
 
 const isCaught = e => e && e.n && (e.st === 'party' || e.st === 'box' || e.st === 'dead');
 const runRows = r => [...r.custom.map(c => ({ k: c.k, label: c.label, custom: true })), ...NAREAS.flatMap((L, i) => {
   const post = NPOST >= 0 && i >= NPOST;
-  return [...(L.subs.some(x => x.wild.length) ? [{ k: L.n, label: L.n, L, area: L.n, post }] : []),
-    ...(NEVBY[nkey(L.n)] || []).map(ev => ({ k: ev.k, label: evLabel(ev), ev, area: L.n, post }))];
+  const evRow = ({ ev }) => ({ k: ev.k, label: evLabel(ev), ev, area: ev.area, post }), here = NEVPOS[i] || [];
+  return [...here.filter(x => x.pre).map(evRow), ...(L.subs.some(x => x.wild.length) ? [{ k: L.n, label: L.n, L, area: L.parent || L.n, post }] : []), ...here.filter(x => !x.pre).map(evRow)];
 })];
 const placed = r => runRows(r).map(row => ({ row, e: r.enc[row.k] })).filter(x => x.e && x.e.n);
 function partyOf(r) {
@@ -1383,7 +1451,7 @@ function nPlace(r, k, i) { const ks = partyOf(r).map(x => x.row.k).filter(x => x
 function nTakeSlot(r, out, into) { r.porder = partyOf(r).map(x => x.row.k === out ? into : x.row.k) }
 function runStats(r) {
   const es = Object.values(r.enc), c = st => es.filter(e => e.n && e.st === st).length;
-  return { party: c('party'), box: c('box'), dead: c('dead'), used: es.filter(e => e.n || e.st === 'missed' || e.st === 'skipped').length };
+  return { party: c('party'), box: c('box'), dead: c('dead'), lost: es.filter(e => e.st === 'missed' || e.st === 'ko').length, used: es.filter(e => e.n || NLOST.has(e.st)).length };
 }
 let nfilter = 'all';
 
@@ -1399,16 +1467,16 @@ function renderRunList() {
 
 function encRow(r, row, taken) {
   const e = r.enc[row.k] || {}, opts = row.L ? areaMons(row.L) : row.ev ? row.ev.opts : row.k === "starter" ? NSTARTERS : [];
-  const other = row.L && opts.length && (e.other || (e.n && !opts.some(o => o.n === e.n)));
+  const caughtN = e.caught || e.n, other = row.L && opts.length && (e.other || (caughtN && !opts.some(o => o.n === caughtN)));
   const allDupes = r.rules.dupes && opts.length && opts.every(o => taken.has(fam(o.n)));
   const dupe = e.n && r.rules.dupes && taken.has(fam(e.n));
-  const sel = opts.length ? `<select class="msel" aria-label="Pokémon"><option value="">— not yet —</option>${opts.map(o => `<option value="${o.n}" ${o.n === e.n && !other ? 'selected' : ''} title="${esc(o.how.join(', '))}">${esc(monName(o.n))}${o.tag ? ' · ' + o.tag : ''}${r.rules.dupes && taken.has(fam(o.n)) ? ' (dupe)' : ''}</option>`).join('')}${row.L ? `<option value="other" ${other ? 'selected' : ''}>Other…</option>` : ''}</select>` : '';
-  const inp = !opts.length || other ? `<input class="mother" list="monlist" placeholder="Pokémon (name or #)" value="${e.n ? esc(monName(e.n)) : ''}" autocomplete="off" aria-label="Pokémon">` : '';
+  const sel = opts.length ? `<select class="msel" aria-label="Pokémon"><option value="">— not yet —</option>${opts.map(o => `<option value="${o.n}" ${o.n === caughtN && !other ? 'selected' : ''} title="${esc(o.how.join(', '))}">${esc(monName(o.n))}${o.tag ? ' · ' + o.tag : ''}${r.rules.dupes && taken.has(fam(o.n)) ? ' (dupe)' : ''}</option>`).join('')}${row.L ? `<option value="other" ${other ? 'selected' : ''}>Other…</option>` : ''}</select>` : '';
+  const inp = !opts.length || other ? `<input class="mother" list="monlist" placeholder="Pokémon (name or #)" value="${caughtN ? esc(monName(caughtN)) : ''}" autocomplete="off" aria-label="Pokémon">` : '';
   const an = row.custom
     ? `<div class="an"><input class="clabel" value="${esc(row.label)}" maxlength="30" aria-label="Encounter name" ${row.k === 'starter' ? 'readonly' : ''}>${row.k === 'starter' ? '' : '<button class="x" title="Remove this row" aria-label="Remove">×</button>'}</div>`
     : `<button class="an" data-area="${esc(row.area)}" title="Open ${esc(row.area)} in Routes">${esc(row.label)}<small>${row.ev ? esc(evMeta(row.ev)) : opts.length + ' species'}${allDupes ? ' · all dupes, free pick' : ''}</small></button>`;
   return `<div class="enc st-${e.st || 'none'}${row.ev ? ' ev' : ''}" data-k="${esc(row.k)}">${an}
-    ${e.n ? `<span class="sp spg"><img src="${nimg(e.n)}" alt="">${gBtn(e)}</span>` : '<span class="sp"></span>'}
+    ${e.n ? `<span class="sp spg"><img src="${nimg(e.n)}" alt="">${e.st === 'ko' ? '<span class="kotag" title="Knocked out, so this area\'s encounter is used up">KO</span>' : e.st === 'missed' ? '<span class="kotag" title="Not caught">MISS</span>' : gBtn(e)}</span>` : e.st === 'ko' ? '<span class="sp spg"><span class="kotag" title="Knocked out, so this area\'s encounter is used up">KO</span></span>' : '<span class="sp"></span>'}
     <div class="ms">${sel}${inp}${row.ev && row.ev.steps.length ? `<details class="evhow"><summary>How to get it</summary><ol>${row.ev.steps.map(s => `<li>${esc(s)}</li>`).join('')}</ol></details>` : ''}${dupe ? '<div class="dupe">Dupe: you already have this evolution line</div>' : ''}</div>
     <input class="nick" placeholder="Nickname" value="${esc(e.nick || '')}" maxlength="12" aria-label="Nickname">
     <input class="lv" type="number" min="1" max="100" placeholder="Lv" value="${esc(e.lv || '')}" aria-label="Level">
@@ -1467,7 +1535,7 @@ function monEditor(row, e, r, ctx) {
   }).join('');
   const hpI = (e.moves || []).includes('Hidden Power') ? nHP(e) : null;
   const mvs = [0, 1, 2, 3].map(i => { const mv = (e.moves || [])[i] || '', d = mv === 'Hidden Power' && MV[mv] ? Object.assign({}, MV[mv], { t: hpI.t, p: hpI.p || (hpI.pr ? Math.round((hpI.pr[0] + hpI.pr[1]) / 2) : 0) }) : MV[mv];
-    const sel = `<div class="mv" style="--mvc:${d ? TC[d.t] : 'transparent'}"><select data-f="move" data-i="${i}" aria-label="Move ${i + 1}">${moveOptions(m, mv)}</select></div>`;
+    const sel = `<div class="mv" style="--mvc:${d ? TC[d.t] : 'transparent'}"><select data-f="move" data-i="${i}" aria-label="Move ${i + 1}">${nMoveOptions(m, e, mv)}</select></div>`;
     if (!d) return `<div class="pmv">${sel}<div class="bmv pempty"><div class="bmh"></div><div class="bmd">Empty move slot</div><div class="pvs"></div></div></div>`;
     // how this move lands on the next boss's team
     const vs = isAttack(mv) && d.t ? ctx.boss.map(p => ({ p, x: defMult(mons[p.n - 1].v[ver].types, abName((p.ab || '').replace(/ (.*)$/, '')), d.t) })) : [];
@@ -1490,22 +1558,21 @@ function monEditor(row, e, r, ctx) {
   const acts = e.st === 'party' ? `<button class="pord" data-mv="-1" title="Move earlier in the party" aria-label="Move earlier" ${pi === 0 ? 'disabled' : ''}>←</button><button class="pord" data-mv="1" title="Move later in the party" aria-label="Move later" ${pi === ctx.party.length - 1 ? 'disabled' : ''}>→</button><button data-to="box">To box</button>`
     : full ? `<select data-f="swap" aria-label="Swap into party"><option value="">Swap with…</option>${ctx.party.map(x => `<option value="${esc(x.row.k)}">${esc(x.e.nick || monName(x.e.n))}</option>`).join('')}</select>`
     : '<button data-to="party">To party</button>';
-  const body = `<div class="pgrid nl"><div><label>Nickname</label><input data-f="nick" value="${esc(e.nick || '')}" maxlength="12" placeholder="${esc(m.name)}"></div>
+  const body = `<div class="pgrid nl"><div><label>Ability</label><select data-f="ab">${v.abilities.map(a => `<option value="${esc(a)}" ${a === ab ? 'selected' : ''}>${esc(abName(a))}</option>`).join('')}</select></div>
       <div><label>Level</label><input type="number" min="1" max="100" data-f="lv" value="${esc(e.lv || '')}" class="${ctx.over(e) ? 'bad' : ''}"></div></div>
-    <label>Ability</label><select data-f="ab">${v.abilities.map(a => `<option value="${esc(a)}" ${a === ab ? 'selected' : ''}>${esc(abName(a))}</option>`).join('')}</select>
     <div class="abd pab" title="${esc(ABD[ab] || '')}">${esc(ABD[ab] || '')}</div>
     <label>Damage taken</label>${matchup}
     <div class="pgrid"><div><label>Nature</label><select data-f="nat"><option value="">—</option>${NATURES.map(n => `<option value="${n}" ${n === e.nat ? 'selected' : ''}>${n} (${natDesc(n)})</option>`).join('')}</select></div>
       <div><label>Item</label>${nItemSelect(e.item || '')}</div></div>
     <div class="abd pitem" title="${esc(e.item ? e.item + ': ' + nItemNote(e.item) : '')}">${e.item ? esc(e.item) + ': ' + esc(nItemNote(e.item)) : 'No held item'}</div>
-    <label>Stats <small>base · yours at this level · expected</small><button class="ivgo" data-ivgo title="Work out this Pokémon's IVs from the stats you entered">Grade IVs</button></label><div class="pstats">${stats}</div>${nIvBlock(row, e, sol)}
+    <label>Stats <small>base · yours at this level · expected</small><button class="ivgo" data-ivgo title="Work out this Pokémon's IVs from the stats you entered">Grade IVs</button></label><div class="pstats">${stats}</div>${nCharField(row, e)}${nIvBlock(row, e, sol)}
     <label>Moves</label><div class="mvs">${mvs}</div>`;
   const movesLine = (e.moves || []).filter(Boolean).join(' · ');
   return `<div class="tslot pmon ${ctx.over(e) ? 'over' : ''}" data-k="${k}">
     <div class="shead" draggable="true" title="Drag between party and box"><img src="${nimg(e.n)}" alt="" class="goto" title="Open ${esc(m.name)} in the Pokédex">
-      <div><div class="sname">${esc(e.nick || m.name)}${gBtn(e)}${lv ? ` <span class="sp">Lv. ${lv}</span>` : ''}</div><div class="sp">${e.nick ? esc(m.name) + ' · ' : ''}${esc(row.label)}</div>
+      <div><div class="sname">${esc(e.nick || m.name)}${gBtn(e)}${lv ? ` <span class="sp">Lv. ${lv}</span>` : ''}</div><div class="sp">${e.nick ? esc(m.name) + ' · ' : ''}${e.caught ? 'caught as ' + esc(monName(e.caught)) + ' · ' : ''}${esc(row.label)}</div>
       <div class="stypes">${v.types.map(typeBadge).join('')}</div></div><span class="grip" aria-hidden="true">⠿</span></div>
-    <div class="pacts">${acts}<button data-to="dead">Died</button></div>
+    <div class="pacts">${acts}<button data-to="dead">Died</button>${nEvoSelect(e)}</div>
     ${e.st === 'box' ? `<details class="pmore" ${nOpen.has(row.k) ? 'open' : ''}><summary>${movesLine ? esc(movesLine) : 'Stats, ability & moves'}</summary>${body}</details>` : body}</div>`;
 }
 
@@ -1676,8 +1743,10 @@ function nDecorate() {
 function nLog(e) {
   if (!+e.lv) return;
   const st = {}; Object.entries(e.stats || {}).forEach(([k, v]) => { if (+v) st[k] = +v });
-  e.hist = (e.hist || []).filter(x => +x.lv !== +e.lv);
-  if (Object.keys(st).length) e.hist.push({ lv: +e.lv, st });
+  const same = x => +x.lv === +e.lv && (x.n || e.n) === e.n, prev = (e.hist || []).find(same), first = !(e.hist || []).length;
+  e.hist = (e.hist || []).filter(x => !same(x));
+  // the first level ever logged is usually right after the catch, before any battles; it can be unticked in the log
+  if (Object.keys(st).length) e.hist.push({ lv: +e.lv, n: e.n, st, fresh: prev ? !!prev.fresh : first });
   e.hist.sort((a, b) => a.lv - b.lv);
 }
 // a new level starts a fresh set of stats; the old level's stats stay in the log
@@ -1685,38 +1754,65 @@ function nSetLevel(e, lv) { if (String(lv) !== String(e.lv || '')) { nLog(e); e.
 // IVs consistent with every logged level (exact, no EVs); if battles' EVs make that impossible, a looser range
 function nSolveIVs(e) {
   const m = mons[e.n - 1], H = e.hist || []; if (!m || !H.length) return null;
-  const b = m.v[ver].stats, s = {}; let evs = false;
+  const b = m.v[ver].stats, bs = x => (mons[(x.n || e.n) - 1] || m).v[ver].stats, s = {}; let evs = false;
   IVSTATS.forEach(k => {
-    const ent = H.filter(x => +x.st[k]); if (!ent.length) { s[k] = null; return }
-    let c = [...Array(32).keys()].filter(iv => ent.every(x => ivStat(k, b[k], x.lv, iv, 0, e.nat) === +x.st[k])), loose = false;
-    if (!c.length) {   // EVs only build up, so keep as many early levels exact as possible and loosen the rest
-      loose = evs = true;
-      const ex = (x, iv) => ivStat(k, b[k], x.lv, iv, 0, e.nat) === +x.st[k], lz = (x, iv) => ivStat(k, b[k], x.lv, iv, 0, e.nat) <= +x.st[k] && +x.st[k] <= ivStat(k, b[k], x.lv, iv, 255, e.nat);
-      for (let n = ent.length - 1; n >= 0 && !c.length; n--) c = [...Array(32).keys()].filter(iv => ent.every((x, i) => i < n ? ex(x, iv) : lz(x, iv)));
-    }
-    s[k] = { c, loose };
+    const ent = H.filter(x => +x.st[k]).slice().sort((a, b) => a.lv - b.lv); if (!ent.length) { s[k] = null; return }
+    const c = [...Array(32).keys()].filter(iv => ivFits(k, iv, ent, bs, e.nat));
+    // * = no IV explains every level without EVs, so its battles' EVs are part of the picture
+    const low = c.filter(iv => ent.every(x => ivStat(k, bs(x)[k], x.lv, iv, 0, e.nat) === +x.st[k]));   // fits with no EVs at all
+    const loose = c.length > 0 && !low.length;
+    if (loose) evs = true;
+    // nothing fits: which single entry, if it were left out, would let the rest fit? (likely typos)
+    const bad = !c.length && ent.length > 1 ? ent.filter((x, i) => [...Array(32).keys()].some(iv => ivFits(k, iv, ent.filter((_, j) => j !== i), bs, e.nat))) : [];
+    s[k] = { c, loose, low, bad };
   });
+  if (e.ch) {
+    const [ck, mod] = e.ch.split(':'), others = IVSTATS.filter(k => k !== ck && s[k]);
+    if (s[ck]) {
+      s[ck].c = s[ck].c.filter(iv => iv % 5 === +mod);
+      for (let pass = 0; pass < 3; pass++) {
+        const top = s[ck].c.length ? Math.max(...s[ck].c) : -1;
+        others.forEach(k => s[k].c = s[k].c.filter(iv => iv <= top));
+        const floor = Math.max(0, ...others.map(k => s[k].c.length ? Math.min(...s[k].c) : 0));
+        s[ck].c = s[ck].c.filter(iv => iv >= floor);
+      }
+    }
+  }
+  IVSTATS.forEach(k => { if (s[k]) s[k].low = s[k].low.filter(iv => s[k].c.includes(iv)) });
   return { s, evs, levels: H.length };
 }
 const nOpenLog = new Set();
+// Highest IV, from the Characteristic on its summary screen; shown as a one-line summary once picked
+const nChEdit = new Set();
+function nCharField(row, e) {
+  if (e.ch && !nChEdit.has(row.k)) { const [k, i] = e.ch.split(':');
+    return `<div class="pchar"><span class="sp">Highest IV</span><b>${SL[k]}</b><span class="sp" title="Characteristic">“${esc(IVCHAR[k][+i])}”</span><button class="pchedit" data-chedit title="Change the highest IV">Change</button></div>` }
+  const opts = IVSTATS.map(k => `<optgroup label="Highest IV: ${SL[k]}">${IVCHAR[k].map((t, i) => `<option value="${k}:${i}" ${e.ch === k + ':' + i ? 'selected' : ''}>${t}</option>`).join('')}</optgroup>`).join('');
+  return `<div class="pchar"><label>Highest IV <small>pick its Characteristic from the summary screen</small><select data-f="ch"><option value="">— not set —</option>${opts}</select></label></div>`;
+}
 function nIvBlock(row, e, sol) {
   const H = e.hist || [];
   if (!H.length) return `<label class="pivlab">IVs <small>enter its stats to start a log</small></label><div class="pivs">${IVSTATS.map(k => `<div class="piv none" title="${SL[k]}: not logged yet">—</div>`).join('')}</div><div class="phist-none">Each level you record narrows its IVs.</div>`;
   const cells = IVSTATS.map(k => { const x = sol.s[k];
     if (!x) return `<div class="piv none" title="${SL[k]}: not logged yet">—</div>`;
-    if (!x.c.length) return `<div class="piv g1" title="${SL[k]}: no IV fits. Check the log for a typo.">?</div>`;
+    if (!x.c.length) return `<div class="piv g1" title="${SL[k]}: no IV fits. ${x.bad.length ? 'Check ' + x.bad.map(b => 'Lv. ' + b.lv + ' (' + b.st[k] + ')').join(' or ') + ' for a typo.' : 'Check the log for a typo.'}">?</div>`;
     const lo = x.c[0], hi = x.c[x.c.length - 1], j = ivJudge(lo) === ivJudge(hi) ? ivJudge(lo) : ivJudge(lo) + ' – ' + ivJudge(hi);
-    return `<div class="piv ${ivTone(Math.round((lo + hi) / 2))}" title="${SL[k]} IV ${ivList(x.c)} · ${j}${x.loose ? ' · approximate, its stats include EVs' : ''}">${lo === hi ? lo : lo + '–' + hi}${x.loose ? '*' : ''}</div>` }).join('');
+    return `<div class="piv ${ivTone(Math.round((lo + hi) / 2))}" title="${SL[k]} IV ${ivList(x.c)} · ${j}${x.loose ? ' · approximate, its stats include EVs' : ''}">${lo === hi ? lo : hi - lo + 1 === x.c.length ? lo + '–' + hi : x.c.length <= 3 ? x.c.join('/') : lo + '–' + hi + '…'}${x.loose ? '*' : ''}</div>` }).join('');
   let grade = '';
   if (IVSTATS.every(k => sol.s[k] && sol.s[k].c.length)) {
     const t0 = IVSTATS.reduce((a, k) => a + sol.s[k].c[0], 0), t1 = IVSTATS.reduce((a, k) => a + sol.s[k].c[sol.s[k].c.length - 1], 0), pct = (t0 + t1) / 2 / 186 * 100;
     grade = ` · grade <b>${pct >= 90 ? 'S' : pct >= 75 ? 'A' : pct >= 60 ? 'B' : pct >= 45 ? 'C' : pct >= 30 ? 'D' : 'E'}</b> (${t0 === t1 ? t0 : t0 + '–' + t1}/186)`;
   }
   const sh = { hp: 'HP', atk: 'Atk', def: 'Def', spa: 'SpA', spd: 'SpD', spe: 'Spe' };
-  return `<label class="pivlab">IVs <small>from ${H.length} logged level${H.length === 1 ? '' : 's'}${grade}${sol.evs ? ' · <span title="Later stats include EVs from battles, so those IVs are a range rather than exact">* has battle EVs</span>' : ''}</small></label><div class="pivs">${cells}</div>
-    <details class="phist" data-hk="${esc(row.k)}" ${nOpenLog.has(row.k) ? 'open' : ''}><summary>Stat log · ${H.length} level${H.length === 1 ? '' : 's'}</summary>
-      <table><thead><tr><th>Lv</th>${IVSTATS.map(k => `<th>${sh[k]}</th>`).join('')}<th></th></tr></thead>
-      <tbody>${H.map(x => `<tr><td>${x.lv}</td>${IVSTATS.map(k => `<td>${x.st[k] || '·'}</td>`).join('')}<td><button data-hdel="${x.lv}" title="Remove Lv. ${x.lv} from the log" aria-label="Remove level ${x.lv}">×</button></td></tr>`).join('')}</tbody></table></details>`;
+  const badMap = new Map(); IVSTATS.forEach(k => sol.s[k] && sol.s[k].bad.forEach(b => badMap.set(b, [...(badMap.get(b) || []), k])));
+  const typo = IVSTATS.filter(k => sol.s[k] && !sol.s[k].c.length && sol.s[k].bad.length).map(k => SL[k] + ' at ' + sol.s[k].bad.map(b => 'Lv. ' + b.lv).join(' or '));
+  const lowShown = IVSTATS.some(k => sol.s[k] && sol.s[k].low.length && sol.s[k].low.length < sol.s[k].c.length);
+  const notes = typo.length ? `<div class="pivnote bad">Possible typo: ${esc(typo.join('; '))}. It's highlighted in the stat log.</div>` : '';
+  const likely = lowShown ? `<div class="pivnote" title="Assumes its battles haven't added enough EVs to change any stat yet. True early on; less so as it levels.">If its EVs are still near 0: ${IVSTATS.map(k => sol.s[k] && sol.s[k].low.length ? SL[k] + ' ' + ivList(sol.s[k].low) : null).filter(Boolean).join(' · ')}</div>` : '';
+  return `<label class="pivlab">IVs <small>from ${H.length} logged level${H.length === 1 ? '' : 's'}${grade}${sol.evs ? ' · <span title="Later stats include EVs from battles, so those IVs are a range rather than exact">* has battle EVs</span>' : ''}</small></label><div class="pivwrap"><div class="pivs">${cells}</div>${notes}</div>
+    <details class="phist" data-hk="${esc(row.k)}" ${nOpenLog.has(row.k) ? 'open' : ''}><summary>Stat log · ${H.length} level${H.length === 1 ? '' : 's'}${H.some(x => x.fresh) ? ' · ' + H.filter(x => x.fresh).length + ' before battles' : ''}</summary>${likely}
+      <table><thead><tr><th>Lv</th>${IVSTATS.map(k => `<th>${sh[k]}</th>`).join('')}<th title="No battles yet at this level, so it has no EVs and is matched exactly">No battles</th><th></th></tr></thead>
+      <tbody>${H.map((x, hi) => `<tr><td>${x.lv}${x.n && x.n !== e.n ? ` <small>${esc(monName(x.n))}</small>` : ''}</td>${IVSTATS.map(k => `<td${(badMap.get(x) || []).includes(k) ? ' class="hbad" title="This value doesn\'t fit the other levels. Check it for a typo."' : ''}>${x.st[k] || '·'}</td>`).join('')}<td><input type="checkbox" data-f="hfresh" data-i="${hi}" ${x.fresh ? 'checked' : ''} title="No battles yet at this level (no EVs)" aria-label="Lv. ${x.lv}: no battles yet"></td><td><button data-hdel="${hi}" title="Remove Lv. ${x.lv} from the log" aria-label="Remove level ${x.lv}">×</button></td></tr>`).join('')}</tbody></table></details>`;
 }
 
 // ---- Held items: grouped list for the card dropdown; effects match the damage calculator ----
@@ -1766,6 +1862,38 @@ function nHpSelect(e, hp) {
   return `<select class="hpsel" data-f="hpt" aria-label="Hidden Power type" title="${esc(tip)}"><option value="">${esc(lab)}</option>${HPTYPES.map(t => `<option value="${t}" ${t === e.hpt ? 'selected' : ''}>${t}</option>`).join('')}</select>`;
 }
 
+// ---- Evolution: e.n is the current species, e.caught the one caught on that encounter ----
+function nEvoNode(n) {
+  let hit = null; const walk = (x, p) => { if (!x || hit) return; if (x.num === n) hit = { node: x, parent: p }; (x.k || []).forEach(c => walk(c, x)) };
+  walk(mons[n - 1] && mons[n - 1].evo, null); return hit;
+}
+function nEvoSelect(e) {
+  const h = nEvoNode(e.n); if (!h) return '';
+  const kids = (h.node.k || []).filter(c => mons[c.num - 1]); if (!kids.length && !h.parent) return '';
+  return `<select class="pevo" data-f="evo" aria-label="Evolve" title="Record an evolution"><option value="">${kids.length ? 'Evolve…' : 'Evolved'}</option>${kids.map(c => `<option value="${c.num}">→ ${esc(c.n)}${c.m ? ' (' + esc(c.m) + ')' : ''}</option>`).join('')}${h.parent ? `<option value="${h.parent.num}">↩ Back to ${esc(h.parent.n)}</option>` : ''}</select>`;
+}
+// moves for a card: its own list, then anything its earlier stages could learn, then a saved move that's in neither
+function nMoveOptions(m, e, sel) {
+  const own = learnable(m), have = new Set([...own.lu, ...own.tm].map(x => x[0])), pre = [];
+  for (let node = nEvoNode(e.n); node && node.parent; node = nEvoNode(node.parent.num)) {
+    const pm = mons[node.parent.num - 1]; if (!pm) break;
+    const L = learnable(pm); [...L.lu, ...L.tm].forEach(([mv, how]) => { if (!have.has(mv)) { have.add(mv); pre.push([mv, pm.name + ' ' + how]) } });
+  }
+  const opt = ([mv, how]) => { const d = MV[mv] || {}; return `<option value="${esc(mv)}" ${mv === sel ? 'selected' : ''}>${esc(mv)} · ${d.t || '?'}${d.p ? ' ' + d.p : ''} (${esc(how)})</option>` };
+  return `<option value="">— move —</option><optgroup label="Level-up">${own.lu.map(opt).join('')}</optgroup>${own.tm.length ? `<optgroup label="TM / HM">${own.tm.map(opt).join('')}</optgroup>` : ''}`
+    + (pre.length ? `<optgroup label="Learned before evolving">${pre.map(opt).join('')}</optgroup>` : '')
+    + (sel && !have.has(sel) ? `<optgroup label="Other">${opt([sel, 'not in its list'])}</optgroup>` : '');
+}
+function nEvolve(e, to) {
+  if (!mons[to - 1] || to === e.n) return;
+  (e.hist || []).forEach(x => { if (!x.n) x.n = e.n });
+  nLog(e);   // the stats so far stay in the log under the old species
+  const oldAbs = mons[e.n - 1].v[ver].abilities, slot = Math.max(0, oldAbs.indexOf(nAb(e))), newAbs = mons[to - 1].v[ver].abilities;
+  if (!e.caught) e.caught = e.n;
+  e.n = to; if (e.caught === e.n) delete e.caught;
+  e.ab = newAbs[slot] || newAbs[0]; e.stats = {};
+}
+
 function renderRunTop() {
   const r = curRun(), s = runStats(r), next = NBOSS[r.beat], all = placed(r);
   const party = partyOf(r), box = all.filter(x => x.e.st === 'box'), dead = all.filter(x => x.e.st === 'dead');
@@ -1789,7 +1917,7 @@ function renderRunTop() {
       ${overs.length ? `<p class="rnote" style="margin:10px 0 0">Over the cap: ${overs.map(x => esc(x.e.nick || monName(x.e.n))).join(', ')}</p>` : ''}</section>`
     : `<section class="card full" data-sec="cap"><h3>Level caps</h3><p class="empty">Every boss is beaten. Congratulations!</p></section>`;
   document.getElementById('ntop').innerHTML = `<div class="rhero"><input class="tname" id="nname" value="${esc(r.name)}" aria-label="Run name" maxlength="40">
-      <div class="nsum"><span><b>${s.used}</b>/${runRows(r).length} encounters</span><span class="${s.party > 6 ? 'bad' : ''}"><b>${s.party}</b>/6 party</span><span><b>${s.box}</b> boxed</span><span><b>${s.dead}</b> dead</span><span><b>${r.beat}</b>/${NBOSS.length} bosses</span></div>
+      <div class="nsum"><span><b>${s.used}</b>/${runRows(r).length} encounters</span><span class="${s.party > 6 ? 'bad' : ''}"><b>${s.party}</b>/6 party</span><span><b>${s.box}</b> boxed</span><span><b>${s.dead}</b> dead</span><span><b>${s.lost}</b> missed</span><span><b>${r.beat}</b>/${NBOSS.length} bosses</span></div>
       <div class="tbtns" style="margin-top:10px"><button class="btn primary" id="nteam" ${s.party ? '' : 'disabled'}>Check party in Team builder</button><button class="btn" id="ndup">Duplicate</button><button class="btn danger" id="ndel" ${NZ.runs.length < 2 ? 'disabled' : ''}>Delete</button></div></div>
     ${cap}
     <div id="ncalc"></div>
@@ -1808,13 +1936,13 @@ function renderRun(full = true) {
   const r = curRun(); NZ.cur = r.id;
   const nd = document.getElementById('ndetail');
   if (!full && document.getElementById('ntop')) return renderRunTop();
-  nd.innerHTML = '<button class="back" id="nback">← All runs</button><div id="ntop"></div><div id="nenc"></div><div id="nbot"></div>';
+  nd.innerHTML = '<button class="back" id="nback">← All runs</button><button class="btn nrshow" id="nrshow" title="Show the runs list">☰ Runs</button><div id="ntop"></div><div id="nenc"></div><div id="nbot"></div>';
   renderRunTop();
   const caught = new Map(); Object.entries(r.enc).forEach(([k, e]) => { if (isCaught(e)) caught.set(k, fam(e.n)) });
   const takenFor = k => new Set([...caught].filter(([kk]) => kk !== k).map(([, f]) => f));
   let html = '', section = '';
   runRows(r).forEach(row => {
-    const e = r.enc[row.k] || {}, used = !!(e.n || e.st === 'missed' || e.st === 'skipped');
+    const e = r.enc[row.k] || {}, used = !!(e.n || NLOST.has(e.st));
     if ((nfilter === 'open' && used) || (nfilter === 'used' && !used)) return;
     const sec = row.custom ? 'Starter, gifts & statics' : row.post ? 'Post-game' : 'Wild encounters';
     if (sec !== section) { html += `<div class="ndiv">${sec}</div>`; section = sec }
@@ -1911,6 +2039,9 @@ ND.addEventListener('change', ev => {
     else if (fld === 'nat') e.nat = t.value;
     else if (fld === 'item') e.item = t.value.trim();
     else if (fld === 'hpt') e.hpt = t.value;
+    else if (fld === 'ch') { e.ch = t.value; nChEdit.delete(k) }
+    else if (fld === 'evo') { if (+t.value) { nEvolve(e, +t.value); return ncommit(true) } return }
+    else if (fld === 'hfresh') { const x = (e.hist || [])[+t.dataset.i]; if (x) x.fresh = t.checked }
     else if (fld === 'stat') { e.stats = e.stats || {}; if (t.value) e.stats[t.dataset.s] = +t.value; else delete e.stats[t.dataset.s]; nLog(e) }
     else if (fld === 'move') { e.moves = [0, 1, 2, 3].map(i => (e.moves || [])[i] || ''); e.moves[+t.dataset.i] = t.value }
     saveRuns(); renderRunList();
@@ -1922,11 +2053,11 @@ ND.addEventListener('change', ev => {
   const rowEl = t.closest('.enc'); if (!rowEl) return;
   const k = rowEl.dataset.k, e = r.enc[k] || (r.enc[k] = {}), cls = t.classList[0];
   const placeNew = () => { if (e.n && !e.st) e.st = partyCount(r) < 6 ? 'party' : 'box' };
-  if (cls === 'msel') { if (t.value === 'other') { e.other = true; e.n = null } else { e.other = false; e.n = t.value ? +t.value : null; placeNew() } }
+  if (cls === 'msel') { delete e.caught; if (t.value === 'other') { e.other = true; e.n = null } else { e.other = false; e.n = t.value ? +t.value : null; placeNew() } }
   else if (cls === 'mother') {
     const m = t.value.trim() ? monByName(t.value) : null;
     if (t.value.trim() && !m) { t.setCustomValidity('Pick a Pokémon from the list'); t.reportValidity(); return }
-    e.n = m ? m.num : null; placeNew();
+    delete e.caught; e.n = m ? m.num : null; placeNew();
   }
   else if (cls === 'st') e.st = t.value;
   else if (cls === 'nick') e.nick = t.value.trim();
@@ -1942,18 +2073,22 @@ ND.addEventListener('change', ev => {
 ND.addEventListener('click', ev => {
   const t = ev.target, r = curRun(), app = document.getElementById('app');
   if (t.id === 'nback') return app.classList.remove('nshowing');
+  if (t.id === 'nrshow') return nSetRost(false);
   if (t.id === 'nbeat') { r.beat = Math.min(NBOSS.length, r.beat + 1); return ncommit(true) }
   if (t.id === 'nboss') { nShowBoss = !nShowBoss; return renderRunTop() }
   const pk = t.closest('.pk'); if (pk) { setView('dex'); return select(+pk.dataset.n) }
   if (t.id === 'nteam') return toTeam(r);
   if (t.id === 'naddc') { const k = 'c' + Date.now(); r.custom.push({ k, label: 'Gift' }); ncommit(true); const el = ND.querySelector(`.enc[data-k="${k}"] .clabel`); if (el) { el.focus(); el.select() } return }
   if (t.id === 'ndup') { const c = JSON.parse(JSON.stringify(r)); c.id = 'n' + Date.now(); c.name = (r.name + ' (copy)').slice(0, 40); delete c.teamId; NZ.runs.push(c); NZ.cur = c.id; return ncommit(true) }
-  if (t.id === 'ndel') { if (NZ.runs.length < 2 || !confirm(`Delete “${r.name}”? This can't be undone.`)) return; NZ.runs = NZ.runs.filter(x => x !== r); NZ.cur = NZ.runs[0].id; return ncommit(true) }
+  if (t.id === 'ndel') { if (NZ.runs.length < 2 || !confirm(`Delete “${r.name}”? This can't be undone.`)) return; NZ.runs = NZ.runs.filter(x => x !== r); NZ.deleted = [...(NZ.deleted || []), r.id]; NZ.cur = NZ.runs[0].id; return ncommit(true) }
   const hb = t.closest('button.nhide');
   if (hb) { const id = hb.dataset.hide; nHidden.has(id) ? nHidden.delete(id) : nHidden.add(id); store.set('rp-nhide', [...nHidden]); return nDecorate() }
   const hd = t.closest('button[data-hdel]');
-  if (hd) { const e = r.enc[hd.closest('.pmon').dataset.k]; if (!e) return; const lv = +hd.dataset.hdel;
-    e.hist = (e.hist || []).filter(x => +x.lv !== lv); if (+e.lv === lv) e.stats = {}; saveRuns(); return nRefreshTop() }
+  if (hd) { const e = r.enc[hd.closest('.pmon').dataset.k]; if (!e) return; const x = (e.hist || [])[+hd.dataset.hdel]; if (!x) return;
+    e.hist = e.hist.filter(y => y !== x); if (+e.lv === +x.lv && (x.n || e.n) === e.n) e.stats = {}; saveRuns(); return nRefreshTop() }
+  const ce = t.closest('button[data-chedit]');
+  if (ce) { const k = ce.closest('.pmon').dataset.k; nChEdit.add(k); nRefreshTop();
+    setTimeout(() => { const s = ND.querySelector(`.pmon[data-k="${CSS.escape(k)}"] [data-f="ch"]`); if (s) s.focus() }, 30); return }
   const ig = t.closest('button[data-ivgo]');
   if (ig) { const e = r.enc[ig.closest('.pmon').dataset.k]; if (e) { ivLoad(e); setView('ivs') } return }
   const cd = t.closest('button[data-cdir]');
@@ -1975,6 +2110,10 @@ ND.addEventListener('click', ev => {
 document.getElementById('nlist').addEventListener('click', e => { const b = e.target.closest('.trow'); if (!b) return;
   NZ.cur = b.dataset.r; store.set(NKEY, NZ); renderRunList(); renderRun();
   document.getElementById('app').classList.add('nshowing'); ND.scrollTop = 0 });
+let nRostHidden = !!store.get('rp-nrost', false);
+function nSetRost(hide) { nRostHidden = hide; store.set('rp-nrost', hide); document.getElementById('nuzMain').classList.toggle('rcoll', hide) }
+nSetRost(nRostHidden);
+document.getElementById('nrhide').onclick = () => nSetRost(true);
 document.getElementById('nnew').onclick = () => {
   const r = newRun('Run ' + (NZ.runs.length + 1)); NZ.runs.push(r); NZ.cur = r.id; ncommit(true); document.getElementById('app').classList.add('nshowing');
 };
@@ -1997,6 +2136,18 @@ const ivJudge = iv => iv === 31 ? 'Best' : iv === 30 ? 'Fantastic' : iv >= 26 ? 
 const ivTone = iv => iv >= 26 ? 'g4' : iv >= 16 ? 'g3' : iv >= 1 ? 'g2' : 'g1';
 const ivList = c => { const out = []; for (let i = 0; i < c.length; i++) { let j = i; while (j + 1 < c.length && c[j + 1] === c[j] + 1) j++; out.push(j > i ? c[i] + '–' + c[j] : '' + c[i]); i = j } return out.join(', ') };
 const ivSave = () => store.set(IVKEY, IVS);
+// Can this IV produce every logged stat for stat k? Entries are in level order. EVs never go down from one level to the next;
+// they're 0 up to the last "no battles yet" entry, and an entry with EVs entered uses those. Only floor(EV/4) affects stats.
+function ivFits(k, iv, ent, baseOf, nat) {
+  const last = ent.reduce((a, x, i) => x.fresh ? i : a, -1); let q = 0;
+  for (let i = 0; i < ent.length; i++) {
+    const x = ent[i], s = +x.st[k], b = baseOf(x)[k], lv = +x.lv, known = x.ev && x.ev[k] !== undefined && x.ev[k] !== '' ? Math.floor(+x.ev[k] / 4) : null;
+    if (i <= last || known !== null) { const qq = i <= last ? 0 : known; if (ivStat(k, b, lv, iv, qq * 4, nat) !== s) return false; q = Math.max(q, qq); continue }
+    let qq = q; while (qq < 63 && ivStat(k, b, lv, iv, qq * 4, nat) < s) qq++;
+    if (ivStat(k, b, lv, iv, qq * 4, nat) !== s) return false; q = qq;
+  }
+  return true;
+}
 
 function ivSolve() {
   const m = mons[IVS.n - 1]; if (!m) return null;
@@ -2004,11 +2155,9 @@ function ivSolve() {
   IVSTATS.forEach(k => {
     let c = [...Array(32).keys()], used = false;
     const ent = rows.filter(r => +(r.st || {})[k]).sort((a, b) => +a.lv - +b.lv); used = ent.length > 0;
-    // exact with the EVs entered (0 if blank); if nothing fits, blank EVs may be anything 0–255
-    const fits = (iv, r, loose) => { const s = +r.st[k], ev = (r.ev || {})[k], b = v.stats[k];
-      return !loose || ev !== undefined ? ivStat(k, b, +r.lv, iv, +ev || 0, IVS.nat) === s : ivStat(k, b, +r.lv, iv, 0, IVS.nat) <= s && s <= ivStat(k, b, +r.lv, iv, 255, IVS.nat) };
-    c = c.filter(iv => ent.every(r => fits(iv, r, false))); let loose = false;
-    if (!c.length && ent.length > 1) { loose = true; for (let n = ent.length - 1; n >= 0 && !c.length; n--) c = [...Array(32).keys()].filter(iv => ent.every((r, i) => fits(iv, r, i >= n))) }
+    const baseOf = r => (r.n && mons[r.n - 1] ? mons[r.n - 1].v[ver] : v).stats;
+    c = c.filter(iv => ivFits(k, iv, ent, baseOf, IVS.nat));
+    const loose = c.length > 0 && ent.length > 1 && !c.some(iv => ent.every(r => ivStat(k, baseOf(r)[k], +r.lv, iv, +((r.ev || {})[k]) || 0, IVS.nat) === +r.st[k]));
     out[k] = { c, used, loose };
   });
   if (IVS.ch) {   // the characteristic's stat holds the highest IV, and that IV mod 5 is known
@@ -2050,9 +2199,10 @@ function renderIv() {
   const chOpts = IVSTATS.map(k => `<optgroup label="Highest IV: ${SL[k]}">${IVCHAR[k].map((t, i) => `<option value="${k}:${i}" ${IVS.ch === k + ':' + i ? 'selected' : ''}>${t}</option>`).join('')}</optgroup>`).join('');
   const row = (rw, i) => {
     const hasEv = IVSTATS.some(k => +(rw.ev || {})[k]);
-    return `<div class="ivrow" data-r="${i}"><label>Level<input type="number" min="1" max="100" data-iv="lv" value="${esc(rw.lv || '')}"></label>
+    return `<div class="ivrow" data-r="${i}"><label>Level${rw.n && rw.n !== IVS.n ? ' · as ' + esc(monName(rw.n)) : ''}<input type="number" min="1" max="100" data-iv="lv" value="${esc(rw.lv || '')}"></label>
       ${IVSTATS.map(k => { const md = natMod(IVS.nat, k); return `<label class="${md > 1 ? 'up' : md < 1 ? 'dn' : ''}">${SL[k]}<input type="number" min="1" max="999" data-iv="st" data-s="${k}" value="${esc((rw.st || {})[k] || '')}"></label>` }).join('')}
       ${IVS.rows.length > 1 ? `<button class="x" data-ivdel="${i}" title="Remove this level" aria-label="Remove">×</button>` : '<span></span>'}
+      <label class="ivfresh"><input type="checkbox" data-iv="fresh" ${rw.fresh ? 'checked' : ''}> No battles yet at this level (no EVs)</label>
       <details class="ivev" ${hasEv ? 'open' : ''}><summary>EVs (if known)</summary><div class="ivevs">${IVSTATS.map(k => `<label>${SL[k]}<input type="number" min="0" max="255" data-iv="ev" data-s="${k}" value="${esc((rw.ev || {})[k] || '')}" placeholder="0"></label>`).join('')}</div></details></div>`;
   };
   d.innerHTML = `<div class="rhero"><h2>IV grading</h2>
@@ -2103,13 +2253,13 @@ function renderIvResults() {
 
 function ivLoad(e) {
   const H = e.hist && e.hist.length ? e.hist : +e.lv ? [{ lv: +e.lv, st: e.stats || {} }] : [];
-  IVS = { n: e.n, nat: e.nat || '', ch: '', rows: H.length ? H.map(x => ({ lv: String(x.lv), st: Object.assign({}, x.st), ev: {} })) : [{ lv: e.lv || '', st: {}, ev: {} }] }; ivSave();
+  IVS = { n: e.n, nat: e.nat || '', ch: e.ch || '', rows: H.length ? H.map(x => ({ lv: String(x.lv), n: x.n, st: Object.assign({}, x.st), ev: {}, fresh: !!x.fresh })) : [{ lv: e.lv || '', st: {}, ev: {} }] }; ivSave();
 }
 const IVD = document.getElementById('ivdetail');
 IVD.addEventListener('input', ev => {
   const t = ev.target, rw = t.closest('.ivrow'); if (!rw || !t.dataset.iv) return;
   const r = IVS.rows[+rw.dataset.r], f = t.dataset.iv;
-  if (f === 'lv') r.lv = t.value; else { r[f] = r[f] || {}; if (t.value) r[f][t.dataset.s] = +t.value; else delete r[f][t.dataset.s] }
+  if (f === 'fresh') r.fresh = t.checked; else if (f === 'lv') r.lv = t.value; else { r[f] = r[f] || {}; if (t.value) r[f][t.dataset.s] = +t.value; else delete r[f][t.dataset.s] }
   ivSave(); renderIvResults();
 });
 IVD.addEventListener('change', ev => {
