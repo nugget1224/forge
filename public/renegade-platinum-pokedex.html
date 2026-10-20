@@ -489,6 +489,103 @@ button.gbtn:hover { border-color: var(--accent) }
 .cres .ko.k1 { color: var(--chg) }
 .cwho { font-size: .8rem; margin-top: 6px }
 .cwhy { font-size: .74rem; color: var(--muted); margin-top: 4px; overflow-wrap: anywhere }
+#batdetail .bcontrols { display: flex; flex-wrap: wrap; gap: 8px 12px; align-items: flex-end; margin-top: 10px }
+#batdetail label { display: flex; flex-direction: column; gap: 3px; font-size: .66rem; text-transform: uppercase; letter-spacing: .07em; color: var(--muted); min-width: 0 }
+#batdetail label small { text-transform: none; letter-spacing: 0 }
+#batdetail select, #batdetail input[type=number] { font: 500 .85rem var(--font-body); padding: 6px 8px; border-radius: 7px; border: 1px solid var(--line); background: var(--bg); color: var(--ink); min-width: 0; text-transform: none; letter-spacing: 0 }
+#batdetail .bcontrols select { max-width: min(100%, 360px) }
+#batdetail label.bact { flex-direction: row; align-items: center; gap: 6px; text-transform: none; letter-spacing: 0; font-size: .8rem; color: var(--ink) }
+.bslots { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 200px), 1fr)); gap: 10px }
+.bslot { box-sizing: border-box; min-width: 0; overflow: hidden; border: 1px solid var(--line); border-radius: 10px; padding: 8px; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 6px 8px; align-content: start; background: var(--panel) }
+.bslot.act { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent) }
+.bslot.ko { opacity: .5 }
+.bslot .bshd { grid-column: 1 / -1; display: flex; align-items: center; gap: 8px; min-width: 0 }
+.bslot .bshd img { flex: 0 0 48px; width: 48px; height: 48px; image-rendering: pixelated }
+.bslot .bsn { font-size: .86rem; min-width: 0; flex: 1 }
+.bslot .bsnm { white-space: nowrap; overflow: hidden; text-overflow: ellipsis }
+.bslot .stypes { display: flex; flex-wrap: wrap; gap: 3px; margin-top: 2px }
+.bslot > label { min-width: 0 }
+.bslot .bact, .bslot .bsmv { grid-column: 1 / -1 }
+.bslot .bsmv { font-size: .72rem; overflow-wrap: anywhere }
+.bslot input[type=number], .bslot select { box-sizing: border-box; width: 100%; max-width: 100% }
+.bactive { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 14px; margin: 12px 0 6px; font-size: .86rem }
+.bstg { display: flex; flex-wrap: wrap; gap: 6px }
+.bstg label { width: 64px }
+.bfgrid { display: flex; flex-wrap: wrap; gap: 8px 12px }
+.bfsides { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; margin-top: 12px }
+.bfside h4, .bfc h4 { font-size: .66rem; text-transform: uppercase; letter-spacing: .07em; color: var(--muted); margin: 0 0 6px }
+.bfc { display: flex; flex-direction: column; gap: 6px; margin-top: 8px }
+.bfrow { display: grid; grid-template-columns: 3.2em minmax(0, 12em) 1fr; gap: 8px; align-items: center; font-size: .86rem }
+.bpct { font: 700 1rem var(--font-data); text-align: right }
+.bko { color: var(--chg); font-weight: 600 }
+.bopts { display: flex; flex-direction: column; gap: 8px; margin-top: 8px }
+.borow { border: 1px solid var(--line); border-radius: 10px; padding: 8px 10px; background: var(--panel) }
+.borow.best { border-color: var(--new); box-shadow: 0 0 0 1px var(--new) }
+.bohd { display: flex; align-items: center; gap: 6px; flex-wrap: wrap }
+.bowin { margin-left: auto; font: 700 1.3rem var(--font-data) }
+.bobar { height: 8px; border-radius: 4px; background: var(--bg); border: 1px solid var(--line); overflow: hidden; margin: 6px 0 }
+.bobar i { display: block; height: 100%; background: var(--new) }
+.btag { font: 700 .66rem var(--font-body); text-transform: uppercase; letter-spacing: .06em; border-radius: 999px; padding: 2px 7px; border: 1px solid var(--line); color: var(--muted) }
+.btag.good { border-color: var(--new); color: var(--new) }
+@media (max-width: 520px) { .bfrow { grid-template-columns: 3em 1fr } .bfrow > :last-child { grid-column: 2 } }
+.tpsum { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 12px; margin: 4px 0 12px }
+.tpsum .bowin { margin-left: 0 }
+.tpsum .btn { margin-left: auto }
+.tpgrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr)); gap: 10px }
+.tpm { box-sizing: border-box; min-width: 0; border: 1px solid var(--line); border-radius: 10px; padding: 10px; background: var(--panel) }
+.tpm:first-child { border-color: var(--accent) }
+.tphd { display: flex; align-items: center; gap: 8px; min-width: 0 }
+.tphd img { flex: 0 0 48px; width: 48px; height: 48px; image-rendering: pixelated }
+.tphd .stypes { display: flex; flex-wrap: wrap; gap: 3px; margin-top: 2px }
+.tpm ul, .tpout ul { margin: 8px 0 0; padding-left: 18px; font-size: .82rem; line-height: 1.45 }
+.tpm li + li, .tpout li + li { margin-top: 3px }
+.tpout { margin-top: 12px; font-size: .84rem }
+.tph4 { font-size: .66rem; text-transform: uppercase; letter-spacing: .07em; color: var(--muted); margin: 14px 0 6px }
+.tpplan { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 8px }
+.tpplan li { border: 1px solid var(--line); border-radius: 10px; padding: 8px 10px; background: var(--panel); font-size: .84rem; line-height: 1.45; min-width: 0 }
+.tpplan li > div + div { margin-top: 3px }
+.tpph { display: flex; align-items: center; flex-wrap: wrap; gap: 6px; margin-bottom: 4px }
+.tpph img { width: 36px; height: 36px; image-rendering: pixelated }
+.tpph .btag { margin-left: auto }
+.btag.bad { border-color: var(--chg); color: var(--chg) }
+.tpout summary { cursor: pointer; font-weight: 600 }
+#gdetail label { display: flex; flex-direction: column; gap: 3px; font-size: .66rem; text-transform: uppercase; letter-spacing: .07em; color: var(--muted) }
+#gdetail select { font: 500 .85rem var(--font-body); padding: 6px 8px; border-radius: 7px; border: 1px solid var(--line); background: var(--bg); color: var(--ink); max-width: min(100%, 360px); text-transform: none; letter-spacing: 0 }
+details.gch { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 14px 18px; min-width: 0; margin-bottom: 10px }
+details.gch .gpick, details.gch .gboss { background: var(--bg) }
+.gch > summary { cursor: pointer; display: flex; align-items: baseline; flex-wrap: wrap; gap: 4px 12px; list-style: none }
+.gch > summary::-webkit-details-marker { display: none }
+.gch > summary h3 { margin: 0 }
+.gch > summary::before { content: '▸'; color: var(--muted) }
+.gch[open] > summary::before { content: '▾' }
+.gtips { margin: 8px 0 0; padding-left: 18px; font-size: .86rem; line-height: 1.5 }
+.gtips li + li { margin-top: 4px }
+.gpicks { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr)); gap: 8px }
+.gpick { display: flex; gap: 8px; align-items: flex-start; border: 1px solid var(--line); border-radius: 10px; padding: 8px; background: var(--panel); font-size: .84rem; line-height: 1.45; min-width: 0 }
+.gpick .pk, .gtm .pk { flex: 0 0 auto; border: 0; background: none; padding: 0; cursor: pointer }
+.gpick img { width: 48px; height: 48px; image-rendering: pixelated }
+.gwhere { display: flex; flex-direction: column; align-items: flex-start; gap: 2px; margin-top: 4px }
+.gwhere .an, .gitem .an { border: 0; background: none; padding: 0; color: var(--accent); cursor: pointer; font: inherit; text-align: left }
+.gwhere .an:hover, .gitem .an:hover { text-decoration: underline }
+.gitems { display: flex; flex-wrap: wrap; gap: 6px 14px; font-size: .84rem }
+.gitem .an { font-size: .78rem }
+.gboss { border: 1px solid var(--line); border-radius: 10px; padding: 10px; margin-top: 10px; background: var(--panel) }
+.gboss.next { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent) }
+.gboss.done { opacity: .75 }
+.gbh { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 12px }
+.gbh h4 { margin: 0; font-size: 1rem }
+.gbh .btn { margin-left: auto }
+.gvar { margin-top: 8px }
+.gteam { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 170px), 1fr)); gap: 6px; margin-top: 4px }
+.gtm { display: flex; gap: 6px; align-items: flex-start; font-size: .8rem; min-width: 0; line-height: 1.35 }
+.gtm img { width: 40px; height: 40px; image-rendering: pixelated }
+.gtm > div { min-width: 0 }
+.gth { color: var(--chg); font-size: .72rem }
+.gwk { display: flex; flex-wrap: wrap; align-items: center; gap: 4px; margin-top: 6px }
+.gwk small { color: var(--muted); margin-right: 4px }
+.simhow { margin-top: 12px; font-size: .8rem; color: var(--muted) }
+.simhow summary { cursor: pointer; color: var(--ink); font-weight: 600 }
+.simhow p { margin: 6px 0 0; line-height: 1.45 }
 section.card[data-sec] > h3, section.card[data-sec] .nhead > h3 { display: flex; align-items: center; gap: 8px }
 .nhead > h3 { flex: 1 }
 .nhide { margin-left: auto; font: 600 .7rem var(--font-body); text-transform: none; letter-spacing: 0; border: 1px solid var(--line); background: var(--panel); color: var(--muted);
@@ -675,6 +772,8 @@ section.ncoll h3 { margin-bottom: 0 !important }
       <button id="view-team" aria-pressed="false">Team</button>
       <button id="view-nuz" aria-pressed="false">Nuzlocke</button>
       <button id="view-iv" aria-pressed="false">IVs</button>
+      <button id="view-bat" aria-pressed="false">Battle</button>
+      <button id="view-guide" aria-pressed="false">Guide</button>
     </div>
     <div class="ver" role="group" aria-label="Patch version">
       <button id="v-complete" aria-pressed="true">Complete</button>
@@ -745,6 +844,12 @@ section.ncoll h3 { margin-bottom: 0 !important }
   <div class="main single" id="ivMain" hidden>
     <main class="detail" id="ivdetail"></main>
   </div>
+  <div class="main single" id="batMain" hidden>
+    <main class="detail" id="batdetail"></main>
+  </div>
+  <div class="main single" id="guideMain" hidden>
+    <main class="detail" id="gdetail"></main>
+  </div>
   <datalist id="monlist"></datalist>
   <div class="amodal" id="amodal" hidden role="dialog" aria-modal="true" aria-labelledby="atitle">
     <div class="abox"><header><div><h2 id="atitle"></h2><div class="ameta" id="ameta"></div></div>
@@ -793,6 +898,8 @@ function setVer(v) {
   if (typeof renderMove === 'function' && view === 'moves') { renderMoveList(); renderMove() }
   if (typeof renderTypes === 'function' && view === 'types') renderTypes();
   if (typeof renderIv === 'function' && view === 'ivs') renderIv();
+  if (typeof renderBattle === 'function' && view === 'battle') renderBattle();
+  if (typeof renderGuide === 'function' && view === 'guide') renderGuide();
   if (typeof renderRun === 'function' && view === 'nuzlocke') renderRun();
 }
 document.getElementById('v-complete').onclick = () => setVer('complete');
@@ -995,7 +1102,13 @@ function setView(v) {
   document.getElementById('nuzMain').hidden = v !== 'nuzlocke';
   document.getElementById('view-iv').setAttribute('aria-pressed', v === 'ivs');
   document.getElementById('ivMain').hidden = v !== 'ivs';
+  document.getElementById('view-bat').setAttribute('aria-pressed', v === 'battle');
+  document.getElementById('batMain').hidden = v !== 'battle';
+  document.getElementById('view-guide').setAttribute('aria-pressed', v === 'guide');
+  document.getElementById('guideMain').hidden = v !== 'guide';
+  if (v === 'guide') renderGuide();
   if (v === 'ivs') renderIv();
+  if (v === 'battle') renderBattle();
   if (v === 'nuzlocke') { renderRunList(); renderRun() }
   if (v === 'routes') { renderRouteList(); renderRoute() }
   if (v === 'team') { renderTeamList(); renderTeam() }
@@ -1008,6 +1121,8 @@ document.getElementById('view-routes').onclick = () => setView('routes');
 document.getElementById('view-team').onclick = () => setView('team');
 document.getElementById('view-nuz').onclick = () => setView('nuzlocke');
 document.getElementById('view-iv').onclick = () => setView('ivs');
+document.getElementById('view-bat').onclick = () => setView('battle');
+document.getElementById('view-guide').onclick = () => setView('guide');
 document.getElementById('view-moves').onclick = () => setView('moves');
 document.getElementById('view-types').onclick = () => setView('types');
 document.getElementById('view-map').onclick = () => setView('map');
@@ -1609,6 +1724,7 @@ function nDamage(A, D, mv, o) {
     if (!A.hp.t) return { note: `Set ${A.name}'s Hidden Power type on its card (or log enough IVs) to calculate.` };
     d = Object.assign({}, d, { t: A.hp.t, p: A.hp.p || (A.hp.pr ? Math.round((A.hp.pr[0] + A.hp.pr[1]) / 2) : 0) });
   }
+  if (d && o.t) d = Object.assign({}, d, { t: o.t });
   if (!d || !d.t) return { note: 'Unknown move.' };
   if (d.c === 'St') return { note: `${mv} is a status move, so it does no direct damage.` };
   let mult = 1; D.types.forEach(t => { const v = (CH[d.t] || {})[t]; if (v !== undefined) mult *= v });
@@ -1626,6 +1742,8 @@ function nDamage(A, D, mv, o) {
   if (o.wx === 'sand' && !phys && D.types.includes('Rock')) { Def = Math.floor(Def * 1.5); why.push('Sandstorm ×1.5 Sp.Def (Rock)') }
   if (phys && (aab === 'Huge Power' || aab === 'Pure Power')) { Atk *= 2; why.push(aab + ' ×2 Atk') }
   if (phys && aab === 'Hustle') { Atk = Math.floor(Atk * 1.5); why.push('Hustle ×1.5 Atk') }
+  if (phys && aab === 'Guts' && o.st) { Atk = Math.floor(Atk * 1.5); why.push('Guts ×1.5 Atk') }
+  if (phys && dab === 'Marvel Scale' && o.dst) { Def = Math.floor(Def * 1.5); why.push('Marvel Scale ×1.5 Def') }
   if ((phys && A.item === 'Choice Band') || (!phys && A.item === 'Choice Specs')) { Atk = Math.floor(Atk * 1.5); why.push(A.item + ' ×1.5') }
   if (A.item === 'Light Ball' && A.n === 25) { Atk *= 2; why.push('Light Ball ×2') }
   if (A.item === 'Thick Club' && phys && (A.n === 104 || A.n === 105)) { Atk *= 2; why.push('Thick Club ×2 Atk') }
@@ -1639,6 +1757,7 @@ function nDamage(A, D, mv, o) {
   const orb = { 'Adamant Orb': [483, 'Dragon', 'Steel'], 'Lustrous Orb': [484, 'Water', 'Dragon'], 'Griseous Orb': [487, 'Ghost', 'Dragon'] }[A.item];
   if (orb && A.n === orb[0] && orb.includes(d.t)) { P = Math.floor(P * 1.2); why.push(A.item + ' ×1.2 power') }
   if ((phys && A.item === 'Muscle Band') || (!phys && A.item === 'Wise Glasses')) { P = Math.floor(P * 1.1); why.push(A.item + ' ×1.1 power') }
+  if (aab === 'Reckless' && NRECOIL[mv]) { P = Math.floor(P * 1.2); why.push('Reckless ×1.2 power') }
   if (aab === 'Iron Fist' && NPUNCH.has(mv)) { P = Math.floor(P * 1.2); why.push('Iron Fist ×1.2 power') }
   if (o.pinch && ((aab === 'Blaze' && d.t === 'Fire') || (aab === 'Torrent' && d.t === 'Water') || (aab === 'Overgrow' && d.t === 'Grass') || (aab === 'Swarm' && d.t === 'Bug'))) { P = Math.floor(P * 1.5); why.push(aab + ' ×1.5 (low HP)') }
   if (dab === 'Heatproof' && d.t === 'Fire') { P = Math.floor(P / 2); why.push('Heatproof ×0.5') }
@@ -1726,6 +1845,1456 @@ function renderCalc() {
     </div>${res}</section>`;
   nDecorate();
 }
+
+// ---- Battle engine for the Battle tab ----
+// Plays a fight out from any point. Every hit goes through nDamage above. The boss picks its moves
+// and replacements the way Platinum's trainer AI does (pret/pokeplatinum: src/battle/trainer_ai/script.s with
+// the Basic, Evaluate Attack and Expert flags; trainer_ai.c for voluntary switches; battle_lib.c for the post-KO pick).
+const NPRIO = { 'Quick Attack': 1, 'Mach Punch': 1, 'Bullet Punch': 1, 'Ice Shard': 1, 'Aqua Jet': 1, 'Shadow Sneak': 1, 'Vacuum Wave': 1, 'Sucker Punch': 1, 'Extreme Speed': 1,
+  'Fake Out': 1, 'Protect': 3, 'Detect': 3, 'Endure': 3, 'Feint': 2, 'Vital Throw': -1, 'Focus Punch': -3, 'Avalanche': -4, 'Revenge': -4, 'Counter': -5, 'Mirror Coat': -5,
+  'Roar': -6, 'Whirlwind': -6, 'Trick Room': -7 };
+// moves with the "+1 priority" effect (Evaluate Attack gives these +6 instead of +4 for a kill)
+const NPRIO1 = new Set(['Quick Attack', 'Mach Punch', 'Bullet Punch', 'Ice Shard', 'Aqua Jet', 'Shadow Sneak', 'Vacuum Wave', 'Extreme Speed']);
+// the AI scores these as doing no damage (sNoDamageCalcMoveEffects), so they never count as its strongest move or as a kill
+const NNOCALC = new Set(['Explosion', 'Self-Destruct', 'Dream Eater', 'Razor Wind', 'Sky Attack', 'Hyper Beam', 'Giga Impact', 'Blast Burn', 'Frenzy Plant', 'Hydro Cannon',
+  'Rock Wrecker', 'Roar of Time', 'Skull Bash', 'Solar Beam', 'Spit Up', 'Focus Punch', 'Superpower', 'Eruption', 'Water Spout', 'Sucker Punch', 'Head Smash']);
+const NHITS2 = new Set(['Double Kick', 'Bonemerang', 'Double Hit', 'Twineedle', 'Dual Chop']);
+const NHITS25 = new Set(['Bullet Seed', 'Fury Swipes', 'Icicle Spear', 'Rock Blast', 'Pin Missile', 'Comet Punch', 'Double Slap', 'Spike Cannon', 'Barrage', 'Arm Thrust', 'Fury Attack', 'Tail Slap']);
+const NHICRIT = new Set(['Night Slash', 'Psycho Cut', 'Stone Edge', 'Cross Chop', 'Leaf Blade', 'Air Cutter', 'Razor Leaf', 'Shadow Claw', 'Cross Poison', 'Attack Order', 'Spacial Rend',
+  'Blaze Kick', 'Slash', 'Karate Chop', 'Crabhammer', 'Aeroblast', 'Poison Tail', 'Sky Attack', 'Razor Wind', 'Drill Run']);
+const NRECHARGE = new Set(['Hyper Beam', 'Giga Impact', 'Roar of Time', 'Rock Wrecker', 'Blast Burn', 'Hydro Cannon', 'Frenzy Plant']);
+const NCHARGE = new Set(['Solar Beam', 'Skull Bash', 'Razor Wind', 'Sky Attack']), NINVULN = new Set(['Bounce', 'Fly', 'Dig', 'Dive']);
+const NLOCK = new Set(['Outrage', 'Petal Dance', 'Thrash']), NSELFKO = new Set(['Explosion', 'Self-Destruct']), NOHKO = new Set(['Guillotine', 'Fissure', 'Horn Drill', 'Sheer Cold']);
+const NSOUND = new Set(['Growl', 'Roar', 'Sing', 'Supersonic', 'Screech', 'Snore', 'Uproar', 'Metal Sound', 'Grass Whistle', 'Bug Buzz', 'Chatter']);
+const NRECOIL = { 'Brave Bird': 1 / 3, 'Double-Edge': 1 / 3, 'Flare Blitz': 1 / 3, 'Wood Hammer': 1 / 3, 'Volt Tackle': 1 / 3, 'Head Smash': 1 / 2, 'Wild Charge': 1 / 4, 'Take Down': 1 / 4, 'Submission': 1 / 4 };
+const NDRAIN = new Set(['Giga Drain', 'Drain Punch', 'Leech Life', 'Absorb', 'Mega Drain', 'Horn Leech']);
+// physical moves that don't make contact (for Static, Flame Body, Rough Skin)
+const NNOCONTACT = new Set(['Earthquake', 'Rock Slide', 'Stone Edge', 'Bulldoze', 'Rock Tomb', 'Bullet Seed', 'Ice Shard', 'Gunk Shot', 'Seed Bomb', 'Explosion', 'Self-Destruct', 'Icicle Crash',
+  'Rock Wrecker', 'Attack Order', 'Magnitude', 'Bone Club', 'Bonemerang', 'Rock Blast', 'Icicle Spear', 'Pin Missile', 'Poison Sting', 'Twineedle', 'Sky Attack', 'Fling', 'Psycho Cut',
+  'Rock Throw', 'Spike Cannon', 'Barrage', 'Egg Bomb', 'Present', 'Bullet Punch', 'Bulldoze', 'Sand Tomb', 'Fissure', 'Dig', 'Seismic Toss']);
+// secondary effects: [chance %, what happens]
+const NSEC = {
+  'Flamethrower': [10, 'brn'], 'Fire Blast': [10, 'brn'], 'Fire Punch': [10, 'brn'], 'Ember': [10, 'brn'], 'Heat Wave': [10, 'brn'], 'Flame Wheel': [10, 'brn'], 'Blaze Kick': [10, 'brn'],
+  'Flare Blitz': [10, 'brn'], 'Lava Plume': [30, 'brn'], 'Scald': [30, 'brn'], 'Fire Fang': [10, 'brn', 10], 'Sacred Fire': [50, 'brn'],
+  'Thunderbolt': [10, 'par'], 'Thunder': [30, 'par'], 'Thunder Punch': [10, 'par'], 'Thunder Shock': [10, 'par'], 'Spark': [30, 'par'], 'Discharge': [30, 'par'], 'Body Slam': [30, 'par'],
+  'Force Palm': [30, 'par'], 'Bounce': [30, 'par'], 'Thunder Fang': [10, 'par', 10], 'Dragon Breath': [30, 'par'], 'Lick': [30, 'par'], 'Zap Cannon': [100, 'par'], 'Wild Charge': [0, ''],
+  'Sludge Bomb': [30, 'psn'], 'Sludge': [30, 'psn'], 'Poison Jab': [30, 'psn'], 'Gunk Shot': [30, 'psn'], 'Cross Poison': [10, 'psn'], 'Poison Sting': [30, 'psn'], 'Poison Tail': [10, 'psn'],
+  'Sludge Wave': [10, 'psn'], 'Poison Fang': [30, 'tox'],
+  'Ice Beam': [10, 'frz'], 'Blizzard': [10, 'frz'], 'Ice Punch': [10, 'frz'], 'Powder Snow': [10, 'frz'], 'Ice Fang': [10, 'frz', 10],
+  'Air Slash': [30, 'flinch'], 'Bite': [30, 'flinch'], 'Iron Head': [30, 'flinch'], 'Rock Slide': [30, 'flinch'], 'Headbutt': [30, 'flinch'], 'Stomp': [30, 'flinch'],
+  'Zen Headbutt': [20, 'flinch'], 'Waterfall': [20, 'flinch'], 'Dark Pulse': [20, 'flinch'], 'Extrasensory': [10, 'flinch'], 'Twister': [20, 'flinch'], 'Dragon Rush': [20, 'flinch'],
+  'Icicle Crash': [30, 'flinch'], 'Astonish': [30, 'flinch'], 'Needle Arm': [30, 'flinch'], 'Hyper Fang': [10, 'flinch'], 'Fake Out': [100, 'flinch'],
+  'Water Pulse': [20, 'conf'], 'Psybeam': [10, 'conf'], 'Confusion': [10, 'conf'], 'Signal Beam': [10, 'conf'], 'Dizzy Punch': [20, 'conf'], 'Dynamic Punch': [100, 'conf'], 'Hurricane': [30, 'conf'],
+  'Rock Tomb': [100, { spe: -1 }], 'Icy Wind': [100, { spe: -1 }], 'Bulldoze': [100, { spe: -1 }], 'Mud Shot': [100, { spe: -1 }], 'Bubble Beam': [10, { spe: -1 }],
+  'Crunch': [20, { def: -1 }], 'Iron Tail': [30, { def: -1 }], 'Shadow Ball': [20, { spd: -1 }], 'Psychic': [10, { spd: -1 }], 'Bug Buzz': [10, { spd: -1 }], 'Energy Ball': [10, { spd: -1 }],
+  'Focus Blast': [10, { spd: -1 }], 'Earth Power': [10, { spd: -1 }], 'Flash Cannon': [10, { spd: -1 }], 'Luster Purge': [50, { spd: -1 }], 'Muddy Water': [30, { acc: -1 }],
+  'Octazooka': [50, { acc: -1 }], 'Mud-Slap': [100, { acc: -1 }], 'Mirror Shot': [30, { acc: -1 }], 'Moonblast': [30, { spa: -1 }], 'Play Rough': [10, { atk: -1 }], 'Aurora Beam': [10, { atk: -1 }],
+};
+// effects on the user after a hit
+const NSELF = { 'Close Combat': [100, { def: -1, spd: -1 }], 'Superpower': [100, { atk: -1, def: -1 }], 'Overheat': [100, { spa: -2 }], 'Draco Meteor': [100, { spa: -2 }],
+  'Leaf Storm': [100, { spa: -2 }], 'Psycho Boost': [100, { spa: -2 }], 'Hammer Arm': [100, { spe: -1 }], 'Ancient Power': [10, { atk: 1, def: 1, spa: 1, spd: 1, spe: 1 }],
+  'Silver Wind': [10, { atk: 1, def: 1, spa: 1, spd: 1, spe: 1 }], 'Ominous Wind': [10, { atk: 1, def: 1, spa: 1, spd: 1, spe: 1 }], 'Meteor Mash': [20, { atk: 1 }], 'Metal Claw': [10, { atk: 1 }],
+  'Charge Beam': [70, { spa: 1 }], 'Steel Wing': [10, { def: 1 }] };
+// status moves: what they do, and the AI routine that scores them
+const NSTAT = {
+  'Swords Dance': { k: 'atkUp', self: { atk: 2 } }, 'Nasty Plot': { k: 'spaUp', self: { spa: 2 } }, 'Agility': { k: 'speUp', self: { spe: 2 } }, 'Rock Polish': { k: 'speUp', self: { spe: 2 } },
+  'Amnesia': { k: 'spdUp', self: { spd: 2 } }, 'Calm Mind': { k: 'spdUp', self: { spa: 1, spd: 1 } }, 'Defend Order': { k: 'spdUp', self: { def: 1, spd: 1 } }, 'Cosmic Power': { k: 'spdUp', self: { def: 1, spd: 1 } },
+  'Bulk Up': { k: 'defUp', self: { atk: 1, def: 1 } }, 'Defense Curl': { k: 'defUp', self: { def: 1 } }, 'Iron Defense': { k: 'defUp', self: { def: 2 } }, 'Harden': { k: 'defUp', self: { def: 1 } },
+  'Withdraw': { k: 'defUp', self: { def: 1 } }, 'Acid Armor': { k: 'defUp', self: { def: 2 } }, 'Barrier': { k: 'defUp', self: { def: 2 } }, 'Howl': { k: 'atkUp', self: { atk: 1 } },
+  'Growth': { k: 'spaUp', self: { spa: 1 } }, 'Tail Glow': { k: 'spaUp', self: { spa: 2 } }, 'Dragon Dance': { k: 'dd', self: { atk: 1, spe: 1 } }, 'Curse': { k: 'curse', self: { atk: 1, def: 1, spe: -1 } },
+  'Double Team': { k: 'evaUp', self: { eva: 1 } }, 'Minimize': { k: 'evaUp', self: { eva: 2 } }, 'Focus Energy': { k: 'focus' },
+  'Scary Face': { k: 'speDown', foe: { spe: -2 } }, 'String Shot': { k: 'speDown', foe: { spe: -1 } }, 'Cotton Spore': { k: 'speDown', foe: { spe: -2 } },
+  'Growl': { k: 'atkDown', foe: { atk: -1 } }, 'Charm': { k: 'atkDown', foe: { atk: -2 } }, 'Feather Dance': { k: 'atkDown', foe: { atk: -2 } },
+  'Leer': { k: 'defDown', foe: { def: -1 } }, 'Tail Whip': { k: 'defDown', foe: { def: -1 } }, 'Screech': { k: 'defDown', foe: { def: -2 } }, 'Metal Sound': { k: 'spdDown', foe: { spd: -2 } },
+  'Fake Tears': { k: 'spdDown', foe: { spd: -2 } }, 'Captivate': { k: 'spaDown', foe: { spa: -2 } }, 'Sand Attack': { k: 'accDown', foe: { acc: -1 } }, 'Smokescreen': { k: 'accDown', foe: { acc: -1 } },
+  'Flash': { k: 'accDown', foe: { acc: -1 } }, 'Kinesis': { k: 'accDown', foe: { acc: -1 } }, 'Sweet Scent': { k: 'evaDown', foe: { eva: -1 } },
+  'Recover': { k: 'recover' }, 'Roost': { k: 'recover' }, 'Slack Off': { k: 'recover' }, 'Soft-Boiled': { k: 'recover' }, 'Heal Order': { k: 'recover' }, 'Milk Drink': { k: 'recover' },
+  'Moonlight': { k: 'recover', wx: 1 }, 'Morning Sun': { k: 'recover', wx: 1 }, 'Synthesis': { k: 'recover', wx: 1 }, 'Rest': { k: 'rest' },
+  'Protect': { k: 'protect' }, 'Detect': { k: 'protect' }, 'Reflect': { k: 'reflect' }, 'Light Screen': { k: 'lscreen' },
+  'Stealth Rock': { k: 'sr' }, 'Spikes': { k: 'spikes' }, 'Toxic Spikes': { k: 'tspikes' },
+  'Sandstorm': { k: 'wx', wx: 'sand' }, 'Sunny Day': { k: 'wx', wx: 'sun' }, 'Rain Dance': { k: 'wx', wx: 'rain' }, 'Hail': { k: 'wx', wx: 'hail' },
+  'Hypnosis': { k: 'sleep' }, 'Sleep Powder': { k: 'sleep' }, 'Spore': { k: 'sleep' }, 'Sing': { k: 'sleep' }, 'Grass Whistle': { k: 'sleep' }, 'Lovely Kiss': { k: 'sleep' }, 'Dark Void': { k: 'sleep' },
+  'Thunder Wave': { k: 'para' }, 'Stun Spore': { k: 'para' }, 'Glare': { k: 'para' }, 'Toxic': { k: 'tox' }, 'Poison Powder': { k: 'psn' }, 'Poison Gas': { k: 'psn' }, 'Will-O-Wisp': { k: 'brn' },
+  'Confuse Ray': { k: 'conf' }, 'Teeter Dance': { k: 'conf' }, 'Supersonic': { k: 'conf' }, 'Sweet Kiss': { k: 'conf' }, 'Swagger': { k: 'swagger' }, 'Flatter': { k: 'flatter' }, 'Yawn': { k: 'yawn' },
+  'Leech Seed': { k: 'leech' }, 'Taunt': { k: 'taunt' }, 'Torment': { k: 'torment' }, 'Attract': { k: 'attract' }, 'Disable': { k: 'disable' }, 'Metronome': { k: 'none' },
+  'Baton Pass': { k: 'batonpass' }, 'Tailwind': { k: 'tailwind' }, 'Aqua Ring': { k: 'aquaring' }, 'Pain Split': { k: 'painsplit' }, 'Sleep Talk': { k: 'sleeptalk' },
+  'Roar': { k: 'force' }, 'Whirlwind': { k: 'force' }, 'Substitute': { k: 'none' }, 'Trick Room': { k: 'none' },
+};
+const NSTAGEK = ['atk', 'def', 'spa', 'spd', 'spe', 'acc', 'eva'];
+const nsR = n => Math.floor(Math.random() * n);
+const nsCh = n => Math.random() * 256 >= n;          // the script's "IfRandomLessThan n, skip" – true means the score change happens
+const nsPct = c => Math.floor(c.hp * 100 / c.max);
+const nsTypeMult = (t, types) => types.reduce((x, d) => x * ((CH[t] || {})[d] ?? 1), 1);
+
+function nsMake(mon, moves, side, slot, key) {
+  const c = { m: mon, side, slot, key, name: mon.name, types: mon.types, ab: mon.ab, item: mon.item || '', moves: moves.filter(mv => MV[mv]).slice(0, 4), max: mon.stats.hp, hp: mon.stats.hp,
+    st: '', slp: 0, toxN: 0, usedItem: false, firstOut: true };
+  nsReset(c); return c;
+}
+function nsReset(c) {
+  c.stg = { atk: 0, def: 0, spa: 0, spd: 0, spe: 0, acc: 0, eva: 0 }; c.conf = 0; c.lock = null; c.lockN = 0; c.choice = null; c.recharge = false; c.charging = null; c.prot = 0;
+  c.seed = false; c.yawn = 0; c.taunt = 0; c.crit = 0; c.ff = false; c.consec = 0; c.lastMv = null; c.lastCls = null; c.hitBy = null; c.dc = false; c.invuln = false; c.disabled = null;
+  c.took = null; c.hitThisTurn = false; c.protNow = false; c.flinch = false; c.ring = false; c.ffire = false;
+}
+const nsView = c => Object.assign({}, c.m, { item: c.item, ab: c.ab, types: c.types });
+const nsAlive = s => s.team.filter(c => c.hp > 0);
+const nsBench = s => s.team.filter(c => c.hp > 0 && c !== s.team[s.a]);
+const nsAct = (S, i) => S.sd[i].team[S.sd[i].a];
+const nsWx = S => S.sd.some(s => s.team[s.a].hp > 0 && (s.team[s.a].ab === 'Air Lock' || s.team[s.a].ab === 'Cloud Nine')) ? '' : S.wx;
+
+function nsSpeed(S, c) {
+  const sd = S.sd[c.side], wx = nsWx(S), st = c.stg.spe;
+  let s = Math.floor(c.m.stats.spe * (st >= 0 ? (2 + st) / 2 : 2 / (2 - st)));
+  if (c.item === 'Choice Scarf') s = Math.floor(s * 1.5);
+  if ((c.ab === 'Swift Swim' && wx === 'rain') || (c.ab === 'Chlorophyll' && wx === 'sun') || (c.ab === 'Unburden' && c.usedItem && !c.item)) s *= 2;
+  if (sd.tw > 0) s *= 2;
+  if (c.st === 'par' && c.ab !== 'Quick Feet') s = Math.floor(s / 4);
+  if (c.item === 'Iron Ball' || c.item === 'Macho Brace') s = Math.floor(s / 2);
+  return s;
+}
+const nsSlower = (S, a, d) => nsSpeed(S, a) < nsSpeed(S, d);
+
+// power for moves whose power depends on the situation
+function nsPower(S, A, D, mv, ctx) {
+  const d = MV[mv] || {};
+  if (mv === 'Gyro Ball') return Math.min(150, 1 + Math.floor(25 * nsSpeed(S, D) / Math.max(1, nsSpeed(S, A))));
+  if (mv === 'Low Kick' || mv === 'Grass Knot') return 60;   // the Pokédex data has no weights
+  if (mv === 'Eruption' || mv === 'Water Spout') return Math.max(1, Math.floor(150 * A.hp / A.max));
+  if (mv === 'Facade') return A.st && A.st !== 'slp' && A.st !== 'frz' ? 140 : 70;
+  if (mv === 'Weather Ball') return nsWx(S) ? 100 : 50;
+  if (mv === 'Payback') return ctx && ctx.after ? 100 : 50;
+  if ((mv === 'Avalanche' || mv === 'Revenge') && ctx && ctx.hit) return 120;
+  if (mv === 'Brine' && D.hp * 2 <= D.max) return 130;
+  if (mv === 'Rollout' || mv === 'Ice Ball') return 30 * Math.pow(2, Math.min(4, A.lastMv === mv ? A.consec : 0)) * (A.dc ? 2 : 1);
+  if (mv === 'Return') return 102;
+  if (mv === 'Frustration') return 102;
+  if (mv === 'Wring Out' || mv === 'Crush Grip') return Math.max(1, Math.floor(120 * D.hp / D.max));
+  if (NSELFKO.has(mv)) return d.p * 2;   // Gen 4 Explosion halves the target's Defense
+  return 0;
+}
+const nsWBType = S => ({ sun: 'Fire', rain: 'Water', sand: 'Rock', hail: 'Ice' })[nsWx(S)];
+
+// damage rolls through the calculator's nDamage, with the live battle state
+function nsRolls(S, A, D, mv, crit, ctx) {
+  const d = MV[mv]; if (!d || d.c === 'St') return null;
+  const phys = d.c === 'P', dsd = S.sd[D.side], wx = nsWx(S);
+  const o = { crit, wx: wx === 'hail' ? '' : wx, scr: (phys ? dsd.ref : dsd.ls) > 0, brn: A.st === 'brn', pinch: A.hp * 3 <= A.max, as: phys ? A.stg.atk : A.stg.spa, ds: phys ? D.stg.def : D.stg.spd,
+    pw: nsPower(S, A, D, mv, ctx) || '', t: mv === 'Weather Ball' ? nsWBType(S) : '', st: !!A.st, dst: !!D.st, ff: A.ff };
+  const AV = nsView(A), DV = Object.assign(nsView(D), { stats: Object.assign({}, D.m.stats, { hp: D.hp }) });
+  const x = nDamage(AV, DV, mv, o);
+  return x.rolls ? x : null;
+}
+// the AI's own damage figure: highest roll, no crit, 0 for moves it doesn't calculate
+function nsAiDmg(S, A, D, mv) {
+  const d = MV[mv]; if (!d || d.c === 'St' || NNOCALC.has(mv) || NOHKO.has(mv)) return 0;
+  if (!d.p && !['Gyro Ball', 'Low Kick', 'Grass Knot', 'Hidden Power', 'Night Shade', 'Seismic Toss', 'Dragon Rage', 'Sonic Boom', 'Return', 'Frustration', 'Super Fang'].includes(mv)) return 0;
+  const x = nsRolls(S, A, D, mv, false, null); return x ? x.rolls[15] : 0;
+}
+const nsCalcable = mv => { const d = MV[mv]; return d && d.c !== 'St' && !NNOCALC.has(mv) && !NOHKO.has(mv) };
+
+// ---- Trainer AI move scoring (Basic + Evaluate Attack + Expert) ----
+function nsUsable(S, c) {
+  const foe = nsAct(S, 1 - c.side);
+  return c.moves.map((mv, i) => {
+    if (c.choice && c.moves.includes(c.choice) && mv !== c.choice) return false;
+    if (c.taunt > 0 && MV[mv].c === 'St') return false;
+    if (c.disabled && c.disabled.mv === mv) return false;
+    if (mv === 'Sleep Talk' && c.st !== 'slp') return true;
+    return true;
+  });
+}
+function nsAiScores(S, me, foe, flags) {
+  const ok = nsUsable(S, me), dmg = me.moves.map(mv => nsAiDmg(S, me, foe, mv));
+  const best = Math.max(0, ...dmg), wx = S.wx, fsd = S.sd[foe.side], msd = S.sd[me.side];
+  const foeBench = nsBench(fsd).length, myBench = nsBench(msd).length, slower = nsSlower(S, me, foe), myPct = nsPct(me), foePct = nsPct(foe);
+  const known = mv => foe.moves.includes(mv);
+  return me.moves.map((mv, i) => {
+    if (!ok[i]) return 0;
+    const d = MV[mv], st = NSTAT[mv] || {}, k = st.k, atk = d.c !== 'St';
+    const tm = atk ? nsTypeMult(mv === 'Weather Ball' && nsWBType(S) ? nsWBType(S) : d.t, foe.types) : 1;
+    let s = 100;
+    // Basic: immunities, then moves that would fail
+    if (atk && nsCalcable(mv) && me.ab !== 'Mold Breaker') {
+      const fa = foe.ab;
+      if (tm === 0) s -= 10;
+      else if (((fa === 'Volt Absorb' || fa === 'Motor Drive') && d.t === 'Electric') || (fa === 'Water Absorb' && d.t === 'Water') || (fa === 'Flash Fire' && d.t === 'Fire')
+        || (fa === 'Levitate' && d.t === 'Ground') || (fa === 'Wonder Guard' && tm <= 1)) s -= 12;
+    } else if (atk && nsCalcable(mv) && tm === 0) s -= 10;
+    if (foe.ab === 'Soundproof' && me.ab !== 'Mold Breaker' && NSOUND.has(mv)) s -= 10;
+    const stg = (who, key) => who.stg[key];
+    if (k === 'sleep' && (foe.st || foe.ab === 'Insomnia' || foe.ab === 'Vital Spirit')) s -= 10;
+    if (NSELFKO.has(mv) && (foe.ab === 'Damp' || (!myBench && foeBench))) s -= 10;
+    else if (NSELFKO.has(mv) && !myBench) s -= 1;
+    if (st.self) Object.entries(st.self).forEach(([key, v]) => { if (v > 0 && stg(me, key) >= 6) s -= k === 'dd' && key === 'spe' ? 8 : 10 });
+    if (st.foe) Object.entries(st.foe).forEach(([key, v]) => { if (v < 0 && (stg(foe, key) <= -6 || foe.ab === 'Clear Body' || foe.ab === 'White Smoke' || (key === 'atk' && foe.ab === 'Hyper Cutter')
+      || (key === 'spe' && foe.ab === 'Speed Boost'))) s -= 10 });
+    if (k === 'force' && !foeBench) s -= 10;
+    if (k === 'recover' && me.hp === me.max) s -= 8;
+    if ((k === 'tox' || k === 'psn') && (foe.types.includes('Steel') || foe.types.includes('Poison') || ['Immunity', 'Magic Guard', 'Poison Heal'].includes(foe.ab) || foe.st)) s -= 10;
+    if (k === 'lscreen' && msd.ls > 0) s -= 8;
+    if (k === 'reflect' && msd.ref > 0) s -= 8;
+    if ((k === 'conf' || k === 'swagger' || k === 'flatter') && foe.conf > 0) s -= 5;
+    if ((k === 'conf' || k === 'swagger' || k === 'flatter') && foe.ab === 'Own Tempo') s -= 10;
+    if (k === 'para' && (foe.st || foe.ab === 'Limber' || foe.ab === 'Magic Guard' || (mv === 'Thunder Wave' && (tm === 0 || foe.ab === 'Motor Drive' || foe.ab === 'Volt Absorb')))) s -= 10;
+    if (k === 'brn' && (foe.st || foe.ab === 'Water Veil' || foe.ab === 'Magic Guard' || foe.types.includes('Fire'))) s -= 10;
+    if (k === 'leech' && (foe.seed || foe.types.includes('Grass') || foe.ab === 'Magic Guard')) s -= 10;
+    if (k === 'wx' && wx === st.wx) s -= 8;
+    if (k === 'spikes' && (fsd.spk >= 3 || !foeBench)) s -= 10;
+    if (k === 'tspikes' && (fsd.tsp >= 2 || !foeBench)) s -= 10;
+    if (k === 'sr' && (fsd.sr || !foeBench)) s -= 10;
+    if (mv === 'Fake Out' && !me.firstOut) s -= 10;
+    if (k === 'sleeptalk' && me.st !== 'slp') s -= 10;
+    if (k === 'yawn' && (foe.st || foe.yawn)) s -= 10;
+    if (k === 'taunt' && foe.taunt > 0) s -= 10;
+    if (k === 'tailwind' && msd.tw > 0) s -= 10;
+    if (k === 'curse' && !me.types.includes('Ghost') && stg(me, 'def') >= 6) s -= 10;
+    if (k === 'focus' && me.ff) s -= 10;
+    if (k === 'aquaring' && me.ring) s -= 10;
+    if (NOHKO.has(mv) && (foe.m.lv > me.m.lv || foe.ab === 'Sturdy')) s -= 10;
+    if (k === 'batonpass' && !myBench) s -= 10;
+    // Evaluate Attack: +4 for a kill (+6 for +1 priority moves); -1 if another move does more
+    if (flags.eval && atk) {
+      if (nsCalcable(mv) && dmg[i] >= foe.hp && dmg[i] > 0) s += NPRIO1.has(mv) ? 6 : 4;
+      else {
+        if (nsCalcable(mv) && dmg[i] < best) s -= 1;
+        if ((NSELFKO.has(mv) || mv === 'Focus Punch' || mv === 'Sucker Punch') && nsCh(51)) s -= 2;
+        if (tm >= 4 && nsCh(80)) s += 2;
+      }
+    }
+    if (flags.expert) s += nsExpert(S, me, foe, mv, k, st, tm, { slower, myPct, foePct, myBench, known });
+    return Math.max(0, s);
+  });
+}
+function nsExpert(S, me, foe, mv, k, st, tm, x) {
+  const { slower, myPct, foePct, myBench, known } = x, wx = S.wx, resisted = tm < 1;
+  let s = 0;
+  const statUp = key => {   // Expert_StatusAttackUp / SpAttackUp
+    if (me.stg[key] < 3) { if (myPct === 100 && nsCh(128)) s += 2 } else if (nsCh(100)) s -= 1;
+    if (myPct <= 70) { if (myPct < 40) s -= 2; else if (nsCh(key === 'atk' ? 40 : 70)) s -= 2 }
+  };
+  const defUp = (key, cls) => {   // Expert_StatusDefenseUp / SpDefenseUp
+    if (me.stg[key] < 3) { if (myPct === 100 && nsCh(128)) s += 2 } else if (nsCh(100)) s -= 1;
+    if (myPct >= 70 && !nsCh(200)) return;
+    if (myPct < 40) { s -= 2; return }
+    if (!foe.lastMv || !MV[foe.lastMv].p) { if (nsCh(60)) s -= 2; return }
+    if (foe.lastCls === cls) { s -= 2; return }
+    if (nsCh(60) && nsCh(60)) s -= 2;
+  };
+  switch (k) {
+    case 'atkUp': statUp('atk'); break;
+    case 'spaUp': statUp('spa'); break;
+    case 'defUp': defUp('def', 'S'); break;
+    case 'spdUp': defUp('spd', 'P'); break;
+    case 'speUp': if (slower) { if (nsCh(70)) s += 3 } else s -= 3; break;
+    case 'dd': if (slower) { if (nsCh(128)) s += 1 } else if (myPct <= 50 && nsCh(70)) s -= 1; break;
+    case 'evaUp':
+      if (myPct >= 90 && nsCh(100)) s += 3;
+      if (me.stg.eva >= 3 && nsCh(128)) s -= 1;
+      if (foe.st === 'tox' && (myPct > 50 || nsCh(80)) && nsCh(50)) s += 3;
+      if (foe.seed && nsCh(70)) s += 3;
+      break;
+    case 'para': if (slower) { if (nsCh(20)) s += 3 } else if (myPct <= 70) s -= 1; break;
+    case 'psn': if (myPct < 50 || foePct <= 50) s -= 1; break;
+    case 'tox': case 'leech':
+      if (me.moves.some(m => MV[m] && MV[m].c !== 'St')) {
+        if (myPct <= 50 && nsCh(50)) s -= 3;
+        if (foePct <= 50 && nsCh(50)) s -= 3;
+      }
+      if (me.moves.some(m => ['Amnesia', 'Protect', 'Detect'].includes(m)) && nsCh(60)) s += 2;
+      break;
+    case 'sleep': if (me.moves.some(m => m === 'Dream Eater' || m === 'Nightmare') && nsCh(128)) s += 1; break;
+    case 'recover':
+      if (myPct === 100) { s -= 3; break }
+      if (!slower) { s -= 8; break }
+      if (myPct >= 70 && nsCh(30)) { s -= 3; break }
+      if (nsCh(20)) s += 2;
+      break;
+    case 'rest':
+      if (!slower) {
+        if (myPct === 100) { s -= 8; break }
+        if (myPct >= 40 && (myPct > 50 || nsCh(70))) { s -= 3; break }
+      } else if (myPct >= 60 && (myPct > 70 || nsCh(50))) { s -= 3; break }
+      if (nsCh(10)) s += 3;
+      break;
+    case 'protect': {
+      if (known('Feint') && nsCh(128)) s -= 2;
+      if (me.prot > 1) { s -= 2; break }
+      const bad = c => c.st === 'tox' || c.seed || c.yawn > 0;
+      if (bad(me)) { s -= 2; break }
+      if (bad(foe) || !nsCh(85)) s += 2;
+      if (nsCh(128)) s -= 1;
+      if (me.prot > 0) { s -= 1; if (nsCh(128)) s -= 1 }
+      break;
+    }
+    case 'lscreen': case 'reflect':
+      if (myPct < 50) { s -= 2; break }
+      if (myPct >= 90 && nsCh(128)) s += 1;
+      if (foe.lastCls === (k === 'lscreen' ? 'S' : 'P') && nsCh(64)) s += 1;
+      break;
+    case 'sr': case 'spikes': case 'tspikes':
+      if (nsCh(128)) { s += 1; if ((me.moves.includes('Roar') || me.moves.includes('Whirlwind')) && nsCh(64)) s += 1 }
+      break;
+    case 'conf': case 'swagger': case 'flatter':
+      if (foePct <= 70) { if (nsCh(128)) s -= 1; if (foePct <= 50) { s -= 1; if (foePct <= 30) s -= 1 } }
+      break;
+    case 'speDown': if (slower) { if (nsCh(70)) s += 2 } else s -= 3; break;
+    case 'atkDown': case 'spaDown': {
+      const key = k === 'atkDown' ? 'atk' : 'spa';
+      if (foe.stg[key] !== 0) { s -= 1; if (myPct <= 90) s -= 1; if (foe.stg[key] <= -3 && nsCh(50)) s -= 2 }
+      if (foePct <= 70) s -= 2;
+      if (foe.lastCls === (key === 'atk' ? 'S' : 'P') && nsCh(128)) s -= 2;
+      break;
+    }
+    case 'defDown': case 'spdDown':
+      if ((myPct < 70 || foe.stg[k === 'defDown' ? 'def' : 'spd'] <= -3) && nsCh(50)) s -= 2;
+      if (foePct <= 70) s -= 2;
+      break;
+    case 'wx':
+      if (myPct < 40) { s -= 1; break }
+      if (st.wx === 'rain' && slower && me.ab === 'Swift Swim') { s += 1; break }
+      if (wx && wx !== st.wx) { s += 1; if (st.wx === 'hail') { if (me.moves.includes('Blizzard')) s += 2; if (me.ab === 'Ice Body') s += 2 } }
+      break;
+    case 'tailwind':
+      if (!nsCh(64)) break;
+      if (!slower || myPct <= 30) { s -= 1; break }
+      if (myPct > 75 || nsCh(64)) s += 1;
+      break;
+    case 'painsplit': if (foePct < 80) s -= 1; else if (slower ? myPct > 60 : myPct > 40) s -= 1; else s += 1; break;
+    case 'sleeptalk': s += me.st === 'slp' ? 10 : -5; break;
+    case 'curse':
+      if (me.types.includes('Ghost')) { if (myPct <= 80) s -= 1; break }
+      if (me.stg.def > 3) break;
+      if ((me.moves.includes('Gyro Ball') || me.moves.includes('Trick Room')) && nsCh(32)) s += 1;
+      if (nsCh(128)) s += 1;
+      if (me.stg.def > 1) break;
+      if (nsCh(128)) s += 1;
+      if (me.stg.def <= 0 && nsCh(128)) s += 1;
+      break;
+    case 'batonpass': {
+      const hi = ['atk', 'def', 'spa', 'spd', 'eva'].some(q => me.stg[q] >= 3), mid = ['atk', 'def', 'spa', 'spd', 'eva'].some(q => me.stg[q] >= 2);
+      if (hi && (slower ? myPct <= 70 : myPct <= 60) && nsCh(80)) s += 2;
+      else if (!hi && mid && (slower ? myPct <= 70 : myPct <= 60) && nsCh(80)) s += 1;
+      else if (!mid) s -= 2;
+      break;
+    }
+    case 'force': if (nsCh(128)) s -= 3; break;
+  }
+  // attacks with Expert routines
+  const atkEff = !resisted;
+  if (NDRAIN.has(mv) && resisted && nsCh(50)) s -= 3;
+  if (NSELFKO.has(mv)) {
+    if (foe.stg.eva > 0) { s -= 1; if (foe.stg.eva >= 4 && nsCh(128)) s -= 1 }
+    if (myPct >= 80 && !slower) { if (nsCh(50)) s -= 3 }
+    else if (myPct > 50) { if (nsCh(50)) s -= 1 }
+    else { if (nsCh(128)) s += 1; if (myPct <= 30 && nsCh(50)) s += 1 }
+  }
+  if (mv === 'Fake Out') s += 2;
+  if (NHICRIT.has(mv) && tm > 0 && !resisted && (tm >= 2 ? nsCh(128) : nsCh(128) && nsCh(128))) s += 1;
+  if (NRECOIL[mv] && atkEff && tm > 0 && (me.ab === 'Rock Head' || me.ab === 'Magic Guard')) s += 1;
+  if (['Icy Wind', 'Rock Tomb', 'Mud Shot'].includes(mv) && atkEff && tm > 0) { if (slower) { if (nsCh(70)) s += 2 } else s -= 3 }
+  if (mv === 'Superpower') { if (!atkEff || tm === 0 || me.stg.atk < 0) s -= 1; else if (slower ? myPct >= 60 : myPct > 40) s -= 1 }
+  if (['Overheat', 'Draco Meteor', 'Leaf Storm', 'Psycho Boost', 'Close Combat'].includes(mv)) { if (!atkEff || tm === 0) s -= 1; else if (slower ? myPct <= 80 : myPct <= 60) s -= 1 }
+  if (mv === 'Hammer Arm') { if (!atkEff || tm === 0) s -= 1; else if (slower) s += 1 }
+  if (mv === 'Facade' && foe.st && foe.st !== 'slp' && foe.st !== 'frz') s += 1;   // the script checks the target here (a bug in the original)
+  if (mv === 'Knock Off' && foePct >= 30 && !me.firstOut && nsCh(180)) s += 1;
+  if (mv === 'Payback') { if (!atkEff || tm === 0) s -= 1; else if (slower && myPct >= 30 && nsCh(64)) s += 1 }
+  if (mv === 'Avalanche' || mv === 'Revenge') { if (foe.st === 'slp' || foe.conf > 0 || nsCh(180)) s -= 2; else s += 2 }
+  if (mv === 'Endeavor') { if (foePct < 70) s -= 1; else if (slower ? myPct > 50 : myPct > 40) s -= 1; else s += 1 }
+  if (mv === 'Eruption' || mv === 'Water Spout') { if (!atkEff || tm === 0) s -= 1; else if (slower ? foePct <= 70 : foePct <= 50) s -= 1 }
+  if (mv === 'U-turn') {
+    if (!atkEff || tm === 0) s -= 1;
+    else if (myBench) {
+      if (foePct > 70) { if (nsCh(64)) s += 1; if (nsCh(128)) s += 1 } else if (foePct > 30) { if (nsCh(128)) s += 1 }
+      if (!slower || nsCh(128)) s += 1;
+    }
+  }
+  if (mv === 'Sucker Punch') { if (!atkEff || tm === 0) s -= 1; else if (nsCh(64)) s += 1 }
+  if (NRECHARGE.has(mv)) { if (!atkEff || tm === 0) s -= 1; else if (slower ? myPct >= 60 : myPct > 40) s -= 1 }
+  if (NCHARGE.has(mv)) {
+    if (!atkEff || tm === 0) s -= 2;
+    else if (mv === 'Solar Beam' && S.wx === 'sun') s += 2;
+    else if (me.item === 'Power Herb') s += 2;
+    else if (known('Protect') || known('Detect')) s -= 2;
+    else if (myPct <= 38) s -= 1;
+  }
+  if (NINVULN.has(mv)) { if (me.item === 'Power Herb') s += 2; else if (known('Protect') || known('Detect')) s -= 1 }
+  if (NOHKO.has(mv) && nsCh(192)) s += 1;
+  if (mv === 'Counter' || mv === 'Mirror Coat' || mv === 'Metal Burst') {
+    if (foe.st === 'slp' || foe.conf > 0) s -= 1;
+    else {
+      if (myPct <= 30 && nsCh(10)) s -= 1;
+      if (myPct <= 50 && nsCh(100)) s -= 1;
+      const want = mv === 'Counter' ? 'P' : mv === 'Mirror Coat' ? 'S' : foe.lastCls;
+      if (foe.lastCls && foe.lastCls === want && nsCh(100)) s += 1; else if (foe.lastCls && foe.lastCls !== want && mv !== 'Metal Burst') s -= 1;
+    }
+  }
+  return s;
+}
+function nsAiPick(S, flags) {
+  const me = nsAct(S, 1), foe = nsAct(S, 0), sc = nsAiScores(S, me, foe, flags);
+  let top = -1, tied = [];
+  me.moves.forEach((mv, i) => { if (sc[i] > top) { top = sc[i]; tied = [i] } else if (sc[i] === top) tied.push(i) });
+  const i = tied[nsR(tied.length)];
+  return me.moves[i];
+}
+// type-matchup score the post-KO pick uses: 40 per neutral type, doubled/halved, summed over both types (u8)
+function nsOffMult(t, types) { let m = 40; types.forEach(d => { const v = (CH[t] || {})[d]; if (v !== undefined) m = Math.floor(m * v * 10 / 10) }); return m }
+// BattleAI_PostKOSwitchIn: best typing that also has a super-effective move, else most damage as if the fainted mon used its moves
+function nsAiReplace(S, gone) {
+  const sd = S.sd[1], foe = nsAct(S, 0), cands = sd.team.map((c, i) => ({ c, i })).filter(x => x.c.hp > 0 && x.i !== sd.a);
+  if (!cands.length) return -1;
+  const dis = new Set();
+  while (dis.size < cands.length) {
+    let max = 0, pick = null;
+    cands.forEach(x => { if (dis.has(x.i)) return; const t = x.c.types, t2 = t[1] || t[0];
+      const sc = (nsOffMult(t[0], foe.types) + nsOffMult(t2, foe.types)) & 255; if (max < sc) { max = sc; pick = x } });
+    if (!pick) break;
+    if (pick.c.moves.some(mv => MV[mv].c !== 'St' && MV[mv].p && nsTypeMult(MV[mv].t, foe.types) >= 2 && defMult(foe.types, foe.ab, MV[mv].t) > 0)) return pick.i;
+    dis.add(pick.i);
+  }
+  let max = 0, pick = -1;
+  cands.forEach(x => { x.c.moves.forEach(mv => {
+    const d = MV[mv]; if (!d || d.c === 'St') return;
+    const r = nsRolls(S, Object.assign({}, gone, { hp: gone.max, moves: x.c.moves }), foe, mv, false, null);
+    const sc = r ? r.rolls[15] & 255 : 0;   // stored in a u8, so big numbers wrap (a known bug)
+    if (max < sc) { max = sc; pick = x.i }
+  }) });
+  return pick >= 0 ? pick : cands[0].i;
+}
+// TrainerAI_ShouldSwitch, for the checks that matter in single battles
+function nsAiSwitch(S) {
+  const sd = S.sd[1], me = nsAct(S, 1), foe = nsAct(S, 0), bench = sd.team.map((c, i) => ({ c, i })).filter(x => x.c.hp > 0 && x.i !== sd.a);
+  if (!bench.length || foe.ab === 'Shadow Tag' || (foe.ab === 'Arena Trap' && !me.types.includes('Flying') && me.ab !== 'Levitate') || (foe.ab === 'Magnet Pull' && me.types.includes('Steel'))) return -1;
+  const seMove = c => c.moves.some(mv => MV[mv].c !== 'St' && MV[mv].p && defMult(foe.types, foe.ab, MV[mv].t) >= 2);
+  // only moves that can't touch the target: switch to someone with a super-effective move 2/3 of the time
+  const dm = me.moves.filter(mv => MV[mv].p);
+  if (dm.length >= 2 && dm.every(mv => defMult(foe.types, foe.ab, MV[mv].t) === 0)) {
+    const t = bench.find(x => seMove(x.c)); if (t && nsR(3) < 2) return t.i;
+  }
+  const hit = me.hitBy && MV[me.hitBy];
+  if (hit && hit.p && ['Fire', 'Water', 'Electric'].includes(hit.t) && !(seMove(me) && nsR(3) !== 0)) {
+    const want = { Fire: 'Flash Fire', Water: 'Water Absorb', Electric: 'Volt Absorb' }[hit.t];
+    if (me.ab !== want) { for (const x of bench) if (x.c.ab === want && nsR(2)) return x.i }
+  }
+  if (me.moves.some(mv => MV[mv].c !== 'St' && MV[mv].p && defMult(foe.types, foe.ab, MV[mv].t) >= 2 && nsR(10) !== 0)) return -1;
+  if (NSTAGEK.reduce((a, q) => a + Math.max(0, me.stg[q]), 0) >= 4) return -1;
+  if (hit && hit.p) {
+    for (const [cond, r] of [[m => m === 0, 2], [m => m > 0 && m < 1, 3]]) {
+      for (const x of bench) {
+        if (!cond(defMult(x.c.types, x.c.ab, hit.t))) continue;
+        for (const mv of x.c.moves) if (MV[mv].c !== 'St' && MV[mv].p && defMult(foe.types, foe.ab, MV[mv].t) >= 2 && nsR(r) === 0) return x.i;
+      }
+    }
+  }
+  return -1;
+}
+
+// ---- Your side: a simple, sensible player ----
+function nsPlayerMove(S, me, foe) {
+  const opts = me.moves.filter((mv, i) => nsUsable(S, me)[i] && MV[mv].c !== 'St' && !NSELFKO.has(mv) && mv !== 'Focus Punch' && (mv !== 'Fake Out' || me.firstOut));
+  if (!opts.length) return me.moves.find((mv, i) => nsUsable(S, me)[i]) || me.moves[0];
+  let best = null;
+  opts.forEach(mv => {
+    const x = nsRolls(S, me, foe, mv, false, null); if (!x) return;
+    const acc = (MV[mv].a || 100) / 100, hits = NHITS2.has(mv) ? 2 : NHITS25.has(mv) ? (me.ab === 'Skill Link' ? 5 : 3) : 1;
+    const avg = x.rolls.reduce((a, b) => a + b, 0) / 16 * hits, ko = x.rolls.filter(v => v * hits >= foe.hp).length / 16 * acc;
+    let ev = Math.min(avg, foe.hp) * acc; if (NRECHARGE.has(mv) || (NCHARGE.has(mv) && !(mv === 'Solar Beam' && S.wx === 'sun') && me.item !== 'Power Herb')) ev /= 2;
+    if (NRECOIL[mv] && me.ab !== 'Rock Head') ev -= 0.01;
+    const sc = ko > 0 ? 1e6 * ko + (NPRIO[mv] > 0 ? 1e5 : 0) + ev : ev;
+    if (!best || sc > best.sc) best = { mv, sc };
+  });
+  return best ? best.mv : opts[0];
+}
+// pick a replacement: the bench member that wins the one-on-one fastest
+function nsPlayerReplace(S, policy) {
+  const sd = S.sd[0], foe = nsAct(S, 1), bench = sd.team.map((c, i) => ({ c, i })).filter(x => x.c.hp > 0 && x.i !== sd.a);
+  if (!bench.length) return -1;
+  if (policy === 'order') return bench[0].i;
+  let best = null;
+  bench.forEach(x => {
+    const mine = Math.max(1, ...x.c.moves.filter(mv => MV[mv].c !== 'St' && !NSELFKO.has(mv)).map(mv => { const r = nsRolls(S, x.c, foe, mv, false, null); return r ? r.rolls.reduce((a, b) => a + b, 0) / 16 * ((MV[mv].a || 100) / 100) : 0 }));
+    const theirs = Math.max(1, ...foe.moves.map(mv => nsAiDmg(S, foe, x.c, mv)));
+    const sr = S.sd[0].sr ? Math.floor(x.c.max * nsTypeMult('Rock', x.c.types) / 8) : 0;
+    const tMe = Math.ceil(foe.hp / mine), tThem = Math.ceil(Math.max(1, x.c.hp - sr) / theirs);
+    const sc = (tThem - tMe) + (nsSpeed(S, x.c) > nsSpeed(S, foe) ? 0.5 : 0) + x.c.hp / x.c.max * 0.1;
+    if (!best || sc > best.sc) best = { i: x.i, sc };
+  });
+  return best.i;
+}
+
+// ---- Battle engine ----
+function nsHeal(c, n) { if (c.hp > 0) c.hp = Math.min(c.max, c.hp + Math.max(1, n)) }
+function nsBerry(S, c) {
+  if (c.hp <= 0 || !c.item) return;
+  if (c.item === 'Sitrus Berry' && c.hp * 2 <= c.max) { nsHeal(c, Math.floor(c.max / 4)); nsUse(c) }
+  else if (c.item === 'Oran Berry' && c.hp * 2 <= c.max) { nsHeal(c, 10); nsUse(c) }
+  else if (c.hp * 4 <= c.max && ['Salac Berry', 'Liechi Berry', 'Petaya Berry', 'Ganlon Berry', 'Apicot Berry', 'Starf Berry'].includes(c.item)) {
+    const k = { 'Salac Berry': 'spe', 'Liechi Berry': 'atk', 'Petaya Berry': 'spa', 'Ganlon Berry': 'def', 'Apicot Berry': 'spd' }[c.item];
+    if (k) nsStage(c, { [k]: 1 }); else nsStage(c, { [['atk', 'def', 'spa', 'spd', 'spe'][nsR(5)]]: 2 });
+    nsUse(c);
+  }
+}
+function nsUse(c) { c.item = ''; c.usedItem = true }
+function nsLum(c) { if (c.item === 'Lum Berry' && (c.st || c.conf > 0)) { c.st = ''; c.conf = 0; nsUse(c) } }
+function nsStage(c, ch, byFoe) {
+  if (byFoe && (c.ab === 'Clear Body' || c.ab === 'White Smoke')) return;
+  Object.entries(ch).forEach(([k, v]) => {
+    if (byFoe && v < 0 && ((k === 'atk' && c.ab === 'Hyper Cutter') || (k === 'acc' && c.ab === 'Keen Eye'))) return;
+    if (c.ab === 'Simple') v *= 2;
+    c.stg[k] = Math.max(-6, Math.min(6, c.stg[k] + v));
+  });
+  if (c.item === 'White Herb' && NSTAGEK.some(k => c.stg[k] < 0)) { NSTAGEK.forEach(k => { if (c.stg[k] < 0) c.stg[k] = 0 }); nsUse(c) }
+}
+function nsStatus(S, c, st, src) {
+  if (c.hp <= 0 || c.st) return false;
+  const ab = c.ab, wx = nsWx(S);
+  if (S.sd[c.side].sg > 0) return false;
+  if ((st === 'psn' || st === 'tox') && (c.types.includes('Poison') || c.types.includes('Steel') || ab === 'Immunity')) return false;
+  if (st === 'brn' && (c.types.includes('Fire') || ab === 'Water Veil')) return false;
+  if (st === 'par' && ab === 'Limber') return false;
+  if (st === 'slp' && (ab === 'Insomnia' || ab === 'Vital Spirit')) return false;
+  if (st === 'frz' && (c.types.includes('Ice') || ab === 'Magma Armor' || wx === 'sun')) return false;
+  if (ab === 'Leaf Guard' && wx === 'sun') return false;
+  c.st = st; c.toxN = 0; if (st === 'slp') c.slp = 2 + nsR(4);   // counts down before each move, so 1–4 turns asleep
+  if (ab === 'Synchronize' && src && ['psn', 'tox', 'brn', 'par'].includes(st)) nsStatus(S, src, st === 'tox' ? 'psn' : st);
+  nsLum(c); return true;
+}
+function nsConfuse(c) { if (c.hp > 0 && !c.conf && c.ab !== 'Own Tempo') { c.conf = 1 + nsR(4); nsLum(c) } }
+function nsDamage(S, c, n, R) {
+  if (n <= 0 || c.hp <= 0) return 0;
+  const before = c.hp; c.hp = Math.max(0, c.hp - n);
+  if (c.hp === 0 && R) R.ko(c);
+  return before - c.hp;
+}
+function nsEnter(S, side, i, R) {
+  const sd = S.sd[side], c = sd.team[i]; sd.a = i; nsReset(c); c.firstOut = true;
+  R.seen(c);
+  if (c.ab !== 'Magic Guard') {
+    if (sd.sr) nsDamage(S, c, Math.floor(c.max * nsTypeMult('Rock', c.types) / 8), R);
+    const grounded = !c.types.includes('Flying') && c.ab !== 'Levitate';
+    if (sd.spk && grounded) nsDamage(S, c, Math.floor(c.max / [0, 8, 6, 4][sd.spk]), R);
+    if (sd.tsp && grounded) { if (c.types.includes('Poison')) sd.tsp = 0; else nsStatus(S, c, sd.tsp >= 2 ? 'tox' : 'psn') }
+  }
+  if (c.hp <= 0) return;
+  const foe = nsAct(S, 1 - side);
+  if (c.ab === 'Intimidate' && foe && foe.hp > 0) nsStage(foe, { atk: -1 }, true);
+  const wx = { 'Drought': 'sun', 'Drizzle': 'rain', 'Sand Stream': 'sand', 'Snow Warning': 'hail' }[c.ab];
+  if (wx) { S.wx = wx; S.wxT = 99 }
+  nsBerry(S, c);
+}
+function nsAccuracy(S, A, D, mv, movedAfter) {
+  const d = MV[mv]; if (!d.a || A.ab === 'No Guard' || D.ab === 'No Guard') return true;
+  if (D.invuln) return false;
+  const wx = nsWx(S);
+  if (mv === 'Thunder' && wx === 'rain') return true;
+  if (mv === 'Blizzard' && wx === 'hail') return true;
+  if (NOHKO.has(mv)) return A.m.lv >= D.m.lv && nsR(100) < 30 + A.m.lv - D.m.lv;
+  let acc = d.a; if (mv === 'Thunder' && wx === 'sun') acc = 50;
+  const s = Math.max(-6, Math.min(6, A.stg.acc - D.stg.eva));
+  acc *= s >= 0 ? (3 + s) / 3 : 3 / (3 - s);
+  if (A.ab === 'Compound Eyes') acc *= 1.3;
+  if (A.ab === 'Hustle' && d.c === 'P') acc *= .8;
+  if (A.item === 'Wide Lens') acc *= 1.1;
+  if (A.item === 'Zoom Lens' && movedAfter) acc *= 1.2;
+  if (D.item === 'Bright Powder' || D.item === 'Lax Incense') acc *= .9;
+  if ((D.ab === 'Sand Veil' && wx === 'sand') || (D.ab === 'Snow Cloak' && wx === 'hail')) acc *= .8;
+  return nsR(100) < acc;
+}
+function nsCritStage(A, mv) {
+  let s = (NHICRIT.has(mv) ? 1 : 0) + (A.ab === 'Super Luck' ? 1 : 0) + (A.item === 'Scope Lens' || A.item === 'Razor Claw' ? 1 : 0) + (A.ff ? 2 : 0);
+  return [1 / 16, 1 / 8, 1 / 4, 1 / 3, 1 / 2][Math.min(4, s)];
+}
+// one move from A at D; ctx = { after, hit, foeMv }
+function nsUseMove(S, A, D, mv, ctx, R) {
+  const d = MV[mv], st = NSTAT[mv], asd = S.sd[A.side], dsd = S.sd[D.side];
+  A.lastCls = d.c === 'St' ? null : d.c; A.consec = A.lastMv === mv ? A.consec + 1 : 0; A.lastMv = mv; A.firstOut = false;
+  if (A.item && /^Choice /.test(A.item)) A.choice = A.choice || mv;
+  if (mv !== 'Protect' && mv !== 'Detect') A.prot = 0;
+  if (mv === 'Sleep Talk') {
+    if (A.st !== 'slp') return;
+    const other = A.moves.filter(m => m !== 'Sleep Talk' && !NCHARGE.has(m) && !NINVULN.has(m)); if (!other.length) return;
+    return nsUseMove(S, A, D, other[nsR(other.length)], ctx, R);
+  }
+  if (st) return nsStatusMove(S, A, D, mv, st, ctx, R);
+  // charge turns
+  if (NCHARGE.has(mv) && !A.charging && !(mv === 'Solar Beam' && nsWx(S) === 'sun')) {
+    if (A.item === 'Power Herb') nsUse(A); else { A.charging = mv; if (mv === 'Skull Bash') nsStage(A, { def: 1 }); return }
+  }
+  if (NINVULN.has(mv) && !A.charging) { if (A.item === 'Power Herb') nsUse(A); else { A.charging = mv; A.invuln = true; return } }
+  A.charging = null; A.invuln = false;
+  if (D.hp <= 0) return;
+  if (mv === 'Fake Out' && !ctx.first) return;
+  if (mv === 'Sucker Punch' && (ctx.after || !ctx.foeMv || MV[ctx.foeMv].c === 'St')) return;
+  if (mv === 'Focus Punch' && ctx.hit) return;
+  if (D.protNow) return;
+  if ((mv === 'Counter' || mv === 'Mirror Coat' || mv === 'Metal Burst')) {
+    const want = mv === 'Counter' ? 'P' : mv === 'Mirror Coat' ? 'S' : null, t = A.took;
+    if (!t || !t.n || (want && t.cls !== want)) return;
+    if (want && nsTypeMult(d.t, D.types) === 0) return;
+    nsDamage(S, D, Math.floor(t.n * (want ? 2 : 1.5)), R); return;
+  }
+  if (!nsAccuracy(S, A, D, mv, ctx.after)) {
+    if (mv === 'High Jump Kick' || mv === 'Jump Kick') { const x = nsRolls(S, A, D, mv, false, ctx); if (x) nsDamage(S, A, Math.min(Math.floor(A.max / 2), Math.floor(x.rolls[nsR(16)] / 2)), R) }
+    if (NLOCK.has(mv)) A.lock = null;
+    return;
+  }
+  if (mv === 'Endeavor') { if (D.hp > A.hp && nsTypeMult(d.t, D.types) > 0) nsDamage(S, D, D.hp - A.hp, R); return }
+  if (NOHKO.has(mv)) { if (D.ab !== 'Sturdy' && nsTypeMult(d.t, D.types) > 0) nsDamage(S, D, D.hp, R); return }
+  const hits = NHITS2.has(mv) ? 2 : NHITS25.has(mv) ? (A.ab === 'Skill Link' ? 5 : [2, 2, 2, 3, 3, 3, 4, 5][nsR(8)]) : 1;
+  let total = 0, x = null, mult = 1;
+  const critP = D.ab === 'Battle Armor' || D.ab === 'Shell Armor' ? 0 : nsCritStage(A, mv);
+  for (let h = 0; h < hits && D.hp > 0; h++) {
+    const crit = Math.random() < critP;
+    x = nsRolls(S, A, D, mv, crit, ctx); if (!x) return;
+    mult = x.mult;
+    let dmg = x.rolls[nsR(16)];
+    if (dmg >= D.hp && D.hp === D.max && D.item === 'Focus Sash') { dmg = D.hp - 1; nsUse(D) }
+    else if (dmg >= D.hp && D.item === 'Focus Band' && nsR(10) === 0) dmg = D.hp - 1;
+    if (NBERRY[D.item] && NBERRY[D.item] === (mv === 'Weather Ball' && nsWBType(S) || d.t) && (mult > 1 || d.t === 'Normal')) nsUse(D);
+    total += nsDamage(S, D, dmg, R);
+    if (mult === 0) break;
+    // contact abilities
+    if (d.c === 'P' && !NNOCONTACT.has(mv) && A.hp > 0) {
+      if ((D.ab === 'Rough Skin') && A.ab !== 'Magic Guard') nsDamage(S, A, Math.floor(A.max / 8), R);
+      if (D.ab === 'Static' && nsR(10) < 3) nsStatus(S, A, 'par', D);
+      if (D.ab === 'Flame Body' && nsR(10) < 3) nsStatus(S, A, 'brn', D);
+      if (D.ab === 'Poison Point' && nsR(10) < 3) nsStatus(S, A, 'psn', D);
+      if (D.ab === 'Effect Spore' && nsR(10) < 3) nsStatus(S, A, ['psn', 'par', 'slp'][nsR(3)], D);
+    }
+  }
+  if (!x) return;
+  D.took = { n: total, cls: d.c }; D.hitBy = mv; D.hitThisTurn = true;
+  if (mult === 0) { if ((D.ab === 'Volt Absorb' && d.t === 'Electric') || (D.ab === 'Water Absorb' && d.t === 'Water') || (D.ab === 'Dry Skin' && d.t === 'Water')) nsHeal(D, Math.floor(D.max / 4));
+    if (D.ab === 'Motor Drive' && d.t === 'Electric') nsStage(D, { spe: 1 }); if (D.ab === 'Flash Fire' && d.t === 'Fire') D.ffire = true; return }
+  if (mv === 'Knock Off' && D.item && D.ab !== 'Sticky Hold') { D.item = ''; D.usedItem = true }
+  if (NDRAIN.has(mv)) nsHeal(A, Math.floor(total / 2 * (A.item === 'Big Root' ? 1.3 : 1)));
+  if (NRECOIL[mv] && A.ab !== 'Rock Head' && A.ab !== 'Magic Guard') nsDamage(S, A, Math.max(1, Math.floor(total * NRECOIL[mv])), R);
+  if (A.item === 'Life Orb' && A.ab !== 'Magic Guard' && total > 0) nsDamage(S, A, Math.floor(A.max / 10), R);
+  if (NSELFKO.has(mv)) nsDamage(S, A, A.hp, R);
+  if (NRECHARGE.has(mv)) A.recharge = true;
+  if (NLOCK.has(mv)) { if (!A.lock) { A.lock = mv; A.lockN = 1 + nsR(2) } else if (--A.lockN <= 0) { A.lock = null; nsConfuse(A) } }
+  // secondary effects
+  const sec = NSEC[mv], chance = p => nsR(100) < p * (A.ab === 'Serene Grace' ? 2 : 1);
+  if (sec && D.hp > 0 && D.ab !== 'Shield Dust') {
+    const [p, fx, fl] = sec;
+    if (p && chance(p)) {
+      if (fx === 'flinch') { if (!ctx.after && D.ab !== 'Inner Focus') { D.flinch = true; if (D.ab === 'Steadfast') nsStage(D, { spe: 1 }) } }
+      else if (fx === 'conf') nsConfuse(D);
+      else if (typeof fx === 'object') nsStage(D, fx, true);
+      else if (fx) nsStatus(S, D, fx, A);
+    }
+    if (fl && chance(fl) && !ctx.after && D.ab !== 'Inner Focus') D.flinch = true;
+  }
+  if (A.item === "King's Rock" && D.hp > 0 && !ctx.after && nsR(10) === 0) D.flinch = true;
+  const self = NSELF[mv]; if (self && A.hp > 0 && chance(self[0])) nsStage(A, self[1]);
+  if (mv === 'U-turn' && A.side === 1 && A.hp > 0 && nsBench(asd).length) { const i = nsAiReplace(S, A); if (i >= 0) nsEnter(S, 1, i, R) }
+  nsBerry(S, D); nsBerry(S, A);
+}
+function nsStatusMove(S, A, D, mv, st, ctx, R) {
+  const d = MV[mv], asd = S.sd[A.side], dsd = S.sd[D.side], k = st.k, foeTarget = ['sleep', 'para', 'tox', 'psn', 'brn', 'conf', 'swagger', 'flatter', 'yawn', 'leech', 'taunt', 'attract', 'disable', 'torment', 'force', 'painsplit'].includes(k) || st.foe;
+  if (foeTarget && D.hp <= 0) return;
+  if (foeTarget && D.protNow) return;
+  if (foeTarget && d.a && !nsAccuracy(S, A, D, mv, ctx.after)) return;
+  if (foeTarget && (k === 'para' && mv === 'Thunder Wave' && defMult(D.types, D.ab, 'Electric') === 0)) return;
+  if (st.self) nsStage(A, st.self);
+  if (st.foe) nsStage(D, st.foe, true);
+  const wx = nsWx(S);
+  switch (k) {
+    case 'focus': A.ff = true; break;
+    case 'recover': nsHeal(A, Math.floor(A.max * (st.wx ? (wx === 'sun' ? 2 / 3 : wx ? 1 / 4 : 1 / 2) : 1 / 2))); break;
+    case 'rest': if (A.hp < A.max && A.ab !== 'Insomnia' && A.ab !== 'Vital Spirit') { A.hp = A.max; A.st = 'slp'; A.slp = 3; nsLum(A) } break;
+    case 'protect': { const ok = Math.random() < Math.pow(.5, A.prot); A.prot++; if (ok) A.protNow = true; else A.prot = 0; break }
+    case 'reflect': if (!asd.ref) asd.ref = A.item === 'Light Clay' ? 8 : 5; break;
+    case 'lscreen': if (!asd.ls) asd.ls = A.item === 'Light Clay' ? 8 : 5; break;
+    case 'sr': dsd.sr = 1; break;
+    case 'spikes': dsd.spk = Math.min(3, dsd.spk + 1); break;
+    case 'tspikes': dsd.tsp = Math.min(2, dsd.tsp + 1); break;
+    case 'wx': if (S.wx !== st.wx) { S.wx = st.wx; S.wxT = A.item === ({ sand: 'Smooth Rock', sun: 'Heat Rock', rain: 'Damp Rock', hail: 'Icy Rock' })[st.wx] ? 8 : 5 } break;
+    case 'sleep': nsStatus(S, D, 'slp', A); break;
+    case 'para': nsStatus(S, D, 'par', A); break;
+    case 'tox': nsStatus(S, D, 'tox', A); break;
+    case 'psn': nsStatus(S, D, 'psn', A); break;
+    case 'brn': nsStatus(S, D, 'brn', A); break;
+    case 'conf': nsConfuse(D); break;
+    case 'swagger': nsStage(D, { atk: 2 }); nsConfuse(D); break;
+    case 'flatter': nsStage(D, { spa: 1 }); nsConfuse(D); break;
+    case 'yawn': if (!D.st && !D.yawn) D.yawn = 2; break;
+    case 'leech': if (!D.types.includes('Grass')) D.seed = true; break;
+    case 'taunt': if (!D.taunt) D.taunt = 3 + nsR(3); break;
+    case 'disable': if (D.lastMv && !D.disabled) D.disabled = { mv: D.lastMv, n: 4 + nsR(4) }; break;
+    case 'tailwind': if (!asd.tw) asd.tw = 3; break;
+    case 'aquaring': A.ring = true; break;
+    case 'painsplit': { const avg = Math.floor((A.hp + D.hp) / 2); A.hp = Math.min(A.max, avg); D.hp = Math.min(D.max, avg); break }
+    case 'batonpass': if (A.side === 1 && nsBench(asd).length) { const keep = Object.assign({}, A.stg), i = nsAiReplace(S, A); if (i >= 0) { nsEnter(S, 1, i, R); Object.assign(nsAct(S, 1).stg, keep) } } break;
+    case 'force': if (nsBench(dsd).length && D.ab !== 'Suction Cups') { const b = dsd.team.map((c, i) => ({ c, i })).filter(x => x.c.hp > 0 && x.i !== dsd.a); nsEnter(S, D.side, b[nsR(b.length)].i, R) } break;
+  }
+  if (mv === 'Defense Curl') A.dc = true;
+}
+// can this battler act this turn?
+function nsCanAct(S, c, R) {
+  if (c.recharge) { c.recharge = false; return false }
+  if (c.st === 'slp') { if (--c.slp <= 0) { c.st = '' } else return c.lastPick === 'Sleep Talk' }
+  if (c.st === 'frz') { if (nsR(5) === 0) c.st = ''; else return false }
+  if (c.flinch) { c.flinch = false; return false }
+  if (c.conf > 0) {
+    if (--c.conf === 0) { /* snapped out */ }
+    else if (nsR(2) === 0) {
+      const lv = c.m.lv, a = Math.floor(c.m.stats.atk * (c.stg.atk >= 0 ? (2 + c.stg.atk) / 2 : 2 / (2 - c.stg.atk))), df = Math.floor(c.m.stats.def * (c.stg.def >= 0 ? (2 + c.stg.def) / 2 : 2 / (2 - c.stg.def)));
+      nsDamage(S, c, Math.floor(Math.floor(Math.floor(2 * lv / 5 + 2) * 40 * a / df) / 50) + 2, R); return false;
+    }
+  }
+  if (c.st === 'par' && nsR(4) === 0) return false;
+  return true;
+}
+function nsEndTurn(S, R) {
+  const wx = nsWx(S);
+  [0, 1].map(i => nsAct(S, i)).sort((a, b) => nsSpeed(S, b) - nsSpeed(S, a)).forEach(c => {
+    if (c.hp <= 0) return;
+    const mg = c.ab === 'Magic Guard';
+    if (wx === 'sand' && !mg && !c.types.some(t => ['Rock', 'Ground', 'Steel'].includes(t)) && c.ab !== 'Sand Veil') nsDamage(S, c, Math.floor(c.max / 16), R);
+    if (wx === 'hail' && !mg && !c.types.includes('Ice') && c.ab !== 'Snow Cloak' && c.ab !== 'Ice Body') nsDamage(S, c, Math.floor(c.max / 16), R);
+    if (wx === 'hail' && c.ab === 'Ice Body') nsHeal(c, Math.floor(c.max / 16));
+    if (wx === 'rain' && (c.ab === 'Rain Dish' || c.ab === 'Dry Skin')) nsHeal(c, Math.floor(c.max / (c.ab === 'Dry Skin' ? 8 : 16)));
+    if (wx === 'sun' && c.ab === 'Dry Skin' && !mg) nsDamage(S, c, Math.floor(c.max / 8), R);
+    if (c.hp <= 0) return;
+    if (c.ring) nsHeal(c, Math.floor(c.max / 16));
+    if (c.item === 'Leftovers') nsHeal(c, Math.floor(c.max / 16));
+    if (c.item === 'Black Sludge') { if (c.types.includes('Poison')) nsHeal(c, Math.floor(c.max / 16)); else if (!mg) nsDamage(S, c, Math.floor(c.max / 8), R) }
+    const foe = nsAct(S, 1 - c.side);
+    if (c.seed && !mg) { const n = nsDamage(S, c, Math.floor(c.max / 8), R); if (foe.hp > 0) nsHeal(foe, n) }
+    if (c.hp <= 0) return;
+    if ((c.st === 'psn' || c.st === 'tox') && c.ab === 'Poison Heal') nsHeal(c, Math.floor(c.max / 8));
+    else if (c.st === 'psn' && !mg) nsDamage(S, c, Math.floor(c.max / 8), R);
+    else if (c.st === 'tox' && !mg) { c.toxN++; nsDamage(S, c, Math.floor(c.max * c.toxN / 16), R) }
+    else if (c.st === 'brn' && !mg) nsDamage(S, c, Math.floor(c.max / 8), R);
+    if (c.hp <= 0) return;
+    if (c.yawn && --c.yawn === 0) nsStatus(S, c, 'slp');
+    if (c.item === 'Flame Orb') nsStatus(S, c, 'brn');
+    if (c.item === 'Toxic Orb') nsStatus(S, c, 'tox');
+    if (c.ab === 'Speed Boost' && !c.firstOut) nsStage(c, { spe: 1 });
+    if (c.taunt > 0) c.taunt--;
+    if (c.disabled && --c.disabled.n <= 0) c.disabled = null;
+    c.protNow = false; c.flinch = false; c.hitThisTurn = false; c.took = null; c.firstOut = false;
+    nsBerry(S, c);
+  });
+  S.sd.forEach(sd => { ['ref', 'ls', 'tw', 'sg'].forEach(k => { if (sd[k] > 0) sd[k]-- }) });
+  if (S.wx && S.wxT < 99 && --S.wxT <= 0) S.wx = '';
+}
+// a plan lists, per boss Pokémon, the keys of your Pokémon to use against it (answer first, then backup)
+const nsPlanList = (S, plan) => plan && plan[nsAct(S, 1).slot] || [];
+const nsPlanHas = (S, plan, c) => nsPlanList(S, plan).includes(c.key);
+function nsPlanned(S, plan) {
+  for (const k of nsPlanList(S, plan)) { const i = S.sd[0].team.findIndex(c => c.key === k && c.hp > 0); if (i >= 0) return i }
+  return -1;
+}
+// quick one-on-one from the current state: does c beat b, optionally after taking b's strongest hit on the way in?
+function nsDuelNow(S, c, b, switching) {
+  let best = 0, th = 0;
+  c.moves.forEach(mv => { const d = MV[mv]; if (!d || d.c === 'St' || NSELFKO.has(mv)) return; const x = nsRolls(S, c, b, mv, false, null); if (!x || !x.mult) return;
+    const hits = NHITS2.has(mv) ? 2 : NHITS25.has(mv) ? 3 : 1; best = Math.max(best, x.rolls.reduce((a, v) => a + v, 0) / 16 * hits * (d.a ? d.a / 100 : 1)) });
+  b.moves.forEach(mv => { th = Math.max(th, nsAiDmg(S, b, c, mv)) });
+  const hp = c.hp - (switching ? th : 0); if (hp <= 0) return { win: false };
+  const tMe = best ? Math.ceil(b.hp / best) : 99, tThem = th ? Math.ceil(hp / th) : 99;
+  return { win: nsSpeed(S, c) > nsSpeed(S, b) ? tMe <= tThem : tMe < tThem };
+}
+// Set style: hard-switch to the planned answer only if the Pokémon out now loses and the answer still wins after taking a hit coming in
+function nsHardSwitch(S, plan) {
+  if (!plan) return -1;
+  const p = nsAct(S, 0), b = nsAct(S, 1);
+  if ((S.planSw && S.planSw[b.slot]) || nsPlanHas(S, plan, p)) return -1;
+  const w = nsPlanned(S, plan); if (w < 0 || w === S.sd[0].a) return -1;
+  if (nsDuelNow(S, p, b, false).win) return -1;
+  return nsDuelNow(S, S.sd[0].team[w], b, true).win ? w : -1;
+}
+function nsBattle(P, B, opt) {
+  const side = team => ({ team, a: 0, sr: 0, spk: 0, tsp: 0, ref: 0, ls: 0, tw: 0, sg: 0 });
+  const S = { sd: [side(P), side(B)], wx: '', wxT: 0 };
+  const out = { win: false, turns: 0, deaths: [], killer: {}, firstMove: null, bossKO: [], seen: new Set(), face: {}, dt: {}, bt: {} };
+  const R = { ko: c => { if (c.side === 0) out.dt[c.key] = S.t; else out.bt[c.slot] = S.t; if (c.side === 0) { out.deaths.push(c.key); const k = nsAct(S, 1); if (k && k !== c) out.killer[c.key] = k.name } else out.bossKO.push(c.slot) }, seen: c => { if (c.side === 1) out.seen.add(c.slot) } };
+  if (opt.start) {   // already mid-battle: no entry effects
+    const st = opt.start; S.wx = st.wx; S.wxT = st.wxT; [0, 1].forEach(i => { Object.assign(S.sd[i], st.sd[i]); S.sd[i].a = st.a[i] });
+  } else {
+    const lead = [0, 1].sort((a, b) => nsSpeed(S, S.sd[b].team[0]) - nsSpeed(S, S.sd[a].team[0]));
+    S.sd[0].a = 0; S.sd[1].a = 0;
+    lead.forEach(i => nsEnter(S, i, 0, R));
+  }
+  for (let t = 1; t <= 120; t++) {
+    out.turns = t; S.t = t;
+    const p = nsAct(S, 0), b0 = nsAct(S, 1), fc = out.face[b0.slot] = out.face[b0.slot] || {};
+    fc[p.key] = (fc[p.key] || 0) + 1;
+    // boss: switch or fight
+    let bAct = null;
+    if (!b0.recharge && !b0.charging && !b0.lock) { const sw = nsAiSwitch(S); if (sw >= 0) bAct = { sw } }
+    if (!bAct) bAct = { mv: b0.charging || b0.lock || nsAiPick(S, opt.flags) };
+    if (t === 1 && bAct.mv) out.firstMove = bAct.mv;
+    const hs = t === 1 && opt.first || p.charging || p.lock || p.recharge ? -1 : nsHardSwitch(S, opt.plan);
+    if (hs >= 0) (S.planSw = S.planSw || {})[b0.slot] = true;
+    const pAct = t === 1 && opt.first ? opt.first : hs >= 0 ? { sw: hs } : { mv: p.charging || p.lock || nsPlayerMove(S, p, b0) }, pMv = pAct.mv;
+    b0.lastPick = bAct.mv; p.lastPick = pMv;
+    if (pAct.sw !== undefined) nsEnter(S, 0, pAct.sw, R);
+    if (bAct.sw !== undefined) nsEnter(S, 1, bAct.sw, R);
+    const b = nsAct(S, 1), p2 = nsAct(S, 0);
+    const acts = pMv ? [{ c: p2, mv: pMv, foe: () => nsAct(S, 1) }] : [];
+    if (bAct.mv) acts.push({ c: b, mv: bAct.mv, foe: () => nsAct(S, 0) });
+    acts.forEach(a => { a.pr = (a.c.recharge ? 0 : NPRIO[a.mv] || 0); a.sp = nsSpeed(S, a.c) });
+    acts.sort((x, y) => y.pr - x.pr || y.sp - x.sp || (Math.random() - .5));
+    acts.forEach((a, idx) => {
+      if (a.c.hp <= 0 || nsAct(S, a.c.side) !== a.c) return;
+      const foe = a.foe(); if (!nsCanAct(S, a.c, R)) { if (a.c.lock) a.c.lock = null; return }
+      if (a.c.hp <= 0) return;
+      const other = acts.length > 1 ? acts[1 - idx] : null;
+      nsUseMove(S, a.c, foe, a.mv, { after: idx > 0, hit: !!a.c.hitThisTurn, foeMv: other && other.c.hp > 0 ? other.mv : null, first: a.c.firstOut }, R);
+    });
+    nsEndTurn(S, R);
+    // replacements (repeat, since hazards can knock out whatever comes in)
+    for (let g = 0; g < 14; g++) {
+      if (!nsAlive(S.sd[1]).length) { out.win = true; return out }
+      if (!nsAlive(S.sd[0]).length) return out;
+      if (nsAct(S, 1).hp <= 0) {
+        S.t = t; nsEnter(S, 1, nsAiReplace(S, nsAct(S, 1)), R);   // Set battle style: no free swap, yours stays in
+        continue;
+      }
+      if (nsAct(S, 0).hp <= 0) { const w = nsPlanned(S, opt.plan); nsEnter(S, 0, w >= 0 ? w : nsPlayerReplace(S, opt.repl), R); continue }
+      break;
+    }
+  }
+  out.stall = true; return out;
+}
+
+// ---- Battle assistant tab: set up the current turn, see what the boss will do and which of your options wins most ----
+const BKEY = 'rp-bat';
+let BS = store.get(BKEY, null), batTok = 0, batTimer = null, batRes = null;
+const batSide = () => ({ sr: 0, spk: 0, tsp: 0, ref: 0, ls: 0, tw: 0 });
+function batTeams(r, bi) { const b = NBOSS[bi]; return b ? bossTeams(b, r) : [] }
+function batFresh(r, bi, vi) {
+  const t = (batTeams(r, bi)[vi] || batTeams(r, bi)[0] || { team: [] }).team.filter(p => mons[p.n - 1]);
+  const party = partyOf(r).slice(0, 6).filter(x => +x.e.lv);
+  return { run: r.id, boss: bi, v: vi, b: t.map(() => ({ hp: 100, st: '', item: true })), ba: 0, bstg: {}, bfresh: true,
+    p: {}, pa: party[0] ? party[0].row.k : '', pstg: {}, pfresh: true, plast: '', wx: '', wxT: 5, sd: [batSide(), batSide()] };
+}
+function batState(r) {
+  if (!BS || BS.run !== r.id || !NBOSS[BS.boss]) BS = batFresh(r, Math.min(r.beat, NBOSS.length - 1), 0);
+  const t = batTeam(r);
+  while (BS.b.length < t.length) BS.b.push({ hp: 100, st: '', item: true });
+  BS.b.length = t.length;
+  return BS;
+}
+const batTeam = r => ((batTeams(r, BS.boss)[BS.v] || batTeams(r, BS.boss)[0] || { team: [] }).team).filter(p => mons[p.n - 1]);
+const batParty = r => partyOf(r).slice(0, 6).filter(x => +x.e.lv);
+const batSave = () => store.set(BKEY, BS);
+
+// battle-engine teams and starting state from what's entered
+function batBuild(r) {
+  const team = batTeam(r), party = batParty(r);
+  const P = party.map((x, i) => { const c = nsMake(nMineMon(x.e), (x.e.moves || []).filter(Boolean), 0, i, x.row.k), s = BS.p[x.row.k] || {};
+    if (s.hp !== undefined && s.hp !== '') c.hp = Math.max(0, Math.min(c.max, +s.hp)); c.st = s.st || ''; return c });
+  const B = team.map((p, i) => { const c = nsMake(nBossMon(p, +nCalc.biv), (p.mv || []).filter(Boolean), 1, i, 'b' + i), s = BS.b[i] || {};
+    const pct = Math.max(0, Math.min(100, +(s.hp ?? 100))); c.hp = pct <= 0 ? 0 : Math.max(1, Math.round(c.max * pct / 100)); c.st = s.st || ''; if (s.item === false) { c.item = ''; c.usedItem = true } return c });
+  let pa = party.findIndex(x => x.row.k === BS.pa); if (pa < 0 || !P[pa] || P[pa].hp <= 0) pa = P.findIndex(c => c.hp > 0);
+  let ba = BS.ba; if (!B[ba] || B[ba].hp <= 0) ba = B.findIndex(c => c.hp > 0);
+  return { P, B, party, team, pa, ba };
+}
+function batPrep(P, B, pa, ba) {
+  const p = P[pa], b = B[ba];
+  if (p) { Object.assign(p.stg, BS.pstg); p.firstOut = !!BS.pfresh; if (BS.plast && MV[BS.plast]) { p.lastMv = BS.plast; p.lastCls = MV[BS.plast].c === 'St' ? null : MV[BS.plast].c } }
+  if (b) { Object.assign(b.stg, BS.bstg); b.firstOut = !!BS.bfresh }
+  [...P, ...B].forEach(c => { if (c.st === 'slp') c.slp = 2 + nsR(3) });   // turns left asleep aren't shown in game
+}
+const batStart = (pa, ba) => ({ a: [pa, ba], wx: BS.wx, wxT: BS.wx ? (+BS.wxT || 5) : 0, sd: BS.sd.map(s => Object.assign({}, s)) });
+// a live battle state for one-off calculations (forecast, damage ranges)
+function batLiveS(P, B, pa, ba) {
+  const st = batStart(pa, ba), side = (team, i) => Object.assign({ team, a: st.a[i], sg: 0 }, st.sd[i]);
+  return { sd: [side(P, 0), side(B, 1)], wx: st.wx, wxT: st.wxT };
+}
+const batCp = c => Object.assign({}, c, { stg: Object.assign({}, c.stg) });
+const flagsOf = () => ({ eval: true, expert: true });
+
+// the boss's choice this turn, sampled from the trainer AI
+function batForecast(S, n) {
+  const sw = {}, mv = {};
+  for (let i = 0; i < n; i++) {
+    const b = nsAct(S, 1);
+    if (!b.recharge && !b.charging && !b.lock) { const s = nsAiSwitch(S); if (s >= 0) { sw[s] = (sw[s] || 0) + 1; continue } }
+    const m = b.charging || b.lock || nsAiPick(S, flagsOf()); mv[m] = (mv[m] || 0) + 1;
+  }
+  return { sw, mv, n };
+}
+// damage range and knock-out chance (with crits and accuracy) of one move
+function batHit(S, A, D, mv) {
+  const d = MV[mv]; if (!d || d.c === 'St') return null;
+  const x = nsRolls(S, A, D, mv, false, null), xc = nsRolls(S, A, D, mv, true, null); if (!x) return null;
+  const hits = NHITS2.has(mv) ? 2 : NHITS25.has(mv) ? (A.ab === 'Skill Link' ? 5 : 3) : 1, cp = D.ab === 'Battle Armor' || D.ab === 'Shell Armor' ? 0 : nsCritStage(A, mv);
+  const acc = !d.a ? 1 : Math.min(1, d.a / 100), ko = r => r.filter(v => v * hits >= D.hp).length / 16;
+  return { min: x.rolls[0] * hits, max: x.rolls[15] * hits, crit: xc ? xc.rolls[15] * hits : 0, hp: D.hp, max0: D.max, ko: acc * ((1 - cp) * ko(x.rolls) + cp * (xc ? ko(xc.rolls) : 0)), hits, mult: x.mult };
+}
+
+function renderBattle() {
+  const d = document.getElementById('batdetail'); if (!d) return;
+  const r = curRun(), opt = (v, lab, cur) => `<option value="${esc(v)}" ${String(v) === String(cur) ? 'selected' : ''}>${esc(lab)}</option>`;
+  if (!NBOSS.length) { d.innerHTML = '<p class="empty">No boss data.</p>'; return }
+  batState(r);
+  const teams = batTeams(r, BS.boss), team = batTeam(r), party = batParty(r);
+  const { P, B, pa, ba } = batBuild(r);
+  const sts = cur => opt('', 'Healthy', cur) + [['par', 'Paralyzed'], ['brn', 'Burned'], ['psn', 'Poisoned'], ['tox', 'Toxic'], ['slp', 'Asleep'], ['frz', 'Frozen']].map(([v, l]) => opt(v, l, cur)).join('');
+  const stg = (who, obj) => `<div class="bstg">${[['atk', 'Atk'], ['def', 'Def'], ['spa', 'SpA'], ['spd', 'SpD'], ['spe', 'Spe'], ['acc', 'Acc'], ['eva', 'Eva']].map(([k, l]) =>
+    `<label>${l}<select data-bf="stg" data-who="${who}" data-k="${k}">${[6, 5, 4, 3, 2, 1, 0, -1, -2, -3, -4, -5, -6].map(v => opt(v, (v > 0 ? '+' : '') + v, obj[k] || 0)).join('')}</select></label>`).join('')}</div>`;
+  const bcard = (p, i) => { const s = BS.b[i], c = B[i], act = i === ba, out = c.hp <= 0;
+    return `<div class="bslot ${act ? 'act' : ''} ${out ? 'ko' : ''}"><div class="bshd"><img src="${nimg(p.n)}" alt="">
+      <div class="bsn"><div class="bsnm"><b>${esc(monName(p.n))}</b> <span class="sp">Lv. ${esc(p.lv)}</span></div><div class="stypes">${c.types.map(typeBadge).join('')}</div></div></div>
+      <label class="bact"><input type="radio" name="batb" data-bf="ba" data-i="${i}" ${act ? 'checked' : ''} ${out ? 'disabled' : ''}> In battle</label>
+      <label>HP %<input type="number" min="0" max="100" data-bf="bhp" data-i="${i}" value="${esc(s.hp)}"></label>
+      <label>Status<select data-bf="bst" data-i="${i}">${sts(s.st)}</select></label>
+      ${p.item ? `<label class="bact"><input type="checkbox" data-bf="bitem" data-i="${i}" ${s.item !== false ? 'checked' : ''}> Holding ${esc(p.item)}</label>` : ''}
+      <div class="sp bsmv">${(p.mv || []).filter(Boolean).map(esc).join(' · ')}</div></div>` };
+  const pcard = (x, i) => { const s = BS.p[x.row.k] || {}, c = P[i], act = i === pa, out = c.hp <= 0;
+    return `<div class="bslot ${act ? 'act' : ''} ${out ? 'ko' : ''}"><div class="bshd"><img src="${nimg(x.e.n)}" alt="">
+      <div class="bsn"><div class="bsnm"><b>${esc(x.e.nick || monName(x.e.n))}</b> <span class="sp">Lv. ${esc(x.e.lv)}</span></div><div class="stypes">${c.types.map(typeBadge).join('')}</div></div></div>
+      <label class="bact"><input type="radio" name="batp" data-bf="pa" data-k="${esc(x.row.k)}" ${act ? 'checked' : ''} ${out ? 'disabled' : ''}> In battle</label>
+      <label>HP <small>of ${c.max}</small><input type="number" min="0" max="${c.max}" data-bf="php" data-k="${esc(x.row.k)}" value="${esc(s.hp ?? '')}" placeholder="${c.max}"></label>
+      <label>Status<select data-bf="pst" data-k="${esc(x.row.k)}">${sts(s.st)}</select></label>
+      <div class="sp bsmv">${(x.e.moves || []).filter(Boolean).map(esc).join(' · ') || 'No moves picked'}${x.e.item ? ' · ' + esc(x.e.item) : ''}</div></div>` };
+  const sdOpts = (i, k, n, lab) => `<label>${lab}<select data-bf="sd" data-i="${i}" data-k="${k}">${[...Array(n + 1).keys()].map(v => opt(v, v === 0 ? 'None' : k === 'sr' ? 'Up' : String(v), BS.sd[i][k])).join('')}</select></label>`;
+  const sideHtml = (i, lab) => `<div class="bfside"><h4>${lab}</h4><div class="bfgrid">${sdOpts(i, 'sr', 1, 'Stealth Rock')}${sdOpts(i, 'spk', 3, 'Spikes')}${sdOpts(i, 'tsp', 2, 'Toxic Spikes')}
+      ${sdOpts(i, 'ref', 8, 'Reflect turns')}${sdOpts(i, 'ls', 8, 'Light Screen turns')}${sdOpts(i, 'tw', 3, 'Tailwind turns')}</div></div>`;
+  const pAct = P[pa], bAct = B[ba];
+  d.innerHTML = `<div class="rhero"><h2>Battle assistant</h2>
+      <p class="sp">Enter where the fight stands. It works out what ${esc(NBOSS[BS.boss].label)} will do this turn and which of your options gives you the best chance to win. Update the HP and status after each turn.</p>
+      <div class="bcontrols"><label>Boss<select data-bf="boss">${NBOSS.map((b, i) => opt(i, b.label + ' · ' + b.area + (i === r.beat ? ' (next)' : ''), BS.boss)).join('')}</select></label>
+        ${teams.length > 1 ? `<label>Team<select data-bf="v">${teams.map((t, i) => opt(i, t.var || 'Team ' + (i + 1), BS.v)).join('')}</select></label>` : ''}
+        <button class="btn" data-bact="reset">Start over</button></div>
+      <p class="sp" style="margin-top:6px">Using run “${esc(r.name)}” · Boss IVs ${esc(nCalc.biv)} (set in the Nuzlocke damage calculator)</p></div>
+    <div id="batteam"></div>
+    ${!party.length ? '<p class="empty">Add Pokémon with levels to your Nuzlocke party first.</p>' : `
+    <section class="card full"><h3>${esc(NBOSS[BS.boss].label)}'s team</h3><div class="bslots">${team.map(bcard).join('')}</div>
+      ${bAct ? `<div class="bactive"><b>${esc(bAct.name)}</b> stat changes<label class="bact"><input type="checkbox" data-bf="bfresh" ${BS.bfresh ? 'checked' : ''}> Just sent out</label></div>${stg('b', BS.bstg)}` : ''}</section>
+    <section class="card full"><h3>Your party</h3><div class="bslots">${party.map(pcard).join('')}</div>
+      ${pAct ? `<div class="bactive"><b>${esc(pAct.name)}</b> stat changes<label class="bact"><input type="checkbox" data-bf="pfresh" ${BS.pfresh ? 'checked' : ''}> Just sent out</label>
+        <label class="blast">Your last move<select data-bf="plast">${opt('', '—', BS.plast)}${pAct.moves.map(m => opt(m, m, BS.plast)).join('')}</select></label></div>${stg('p', BS.pstg)}` : ''}</section>
+    <section class="card full"><h3>Field</h3><div class="bfgrid"><label>Weather<select data-bf="wx">${opt('', 'None', BS.wx)}${opt('sun', 'Sun', BS.wx)}${opt('rain', 'Rain', BS.wx)}${opt('sand', 'Sandstorm', BS.wx)}${opt('hail', 'Hail', BS.wx)}</select></label>
+      ${BS.wx ? `<label>Turns left<select data-bf="wxT">${[1, 2, 3, 4, 5, 6, 7, 8].map(v => opt(v, v, BS.wxT)).concat(opt(99, 'Permanent (ability)', BS.wxT)).join('')}</select></label>` : ''}</div>
+      <div class="bfsides">${sideHtml(0, 'Your side')}${sideHtml(1, 'Their side')}</div></section>
+    <div id="batres"></div>`}`;
+  renderTeamPick();
+  batQueue();
+}
+function batQueue() { clearTimeout(batTimer); batTimer = setTimeout(batAnalyze, 120) }
+
+// forecast + rank every option, a few hundred full playouts each, in small slices so the page stays responsive
+function batAnalyze() {
+  const el = document.getElementById('batres'); if (!el) return;
+  const r = curRun(), tok = ++batTok, { P, B, party, team, pa, ba } = batBuild(r);
+  if (pa < 0 || ba < 0) { el.innerHTML = `<section class="card full"><p class="empty">${pa < 0 ? 'All your Pokémon have fainted.' : 'Every boss Pokémon has fainted. You won!'}</p></section>`; return }
+  batPrep(P, B, pa, ba);
+  const S = batLiveS(P, B, pa, ba), me = P[pa], foe = B[ba];
+  const fc = batForecast(S, 2000);
+  const usable = nsUsable(S, me), options = [
+    ...me.moves.filter((m, i) => usable[i]).map(mv => ({ mv, label: mv })),
+    ...P.map((c, i) => ({ c, i })).filter(x => x.i !== pa && x.c.hp > 0).map(x => ({ sw: x.i, label: 'Switch to ' + x.c.name })) ];
+  const K = 300, acc = options.map(() => ({ n: 0, win: 0, dead: 0, dead2: 0, meDie1: 0, foeKO1: 0, stall: 0 }));
+  const run = (oi) => {
+    const P2 = P.map(batCp), B2 = B.map(batCp); batPrep(P2, B2, pa, ba);
+    const first = options[oi].sw !== undefined ? { sw: options[oi].sw } : { mv: options[oi].mv };
+    const o = nsBattle(P2, B2, { flags: flagsOf(), repl: 'best', start: batStart(pa, ba), first }), a = acc[oi];
+    a.n++; if (o.win) a.win++; if (o.stall) a.stall++; const nd = new Set(o.deaths).size; a.dead += nd; a.dead2 += nd * nd;
+    if (o.dt[me.key] === 1) a.meDie1++; if (o.bt[ba] === 1) a.foeKO1++;
+  };
+  let oi = 0;
+  const show = done => { if (tok === batTok) el.innerHTML = batHtml(S, me, foe, fc, options, acc, done, P, B) };
+  show(false);
+  const step = () => {
+    if (tok !== batTok) return;
+    const t0 = performance.now();
+    while (oi < options.length && performance.now() - t0 < 35) { run(oi); if (acc[oi].n >= K) oi++ }
+    if (oi < options.length) { if (oi % 2 === 0) show(false); return setTimeout(step, 0) }
+    show(true);
+  };
+  setTimeout(step, 0);
+}
+function batHtml(S, me, foe, fc, options, acc, done, P, B) {
+  const pct = (v, of) => Math.round(v / of * 100), rng = h => `${h.min}–${h.max} <small>(${pct(h.min, h.max0)}–${pct(h.max, h.max0)}%)</small>`;
+  const koTxt = h => h.ko >= .995 ? '<span class="bko">Knocks out</span>' : h.ko > 0 ? `<span class="bko">${Math.round(h.ko * 100)}% to knock out</span>` : '';
+  // boss forecast
+  const fmv = Object.entries(fc.mv).sort((a, b) => b[1] - a[1]), fsw = Object.entries(fc.sw).sort((a, b) => b[1] - a[1]);
+  const frows = fmv.map(([mv, c]) => { const h = batHit(S, foe, me, mv), d = MV[mv] || {};
+    return `<div class="bfrow"><span class="bpct">${Math.round(c / fc.n * 100)}%</span><span class="bmvn">${esc(mv)} ${d.t ? `<span class="mtype" style="background:${TC[d.t]}">${d.t}</span>` : ''}</span>
+      <span class="sp">${h ? (h.mult === 0 ? 'No effect' : rng(h) + ' ' + koTxt(h)) : esc(d.c === 'St' ? 'Status move' : '')}</span></div>` }).join('')
+    + fsw.map(([i, c]) => `<div class="bfrow"><span class="bpct">${Math.round(c / fc.n * 100)}%</span><span class="bmvn">Switches to ${esc(B[+i].name)}</span><span></span></div>`).join('');
+  // your options, best first
+  const rows = options.map((o, i) => ({ o, a: acc[i] })).filter(x => x.a.n);
+  // rank on win chance only when the gap is bigger than the playouts' noise, then on deaths, then on what happens this turn
+  const mean = (a, k) => a[k] / a.n, se2p = a => { const p = mean(a, 'win'); return p * (1 - p) / a.n }, se2d = a => Math.max(0, mean(a, 'dead2') - mean(a, 'dead') ** 2) / a.n;
+  const now = a => (a.foeKO1 - a.meDie1) / a.n;
+  rows.sort((x, y) => { const a = x.a, b = y.a, dw = mean(b, 'win') - mean(a, 'win'), dd = mean(a, 'dead') - mean(b, 'dead');
+    if (Math.abs(dw) > 2 * Math.sqrt(se2p(a) + se2p(b)) + .005) return dw;
+    if (Math.abs(dd) > 2 * Math.sqrt(se2d(a) + se2d(b)) + .02) return dd;
+    return now(b) - now(a) || dw || dd });
+  const best = rows[0], safest = rows.length ? rows.reduce((b, x) => mean(x.a, 'dead') < mean(b.a, 'dead') - 2 * Math.sqrt(se2d(x.a) + se2d(b.a)) - .02 ? x : b, rows[0]) : null;
+  const likely = fmv.length ? fmv[0][0] : null;
+  const orow = (x, k) => { const o = x.o, a = x.a, w = a.win / a.n, h = o.mv ? batHit(S, me, foe, o.mv) : null, d = o.mv ? MV[o.mv] || {} : {};
+    const inc = o.sw !== undefined ? P[o.sw] : null, take = inc && likely ? batHit(S, foe, inc, likely) : null;
+    const now = o.mv ? (d.c === 'St' ? 'Status move' : h ? (h.mult === 0 ? 'No effect' : `Hits for ${rng(h)} ${koTxt(h)}`) : '') : take && take.mult !== 0 ? `Takes ${rng(take)} from ${esc(likely)} coming in` : likely ? `Comes in safely against ${esc(likely)}` : '';
+    const tags = (x === best ? '<span class="btag good">Best</span>' : '') + (safest && x === safest && x !== best ? '<span class="btag">Safest</span>' : '');
+    return `<div class="borow ${x === best ? 'best' : ''}"><div class="bohd"><b>${esc(o.label)}</b>${d.t ? ` <span class="mtype" style="background:${TC[d.t]}">${d.t}</span>` : ''}${tags}
+        <span class="bowin">${Math.round(w * 100)}%</span></div>
+      <div class="bobar"><i style="width:${w * 100}%"></i></div>
+      <div class="sp">${now}${now ? ' · ' : ''}${(a.dead / a.n).toFixed(1)} of your Pokémon die on average · ${esc(me.name)} faints this turn ${Math.round(a.meDie1 / a.n * 100)}%${o.mv ? ` · ${esc(foe.name)} faints this turn ${Math.round(a.foeKO1 / a.n * 100)}%` : ''}</div></div>` };
+  const faster = nsSpeed(S, me) > nsSpeed(S, foe) ? 'You move first' : nsSpeed(S, me) < nsSpeed(S, foe) ? `${esc(foe.name)} moves first` : 'Speed tie';
+  return `<section class="card full"><h3>What ${esc(foe.name)} will do</h3><p class="sp">${esc(foe.name)} ${foe.hp}/${foe.max} HP · ${esc(me.name)} ${me.hp}/${me.max} HP · ${faster} (speed ${nsSpeed(S, me)} vs ${nsSpeed(S, foe)}) unless priority applies</p>
+      <div class="bfc">${frows || '<p class="empty">No moves listed.</p>'}</div></section>
+    <section class="card full"><h3>Your best move${done ? '' : ' <small class="sp">working…</small>'}</h3>
+      <p class="sp">Win chance if you pick this now, then keep battling sensibly (300 playouts each, ±3%).</p>
+      <div class="bopts">${rows.map(orow).join('') || '<p class="empty">Working…</p>'}</div>
+      <details class="simhow"><summary>How this works</summary>
+        <p>The forecast samples the boss's choice 2,000 times from Platinum's trainer AI (the <a href="https://github.com/pret/pokeplatinum/tree/main/src/battle/trainer_ai" target="_blank" rel="noopener">pokeplatinum decompilation</a>, Basic + Evaluate Attack + Expert). Every move starts at 100. It loses 10 if it can't work and gains 4 (6 for +1 priority) if its highest roll knocks you out. It loses 1 if another move does more, then the move-specific Expert rules apply. The highest score wins and ties are random. The AI ignores crits and judges damage by its highest roll. It also treats Hyper Beam, Superpower, Explosion, Solar Beam, Eruption, Sucker Punch and Head Smash as doing no damage.</p>
+        <p>Each of your options is played out to the end of the fight 300 times. Every hit uses the same damage calculator as the Nuzlocke tab, with random rolls, crits, accuracy, status, weather, hazards and items. After this turn you're assumed to attack with your strongest move, and after a faint you send in your best matchup. The boss keeps following its AI.</p>
+        <p>Damage ranges ignore crits. The knock-out chance counts crits and accuracy. Boss HP is a percentage because the game only shows a bar. Turns left asleep or badly poisoned aren't shown in game, so those are estimated.</p>
+      </details></section>`;
+}
+function batChange(t) {
+  const r = curRun(), f = t.dataset.bf; batState(r);
+  if (f === 'boss') { BS = batFresh(r, +t.value, 0) }
+  else if (f === 'v') { BS = batFresh(r, BS.boss, +t.value) }
+  else if (f === 'ba') { BS.ba = +t.dataset.i; BS.bstg = {}; BS.bfresh = true }
+  else if (f === 'pa') { BS.pa = t.dataset.k; BS.pstg = {}; BS.pfresh = true; BS.plast = '' }
+  else if (f === 'bhp') BS.b[+t.dataset.i].hp = t.value === '' ? 100 : Math.max(0, Math.min(100, +t.value));
+  else if (f === 'bst') BS.b[+t.dataset.i].st = t.value;
+  else if (f === 'bitem') BS.b[+t.dataset.i].item = t.checked;
+  else if (f === 'php' || f === 'pst') { const s = BS.p[t.dataset.k] = BS.p[t.dataset.k] || {}; if (f === 'php') { if (t.value === '') delete s.hp; else s.hp = Math.max(0, +t.value) } else s.st = t.value }
+  else if (f === 'stg') { const o = t.dataset.who === 'b' ? BS.bstg : BS.pstg; o[t.dataset.k] = +t.value }
+  else if (f === 'bfresh' || f === 'pfresh') BS[f] = t.checked;
+  else if (f === 'plast') BS.plast = t.value;
+  else if (f === 'wx') { BS.wx = t.value; BS.wxT = /sun|rain|sand|hail/.test(t.value) && batTeam(r).some(p => ['Drought', 'Drizzle', 'Sand Stream', 'Snow Warning'].includes(abName((p.ab || '').replace(/ \(.*\)$/, '')))) ? 99 : 5 }
+  else if (f === 'wxT') BS.wxT = +t.value;
+  else if (f === 'sd') BS.sd[+t.dataset.i][t.dataset.k] = +t.value;
+  else return;
+  batSave(); renderBattle();
+}
+// ---- Team picker: choose up to six from party + box for the selected boss, with reasons ----
+let tpRes = null, tpBusy = false, tpTok = 0;
+const tpSide = team => ({ team, a: 0, sr: 0, spk: 0, tsp: 0, ref: 0, ls: 0, tw: 0, sg: 0 });
+function tpSetup(r) {
+  const b = NBOSS[BS.boss], team = batTeam(r);
+  const all = placed(r).filter(x => x.e.st === 'party' || x.e.st === 'box');
+  const cap = b ? b.cap : 100, out = [];
+  const cands = all.filter(x => {
+    if (!+x.e.lv) { out.push({ x, why: 'No level set on its card' }); return false }
+    if (!(x.e.moves || []).filter(m => MV[m]).length) { out.push({ x, why: 'No moves picked on its card' }); return false }
+    if (r.rules.caps && +x.e.lv > cap) { out.push({ x, why: `Over the level cap (Lv. ${x.e.lv}, cap ${cap})` }); return false }
+    return true;
+  });
+  const sig = JSON.stringify([r.id, BS.boss, BS.v, nCalc.biv, cands.map(x => [x.row.k, x.e.n, x.e.lv, x.e.moves, x.e.item, x.e.ab, x.e.nat, x.e.stats, x.e.hist])]);
+  return { b, team, cands, out, sig };
+}
+// one-on-one: how fast each side knocks the other out from full HP
+function tpDuel(c, foe) {
+  const S = { sd: [tpSide([c]), tpSide([foe])], wx: '', wxT: 0 };
+  let best = null;
+  c.moves.forEach(mv => {
+    const d = MV[mv]; if (!d || d.c === 'St' || NSELFKO.has(mv)) return;
+    const x = nsRolls(S, c, foe, mv, false, null); if (!x || !x.mult) return;
+    const hits = NHITS2.has(mv) ? 2 : NHITS25.has(mv) ? (c.ab === 'Skill Link' ? 5 : 3) : 1, acc = d.a ? d.a / 100 : 1;
+    let ev = x.rolls.reduce((a, b) => a + b, 0) / 16 * hits * acc;
+    if (NRECHARGE.has(mv) || (NCHARGE.has(mv) && c.item !== 'Power Herb')) ev /= 2;
+    if (!best || ev > best.ev) best = { mv, ev, min: x.rolls[0] * hits, max: x.rolls[15] * hits };
+  });
+  let their = null;
+  foe.moves.forEach(mv => { const dm = nsAiDmg(S, foe, c, mv); if (dm > 0 && (!their || dm > their.dmg)) their = { mv, dmg: dm } });
+  const tMe = best ? Math.ceil(foe.max / Math.max(1, best.ev)) : 99, tThem = their ? Math.ceil(c.max / their.dmg) : 99;
+  const faster = nsSpeed(S, c) > nsSpeed(S, foe), win = faster ? tMe <= tThem : tMe < tThem;
+  const hitsTaken = faster ? tMe - 1 : tMe, taken = their ? Math.min(1, hitsTaken * their.dmg / c.max) : 0;
+  // 1–2 when it wins (more when it wins with HP to spare), under 1 when it only chips
+  // faint risk while winning: hits it must take, on low rolls (85%) or high, plus one crit (×2)
+  const dMax = their ? their.dmg : 0, dMin = Math.floor(dMax * .85);
+  const risk = !win ? 1 : !hitsTaken || !dMax ? 0 : hitsTaken * dMin >= c.max ? 1 : hitsTaken * dMax >= c.max ? .5 : (hitsTaken + 1) * dMax >= c.max ? .1 * hitsTaken : 0;
+  // pull it out before it drops into knock-out range
+  const pullAt = dMax ? Math.min(100, Math.ceil(dMax / c.max * 100)) : 0;
+  const val = win ? Math.max(.05, 2 - taken - 1.6 * risk) : best ? Math.min(.6, best.ev * Math.min(tThem - 1, 6) / foe.max * .5) : 0;
+  const swHp = their ? c.max - their.dmg : c.max, swT = their ? Math.ceil(swHp / their.dmg) : 99;
+  const swOk = swHp > 0 && (faster ? tMe <= swT : tMe < swT);
+  return { best, their, tMe, tThem, faster, win, taken, val, swOk, risk, pullAt };
+}
+// Assign an answer to every boss Pokémon. One of yours can cover two, at a discount (it'll be worn down by the second).
+// Returns assignments best first: { sc, asg: [candidate index per boss Pokémon] }
+function tpAssign(M, nB) {
+  const top = [...Array(nB).keys()].map(j => M.map((row, i) => ({ i, v: row[j].val })).sort((a, b) => b.v - a.v).slice(0, 6));
+  const out = [], use = {}, asg = [];
+  const dfs = (k, sc) => {
+    if (k === nB) { out.push({ sc, asg: asg.slice() }); return }
+    for (const c of top[k]) {
+      const u = use[c.i] || 0; if (u >= 2) continue;
+      // reusing one of yours only pays when it still wins
+      use[c.i] = u + 1; asg.push(c.i); dfs(k + 1, sc + (!u ? c.v : c.v >= 1 ? c.v * .8 - .05 : c.v * .4)); asg.pop(); use[c.i] = u;
+    }
+  };
+  dfs(0, 0);
+  return out.sort((a, b) => b.sc - a.sc);
+}
+// turn an assignment into a team: the answers, then one backup per boss Pokémon (weakest answer first) while slots remain
+function tpTeamOf(asg, M) {
+  const team = [...new Set(asg)], backup = {};
+  const order = asg.map((i, j) => j).sort((a, b) => M[asg[a]][a].val - M[asg[b]][b].val);
+  for (const j of order) {
+    if (team.length >= 6) break;
+    let bi = -1, bv = 0;
+    M.forEach((row, i) => { if (!team.includes(i) && row[j].val > bv) { bv = row[j].val; bi = i } });
+    if (bi >= 0 && bv >= (M[asg[j]][j].risk === 0 ? .5 : .15)) { team.push(bi); backup[j] = bi }   // shaky matchups take any useful backup
+  }
+  return { t: team, asg, backup };
+}
+function tpRun() {
+  const r = curRun(); batState(r); const su = tpSetup(r);
+  if (!su.cands.length || !su.team.length || tpBusy) return;
+  tpBusy = true; const tok = ++tpTok;
+  const mine = su.cands.map((x, i) => nsMake(nMineMon(x.e), (x.e.moves || []).filter(Boolean), 0, i, x.row.k));
+  const boss = su.team.map((p, i) => nsMake(nBossMon(p, +nCalc.biv), (p.mv || []).filter(Boolean), 1, i, 'b' + i));
+  const M = mine.map(c => boss.map(b => tpDuel(c, b)));
+  // the top few distinct plans get played out
+  const plans = [], seen = new Set();
+  for (const a of tpAssign(M, boss.length)) { const p = tpTeamOf(a.asg, M), k = p.t.slice().sort().join() + '|' + a.asg.join(); if (!seen.has(k)) { seen.add(k); p.sc = a.sc; plans.push(p) } if (plans.length >= 8) break }
+  const curIdx = su.cands.map((x, i) => x.e.st === 'party' ? i : -1).filter(i => i >= 0);
+  const tests = plans.map(p => Object.assign(p, { cur: false, lead: p.asg[0] }));
+  if (curIdx.length) tests.push({ t: curIdx, cur: true, lead: curIdx.slice().sort((a, b) => M[b][0].val - M[a][0].val)[0] });
+  tests.forEach(x => { x.n = 0; x.win = 0; x.dead = 0; x.clean = 0; x.E = 0; x.deaths = {} });
+  const K = 300, cp = c => Object.assign({}, c, { stg: Object.assign({}, c.stg) });
+  let ti = 0; renderTeamPick();
+  const step = () => {
+    if (tok !== tpTok) return;
+    const t0 = performance.now();
+    while (ti < tests.length && performance.now() - t0 < 35) {
+      const x = tests[ti], ord = [x.lead, ...x.t.filter(i => i !== x.lead)];
+      const plan = x.cur ? null : x.asg.map((a, j) => [a, x.backup[j]].filter(v => v !== undefined).map(v => mine[v].key));
+      const o = nsBattle(ord.map(i => cp(mine[i])), boss.map(cp), { flags: flagsOf(), repl: 'best', plan });
+      x.n++; if (o.win) x.win++; const dd = new Set(o.deaths); x.dead += dd.size; if (o.win && !dd.size) x.clean++; x.E += o.win ? dd.size : 6; if (o.win) x.Ewin = (x.Ewin || 0) + dd.size; dd.forEach(k => x.deaths[k] = (x.deaths[k] || 0) + 1);
+      if (x.n >= K) ti++;
+    }
+    const el = document.getElementById('tpprog'); if (el) el.textContent = `Testing plan ${Math.min(ti + 1, tests.length)} of ${tests.length}…`;
+    if (ti < tests.length) return setTimeout(step, 0);
+    const picks = tests.filter(x => !x.cur);
+    // the best-scoring plan stands unless another clearly plays out better
+    const best = picks.reduce((b, x) => { const dE = b.E / b.n - x.E / x.n, dw = x.win / x.n - b.win / b.n; return dE > .15 || (Math.abs(dE) <= .15 && dw > .03) ? x : b }, picks[0]);
+    tpBusy = false;
+    tpRes = { sig: su.sig, su, mine, boss, M, best, cur: tests.find(x => x.cur) || null };
+    renderTeamPick();
+  };
+  setTimeout(step, 0);
+}
+const tpPct = (v, of) => Math.round(v / of * 100);
+// one matchup in words
+function tpLine(c, b, d) {
+  const bm = d.best, th = d.their;
+  if (!bm) return `${esc(c.name)} has no attack that touches ${esc(b.name)}.`;
+  const hit = `${esc(bm.mv)} does ${tpPct(bm.min, b.max)}–${tpPct(bm.max, b.max)}%${d.tMe === 1 ? ' (one-hit KO)' : ` (about ${d.tMe} hits)`}`;
+  const back = !th ? ` and nothing ${esc(b.name)} has can hurt it` : th.dmg < c.max ? `; ${esc(th.mv)} does up to ${tpPct(th.dmg, c.max)}% back` : `; ${esc(th.mv)} can do up to ${tpPct(th.dmg, c.max)}%, enough to KO it`;
+  const speed = d.faster ? `${esc(c.name)} moves first` : `${esc(b.name)} moves first`;
+  return `${hit}${back}. ${speed}.`;
+}
+// Set style: how the answer gets in when this boss Pokémon comes out, and who can just stay in
+function tpEntry(res, i, j) {
+  const { M, boss, mine, best } = res, d = M[i][j], c = mine[i], b = boss[j], th = d.their;
+  const stay = best.t.filter(k => k !== i && M[k][j].win).map(k => '<b>' + esc(mine[k].name) + '</b>');
+  const hit = th ? `${esc(th.mv)} (up to ${tpPct(th.dmg, c.max)}%)` : 'nothing';
+  const how = !th ? `Hard-switch ${esc(c.name)} in freely, since nothing ${esc(b.name)} has can hurt it.`
+    : d.swOk ? `Hard-switch ${esc(c.name)} in if you need to: it takes ${hit} coming in and still wins.`
+    : `Don't hard-switch ${esc(c.name)} in, because ${hit} on the way in costs it the matchup. Bring it in after one of yours faints, or have it out already.`;
+  return `${how}${stay.length ? ` If ${stay.length > 1 ? stay.slice(0, -1).join(', ') + ' or ' + stay[stay.length - 1] : stay[0]} is already out, stay in, since ${stay.length > 1 ? 'they also win' : 'it also wins'} here.` : ''}`;
+}
+// the per-boss-Pokémon battle plan
+function tpPlanHtml(res) {
+  const { M, boss, mine, best } = res;
+  return `<ol class="tpplan">${boss.map((b, j) => {
+    const i = best.asg[j], d = M[i][j], c = mine[i], bk = best.backup[j];
+    const safe = d.win && d.risk === 0, verdict = safe ? 'Safe win' : d.win ? 'Risky win' : 'No safe answer';
+    const th = d.their, pull = th && d.pullAt < 100 ? ` Pull it out once it's below ${d.pullAt}% HP, because ${esc(th.mv)} does up to ${d.pullAt}%.` : th ? ` ${esc(th.mv)} can knock it out from full HP, so don't leave it in after it's been hit.` : '';
+    const note = safe ? '' : d.win ? ` ${d.risk >= .5 ? `It only wins if ${esc(b.name)}'s rolls are low.` : `A critical hit could still knock it out.`}${pull}`
+      : d.tMe > 5 ? ` Nothing you have does much to it. ${esc(c.name)} is the safest to have out against it, but the real fix is a Pokémon with a ${TYPES.filter(t => defMult(b.types, b.ab, t) >= 2).join(', ') || 'stronger'} attack for this fight.${pull}`
+      : ` Nothing you have beats it safely. Use ${esc(c.name)} to chip it, then switch to a healthy Pokémon to finish it.${pull}`;
+    return `<li><div class="tpph"><img src="${nimg(b.m.n)}" alt=""><b>${esc(b.name)}</b>${j === 0 ? ' <span class="sp">their lead</span>' : ''}<span class="btag ${safe ? 'good' : d.win ? '' : 'bad'}">${verdict}</span></div>
+      <div>${j === 0 ? 'Lead with' : 'Answer:'} <b>${esc(c.name)}</b>. ${tpLine(c, b, d)}${note}</div>
+      ${j === 0 ? '' : `<div>${tpEntry(res, i, j)}</div>`}
+      ${bk !== undefined ? `<div class="sp">If that goes wrong: <b>${esc(mine[bk].name)}</b>. ${tpLine(mine[bk], b, M[bk][j])}</div>` : ''}</li>` }).join('')}</ol>`;
+}
+// why one chosen member is on the team
+function tpWhy(res, i) {
+  const { M, boss, mine, best } = res, c = mine[i], row = M[i];
+  const lines = [];
+  const main = best.asg.map((k, j) => k === i ? j : -1).filter(j => j >= 0), back = Object.keys(best.backup).filter(j => best.backup[j] === i).map(Number);
+  if (main.length) lines.push(`<b>Plan for ${main.map(j => esc(boss[j].name)).join(' and ')}</b>${main.includes(0) ? ' (leads)' : ''}${main.length > 1 ? '. It covers both, so it may be worn down for the second' : ''}.`);
+  if (back.length) lines.push(`<b>Backup for ${back.map(j => esc(boss[j].name)).join(' and ')}</b>, if the main answer falls or gets crippled.`);
+  const also = boss.map((b, j) => ({ b, j, d: row[j] })).filter(x => x.d.win && !main.includes(x.j) && !back.includes(x.j));
+  if (also.length) lines.push(`Also beats ${also.map(x => esc(x.b.name)).join(', ')} one-on-one.`);
+  const atks = [...new Set(boss.flatMap(b => b.moves.filter(m => MV[m] && MV[m].c !== 'St' && MV[m].p)))];
+  const res2 = atks.filter(m => defMult(c.types, c.ab, MV[m].t) < 1), weak = atks.filter(m => defMult(c.types, c.ab, MV[m].t) > 1);
+  if (res2.length) lines.push(`Resists or ignores ${res2.length} of their ${atks.length} attacks (${res2.slice(0, 4).map(esc).join(', ')}${res2.length > 4 ? '…' : ''}).`);
+  lines.push(`Faster than ${boss.filter((b, j) => row[j].faster).length} of their ${boss.length}.`);
+  const danger = boss.map((b, j) => ({ b, th: row[j].their })).filter(x => x.th && x.th.dmg >= c.max).map(x => `${esc(x.b.name)}'s ${esc(x.th.mv)}`);
+  if (danger.length) lines.push(`<span class="bko">Watch out:</span> ${danger.slice(0, 3).join(', ')} can knock it out in one hit${weak.length ? ` (weak to ${[...new Set(weak.map(m => MV[m].t))].join(', ')})` : ''}.`);
+  lines.push(`Dies in ${Math.round((best.deaths[c.key] || 0) / best.n * 100)}% of simulated fights.`);
+  return lines;
+}
+function tpLeftOut(res, i) {
+  const { M, boss, best } = res, row = M[i];
+  const wins = boss.map((b, j) => ({ b, j, d: row[j] })).filter(x => x.d.win);
+  if (!wins.length) return 'Loses every one-on-one against their team.';
+  const names = wins.map(x => esc(x.b.name)).join(', ');
+  return `Beats ${names}, but ${wins.length > 1 ? 'those are' : 'that is'} already covered${best.t.length >= 6 ? ' and the team is full' : ' with a backup'}.`;
+}
+function renderTeamPick() {
+  const el = document.getElementById('batteam'); if (!el) return;
+  const r = curRun(), su = tpSetup(r), b = su.b, nm = x => esc(x.e.nick || monName(x.e.n));
+  let body;
+  if (!su.cands.length) body = '<p class="empty">No living party or box Pokémon with a level and moves set.</p>';
+  else if (tpBusy) body = '<p class="sp" id="tpprog">Scoring matchups…</p>';
+  else if (tpRes && tpRes.sig === su.sig) {
+    const res = tpRes, best = res.best, ord = [best.lead, ...best.t.filter(i => i !== best.lead)];
+    const cards = ord.map(i => { const x = su.cands[i];
+      return `<div class="tpm"><div class="tphd"><img src="${nimg(x.e.n)}" alt=""><div><b>${nm(x)}</b> <span class="sp">Lv. ${esc(x.e.lv)}${x.e.st === 'box' ? ' · from box' : ''}</span>
+        <div class="stypes">${res.mine[i].types.map(typeBadge).join('')}</div></div></div><ul>${tpWhy(res, i).map(l => `<li>${l}</li>`).join('')}</ul></div>` }).join('');
+    const left = su.cands.map((x, i) => ({ x, i })).filter(o => !best.t.includes(o.i));
+    const inParty = new Set(best.t.map(i => su.cands[i].row.k)), curKeys = partyOf(r).map(x => x.row.k);
+    const same = curKeys.length === inParty.size && curKeys.every(k => inParty.has(k)) && curKeys[0] === su.cands[best.lead].row.k;
+    const fw = x => x.win ? ((x.Ewin || 0) / x.win).toFixed(1) : '–';
+    const cmp = res.cur ? ` · your current party: ${tpPct(res.cur.clean, res.cur.n)}% with nobody fainting, ${tpPct(res.cur.win, res.cur.n)}% to win` : '';
+    body = `<div class="tpsum"><span class="bowin">${tpPct(best.clean, best.n)}%</span><span class="sp">chance to win with nobody fainting, using this team of ${best.t.length} · ${tpPct(best.win, best.n)}% to win at all · ${fw(best)} faints on average when you win${cmp}</span>
+        ${same ? '<span class="sp">Your party already matches.</span>' : '<button class="btn primary" data-bact="useteam">Use this team</button>'}</div>
+      <h4 class="tph4">Battle plan</h4>${tpPlanHtml(res)}
+      <h4 class="tph4">Why each Pokémon</h4><div class="tpgrid">${cards}</div>
+      ${left.length || su.out.length ? `<details class="tpout"><summary>Left out (${left.length + su.out.length})</summary><ul>${left.map(o => `<li><b>${nm(o.x)}</b>: ${tpLeftOut(res, o.i)}</li>`).join('')}${su.out.map(o => `<li><b>${nm(o.x)}</b>: ${esc(o.why)}</li>`).join('')}</ul></details>` : ''}`;
+  } else body = `<p class="sp">${tpRes ? 'Your Pokémon or the boss changed since the last suggestion. ' : ''}Builds a plan for each of ${esc(b ? b.label : '')}'s Pokémon from your ${su.cands.length} available party and box Pokémon${r.rules.caps && b ? ` at or under the level cap (${b.cap})` : ''}, with a backup for each where you have one.</p>`;
+  el.innerHTML = `<section class="card full"><div class="nhead"><h3>Team for ${esc(b ? b.label : '')}</h3><button class="btn ${tpRes && tpRes.sig === su.sig ? '' : 'primary'}" data-bact="team" ${tpBusy || !su.cands.length ? 'disabled' : ''}>${tpRes && tpRes.sig === su.sig ? 'Suggest again' : 'Suggest a team'}</button></div>${body}
+    <details class="simhow"><summary>How the team is picked</summary>
+      <p>Every available Pokémon is scored one-on-one against each of the boss's Pokémon with the damage calculator. The score counts how many hits your best move needs, how many hits their strongest move needs (judged the way the boss AI judges it), and who moves first. Keeping your Pokémon alive comes first. A win that could end in a faint (on a high roll or a critical hit) scores far below a safe one, and a safe win with plenty of HP left scores highest.</p>
+      <p>Each boss Pokémon then gets its own answer. The search tries the combinations and keeps the best overall. One of yours can be the answer to two only when it wins both, because it'll be worn down by the second. Remaining slots go to one backup per boss Pokémon, starting with the shakiest matchup, so you never get several Pokémon for the same job. The top few plans and your current party are each played out 300 times. The plans are played as written, using the Set battle style that Nuzlocke runs use: when you knock one of theirs out, your Pokémon stays in. If it would lose to their next Pokémon, you hard-switch to the planned answer, but only if that answer can take a hit coming in and still win. After a faint, you send in the planned answer or its backup for free. The plan with the fewest expected faints is chosen, counting a loss as losing your whole team, since a wipe ends the run. Win chance only breaks ties.</p>
+    </details></section>`;
+}
+function tpUse() {
+  const r = curRun(); if (!tpRes) return; const su = tpRes.su, best = tpRes.best;
+  const keys = [best.lead, ...best.t.filter(i => i !== best.lead)].map(i => su.cands[i].row.k);
+  if (keys.some(k => !r.enc[k])) return;
+  partyOf(r).forEach(x => { if (!keys.includes(x.row.k)) x.e.st = 'box' });
+  keys.forEach(k => { r.enc[k].st = 'party' });
+  r.porder = keys; BS.pa = keys[0]; BS.p = {}; batSave();
+  ncommit(true); renderBattle();
+}
+// ---- Guide tab: a Nuzlocke walkthrough by boss. Locations, items, caps and boss teams come from the v1.3.0 data above;
+// the picks and strategies are written on top of it. ----
+// areas: Routes data names, optionally "Name|sub" to limit to one sub-area
+const GUIDE = [
+  { b: [0], title: 'Twinleaf to Route 203', areas: ['Twinleaf Town', 'Route 201', 'Lake Verity', 'Sandgem Town', 'Route 202', 'Jubilife City', 'Route 204|South', 'Ravaged Path', 'Route 203'],
+    picks: [[133, 'Free gift in Twinleaf. Pick its evolution for the gap in your team. Umbreon walls a lot of the midgame, and Vaporeon or Jolteon hit hard.'],
+      [447, 'From the Trainers\' School baby gift, or wild in Oreburgh Gate. Lucario is Fighting/Steel and beats Roark, Byron and Candice.'],
+      [446, 'Another Trainers\' School option. Pickup finds items while you walk, and Snorlax is one of the bulkiest Pokémon you can use.'],
+      [194, 'Water/Ground. It shrugs off Roark\'s whole team, and Quagsire stays useful for Volkner (Electric can\'t touch it).'],
+      [406, 'Grass for Roark and Wake. Roserade (Shiny Stone) is a fast special attacker all game.'],
+      [280, 'Gardevoir or Gallade (Dawn Stone, male only). Both are strong all game.'],
+      [41, 'Crobat (friendship) is very fast and handy against Gardenia and Maylene.'],
+      [58, 'Arcanine (Fire Stone) is a reliable Fire type, and those are rare early.']],
+    tips: ['Barry\'s team depends on your starter. His starter always resists yours.', 'Starly\'s Reckless boosts Wing Attack. Munchlax has Thick Fat and Rock Tomb. Bring a Rock or Electric attacker if you have one.'] },
+  { b: [1], title: 'Oreburgh', areas: ['Oreburgh Gate', 'Oreburgh City', 'Oreburgh Mine'],
+    picks: [[258, 'Hoenn starter gift at the Oreburgh Pokémon Center (pick one). Mudkip into Marshtomp is Water/Ground and the best Roark answer you can get.'],
+      [252, 'Same gift (Treecko). Grass beats every Pokémon Roark has.'],
+      [374, 'Free Beldum in Oreburgh. Slow to start, but Metagross is a late-game monster.'],
+      [304, 'Aron in the Mine. Steel resists Rock, and Aggron is very bulky physically.'],
+      [328, 'Trapinch in the Mine becomes Flygon, with Ground STAB and a Levitate-like Flying typing.']],
+    tips: [] },
+  { b: [2], title: 'Floaroma and Valley Windworks', areas: ['Route 204|North', 'Floaroma Town', 'Floaroma Meadow', 'Valley Windworks'],
+    picks: [[158, 'Johto starter gift at the Floaroma Pokémon Center. Feraligatr is a community favourite for Fantina, with Agility and Swords Dance.'],
+      [155, 'Same gift (Cyndaquil). Fire for Gardenia, Byron and Candice.'],
+      [81, 'Magnemite. Magnezone (Mt. Coronet) is the best answer to Wake and Cyrus\'s Crobat.'],
+      [309, 'Electrike. A fast Electric for Mars, Wake and Spear Pillar.'],
+      [446, 'Honey tree (10%). Pickup, then Snorlax.'],
+      [287, 'Honey tree. Slaking hits incredibly hard, but Truant means only every other turn.'],
+      [425, 'Drifloon. A Ghost immune to Normal and Fighting, which makes it great for Maylene.']],
+    tips: ['The Kanto starters (Bulbasaur, Charmander, Squirtle) are a gift in Jubilife after the first gym.'] },
+  { b: [3, 4], title: 'Eterna', areas: ['Route 205', 'Eterna Forest', 'Old Chateau', 'Eterna City'],
+    picks: [[92, 'Gastly in the Old Chateau (40%). Gengar is one of the best special attackers in the game.'],
+      [479, 'Rotom in the Old Chateau. Its forms cover a lot (Wash for water, Heat for fire).'],
+      [347, 'Fossil from Eterna (choose one). Community strategy for Gardenia: Substitute, Rock Polish, then Fury Cutter with a Silver Powder.'],
+      [142, 'Fossil choice (Aerodactyl). Very fast, with Rock and Flying STAB.'],
+      [137, 'Porygon in the Eterna Galactic Building. Up-Grade (Hearthome) makes Porygon2.'],
+      [453, 'Croagunk. Dry Skin and Poison/Fighting typing do well against Gardenia, Fantina and Cynthia.'],
+      [418, 'Buizel. A fast Water type with Swift Swim.'],
+      [214, 'Honey tree on Route 205 South. Heracross hits very hard.']],
+    tips: ['Grab the Dawn Stone (Bike Shop) and Sun Stone in Eterna.'] },
+  { b: [5, 6], title: 'Route 211 to Hearthome', areas: ['Route 211', 'Mt. Coronet', 'Route 206', 'Wayward Cave', 'Route 207', 'Route 208', 'Hearthome City'],
+    picks: [[443, 'Gible in Wayward Cave (20%). Garchomp is the strongest pick in the game. Get it.'],
+      [66, 'Machop on Route 207 (30%). Machamp covers Fantina\'s Normal-weak Pokémon, Byron and Candice.'],
+      [246, 'Larvitar on Route 207. Tyranitar is slow to evolve but huge.'],
+      [371, 'Bagon on Route 211 East. Salamence is another top late-game pick.'],
+      [77, 'Ponyta. A fast Fire type for Gardenia rematch fights, Byron and Candice.'],
+      [207, 'Gligar on Route 206. Gliscor (Razor Fang at night) is immune to Electric for Volkner.'],
+      [177, 'Natu on Route 211 East. Xatu with Psychic and Flying STAB is great against Maylene.']],
+    tips: ['Fantina\'s Pokémon are all Ghosts. Normal types are immune to Shadow Ball and Shadow Claw, and Dark types hit them hard.'] },
+  { b: [7], title: 'Solaceon to Veilstone', areas: ['Route 209', 'Lost Tower', 'Solaceon Town', 'Solaceon Ruins', 'Route 210|South', 'Route 215', 'Veilstone City'],
+    picks: [[349, 'Feebas, 100% with any rod in Mt. Coronet B1F (the Good Rod is on Route 209). Milotic (use the Prism Scale from Mt. Coronet) carries many runs.', ['Mt. Coronet']],
+      [123, 'Scyther on Route 210 South. Scizor (Metal Coat) has priority Bullet Punch.'],
+      [113, 'Chansey on Route 209. Blissey (friendship) is a huge special wall.'],
+      [442, 'Spiritomb at the Route 209 Hallowed Tower. Its only weakness is Fairy.'],
+      [64, 'Kadabra on Route 215. Psychic for Maylene.']],
+    tips: ['Veilstone Game Corner prizes include Leftovers, Life Orb, Focus Sash, Expert Belt and Choice items. Saving coins for Leftovers pays off all game.', 'There\'s a Choice Scarf in the Solaceon Ruins and a Life Orb on Route 210 South.'] },
+  { b: [8, 9], title: 'Route 214 to Pastoria', areas: ['Route 214', 'Maniac Tunnel', 'Valor Lakefront', 'Route 213', 'Pastoria City', 'Great Marsh'],
+    picks: [[131, 'Lapras gift in Pastoria. Bulky, with Water and Ice. It does well against Wake\'s Ludicolo, Candice\'s team (Water resists Ice) and Cynthia\'s Garchomp.'],
+      [449, 'Hippopotas in Maniac Tunnel. Hippowdon blanks Volkner and sets sand.'],
+      [228, 'Houndour on Route 214. Fire/Dark for Byron, Lucian and Candice.'],
+      [213, 'Shuckle on Route 213. The community uses Encore to set up in front of it.'],
+      [451, 'Skorupi in the Great Marsh. Drapion has only one weakness (Ground).'],
+      [115, 'Kangaskhan in the Great Marsh. Scrappy hits Ghosts with Normal moves.']],
+    tips: ['There\'s a Choice Band on Route 214.'] },
+  { b: [10], title: 'Route 212 and Celestic', areas: ['Route 212', 'Trophy Garden', 'Celestic Town'],
+    picks: [[88, 'Grimer on Route 212 South. Muk is bulky.']],
+    tips: ['An NPC in Celestic Town gives a Choice Specs in the morning.'] },
+  { b: [11, 12], title: 'Fuego, Canalave and Iron Island', areas: ['Fuego Ironworks', 'Route 218', 'Canalave City', 'Iron Island'],
+    picks: [[126, 'Magmar in the Fuego Ironworks. Magmortar (Magmarizer) is the best Fire type for Byron.'], [125, 'Electabuzz on Route 218.'], [305, 'Lairon on Iron Island.'], [112, 'Rhydon on Iron Island. Rhyperior (Protector) is huge for Volkner.']],
+    tips: ['Byron\'s Steel types hate Fire, Fighting and Ground. His Magnezone has Magnet Pull and traps your Steel types.'] },
+  { b: [13, 14], title: 'The lakes', areas: ['Lake Valor'], picks: [], tips: [] },
+  { b: [15, 16, 17], title: 'Snowpoint and Galactic HQ', areas: ['Route 216', 'Route 217', 'Acuity Lakefront', 'Snowpoint City', 'Snowpoint Temple', 'Galactic HQ'],
+    picks: [[220, 'Swinub on Route 216 (25%). Mamoswine (learn Ancient Power and level up) covers Volkner, Cynthia and Bertha.'], [215, 'Sneasel on Route 216. Weavile (Razor Claw at night) is fast and hits very hard.'], [459, 'Snover on Route 216.']],
+    tips: ['Snowpoint sells evolution items: Razor Claw, Razor Fang, Electirizer, Magmarizer, Protector, Reaper Cloth, Dubious Disc and Up-Grade.'] },
+  { b: [18, 19], title: 'Spear Pillar and Distortion World', areas: ['Lake Acuity', 'Spear Pillar', 'Distortion World'], picks: [], tips: [] },
+  { b: [20], title: 'Sunyshore', areas: ['Route 222', 'Sunyshore City'], picks: [[404, 'Luxio on Route 222.'], [143, 'Snorlax from the Route 222 honey tree.']], tips: [] },
+  { b: [21, 22, 23, 24, 25, 26], title: 'Victory Road and the League', areas: ['Route 219', 'Route 220', 'Route 221', 'Route 223', 'Victory Road', 'Pokémon League'],
+    picks: [[297, 'Hariyama in Victory Road.'], [444, 'Gabite in Victory Road (10%).']],
+    tips: ['Each Elite Four member and Cynthia picks one of four teams at random. Plan for all four.', 'There\'s a Focus Sash on Route 221.'] },
+];
+// how to win, by boss index
+const GBOSS = {
+  0: ['Lead with whatever handles Starly. Barry\'s starter comes last and always resists yours, so have a second attacker ready for it.'],
+  1: ['Every Pokémon here is weak to Water, Grass, Fighting, Ground and Steel. A Water/Ground or Grass type with a strong STAB move wins nearly alone.',
+    'Nosepass leads with Stealth Rock and Sandstorm (Smooth Rock makes the sand last 8 turns). Kill it fast, or switch-ins and non-Rock types bleed HP.',
+    'Geodude\'s Expert Belt Fire Punch and Thunder Punch punish Grass and Water types. Cranidos hits hardest and is fast: Zen Headbutt for Fighting types, Thunder Punch for Water types.',
+    'Larvitar arrives already burned by its Flame Orb, with Guts. Don\'t try to status it.'],
+  2: ['Bronzor and Purugly both carry Hypnosis, and Zubat has Toxic and Confuse Ray. Fast hitters and Lum or Chesto Berries help.', 'Yanma has Speed Boost, so take it out early. Electric, Rock and Fire cover most of the team.'],
+  3: ['Fire, Flying, Ice and Poison all hit every Pokémon here. Breloom has Spore, Technician Mach Punch and Bullet Seed, so don\'t let it get going.',
+    'Cherrim has a Focus Sash, sets Sunny Day and boosts Chlorophyll users\' speed. Multi-hit moves or priority get through the Sash, or KO it before the sun matters.',
+    'Bellossom has Teeter Dance and Stun Spore, and Tangela has Stun Spore. A Poison or Steel type can\'t be poisoned, but paralysis still lands.'],
+  4: ['Ice is the only type that hits two of these. Skuntank has Aftermath, so a contact KO hurts your Pokémon. Sableye opens with Fake Out and has Shadow Sneak.', 'Tangela has Sleep Powder.'],
+  5: ['Flying and Psychic hit two each. Staravia\'s Reckless Facade is strong. Heracross has Guts. Snorlax uses Yawn, so switch out or attack before you fall asleep.'],
+  6: ['Normal types are immune to their Ghost moves, and Dark types hit them hard. Will-O-Wisp is everywhere, so special attackers or Guts users are best.',
+    'Drifblim has Calm Mind and Baton Pass. Mismagius has Calm Mind. Stop the boosts early with a strong attack, or pass them along before they stack.',
+    'Gengar and Mismagius have Levitate (Ground won\'t hit). Spiritomb is only weak to Fairy.'],
+  7: ['Flying hits five of six, and Psychic and Ghost are strong too. Ghosts are immune to Fighting moves.',
+    'Medicham (Pure Power) and Infernape (Life Orb) both open with Fake Out or Mach Punch and hit extremely hard. Lucario has a Focus Sash and Agility.',
+    'Toxicroak has Dry Skin, so Water moves heal it. Gallade sets Reflect and Light Screen (Light Clay). Machamp is Guts with a Toxic Orb.'],
+  8: ['Azumarill has Huge Power and Aqua Jet. Breloom has a Focus Sash and Spore. Staraptor hits hard with Close Combat. Electric, Flying and Psychic cover the most.'],
+  9: ['Electric and Grass hit four of six, but Quagsire and Poliwrath have Water Absorb. Grass is the better pick for those two.',
+    'Gyarados has Intimidate, Dragon Dance and a Wacan Berry (halves one Electric hit). Sharpedo has Speed Boost and a Focus Sash. Floatzel and Ludicolo have Swift Swim, which only matters in rain, so don\'t set rain yourself.'],
+  10: ['Crobat has Hypnosis. Honchkrow has Super Luck and Scope Lens, so expect crits. Magnezone\'s Magnet Pull traps Steel types, and it has Mirror Coat. Weavile has Ice Shard and Swords Dance.', 'Rock, Fire, Electric and Ice spread best.'],
+  11: ['Staraptor now has a Choice Band. Lead with something that takes Brave Bird or Close Combat. Breloom keeps the Focus Sash and Spore.'],
+  12: ['Fire, Fighting and Ground each hit four. Steelix and Forretress carry Explosion. Forretress sets Spikes and Toxic Spikes, and Bronzong sets screens with Light Clay.',
+    'Aggron has a Focus Sash and Head Smash. Bastiodon has Metal Burst and Toxic. Magnezone traps your Steel types.'],
+  13: ['Crobat has Hypnosis and Bright Powder. Yanmega has Speed Boost. Bronzong has Stealth Rock and Explosion. Kangaskhan and Purugly both have Fake Out.'],
+  14: ['Alakazam can Calm Mind and Recover. Octillery\'s Expert Belt coverage hits almost anything. Toxicroak has Fake Out and Sucker Punch.'],
+  15: ['Snow Warning makes hail permanent, and Blizzard always hits in hail. Glaceon has Snow Cloak, Bright Powder and Double Team, so bring accurate or never-miss moves.',
+    'Weavile has a Focus Sash and Swords Dance. Mamoswine and Abomasnow have Ice Shard. Fighting, Rock, Steel and Fire hit five or more.'],
+  16: ['Rhyperior has a Choice Band and Magmortar has Choice Specs, so predict their locked moves. Bronzong sets Reflect and Light Screen. Toxicroak has a Focus Sash.'],
+  17: ['Crobat has a Choice Band. Honchkrow has Super Luck. Houndoom has Nasty Plot and a Life Orb. Rock and Fighting hit the most.'],
+  18: ['Double battle. Both commanders lead Crobat (community tip), so a fast Electric or Rock attacker shines.',
+    'Kangaskhan and Purugly both have Fake Out. Electivire has Motor Drive, so don\'t use Electric moves on it. Bronzong sets Stealth Rock.'],
+  19: ['Dialga and Palkia are level 70 above the cap of 60, but have 0 IVs. Hit hard and fast. Fighting and Ground hit Dialga, and Dragon and Fairy hit Palkia.'],
+  20: ['Ground hits all four, but Electivire carries Earthquake and Ice Punch, which hurt Ground types like Garchomp. Luxray has a Choice Band with Ice Fang and Fire Fang.',
+    'Jolteon has a Focus Sash. Raichu has Surf and Grass Knot for your Ground types.'],
+  21: ['Staraptor has a Choice Scarf. Azumarill has Huge Power Aqua Jet. Breloom has Spore. Snorlax uses Curse and Slack Off, so don\'t let it set up.'],
+  22: ['Fire, Flying and Rock hit most of his Bugs. Every team ends with Drapion, which is only weak to Ground. In team 1 it has Sniper and a Scope Lens.',
+    'Watch for Scizor\'s Technician Bullet Punch and Yanmega\'s Speed Boost in the teams that have them.'],
+  23: ['Water, Grass and Ice hit nearly everything. Sand Stream from Hippowdon or Tyranitar makes sand permanent. Every team ends with Rhyperior, which is 4× weak to Water and Grass.',
+    'Some teams have Dugtrio with Arena Trap, which stops you switching out.'],
+  24: ['Water, Ground and Rock hit most of his team. Ninetales or Torkoal set permanent sun with Drought, which boosts Fire and weakens Water, so a Rain Dance user helps.',
+    'Every team ends with Magmortar. Some teams mix in Lopunny, Drifblim or Steelix, so check which team you\'re facing.'],
+  25: ['Ghost and Dark hit his Psychics. Some teams set Reflect and Light Screen (Mr. Mime, Bronzong), so knock out the screen setter first.',
+    'Every team ends with Gallade (Psychic/Fighting), which is weak to Flying, Ghost and Fairy.'],
+  26: ['Every team ends with Garchomp (Swords Dance and a Yache Berry in team 1, which halves one Ice hit), and most have Milotic and Lucario (Extreme Speed). Keep a fast, healthy answer for Garchomp.',
+    'Spiritomb, Togekiss (Serene Grace flinches) and Roserade appear in some teams. Ice and Fairy are the most useful attack types across all four.'],
+};
+// stand-out traits of a boss Pokémon, read straight from its set
+function gThreats(p) {
+  const mv = (p.mv || []).filter(Boolean), ab = (p.ab || '').replace(/ \(.*\)$/, '').replace('Technican', 'Technician'), it = p.item || '', out = [];
+  // the held item is already shown on its own line
+  if (['Speed Boost', 'Huge Power', 'Pure Power', 'Adaptability', 'Technician', 'Sniper', 'Super Luck', 'Magnet Pull', 'Arena Trap', 'Drought', 'Sand Stream', 'Snow Warning', 'Drizzle', 'Swift Swim', 'Chlorophyll', 'Unburden', 'Serene Grace', 'Aftermath', 'Motor Drive', 'Water Absorb', 'Volt Absorb', 'Flash Fire', 'Dry Skin', 'Levitate', 'Intimidate', 'Guts', 'Scrappy', 'Poison Heal', 'Snow Cloak', 'Sand Veil', 'Marvel Scale'].includes(ab)) out.push(ab);
+  const pri = mv.filter(m => NPRIO[m] > 0 && m !== 'Protect' && m !== 'Detect'); if (pri.length) out.push('priority ' + pri.join('/'));
+  const setup = mv.filter(m => ['Swords Dance', 'Dragon Dance', 'Nasty Plot', 'Calm Mind', 'Agility', 'Curse', 'Rock Polish', 'Bulk Up', 'Double Team'].includes(m)); if (setup.length) out.push('sets up: ' + setup.join('/'));
+  const slp = mv.filter(m => ['Spore', 'Hypnosis', 'Sleep Powder', 'Yawn', 'Sing', 'Grass Whistle', 'Lovely Kiss'].includes(m)); if (slp.length) out.push('sleep: ' + slp.join('/'));
+  const misc = mv.filter(m => ['Explosion', 'Self-Destruct', 'Stealth Rock', 'Spikes', 'Toxic Spikes', 'Reflect', 'Light Screen', 'Baton Pass', 'Will-O-Wisp', 'Toxic', 'Thunder Wave', 'Encore', 'Mirror Coat', 'Counter', 'Metal Burst'].includes(m)); if (misc.length) out.push(misc.join('/'));
+  return out;
+}
+const gArea = s => { const [n, sub] = s.split('|'); return { n, sub } };
+const gInCh = (ch, L, x) => ch.areas.some(a => { const g = gArea(a); return g.n === L.n && (!g.sub || (x && x.n || '').includes(g.sub)) });
+// where to get a species within a chapter's areas (wild by method, plus gifts and statics)
+function gWhere(ch, n) {
+  const rows = new Map();
+  ROUTES.forEach(L => L.subs.forEach(x => { if (!gInCh(ch, L, x)) return; x.wild.forEach(w => w.mons.forEach(([m, pct]) => {
+    if (m !== n) return; const how = /Morning|Day|Night/.test(w.m) ? 'grass/cave' : w.m.replace(/[^\w .é-]/g, '').trim();
+    const k = L.n + (x.n ? ' ' + x.n : '') + '|' + how, o = rows.get(k) || { area: L.n, sub: x.n, how, pct: new Set(), lv: w.lv }; o.pct.add(pct); rows.set(k, o) })) }));
+  const out = [...rows.values()].map(o => ({ area: o.area, txt: `${o.area}${o.sub ? ' ' + o.sub : ''} · ${o.how}${o.how === 'Surf' ? ' (needs Surf)' : /Rod/.test(o.how) ? ` (needs the ${o.how})` : o.how === 'Pok Radar' || o.how === 'Poké Radar' ? ' (post-game)' : ''} ${[...o.pct].join('/')} · Lv. ${o.lv}` }));
+  ch.areas.forEach(a => (NEVBY[nkey(gArea(a).n)] || []).forEach(g => { if (g.opts.some(o => o.n === n)) out.push({ area: gArea(a).n, txt: `${g.k.replace(/^ev:/, '').replace(/\|\d+$/, '')} · gift / one-time encounter` }) }));
+  return out;
+}
+// worth-grabbing items in a chapter's areas
+const GITEMS = /^(Leftovers|Life Orb|Choice (Band|Specs|Scarf)|Expert Belt|Focus Sash|Muscle Band|Wise Glasses|Scope Lens|Light Clay|Exp\. Share|Lucky Egg|Soothe Bell|Good Rod|Old Rod|Super Rod|Shiny Stone|Dusk Stone|Dawn Stone|Water Stone|Fire Stone|Thunder Stone|Leaf Stone|Moon Stone|Sun Stone|Razor Fang|Razor Claw|Prism Scale|Protector|Electirizer|Magmarizer|Reaper Cloth|Dubious Disc|Up-Grade|Metal Coat|Dragon Scale|Oval Stone|King's Rock|Black Sludge|White Herb|Power Herb|Quick Claw|Shell Bell|Big Root|Wide Lens|Zoom Lens|Amulet Coin|HM0\d.*)$/;
+function gItems(ch) {
+  const out = [], seen = new Set();
+  ROUTES.forEach(L => { if (!ch.areas.some(a => gArea(a).n === L.n)) return;
+    (L.items || []).forEach(it => { if (!GITEMS.test(it.i)) return; const sub = ch.areas.map(gArea).find(g => g.n === L.n).sub;
+      if (sub && it.w && /\((North|South|East|West)\)/.test(it.w) && !it.w.includes(sub)) return;
+      const k = it.i + '|' + it.w; if (seen.has(k)) return; seen.add(k); out.push({ i: it.i, w: (it.w || L.n) + (it.h ? ' · ' + it.h : ''), area: L.n }) }) });
+  return out;
+}
+function renderGuide() {
+  const d = document.getElementById('gdetail'); if (!d) return;
+  const r = curRun(), next = r.beat, nextCh = GUIDE.findIndex(c => c.b.includes(next));
+  const tl = ts => ts.map(t => `<span class="mtype" style="background:${TC[t]}">${t}</span>`).join(' ');
+  const bossHtml = bi => { const b = NBOSS[bi]; if (!b) return '';
+    const variants = b.label.includes('Barry') ? bossTeams(b, r).slice(0, 1) : b.trs;
+    const vHtml = variants.map((t, vi) => { const team = t.team.filter(p => mons[p.n - 1]);
+      const wk = TYPES.map(ty => [ty, team.filter(p => defMult(mons[p.n - 1].v[ver].types, abName((p.ab || '').replace(/ \(.*\)$/, '')), ty) >= 2).length]).filter(x => x[1] >= Math.max(2, Math.ceil(team.length / 2))).sort((a, c) => c[1] - a[1]);
+      return `<div class="gvar">${variants.length > 1 ? `<div class="sp">Team ${vi + 1}${t.var ? ' · ' + esc(t.var) : ''}</div>` : ''}<div class="gteam">${team.map(p => { const th = gThreats(p);
+        return `<div class="gtm"><button class="pk" data-gn="${p.n}" title="Open ${esc(monName(p.n))} in the Pokédex"><img src="${nimg(p.n)}" alt=""></button><div><b>${esc(monName(p.n))}</b> <span class="sp">${esc(p.lv)}</span>
+          <div class="sp">${esc(p.item || 'no item')}</div>${th.length ? `<div class="gth">${th.map(esc).join(' · ')}</div>` : ''}</div></div>` }).join('')}</div>
+        ${wk.length ? `<div class="gwk"><span class="sp">Hit by</span> ${wk.map(([ty, n]) => `<span class="mtype" style="background:${TC[ty]}">${ty}</span><small>${n}/${team.length}</small>`).join(' ')}</div>` : ''}</div>` }).join('');
+    return `<div class="gboss ${bi < next ? 'done' : bi === next ? 'next' : ''}"><div class="gbh"><h4>${esc(b.label)}</h4><span class="sp">${esc(b.area)}${b.sub ? ' · ' + esc(b.sub) : ''} · level cap <b>${b.cap}</b>${bi < next ? ' · beaten ✓' : bi === next ? ' · your next fight' : ''}</span>
+        <button class="btn" data-gboss="${bi}">Plan it in Battle</button></div>${vHtml}
+      ${(GBOSS[bi] || []).length ? `<ul class="gtips">${GBOSS[bi].map(t => `<li>${esc(t)}</li>`).join('')}</ul>` : ''}</div>` };
+  const chHtml = (ch, ci) => {
+    const picks = ch.picks.map(([n, why, more]) => { const w = gWhere(more ? Object.assign({}, ch, { areas: [...ch.areas, ...more] }) : ch, n), m = mons[n - 1]; if (!m) return '';
+      return `<div class="gpick"><button class="pk" data-gn="${n}" title="Open ${esc(m.name)} in the Pokédex"><img src="${nimg(n)}" alt=""></button><div><b>${esc(m.name)}</b> ${tl(m.v[ver].types)}
+        <div>${esc(why)}</div>${w.length ? `<div class="sp gwhere">${w.slice(0, 4).map(x => `<button class="an" data-garea="${esc(x.area)}">${esc(x.txt)}</button>`).join('')}</div>` : ''}</div></div>` }).join('');
+    const items = gItems(ch);
+    return `<details class="card full gch" id="gch${ci}" ${ci === nextCh ? 'open' : ''}><summary><h3>${ci + 1}. ${esc(ch.title)}</h3><span class="sp">${ch.b.map(i => NBOSS[i] && esc(NBOSS[i].label)).filter(Boolean).join(', ')}</span></summary>
+      ${ch.tips.length ? `<ul class="gtips">${ch.tips.map(t => `<li>${esc(t)}</li>`).join('')}</ul>` : ''}
+      ${picks ? `<h4 class="tph4">Pokémon to try for</h4><div class="gpicks">${picks}</div>` : ''}
+      ${items.length ? `<h4 class="tph4">Items to grab</h4><div class="gitems">${items.map(x => `<span class="gitem"><b>${esc(x.i)}</b> <button class="an" data-garea="${esc(x.area)}">${esc(x.w)}</button></span>`).join('')}</div>` : ''}
+      <h4 class="tph4">Boss${ch.b.length > 1 ? 'es' : ''}</h4>${ch.b.map(bossHtml).join('')}</details>`;
+  };
+  d.innerHTML = `<div class="rhero"><h2>Renegade Platinum Nuzlocke guide</h2>
+      <p class="sp">One chapter per stretch of the game: what to catch, what to pick up and how to beat each boss. Locations, items, level caps and boss teams come from the Pokédex's v1.3.0 data. ${next < NBOSS.length ? `Your run “${esc(r.name)}” is up to <b>${esc(NBOSS[next].label)}</b>, so that chapter is open.` : ''}</p>
+      <div class="bcontrols"><label>Jump to<select id="gjump">${GUIDE.map((c, i) => `<option value="${i}" ${i === nextCh ? 'selected' : ''}>${i + 1}. ${esc(c.title)}</option>`).join('')}</select></label></div></div>
+    <details class="card full gch" ${nextCh < 0 ? 'open' : ''}><summary><h3>Before you start</h3><span class="sp">rules, mechanics and early priorities</span></summary><ul class="gtips">
+      <li>Use <b>Set</b> battle style. You don't get a free switch when you knock out their Pokémon, so plan who's in when their next one arrives.</li>
+      <li>Level caps here are each boss's highest level. The Nuzlocke tab warns you when you go over.</li>
+      <li>Gen 4 rules: critical hits do <b>double</b> damage, sleep lasts 1 to 4 turns, and moves are physical or special by the move, not the type.</li>
+      <li>Trainers use the game's trainer AI. It prefers moves that knock you out and the strongest attack it has, and it rarely switches. The Battle tab predicts its next move.</li>
+      <li>Early gifts: Eevee (Twinleaf), a baby Pokémon (Jubilife Trainers' School), Hoenn starters (Oreburgh Pokémon Center), Beldum (Oreburgh), Johto starters (Floaroma Pokémon Center), Kanto starters (Jubilife, after the first gym) and a fossil (Eterna). Check your rules on whether gifts count as encounters.</li>
+      <li>Pickup Pokémon (Munchlax and Aipom from honey trees, Zigzagoon on Route 202) collect items as you walk. Honey trees are also where Munchlax and Heracross come from.</li>
+      <li>Grab the Expert Belt on the Ravaged Path and the Muscle Band in the Oreburgh Mine before Roark. The Veilstone Game Corner sells Leftovers, Life Orb, Focus Sash and Choice items for coins.</li>
+      <li>The Good Rod is on Route 209. It opens Feebas (100% in Mt. Coronet B1F) and Dratini (Eterna, Route 210, Mt. Coronet).</li></ul></details>
+    ${GUIDE.map(chHtml).join('')}
+    <section class="card full"><h3>Sources</h3><ul class="gtips">
+      <li>Encounters, items and trainer teams: Drayano's v1.3.0 documentation, as compiled in the <a href="https://github.com/FredericDlugi/platinum-renegade-wiki" target="_blank" rel="noopener">platinum-renegade-wiki</a> (the data behind this Pokédex).</li>
+      <li>Community strategy: <a href="https://nuzlockeuniversity.ca/2020/09/22/the-definitive-guide-to-a-renegade-platinum-nuzlocke/" target="_blank" rel="noopener">The Definitive Guide to a Renegade Platinum Nuzlocke</a> (Nuzlocke University, 2020; some details are dated) and the r/nuzlocke <a href="https://www.reddit.com/r/nuzlocke/comments/tmuidm/some_tips_tricks_and_resources_for_renegade/" target="_blank" rel="noopener">tips, tricks and resources thread</a>.</li>
+      <li>Trainer AI: the <a href="https://github.com/pret/pokeplatinum/tree/main/src/battle/trainer_ai" target="_blank" rel="noopener">pokeplatinum decompilation</a>.</li></ul></section>`;
+}
+const GD = document.getElementById('gdetail');
+GD.addEventListener('click', ev => {
+  const t = ev.target;
+  const gb = t.closest('[data-gboss]'); if (gb) { const r = curRun(); BS = batFresh(r, +gb.dataset.gboss, 0); batSave(); tpRes = null; return setView('battle') }
+  const ga = t.closest('[data-garea]'); if (ga) return nOpenArea(ga.dataset.garea);
+  const gn = t.closest('[data-gn]'); if (gn) { setView('dex'); return select(+gn.dataset.gn) }
+});
+GD.addEventListener('change', ev => { if (ev.target.id === 'gjump') { const el = document.getElementById('gch' + ev.target.value); if (el) { el.open = true; el.scrollIntoView({ behavior: 'smooth', block: 'start' }) } } });
+const BD = document.getElementById('batdetail');
+BD.addEventListener('change', ev => { if (ev.target.dataset.bf) batChange(ev.target) });
+BD.addEventListener('click', ev => { const b = ev.target.closest('[data-bact]'); if (!b) return;
+  if (b.dataset.bact === 'team') return tpRun();
+  if (b.dataset.bact === 'useteam') return tpUse();
+  if (b.dataset.bact === 'reset') { const r = curRun(); BS = batFresh(r, BS ? BS.boss : r.beat, BS ? BS.v : 0); batSave(); renderBattle() } });
 
 // sections the viewer has collapsed (by data-sec id)
 const nHidden = new Set(store.get('rp-nhide', []));
