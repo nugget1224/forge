@@ -2976,6 +2976,15 @@ function tpTeamOf(asg, M) {
     M.forEach((row, i) => { if (!team.includes(i) && row[j].val > bv) { bv = row[j].val; bi = i } });
     if (bi >= 0 && bv >= (M[asg[j]][j].risk === 0 ? .5 : .15)) { team.push(bi); backup[j] = bi }   // shaky matchups take any useful backup
   }
+  // always field six when six are available: open slots go to whoever adds the most cover over what the team already has
+  while (team.length < 6 && team.length < M.length) {
+    const have = asg.map((_, j) => Math.max(...team.map(i => M[i][j].val)));
+    let bi = -1, bg = -1;
+    M.forEach((row, i) => { if (team.includes(i)) return;
+      const g = row.reduce((a, d, j) => a + Math.max(0, d.val - have[j]), 0) + .1 * row.reduce((a, d) => a + d.val, 0);
+      if (g > bg) { bg = g; bi = i } });
+    if (bi < 0) break; team.push(bi);
+  }
   return { t: team, asg, backup };
 }
 function tpRun() {
@@ -3093,6 +3102,7 @@ function renderTeamPick() {
     const cmp = res.cur ? ` · your current party: ${tpPct(res.cur.clean, res.cur.n)}% with nobody fainting, ${tpPct(res.cur.win, res.cur.n)}% to win` : '';
     body = `<div class="tpsum"><span class="bowin">${tpPct(best.clean, best.n)}%</span><span class="sp">chance to win with nobody fainting, using this team of ${best.t.length} · ${tpPct(best.win, best.n)}% to win at all · ${fw(best)} faints on average when you win${cmp}</span>
         ${same ? '<span class="sp">Your party already matches.</span>' : '<button class="btn primary" data-bact="useteam">Use this team</button>'}</div>
+      ${best.t.length < 6 ? `<p class="rnote" style="margin:10px 0 0">Only ${best.t.length} of your Pokémon can be used here, so the team is ${best.t.length}. ${su.out.length ? 'See “Left out” for why the others aren’t eligible.' : 'Catch or box more to fill all six slots.'}</p>` : ''}
       <h4 class="tph4">Battle plan</h4>${tpPlanHtml(res)}
       <h4 class="tph4">Why each Pokémon</h4><div class="tpgrid">${cards}</div>
       ${left.length || su.out.length ? `<details class="tpout"><summary>Left out (${left.length + su.out.length})</summary><ul>${left.map(o => `<li><b>${nm(o.x)}</b>: ${tpLeftOut(res, o.i)}</li>`).join('')}${su.out.map(o => `<li><b>${nm(o.x)}</b>: ${esc(o.why)}</li>`).join('')}</ul></details>` : ''}`;
@@ -3100,7 +3110,7 @@ function renderTeamPick() {
   el.innerHTML = `<section class="card full"><div class="nhead"><h3>Team for ${esc(b ? b.label : '')}</h3><button class="btn ${tpRes && tpRes.sig === su.sig ? '' : 'primary'}" data-bact="team" ${tpBusy || !su.cands.length ? 'disabled' : ''}>${tpRes && tpRes.sig === su.sig ? 'Suggest again' : 'Suggest a team'}</button></div>${body}
     <details class="simhow"><summary>How the team is picked</summary>
       <p>Every available Pokémon is scored one-on-one against each of the boss's Pokémon with the damage calculator. The score counts how many hits your best move needs, how many hits their strongest move needs (judged the way the boss AI judges it), and who moves first. Keeping your Pokémon alive comes first. A win that could end in a faint (on a high roll or a critical hit) scores far below a safe one, and a safe win with plenty of HP left scores highest.</p>
-      <p>Each boss Pokémon then gets its own answer. The search tries the combinations and keeps the best overall. One of yours can be the answer to two only when it wins both, because it'll be worn down by the second. Remaining slots go to one backup per boss Pokémon, starting with the shakiest matchup, so you never get several Pokémon for the same job. The top few plans and your current party are each played out 300 times. The plans are played as written, using the Set battle style that Nuzlocke runs use: when you knock one of theirs out, your Pokémon stays in. If it would lose to their next Pokémon, you hard-switch to the planned answer, but only if that answer can take a hit coming in and still win. After a faint, you send in the planned answer or its backup for free. The plan with the fewest expected faints is chosen, counting a loss as losing your whole team, since a wipe ends the run. Win chance only breaks ties.</p>
+      <p>Each boss Pokémon then gets its own answer. The search tries the combinations and keeps the best overall. One of yours can be the answer to two only when it wins both, because it'll be worn down by the second. Remaining slots go to one backup per boss Pokémon, starting with the shakiest matchup, so you never get several Pokémon for the same job. Any slots still open go to the Pokémon that add the most cover, so the team is always six when you have six to choose from. The top few plans and your current party are each played out 300 times. The plans are played as written, using the Set battle style that Nuzlocke runs use: when you knock one of theirs out, your Pokémon stays in. If it would lose to their next Pokémon, you hard-switch to the planned answer, but only if that answer can take a hit coming in and still win. After a faint, you send in the planned answer or its backup for free. The plan with the fewest expected faints is chosen, counting a loss as losing your whole team, since a wipe ends the run. Win chance only breaks ties.</p>
     </details></section>`;
 }
 function tpUse() {
