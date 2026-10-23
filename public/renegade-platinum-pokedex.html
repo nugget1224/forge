@@ -567,6 +567,22 @@ details.gch .gpick, details.gch .gboss { background: var(--bg) }
 .gwhere { display: flex; flex-direction: column; align-items: flex-start; gap: 2px; margin-top: 4px }
 .gwhere .an, .gitem .an { border: 0; background: none; padding: 0; color: var(--accent); cursor: pointer; font: inherit; text-align: left }
 .gwhere .an:hover, .gitem .an:hover { text-decoration: underline }
+.btform { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 10px }
+.btform h5 { margin: 0 0 4px; font-size: .85rem }
+.btform select, .btform input[type=number] { font: 500 .85rem var(--font-body); padding: 5px 7px; border-radius: 7px; border: 1px solid var(--line); background: var(--bg); color: var(--ink); max-width: 100% }
+.btform input[type=number] { width: 6em }
+.btform .chk { display: flex; align-items: center; gap: 5px; font-size: .8rem; margin-top: 4px }
+.btlog { margin: 0; padding-left: 20px; font-size: .85rem; display: flex; flex-direction: column; gap: 6px }
+.btlog ul { margin: 2px 0 0; padding-left: 16px }
+.btlog .bthead { font-weight: 600 }
+.btlog ul ul { list-style: circle; color: var(--ink) }
+.tpsteal { margin-top: 4px; padding: 4px 8px; border-left: 3px solid var(--accent); background: var(--accent-soft); border-radius: 4px; font-size: .84rem }
+.tpstealui { margin: 10px 0 4px; padding-top: 6px; border-top: 1px dashed var(--line) }
+.tpstealpick { display: flex; flex-wrap: wrap; gap: 6px 16px }
+.tpstealpick .chk { font-size: .85rem; color: var(--ink) }
+.tpfield { border: 1px solid var(--chg); background: var(--chg-soft); border-radius: 10px; padding: 8px 12px; margin: 0 0 10px; font-size: .85rem }
+.tpfield h5 { margin: 0 0 4px; font-size: .78rem; text-transform: uppercase; letter-spacing: .06em; color: var(--chg) }
+.tpfield ul { margin: 0; padding-left: 18px }
 .gitems { display: flex; flex-wrap: wrap; gap: 6px 14px; font-size: .84rem }
 .gitem.steal b::after { content: " · steal"; font-weight: 600; font-size: .72rem; color: var(--chg) }
 .gvs { margin-top: 4px; font-size: .78rem; line-height: 1.5 }
@@ -1959,6 +1975,8 @@ const NSTAT = {
 };
 const NSTAGEK = ['atk', 'def', 'spa', 'spd', 'spe', 'acc', 'eva'];
 const nsR = n => Math.floor(Math.random() * n);
+// While a logged turn is replayed, NSF forces what actually happened: { acc, crit, sec, hits }. Otherwise every roll is random.
+let NSF = null;
 const nsCh = n => Math.random() * 256 >= n;          // the script's "IfRandomLessThan n, skip" – true means the score change happens
 const nsPct = c => Math.floor(c.hp * 100 / c.max);
 const nsTypeMult = (t, types) => types.reduce((x, d) => x * ((CH[t] || {})[d] ?? 1), 1);
@@ -2420,6 +2438,7 @@ function nsEnter(S, side, i, R) {
   nsBerry(S, c);
 }
 function nsAccuracy(S, A, D, mv, movedAfter) {
+  if (NSF && NSF.acc !== undefined) return NSF.acc;
   const d = MV[mv]; if (!d.a || A.ab === 'No Guard' || D.ab === 'No Guard') return true;
   if (D.invuln) return false;
   const wx = nsWx(S);
@@ -2477,21 +2496,21 @@ function nsUseMove(S, A, D, mv, ctx, R) {
   }
   if (mv === 'Endeavor') { if (D.hp > A.hp && nsTypeMult(d.t, D.types) > 0) nsDamage(S, D, D.hp - A.hp, R); return }
   if (NOHKO.has(mv)) { if (D.ab !== 'Sturdy' && nsTypeMult(d.t, D.types) > 0) nsDamage(S, D, D.hp, R); return }
-  const hits = NHITS2.has(mv) ? 2 : NHITS25.has(mv) ? (A.ab === 'Skill Link' ? 5 : [2, 2, 2, 3, 3, 3, 4, 5][nsR(8)]) : 1;
+  const hits = NHITS2.has(mv) ? 2 : NHITS25.has(mv) ? (A.ab === 'Skill Link' ? 5 : NSF && NSF.hits ? NSF.hits : [2, 2, 2, 3, 3, 3, 4, 5][nsR(8)]) : 1;
   let total = 0, x = null, mult = 1;
   const critP = D.ab === 'Battle Armor' || D.ab === 'Shell Armor' ? 0 : nsCritStage(A, mv);
   for (let h = 0; h < hits && D.hp > 0; h++) {
-    const crit = Math.random() < critP;
+    const crit = NSF ? !!NSF.crit && h === 0 && critP > 0 : Math.random() < critP;
     x = nsRolls(S, A, D, mv, crit, ctx); if (!x) return;
     mult = x.mult;
-    let dmg = x.rolls[nsR(16)];
+    let dmg = x.rolls[NSF ? 7 : nsR(16)];   // a logged turn uses a middle roll
     if (dmg >= D.hp && D.hp === D.max && D.item === 'Focus Sash') { dmg = D.hp - 1; nsUse(D) }
-    else if (dmg >= D.hp && D.item === 'Focus Band' && nsR(10) === 0) dmg = D.hp - 1;
+    else if (dmg >= D.hp && D.item === 'Focus Band' && !NSF && nsR(10) === 0) dmg = D.hp - 1;
     if (NBERRY[D.item] && NBERRY[D.item] === (mv === 'Weather Ball' && nsWBType(S) || d.t) && (mult > 1 || d.t === 'Normal')) nsUse(D);
     total += nsDamage(S, D, dmg, R);
     if (mult === 0) break;
     // contact abilities
-    if (d.c === 'P' && !NNOCONTACT.has(mv) && A.hp > 0) {
+    if (d.c === 'P' && !NNOCONTACT.has(mv) && A.hp > 0 && !NSF) {
       if ((D.ab === 'Rough Skin') && A.ab !== 'Magic Guard') nsDamage(S, A, Math.floor(A.max / 8), R);
       if (D.ab === 'Static' && nsR(10) < 3) nsStatus(S, A, 'par', D);
       if (D.ab === 'Flame Body' && nsR(10) < 3) nsStatus(S, A, 'brn', D);
@@ -2504,6 +2523,7 @@ function nsUseMove(S, A, D, mv, ctx, R) {
   if (mult === 0) { if ((D.ab === 'Volt Absorb' && d.t === 'Electric') || (D.ab === 'Water Absorb' && d.t === 'Water') || (D.ab === 'Dry Skin' && d.t === 'Water')) nsHeal(D, Math.floor(D.max / 4));
     if (D.ab === 'Motor Drive' && d.t === 'Electric') nsStage(D, { spe: 1 }); if (D.ab === 'Flash Fire' && d.t === 'Fire') D.ffire = true; return }
   if (mv === 'Knock Off' && D.item && D.ab !== 'Sticky Hold') { D.item = ''; D.usedItem = true }
+  if ((mv === 'Thief' || mv === 'Covet') && D.item && !A.item && D.ab !== 'Sticky Hold' && D.ab !== 'Multitype') { A.item = D.item; D.item = ''; D.usedItem = true; A.stole = (A.stole || 0) + 1 }
   if (NDRAIN.has(mv)) nsHeal(A, Math.floor(total / 2 * (A.item === 'Big Root' ? 1.3 : 1)));
   if (NRECOIL[mv] && A.ab !== 'Rock Head' && A.ab !== 'Magic Guard') nsDamage(S, A, Math.max(1, Math.floor(total * NRECOIL[mv])), R);
   if (A.item === 'Life Orb' && A.ab !== 'Magic Guard' && total > 0) nsDamage(S, A, Math.floor(A.max / 10), R);
@@ -2511,7 +2531,7 @@ function nsUseMove(S, A, D, mv, ctx, R) {
   if (NRECHARGE.has(mv)) A.recharge = true;
   if (NLOCK.has(mv)) { if (!A.lock) { A.lock = mv; A.lockN = 1 + nsR(2) } else if (--A.lockN <= 0) { A.lock = null; nsConfuse(A) } }
   // secondary effects
-  const sec = NSEC[mv], chance = p => nsR(100) < p * (A.ab === 'Serene Grace' ? 2 : 1);
+  const sec = NSEC[mv], chance = p => p >= 100 || (NSF ? !!NSF.sec : nsR(100) < p * (A.ab === 'Serene Grace' ? 2 : 1));
   if (sec && D.hp > 0 && D.ab !== 'Shield Dust') {
     const [p, fx, fl] = sec;
     if (p && chance(p)) {
@@ -2522,7 +2542,7 @@ function nsUseMove(S, A, D, mv, ctx, R) {
     }
     if (fl && chance(fl) && !ctx.after && D.ab !== 'Inner Focus') D.flinch = true;
   }
-  if (A.item === "King's Rock" && D.hp > 0 && !ctx.after && nsR(10) === 0) D.flinch = true;
+  if (A.item === "King's Rock" && D.hp > 0 && !ctx.after && !NSF && nsR(10) === 0) D.flinch = true;
   const self = NSELF[mv]; if (self && A.hp > 0 && chance(self[0])) nsStage(A, self[1]);
   if (mv === 'U-turn' && A.side === 1 && A.hp > 0 && nsBench(asd).length) { const i = nsAiReplace(S, A); if (i >= 0) nsEnter(S, 1, i, R) }
   nsBerry(S, D); nsBerry(S, A);
@@ -2540,7 +2560,7 @@ function nsStatusMove(S, A, D, mv, st, ctx, R) {
     case 'focus': A.ff = true; break;
     case 'recover': nsHeal(A, Math.floor(A.max * (st.wx ? (wx === 'sun' ? 2 / 3 : wx ? 1 / 4 : 1 / 2) : 1 / 2))); break;
     case 'rest': if (A.hp < A.max && A.ab !== 'Insomnia' && A.ab !== 'Vital Spirit') { A.hp = A.max; A.st = 'slp'; A.slp = 3; nsLum(A) } break;
-    case 'protect': { const ok = Math.random() < Math.pow(.5, A.prot); A.prot++; if (ok) A.protNow = true; else A.prot = 0; break }
+    case 'protect': { const ok = NSF ? NSF.acc !== false : Math.random() < Math.pow(.5, A.prot); A.prot++; if (ok) A.protNow = true; else A.prot = 0; break }
     case 'reflect': if (!asd.ref) asd.ref = A.item === 'Light Clay' ? 8 : 5; break;
     case 'lscreen': if (!asd.ls) asd.ls = A.item === 'Light Clay' ? 8 : 5; break;
     case 'sr': dsd.sr = 1; break;
@@ -2765,6 +2785,135 @@ function batHit(S, A, D, mv) {
   return { min: x.rolls[0] * hits, max: x.rolls[15] * hits, crit: xc ? xc.rolls[15] * hits : 0, hp: D.hp, max0: D.max, ko: acc * ((1 - cp) * ko(x.rolls) + cp * (xc ? ko(xc.rolls) : 0)), hits, mult: x.mult };
 }
 
+// ---- Log a turn: pick what both sides did, replay it through the engine, update the board and list the effects ----
+const BT_STNAME = { par: 'paralyzed', brn: 'burned', psn: 'poisoned', tox: 'badly poisoned', slp: 'asleep', frz: 'frozen' };
+const BT_STGNAME = { atk: 'Attack', def: 'Defense', spa: 'Sp. Atk', spd: 'Sp. Def', spe: 'Speed', acc: 'accuracy', eva: 'evasion' };
+const btForm = () => BS.tl = Object.assign({ p: '', pOut: 'hit', pSec: false, b: '', bOut: 'hit', bSec: false, order: 'auto', php: '', bhp: '' }, BS.tl || {});
+// moves with a chance-based added effect (100% effects always happen)
+const btHasChance = mv => { const x = NSEC[mv], y = NSELF[mv]; return !!((x && ((x[0] && x[0] < 100) || x[2])) || (y && y[0] < 100)) };
+function btSnap(S) {
+  return { m: S.sd.flatMap((sd, side) => sd.team.map((c, i) => ({ side, i, key: c.key, name: c.name, hp: c.hp, max: c.max, st: c.st, stg: Object.assign({}, c.stg), item: c.item }))),
+    sd: S.sd.map(sd => ({ a: sd.a, sr: sd.sr, spk: sd.spk, tsp: sd.tsp, ref: sd.ref, ls: sd.ls, tw: sd.tw })), wx: S.wx, wxT: S.wxT };
+}
+// what changed between two snapshots, in words
+function btDiff(a, z, S) {
+  const out = [], who = m => (m.side === 0 ? 'Your ' : '') + m.name, sideName = i => i === 0 ? 'your side' : 'their side';
+  [0, 1].forEach(side => { if (a.sd[side].a !== z.sd[side].a) out.push(`${side === 0 ? 'You sent out' : 'They sent out'} ${S.sd[side].team[z.sd[side].a].name}.`) });
+  z.m.forEach((m, k) => { const o = a.m[k];
+    if (m.hp !== o.hp) {
+      const d = m.hp - o.hp;
+      if (m.side === 1) out.push(`${who(m)} ${d < 0 ? 'took about ' + Math.round(-d / m.max * 100) + '%' : 'recovered about ' + Math.round(d / m.max * 100) + '%'} (${Math.round(o.hp / m.max * 100)}% → ${Math.round(m.hp / m.max * 100)}%).`);
+      else out.push(`${who(m)} ${d < 0 ? 'lost ' + -d : 'recovered ' + d} HP (${o.hp} → ${m.hp} of ${m.max}).`);
+      if (o.hp > 0 && m.hp <= 0) out.push(`<b>${who(m)} fainted.</b>`);
+    }
+    if (m.st !== o.st) out.push(m.st ? `${who(m)} is now ${BT_STNAME[m.st]}.` : `${who(m)} is no longer ${BT_STNAME[o.st]}.`);
+    Object.keys(BT_STGNAME).forEach(st => { const d = m.stg[st] - o.stg[st]; if (d && m.hp > 0 && a.sd[m.side].a === m.i && z.sd[m.side].a === m.i)
+      out.push(`${who(m)}'s ${BT_STGNAME[st]} ${d > 0 ? 'rose' : 'fell'} ${Math.abs(d)} (now ${m.stg[st] > 0 ? '+' : ''}${m.stg[st]}).`) });
+    if (o.item && !m.item) { const thief = z.m.find((x, j) => x.item === o.item && !a.m[j].item);
+      out.push(thief ? `${who(thief)} stole ${who(m)}'s ${o.item}.` : /Berry$|Herb$/.test(o.item) ? `${who(m)} used its ${o.item}.` : `${who(m)} lost its ${o.item}.`) }
+  });
+  [0, 1].forEach(i => { const o = a.sd[i], n = z.sd[i];
+    if (n.sr && !o.sr) out.push(`Stealth Rock was set on ${sideName(i)}.`);
+    if (n.spk > o.spk) out.push(`Spikes on ${sideName(i)}: ${n.spk} layer${n.spk > 1 ? 's' : ''}.`);
+    if (n.tsp > o.tsp) out.push(`Toxic Spikes on ${sideName(i)}: ${n.tsp} layer${n.tsp > 1 ? 's' : ''}.`);
+    if (o.tsp && !n.tsp) out.push(`The Toxic Spikes on ${sideName(i)} were absorbed.`);
+    [['ref', 'Reflect'], ['ls', 'Light Screen'], ['tw', 'Tailwind']].forEach(([k, lab]) => { if (n[k] > o[k]) out.push(`${lab} went up on ${sideName(i)} (${n[k]} turns).`); else if (o[k] && !n[k]) out.push(`${lab} on ${sideName(i)} wore off.`) });
+  });
+  const wn = { sand: 'Sandstorm', hail: 'Hail', sun: 'Sun', rain: 'Rain' };
+  if (z.wx !== a.wx) out.push(z.wx ? `${wn[z.wx]} started${z.wxT >= 99 ? ' (permanent)' : ' (' + z.wxT + ' turns left)'}.` : `The ${wn[a.wx].toLowerCase()} stopped.`);
+  else if (z.wx && z.wxT < 99 && z.wxT !== a.wxT) out.push(`${wn[z.wx]}: ${z.wxT} turn${z.wxT === 1 ? '' : 's'} left.`);
+  return out;
+}
+function btAdvance() {
+  const r = curRun(), tl = btForm(), { P, B, pa, ba } = batBuild(r);
+  if (pa < 0 || ba < 0 || !tl.p || !tl.b) return;
+  batPrep(P, B, pa, ba);
+  const S = batLiveS(P, B, pa, ba), R = { ko() {}, seen() {} };
+  [...P, ...B].forEach(c => { if (c.st === 'slp') c.slp = 9 });   // sleep is decided by what you logged, not rolled
+  const names = [], steps = []; let snap = btSnap(S);
+  // effects are listed under what caused them
+  const stage = head => { const now = btSnap(S), fx = btDiff(snap, now, S); steps.push({ head, fx }); snap = now };
+  // undo point: the board as it was
+  BS.hist = [JSON.stringify(Object.assign({}, BS, { hist: undefined, log: undefined })), ...(BS.hist || [])].slice(0, 15);
+  const act = (side, v) => { if (v === 'none') return { none: true }; const [k, x] = v.split(':'); return k === 'sw' ? { sw: +x } : { mv: x } };
+  const pA = act(0, tl.p), bA = act(1, tl.b), me0 = nsAct(S, 0), foe0 = nsAct(S, 1);
+  // switches happen first, yours then theirs
+  if (pA.sw !== undefined) { nsEnter(S, 0, pA.sw, R); stage(`You switched ${me0.name} out for ${P[pA.sw].name}.`) }
+  if (bA.sw !== undefined) { nsEnter(S, 1, bA.sw, R); stage(`They switched ${foe0.name} out for ${B[bA.sw].name}.`) }
+  const acts = [];
+  if (pA.mv) acts.push({ c: nsAct(S, 0), mv: pA.mv, out: tl.pOut, sec: tl.pSec, side: 0 });
+  if (bA.mv) acts.push({ c: nsAct(S, 1), mv: bA.mv, out: tl.bOut, sec: tl.bSec, side: 1 });
+  acts.forEach(a => { a.pr = NPRIO[a.mv] || 0; a.sp = nsSpeed(S, a.c) });
+  acts.sort((x, y) => tl.order === 'p' ? x.side - y.side : tl.order === 'b' ? y.side - x.side : y.pr - x.pr || y.sp - x.sp || x.side - y.side);
+  acts.forEach((a, idx) => {
+    if (a.c.hp <= 0 || nsAct(S, a.side) !== a.c) { steps.push({ head: `${a.side ? 'Their' : 'Your'} ${a.c.name} fainted before it could use ${a.mv}.`, fx: [] }); return }
+    if (a.c.st === 'slp' && a.mv !== 'Sleep Talk' && a.mv !== 'Snore') { a.c.st = ''; snap = btSnap(S); steps.push({ head: `${a.side ? 'Their' : 'Your'} ${a.c.name} woke up.`, fx: [] }) }
+    a.c.flinch = false; a.c.recharge = false;
+    const foe = nsAct(S, 1 - a.side), other = acts[1 - idx];
+    NSF = { acc: a.out !== 'miss', crit: a.out === 'crit', sec: !!a.sec, hits: 3 };
+    try { nsUseMove(S, a.c, foe, a.mv, { after: idx > 0, hit: !!a.c.hitThisTurn, foeMv: other && other.c.hp > 0 ? other.mv : null, first: a.c.firstOut }, R) } finally { NSF = null }
+    stage(`${a.side ? 'Their' : 'Your'} ${a.c.name} used ${a.mv}${a.out === 'miss' ? ', but it missed' : a.out === 'crit' ? ' (critical hit)' : ''}${a.sec ? ' (added effect)' : ''}.`);
+  });
+  if (pA.none) steps.push({ head: `Your ${me0.name} couldn't move.`, fx: [] });
+  if (bA.none) steps.push({ head: `Their ${foe0.name} couldn't move.`, fx: [] });
+  nsEndTurn(S, R);
+  stage('End of turn');
+  // the HP you actually saw beats the middle-roll estimate
+  const pNow = nsAct(S, 0), bNow = nsAct(S, 1), fixes = [];
+  if (tl.php !== '' && !isNaN(+tl.php)) { pNow.hp = Math.max(0, Math.min(pNow.max, +tl.php)); fixes.push('your HP') }
+  if (tl.bhp !== '' && !isNaN(+tl.bhp)) { bNow.hp = Math.max(0, Math.min(bNow.max, Math.round(bNow.max * +tl.bhp / 100))); fixes.push('their HP') }
+  // a fainted boss Pokémon is replaced the way the trainer AI picks
+  if (fixes.length) stage('Corrected to the HP you saw');
+  let next = '';
+  if (bNow.hp <= 0 && nsBench(S.sd[1]).length) { const i = nsAiReplace(S, bNow); if (i >= 0) { nsEnter(S, 1, i, R); next = B[i].name; stage(`They sent out ${next}.`) } }
+  const effects = [];
+  if (next) effects.push(`They'll send out <b>${next}</b> next (the trainer AI's pick). Change it under their team if they chose differently.`);
+  if (pNow.hp <= 0 && nsBench(S.sd[0]).length) effects.push('<b>Pick who you send in next</b> under Your party.');
+  // write the new state back to the board
+  P.forEach(c => { const k = c.key, o = BS.p[k] = BS.p[k] || {}; o.hp = c.hp; o.st = c.st });
+  B.forEach((c, i) => { BS.b[i].hp = c.hp <= 0 ? 0 : Math.max(1, Math.round(c.hp / c.max * 100)); BS.b[i].st = c.st; if (c.usedItem && !c.item) BS.b[i].item = false });
+  const pa2 = S.sd[0].a, ba2 = S.sd[1].a;
+  BS.pa = P[pa2] && P[pa2].hp > 0 ? P[pa2].key : (P.find(c => c.hp > 0) || {}).key || ''; BS.ba = ba2;
+  BS.pstg = Object.assign({}, P[pa2].stg); BS.bstg = Object.assign({}, B[ba2].stg);
+  BS.pfresh = P[pa2].firstOut; BS.bfresh = !!next || B[ba2].firstOut; BS.plast = pA.mv || BS.plast;
+  BS.wx = S.wx; BS.wxT = S.wx ? S.wxT : 5;
+  BS.sd = S.sd.map(sd => ({ sr: sd.sr, spk: sd.spk, tsp: sd.tsp, ref: sd.ref, ls: sd.ls, tw: sd.tw }));
+  BS.turn = (BS.turn || 0) + 1;
+  BS.log = [{ t: BS.turn, steps: steps.filter(x => x.fx.length || x.head !== 'End of turn'), fx: effects, est: !fixes.length && acts.some(a => a.out !== 'miss' && MV[a.mv] && MV[a.mv].c !== 'St') }, ...(BS.log || [])].slice(0, 40);
+  BS.tl = { p: '', pOut: 'hit', pSec: false, b: '', bOut: 'hit', bSec: false, order: 'auto', php: '', bhp: '' };
+  batSave(); renderBattle();
+}
+function btUndo() {
+  if (!BS.hist || !BS.hist.length) return;
+  const [prev, ...rest] = BS.hist, log = (BS.log || []).slice(1);
+  BS = Object.assign(JSON.parse(prev), { hist: rest, log }); batSave(); renderBattle();
+}
+function renderTurnLog() {
+  const el = document.getElementById('batlog'); if (!el) return;
+  const r = curRun(), tl = btForm(), { P, B, pa, ba } = batBuild(r);
+  if (pa < 0 || ba < 0) { el.innerHTML = ''; return }
+  const me = P[pa], foe = B[ba], opt = (v, lab, cur) => `<option value="${esc(v)}" ${String(v) === String(cur) ? 'selected' : ''}>${esc(lab)}</option>`;
+  const actSel = (side, c, team, cur) => `<select data-bt="${side ? 'b' : 'p'}"><option value="">— pick —</option><optgroup label="Moves">${c.moves.map(m => opt('mv:' + m, m, cur)).join('')}</optgroup>
+    ${team.some((x, i) => i !== (side ? ba : pa) && x.hp > 0) ? `<optgroup label="Switch">${team.map((x, i) => i !== (side ? ba : pa) && x.hp > 0 ? opt('sw:' + i, 'Switch to ' + x.name, cur) : '').join('')}</optgroup>` : ''}
+    ${opt('none', "Couldn't move (asleep, flinched, paralyzed, recharging)", cur)}</select>`;
+  const outSel = (side, cur, secOn) => { const v = side ? tl.b : tl.p, mv = v.startsWith('mv:') ? v.slice(3) : ''; if (!mv) return '';
+    const st = MV[mv] && MV[mv].c === 'St';
+    return `<select data-bt="${side ? 'bOut' : 'pOut'}">${opt('hit', st ? 'Worked' : 'Hit', cur)}${opt('miss', st ? 'Missed / failed' : 'Missed', cur)}${st ? '' : opt('crit', 'Critical hit', cur)}</select>
+      ${btHasChance(mv) ? `<label class="chk"><input type="checkbox" data-bt="${side ? 'bSec' : 'pSec'}" ${secOn ? 'checked' : ''}> Added effect happened</label>` : ''}` };
+  const log = (BS.log || []).map(e => `<li><b>Turn ${e.t}</b><ul>${(e.steps || []).map(x => `<li><span class="bthead">${esc(x.head)}</span>${x.fx.length ? `<ul>${x.fx.map(y => `<li>${y}</li>`).join('')}</ul>` : ''}</li>`).join('')}${(e.did || []).map(x => `<li class="sp">${esc(x)}</li>`).join('')}${e.fx.map(x => `<li>${x}</li>`).join('')}</ul>${e.est ? '<div class="sp">Damage is a middle-roll estimate. If the game showed different numbers, fix the HP on the cards above.</div>' : ''}</li>`).join('');
+  el.innerHTML = `<section class="card full"><div class="nhead"><h3>Log a turn${BS.turn ? ' <small class="sp">· turn ' + (BS.turn + 1) + ' next</small>' : ''}</h3>${(BS.hist || []).length ? '<button class="btn" data-bact="undo">Undo last turn</button>' : ''}</div>
+    <p class="sp">After a turn in the game, pick what both sides did and press Advance. The board updates (HP, status, stat changes, hazards, weather, items) and the effects are listed below.</p>
+    <div class="btform">
+      <div><h5>${esc(me.name)} <span class="sp">(you)</span></h5>${actSel(0, me, P, tl.p)} ${outSel(0, tl.pOut, tl.pSec)}</div>
+      <div><h5>${esc(foe.name)} <span class="sp">(them)</span></h5>${actSel(1, foe, B, tl.b)} ${outSel(1, tl.bOut, tl.bSec)}</div>
+      <div><h5>Order</h5><select data-bt="order">${opt('auto', 'Auto (priority, then Speed)', tl.order)}${opt('p', 'You moved first', tl.order)}${opt('b', 'They moved first', tl.order)}</select></div>
+      <div><h5>HP you saw after <span class="sp">(optional)</span></h5><label class="sp">Yours <input type="number" min="0" data-bt="php" value="${esc(tl.php)}" placeholder="${me.hp}"></label>
+        <label class="sp">Theirs % <input type="number" min="0" max="100" data-bt="bhp" value="${esc(tl.bhp)}" placeholder="${Math.round(foe.hp / foe.max * 100)}"></label></div>
+    </div>
+    <div class="tbtns" style="margin-top:8px"><button class="btn primary" data-bact="turn" ${tl.p && tl.b ? '' : 'disabled'}>Advance turn ▸</button>${tl.p && tl.b ? '' : '<span class="sp">Pick both actions first.</span>'}</div>
+    ${log ? `<h4 class="tph4">Turn history</h4><ol class="btlog">${log}</ol>` : ''}
+    <p class="sp" style="margin-top:6px">Logged turns use a middle damage roll and only the luck you tick (misses, crits, added effects). Ability effects like Static aren't assumed, so set a status on its card if one happened. Confusion, Leech Seed, Taunt and similar aren't carried between turns.</p></section>`;
+}
 function renderBattle() {
   const d = document.getElementById('batdetail'); if (!d) return;
   const r = curRun(), opt = (v, lab, cur) => `<option value="${esc(v)}" ${String(v) === String(cur) ? 'selected' : ''}>${esc(lab)}</option>`;
@@ -2810,8 +2959,9 @@ function renderBattle() {
     <section class="card full"><h3>Field</h3><div class="bfgrid"><label>Weather<select data-bf="wx">${opt('', 'None', BS.wx)}${opt('sun', 'Sun', BS.wx)}${opt('rain', 'Rain', BS.wx)}${opt('sand', 'Sandstorm', BS.wx)}${opt('hail', 'Hail', BS.wx)}</select></label>
       ${BS.wx ? `<label>Turns left<select data-bf="wxT">${[1, 2, 3, 4, 5, 6, 7, 8].map(v => opt(v, v, BS.wxT)).concat(opt(99, 'Permanent (ability)', BS.wxT)).join('')}</select></label>` : ''}</div>
       <div class="bfsides">${sideHtml(0, 'Your side')}${sideHtml(1, 'Their side')}</div></section>
+    <div id="batlog"></div>
     <div id="batres"></div>`}`;
-  renderTeamPick();
+  renderTeamPick(); renderTurnLog();
   batQueue();
 }
 function batQueue() { clearTimeout(batTimer); batTimer = setTimeout(batAnalyze, 120) }
@@ -2902,6 +3052,7 @@ function batChange(t) {
   else if (f === 'plast') BS.plast = t.value;
   else if (f === 'wx') { BS.wx = t.value; BS.wxT = /sun|rain|sand|hail/.test(t.value) && batTeam(r).some(p => ['Drought', 'Drizzle', 'Sand Stream', 'Snow Warning'].includes(abName((p.ab || '').replace(/ \(.*\)$/, '')))) ? 99 : 5 }
   else if (f === 'wxT') BS.wxT = +t.value;
+  else if (f === 'steal') { const j = +t.dataset.i, cur = new Set(BS.steal || []); t.checked ? cur.add(j) : cur.delete(j); BS.steal = [...cur].sort((a, b) => a - b) }
   else if (f === 'sd') BS.sd[+t.dataset.i][t.dataset.k] = +t.value;
   else return;
   batSave(); renderBattle();
@@ -2919,12 +3070,54 @@ function tpSetup(r) {
     if (r.rules.caps && +x.e.lv > cap) { out.push({ x, why: `Over the level cap (Lv. ${x.e.lv}, cap ${cap})` }); return false }
     return true;
   });
-  const sig = JSON.stringify([r.id, BS.boss, BS.v, nCalc.biv, cands.map(x => [x.row.k, x.e.n, x.e.lv, x.e.moves, x.e.item, x.e.ab, x.e.nat, x.e.stats, x.e.hist])]);
+  const sig = JSON.stringify([r.id, BS.boss, BS.v, nCalc.biv, BS.steal || [], cands.map(x => [x.row.k, x.e.n, x.e.lv, x.e.moves, x.e.item, x.e.ab, x.e.nat, x.e.stats, x.e.hist])]);
   return { b, team, cands, out, sig };
 }
-// one-on-one: how fast each side knocks the other out from full HP
-function tpDuel(c, foe) {
-  const S = { sd: [tpSide([c]), tpSide([foe])], wx: '', wxT: 0 };
+// What the boss's team does to the field, and from which of their Pokémon on. Hazards land on your side once the setter has
+// had a turn, so they hit everything you send in against the Pokémon after it. Ability weather starts when its user comes out
+// and stays; move weather lasts 5 turns (8 with the matching rock), which is about the next one or two of theirs.
+const TPWXMV = { 'Sandstorm': 'sand', 'Hail': 'hail', 'Sunny Day': 'sun', 'Rain Dance': 'rain' };
+const TPWXAB = { 'Sand Stream': 'sand', 'Snow Warning': 'hail', 'Drought': 'sun', 'Drizzle': 'rain' };
+const TPWXROCK = { sand: 'Smooth Rock', hail: 'Icy Rock', sun: 'Heat Rock', rain: 'Damp Rock' };
+const TPWXNAME = { sand: 'Sandstorm', hail: 'Hail', sun: 'Sun', rain: 'Rain' };
+function tpField(boss) {
+  const f = { sr: -1, spk: [], tsp: [], wx: [] };
+  boss.forEach((b, j) => {
+    if (b.moves.includes('Stealth Rock') && f.sr < 0) f.sr = j;
+    if (b.moves.includes('Spikes')) f.spk.push(j);
+    if (b.moves.includes('Toxic Spikes')) f.tsp.push(j);
+    const aw = TPWXAB[b.ab], mw = b.moves.map(m => TPWXMV[m]).find(Boolean);
+    if (aw) f.wx.push({ j, wx: aw, perm: true, by: b.name });
+    else if (mw) f.wx.push({ j, wx: mw, perm: false, long: b.item === TPWXROCK[mw], by: b.name });
+  });
+  return f;
+}
+// the field when your answer faces boss Pokémon j (lead fights on a clean field)
+function tpCtx(f, j) {
+  const spk = Math.min(3, f.spk.filter(i => i < j).length * 2), tsp = Math.min(2, f.tsp.filter(i => i < j).length * 2);
+  let wx = '';
+  f.wx.forEach(w => { if (w.perm ? j >= w.j : j >= w.j && j <= w.j + (w.long ? 2 : 1)) wx = w.wx });
+  return { sr: f.sr >= 0 && f.sr < j, spk, tsp, wx };
+}
+const tpGrounded = c => !c.types.includes('Flying') && c.ab !== 'Levitate';
+// HP lost coming in (Stealth Rock, Spikes)
+function tpEntry0(c, x) {
+  if (!x || c.ab === 'Magic Guard') return 0;
+  return (x.sr ? Math.floor(c.max * nsTypeMult('Rock', c.types) / 8) : 0) + (x.spk && tpGrounded(c) ? Math.floor(c.max / [0, 8, 6, 4][x.spk]) : 0);
+}
+// HP lost each turn on the field (weather; poison from Toxic Spikes for your side)
+function tpChip(c, x, mine) {
+  if (!x || c.ab === 'Magic Guard') return 0;
+  let d = 0;
+  if (x.wx === 'sand' && !c.types.some(t => ['Rock', 'Ground', 'Steel'].includes(t)) && c.ab !== 'Sand Veil') d += Math.floor(c.max / 16);
+  if (x.wx === 'hail' && !c.types.includes('Ice') && c.ab !== 'Snow Cloak' && c.ab !== 'Ice Body') d += Math.floor(c.max / 16);
+  if (x.wx === 'sun' && c.ab === 'Dry Skin') d += Math.floor(c.max / 8);
+  if (mine && x.tsp && tpGrounded(c) && !c.types.includes('Poison') && !c.types.includes('Steel') && c.ab !== 'Immunity') d += Math.floor(c.max / 8);   // regular poison; Toxic ramps faster
+  return d;
+}
+// one-on-one: how fast each side knocks the other out, from full HP minus what the field takes on the way in
+function tpDuel(c, foe, x) {
+  const S = { sd: [tpSide([c]), tpSide([foe])], wx: x && x.wx || '', wxT: x && x.wx ? 99 : 0 };
   let best = null;
   c.moves.forEach(mv => {
     const d = MV[mv]; if (!d || d.c === 'St' || NSELFKO.has(mv)) return;
@@ -2936,19 +3129,22 @@ function tpDuel(c, foe) {
   });
   let their = null;
   foe.moves.forEach(mv => { const dm = nsAiDmg(S, foe, c, mv); if (dm > 0 && (!their || dm > their.dmg)) their = { mv, dmg: dm } });
-  const tMe = best ? Math.ceil(foe.max / Math.max(1, best.ev)) : 99, tThem = their ? Math.ceil(c.max / their.dmg) : 99;
+  const entry = tpEntry0(c, x), chip = tpChip(c, x, true), foeChip = tpChip(foe, x, false), hp0 = Math.max(1, c.max - entry);
+  const tMe = best ? Math.ceil(foe.max / Math.max(1, best.ev + foeChip)) : 99;
+  const tThem = their || chip ? Math.ceil(hp0 / Math.max(1, (their ? their.dmg : 0) + chip)) : 99;
   const faster = nsSpeed(S, c) > nsSpeed(S, foe), win = faster ? tMe <= tThem : tMe < tThem;
-  const hitsTaken = faster ? tMe - 1 : tMe, taken = their ? Math.min(1, hitsTaken * their.dmg / c.max) : 0;
+  const hitsTaken = faster ? tMe - 1 : tMe, taken = Math.min(1, (entry + (their ? hitsTaken * their.dmg : 0) + tMe * chip) / c.max);
   // 1–2 when it wins (more when it wins with HP to spare), under 1 when it only chips
   // faint risk while winning: hits it must take, on low rolls (85%) or high, plus one crit (×2)
-  const dMax = their ? their.dmg : 0, dMin = Math.floor(dMax * .85);
-  const risk = !win ? 1 : !hitsTaken || !dMax ? 0 : hitsTaken * dMin >= c.max ? 1 : hitsTaken * dMax >= c.max ? .5 : (hitsTaken + 1) * dMax >= c.max ? .1 * hitsTaken : 0;
-  // pull it out before it drops into knock-out range
+  // (each hit it takes also comes with a turn of chip)
+  const dMax = their ? their.dmg + chip : chip, dMin = Math.floor((their ? their.dmg : 0) * .85) + chip;
+  const risk = !win ? 1 : !hitsTaken || !dMax ? 0 : hitsTaken * dMin >= hp0 ? 1 : hitsTaken * dMax >= hp0 ? .5 : (hitsTaken + 1) * dMax >= hp0 ? .1 * hitsTaken : 0;
+  // pull it out before it drops into knock-out range (a hit plus a turn of chip)
   const pullAt = dMax ? Math.min(100, Math.ceil(dMax / c.max * 100)) : 0;
   const val = win ? Math.max(.05, 2 - taken - 1.6 * risk) : best ? Math.min(.6, best.ev * Math.min(tThem - 1, 6) / foe.max * .5) : 0;
-  const swHp = their ? c.max - their.dmg : c.max, swT = their ? Math.ceil(swHp / their.dmg) : 99;
+  const swHp = their ? hp0 - their.dmg : hp0, swT = their || chip ? Math.ceil(swHp / Math.max(1, (their ? their.dmg : 0) + chip)) : 99;
   const swOk = swHp > 0 && (faster ? tMe <= swT : tMe < swT);
-  return { best, their, tMe, tThem, faster, win, taken, val, swOk, risk, pullAt };
+  return { best, their, tMe, tThem, faster, win, taken, val, swOk, risk, pullAt, entry, chip, wx: x && x.wx || '' };
 }
 // Assign an answer to every boss Pokémon. One of yours can cover two, at a discount (it'll be worn down by the second).
 // Returns assignments best first: { sc, asg: [candidate index per boss Pokémon] }
@@ -2966,9 +3162,38 @@ function tpAssign(M, nB) {
   dfs(0, 0);
   return out.sort((a, b) => b.sc - a.sc);
 }
+// ---- Steal goal: Thief or Covet takes a boss Pokémon's held item, and in Gen 4 you keep it ----
+const TPSTEAL = new Set(['Thief', 'Covet']);
+// what a stolen item does to the Pokémon that now holds it
+const TPSTEALFX = { 'Flame Orb': 'it burns the thief at the end of the turn (halving its physical damage)', 'Toxic Orb': 'it badly poisons the thief at the end of the turn',
+  'Sticky Barb': 'it hurts the thief by 1/8 of its HP every turn', 'Iron Ball': 'it halves the thief\'s Speed', 'Lagging Tail': 'the thief moves last from now on',
+  'Black Sludge': 'it hurts a non-Poison thief by 1/8 of its HP every turn', 'Choice Band': 'the thief is locked into Thief until it switches out',
+  'Choice Specs': 'the thief is locked into Thief until it switches out', 'Choice Scarf': 'the thief is locked into Thief until it switches out' };
+function tpThieves(su) { return su.cands.map((x, i) => ({ i, mv: (x.e.moves || []).filter(m => TPSTEAL.has(m)) })).filter(o => o.mv.length) }
+function tpThiefFor(su, mine, boss, M, j) {
+  const b = boss[j], item = b.item, out = { j, item, i: -1, mv: '', why: '', warn: [] };
+  if (b.ab === 'Sticky Hold' || b.ab === 'Multitype') { out.why = `${b.name}'s ${b.ab} stops its item being taken.`; return out }
+  let best = null;
+  tpThieves(su).forEach(({ i, mv }) => {
+    const c = mine[i], d = M[i][j];
+    // Covet is Normal (Ghosts are immune); Thief is Dark
+    const use = mv.find(m => defMult(b.types, b.ab, MV[m].t) > 0); if (!use) return;
+    const hp0 = c.max - (d.entry || 0), canAct = d.faster || !d.their || d.their.dmg < hp0;
+    const sc = (canAct ? 3 : 0) + (d.win ? 2 : 0) + (c.item ? -1.5 : 0) + (1 - d.taken);
+    if (!best || sc > best.sc) best = { i, use, canAct, sc, d };
+  });
+  if (!best) { out.why = tpThieves(su).length ? `None of your Thief or Covet users can hit ${b.name}.` : 'None of your available Pokémon know Thief or Covet.'; return out }
+  Object.assign(out, { i: best.i, mv: best.use, d: best.d });
+  const c = mine[best.i];
+  if (c.item) out.warn.push(`${c.name} is holding ${c.item}. Take it off first: a Pokémon that's holding an item can't steal.`);
+  if (!best.canAct) out.warn.push(`${b.name} moves first and can knock ${c.name} out before it acts, so only bring it in when it can take a hit.`);
+  if (TPSTEALFX[item]) out.warn.push(`Once stolen, ${TPSTEALFX[item]}.`);
+  if (/Berry$|Focus Sash|White Herb|Power Herb|Mental Herb|Air Balloon/.test(item)) out.warn.push(`${item} gets used up once it triggers, so steal it before ${b.name} takes much damage.`);
+  return out;
+}
 // turn an assignment into a team: the answers, then one backup per boss Pokémon (weakest answer first) while slots remain
-function tpTeamOf(asg, M) {
-  const team = [...new Set(asg)], backup = {};
+function tpTeamOf(asg, M, must = []) {
+  const team = [...new Set([...asg, ...must])], backup = {};
   const order = asg.map((i, j) => j).sort((a, b) => M[asg[a]][a].val - M[asg[b]][b].val);
   for (const j of order) {
     if (team.length >= 6) break;
@@ -2993,10 +3218,14 @@ function tpRun() {
   tpBusy = true; const tok = ++tpTok;
   const mine = su.cands.map((x, i) => nsMake(nMineMon(x.e), (x.e.moves || []).filter(Boolean), 0, i, x.row.k));
   const boss = su.team.map((p, i) => nsMake(nBossMon(p, +nCalc.biv), (p.mv || []).filter(Boolean), 1, i, 'b' + i));
-  const M = mine.map(c => boss.map(b => tpDuel(c, b)));
+  const field = tpField(boss);
+  const M = mine.map(c => boss.map((b, j) => tpDuel(c, b, tpCtx(field, j))));
   // the top few distinct plans get played out
+  // steal goal: each wanted item gets a thief, and the thieves are guaranteed a place on the team
+  const steal = (BS.steal || []).filter(j => j < boss.length && boss[j].item).map(j => tpThiefFor(su, mine, boss, M, j));
+  const must = [...new Set(steal.filter(x => x.i >= 0).map(x => x.i))];
   const plans = [], seen = new Set();
-  for (const a of tpAssign(M, boss.length)) { const p = tpTeamOf(a.asg, M), k = p.t.slice().sort().join() + '|' + a.asg.join(); if (!seen.has(k)) { seen.add(k); p.sc = a.sc; plans.push(p) } if (plans.length >= 8) break }
+  for (const a of tpAssign(M, boss.length)) { if (new Set([...a.asg, ...must]).size > 6) continue; const p = tpTeamOf(a.asg, M, must), k = p.t.slice().sort().join() + '|' + a.asg.join(); if (!seen.has(k)) { seen.add(k); p.sc = a.sc; plans.push(p) } if (plans.length >= 8) break }
   const curIdx = su.cands.map((x, i) => x.e.st === 'party' ? i : -1).filter(i => i >= 0);
   const tests = plans.map(p => Object.assign(p, { cur: false, lead: p.asg[0] }));
   if (curIdx.length) tests.push({ t: curIdx, cur: true, lead: curIdx.slice().sort((a, b) => M[b][0].val - M[a][0].val)[0] });
@@ -3019,7 +3248,7 @@ function tpRun() {
     // the best-scoring plan stands unless another clearly plays out better
     const best = picks.reduce((b, x) => { const dE = b.E / b.n - x.E / x.n, dw = x.win / x.n - b.win / b.n; return dE > .15 || (Math.abs(dE) <= .15 && dw > .03) ? x : b }, picks[0]);
     tpBusy = false;
-    tpRes = { sig: su.sig, su, mine, boss, M, best, cur: tests.find(x => x.cur) || null };
+    tpRes = { sig: su.sig, su, mine, boss, M, best, field, steal, cur: tests.find(x => x.cur) || null };
     renderTeamPick();
   };
   setTimeout(step, 0);
@@ -3032,22 +3261,53 @@ function tpLine(c, b, d) {
   const hit = `${esc(bm.mv)} does ${tpPct(bm.min, b.max)}–${tpPct(bm.max, b.max)}%${d.tMe === 1 ? ' (one-hit KO)' : ` (about ${d.tMe} hits)`}`;
   const back = !th ? ` and nothing ${esc(b.name)} has can hurt it` : th.dmg < c.max ? `; ${esc(th.mv)} does up to ${tpPct(th.dmg, c.max)}% back` : `; ${esc(th.mv)} can do up to ${tpPct(th.dmg, c.max)}%, enough to KO it`;
   const speed = d.faster ? `${esc(c.name)} moves first` : `${esc(b.name)} moves first`;
-  return `${hit}${back}. ${speed}.`;
+  const fld = [d.entry ? `hazards take ${tpPct(d.entry, c.max)}% as it comes in` : '', d.chip ? `it loses ${tpPct(d.chip, c.max)}% a turn to ${d.wx && tpChip(c, { wx: d.wx }, false) ? TPWXNAME[d.wx] : 'poison'}` : ''].filter(Boolean);
+  return `${hit}${back}. ${speed}.${fld.length ? ' On their field, ' + fld.join(' and ') + '.' : ''}`;
 }
 // Set style: how the answer gets in when this boss Pokémon comes out, and who can just stay in
 function tpEntry(res, i, j) {
   const { M, boss, mine, best } = res, d = M[i][j], c = mine[i], b = boss[j], th = d.their;
   const stay = best.t.filter(k => k !== i && M[k][j].win).map(k => '<b>' + esc(mine[k].name) + '</b>');
   const hit = th ? `${esc(th.mv)} (up to ${tpPct(th.dmg, c.max)}%)` : 'nothing';
-  const how = !th ? `Hard-switch ${esc(c.name)} in freely, since nothing ${esc(b.name)} has can hurt it.`
-    : d.swOk ? `Hard-switch ${esc(c.name)} in if you need to: it takes ${hit} coming in and still wins.`
-    : `Don't hard-switch ${esc(c.name)} in, because ${hit} on the way in costs it the matchup. Bring it in after one of yours faints, or have it out already.`;
+  const how = !th ? `Hard-switch ${esc(c.name)} in freely, since nothing ${esc(b.name)} has can hurt it${d.entry ? ` (hazards still take ${tpPct(d.entry, c.max)}%)` : ''}.`
+    : d.swOk ? `Hard-switch ${esc(c.name)} in if you need to: it takes ${hit}${d.entry ? ' plus ' + tpPct(d.entry, c.max) + '% from hazards' : ''} coming in and still wins.`
+    : `Don't hard-switch ${esc(c.name)} in, because ${hit}${d.entry ? ' plus ' + tpPct(d.entry, c.max) + '% from hazards' : ''} on the way in costs it the matchup. Bring it in after one of yours faints, or have it out already.`;
   return `${how}${stay.length ? ` If ${stay.length > 1 ? stay.slice(0, -1).join(', ') + ' or ' + stay[stay.length - 1] : stay[0]} is already out, stay in, since ${stay.length > 1 ? 'they also win' : 'it also wins'} here.` : ''}`;
 }
 // the per-boss-Pokémon battle plan
+// the steal step for one boss Pokémon (when it's a target)
+function tpStealStep(res, j, ans) {
+  const x = (res.steal || []).find(t => t.j === j); if (!x) return '';
+  const b = res.boss[j];
+  if (x.i < 0) return `<div class="tpsteal"><b>Steal ${esc(x.item)}:</b> not planned. ${esc(x.why)}</div>`;
+  const c = res.mine[x.i], d = x.d, th = d.their;
+  const hp0 = c.max - (d.entry || 0), ko = th && th.dmg >= hp0;
+  const hit = !th ? ` Nothing ${esc(b.name)} has can hurt it.`
+    : !ko ? ` ${esc(b.name)}'s ${esc(th.mv)} does up to ${tpPct(th.dmg, c.max)}% to it meanwhile.`
+    : d.faster ? ` <span class="bko">Danger:</span> ${esc(b.name)}'s ${esc(th.mv)} can knock ${esc(c.name)} out (up to ${tpPct(th.dmg, c.max)}%). It moves first, so it gets the item, but ${esc(th.mv)} then hits it the same turn and it will most likely faint. In a Nuzlocke, skip this steal or wait until ${esc(b.name)} can't attack (asleep, paralysed or out of PP).`
+    : ` <span class="bko">Danger:</span> ${esc(b.name)} moves first and its ${esc(th.mv)} can knock ${esc(c.name)} out (up to ${tpPct(th.dmg, c.max)}%) before it steals. Only try once ${esc(b.name)} is worn down or can't attack.`;
+  const how = x.i === ans ? `<b>${esc(c.name)}</b> uses ${esc(x.mv)} first, then finishes ${esc(b.name)} off.`
+    : `Before ${esc(res.mine[ans].name)} takes over, have <b>${esc(c.name)}</b> use ${esc(x.mv)} once. It's safest to send it in right after one of yours faints, so it comes in for free. Then switch to ${esc(res.mine[ans].name)}.`;
+  return `<div class="tpsteal"><b>Steal ${esc(x.item)}:</b> ${how}${hit}${x.warn.length ? ' ' + x.warn.map(esc).join(' ') : ''}</div>`;
+}
+// the boss's hazards and weather, and what they mean for the plan
+function tpFieldHtml(res) {
+  const { boss, mine, best, field: f } = res; if (!f) return '';
+  const lines = [], nm = j => `<b>${esc(boss[j].name)}</b>${j === 0 ? ' (their lead)' : ''}`;
+  if (f.sr >= 0) { const hurt = best.t.map(i => mine[i]).filter(c => c.ab !== 'Magic Guard' && nsTypeMult('Rock', c.types) >= 2);
+    lines.push(`${nm(f.sr)} sets <b>Stealth Rock</b>. After that, everything you send in loses 6–50% depending on its weakness to Rock (12% neutral).${hurt.length ? ` Worst hit on your team: ${hurt.map(c => esc(c.name) + ' ' + Math.round(nsTypeMult('Rock', c.types) * 12.5) + '%').join(', ')}.` : ''}`) }
+  if (f.spk.length) lines.push(`${f.spk.map(nm).join(', ')} ${f.spk.length > 1 ? 'set' : 'sets'} <b>Spikes</b>: 12–25% on every switch-in for grounded Pokémon (Flying types and Levitate are immune).`);
+  if (f.tsp.length) lines.push(`${f.tsp.map(nm).join(', ')} ${f.tsp.length > 1 ? 'set' : 'sets'} <b>Toxic Spikes</b>: grounded Pokémon you switch in get poisoned. A grounded Poison type absorbs them; Steel types are immune.`);
+  f.wx.forEach(w => { const j = boss.findIndex(b => b.name === w.by), immune = { sand: 'Rock, Ground and Steel types', hail: 'Ice types' }[w.wx];
+    lines.push(`${nm(j)} ${w.perm ? 'brings permanent' : 'sets'} <b>${TPWXNAME[w.wx]}</b>${w.perm ? '' : w.long ? ' for 8 turns (' + TPWXROCK[w.wx] + ')' : ' for 5 turns'}.${immune ? ` Everything else loses 6% a turn, yours and theirs. ${immune} don't.` : w.wx === 'sun' ? ' Fire moves do 1.5× and Water moves half.' : ' Water moves do 1.5× and Fire moves half.'}`) });
+  if (!lines.length) return '';
+  const setters = [...new Set([f.sr, ...f.spk, ...f.tsp, ...f.wx.map(w => boss.findIndex(b => b.name === w.by))].filter(j => j >= 0))];
+  lines.push(`The plan already counts this: each answer is judged on the HP it has left after hazards, with weather chip every turn. ${setters.includes(0) ? 'Knocking out their lead fast, before it sets up, takes most of this off the table.' : 'Knocking out the setter before it moves stops it.'} Switching less also means fewer hazard hits.`);
+  return `<div class="tpfield"><h5>Field effects</h5><ul>${lines.map(l => `<li>${l}</li>`).join('')}</ul></div>`;
+}
 function tpPlanHtml(res) {
   const { M, boss, mine, best } = res;
-  return `<ol class="tpplan">${boss.map((b, j) => {
+  return tpFieldHtml(res) + `<ol class="tpplan">${boss.map((b, j) => {
     const i = best.asg[j], d = M[i][j], c = mine[i], bk = best.backup[j];
     const safe = d.win && d.risk === 0, verdict = safe ? 'Safe win' : d.win ? 'Risky win' : 'No safe answer';
     const th = d.their, pull = th && d.pullAt < 100 ? ` Pull it out once it's below ${d.pullAt}% HP, because ${esc(th.mv)} does up to ${d.pullAt}%.` : th ? ` ${esc(th.mv)} can knock it out from full HP, so don't leave it in after it's been hit.` : '';
@@ -3057,6 +3317,7 @@ function tpPlanHtml(res) {
     return `<li><div class="tpph"><img src="${nimg(b.m.n)}" alt=""><b>${esc(b.name)}</b>${j === 0 ? ' <span class="sp">their lead</span>' : ''}<span class="btag ${safe ? 'good' : d.win ? '' : 'bad'}">${verdict}</span></div>
       <div>${j === 0 ? 'Lead with' : 'Answer:'} <b>${esc(c.name)}</b>. ${tpLine(c, b, d)}${note}</div>
       ${j === 0 ? '' : `<div>${tpEntry(res, i, j)}</div>`}
+      ${tpStealStep(res, j, i)}
       ${bk !== undefined ? `<div class="sp">If that goes wrong: <b>${esc(mine[bk].name)}</b>. ${tpLine(mine[bk], b, M[bk][j])}</div>` : ''}</li>` }).join('')}</ol>`;
 }
 // why one chosen member is on the team
@@ -3084,6 +3345,20 @@ function tpLeftOut(res, i) {
   const names = wins.map(x => esc(x.b.name)).join(', ');
   return `Beats ${names}, but ${wins.length > 1 ? 'those are' : 'that is'} already covered${best.t.length >= 6 ? ' and the team is full' : ' with a backup'}.`;
 }
+// the "steal items" goal: one checkbox per boss Pokémon holding something
+function tpStealUi(r, su) {
+  const team = batTeam(r), want = new Set(BS.steal || []), held = team.map((p, j) => ({ p, j })).filter(o => o.p.item && o.p.item !== '?');
+  if (!held.length) return '';
+  const thieves = tpThieves(su);
+  const learners = !thieves.length ? placed(r).filter(x => (x.e.st === 'party' || x.e.st === 'box') && mons[x.e.n - 1]).filter(x => { const L = learnable(mons[x.e.n - 1]); return [...L.lu, ...L.tm].some(([m]) => TPSTEAL.has(m)) }) : [];
+  const res = tpRes && tpRes.sig === su.sig ? tpRes : null;
+  const status = j => { const x = res && (res.steal || []).find(t => t.j === j); if (!x) return ''; return x.i >= 0 ? ` <span class="btag good">${esc(res.mine[x.i].name)} steals it</span>` : ` <span class="btag bad">no thief</span>` };
+  return `<div class="tpstealui"><h4 class="tph4">Goal: steal items</h4>
+    <p class="sp" style="margin:0 0 6px">Tick the items you want. The planner gives each one a Pokémon that knows Thief or Covet and keeps it on the team. In Gen 4 you keep items stolen from trainers, but the thief must not be holding an item.</p>
+    <div class="tpstealpick">${held.map(({ p, j }) => `<label class="chk"><input type="checkbox" data-bf="steal" data-i="${j}" ${want.has(j) ? 'checked' : ''}> <b>${esc(p.item)}</b> <span class="sp">${esc(monName(p.n))}</span>${status(j)}</label>`).join('')}</div>
+    ${want.size && !thieves.length ? `<p class="rnote" style="margin:8px 0 0">None of your available Pokémon know Thief or Covet. ${learners.length ? 'These can learn it: ' + learners.map(x => esc(x.e.nick || monName(x.e.n))).join(', ') + '. ' : ''}Thief is TM46 (${esc(gThief())}).</p>` : ''}
+    ${want.size && thieves.length && !res ? '<p class="sp" style="margin:6px 0 0">Press “Suggest a team” to plan around these.</p>' : ''}</div>`;
+}
 function renderTeamPick() {
   const el = document.getElementById('batteam'); if (!el) return;
   const r = curRun(), su = tpSetup(r), b = su.b, nm = x => esc(x.e.nick || monName(x.e.n));
@@ -3101,6 +3376,7 @@ function renderTeamPick() {
     const fw = x => x.win ? ((x.Ewin || 0) / x.win).toFixed(1) : '–';
     const cmp = res.cur ? ` · your current party: ${tpPct(res.cur.clean, res.cur.n)}% with nobody fainting, ${tpPct(res.cur.win, res.cur.n)}% to win` : '';
     body = `<div class="tpsum"><span class="bowin">${tpPct(best.clean, best.n)}%</span><span class="sp">chance to win with nobody fainting, using this team of ${best.t.length} · ${tpPct(best.win, best.n)}% to win at all · ${fw(best)} faints on average when you win${cmp}</span>
+        ${(res.steal || []).length ? `<span class="sp">· steal goal: ${res.steal.filter(x => x.i >= 0).length}/${res.steal.length} items planned (the win chances don't include the turns spent stealing)</span>` : ''}
         ${same ? '<span class="sp">Your party already matches.</span>' : '<button class="btn primary" data-bact="useteam">Use this team</button>'}</div>
       ${best.t.length < 6 ? `<p class="rnote" style="margin:10px 0 0">Only ${best.t.length} of your Pokémon can be used here, so the team is ${best.t.length}. ${su.out.length ? 'See “Left out” for why the others aren’t eligible.' : 'Catch or box more to fill all six slots.'}</p>` : ''}
       <h4 class="tph4">Battle plan</h4>${tpPlanHtml(res)}
@@ -3108,9 +3384,10 @@ function renderTeamPick() {
       ${left.length || su.out.length ? `<details class="tpout"><summary>Left out (${left.length + su.out.length})</summary><ul>${left.map(o => `<li><b>${nm(o.x)}</b>: ${tpLeftOut(res, o.i)}</li>`).join('')}${su.out.map(o => `<li><b>${nm(o.x)}</b>: ${esc(o.why)}</li>`).join('')}</ul></details>` : ''}`;
   } else body = `<p class="sp">${tpRes ? 'Your Pokémon or the boss changed since the last suggestion. ' : ''}Builds a plan for each of ${esc(b ? b.label : '')}'s Pokémon from your ${su.cands.length} available party and box Pokémon${r.rules.caps && b ? ` at or under the level cap (${b.cap})` : ''}, with a backup for each where you have one.</p>`;
   el.innerHTML = `<section class="card full"><div class="nhead"><h3>Team for ${esc(b ? b.label : '')}</h3><button class="btn ${tpRes && tpRes.sig === su.sig ? '' : 'primary'}" data-bact="team" ${tpBusy || !su.cands.length ? 'disabled' : ''}>${tpRes && tpRes.sig === su.sig ? 'Suggest again' : 'Suggest a team'}</button></div>${body}
+    ${tpStealUi(r, su)}
     <details class="simhow"><summary>How the team is picked</summary>
       <p>Every available Pokémon is scored one-on-one against each of the boss's Pokémon with the damage calculator. The score counts how many hits your best move needs, how many hits their strongest move needs (judged the way the boss AI judges it), and who moves first. Keeping your Pokémon alive comes first. A win that could end in a faint (on a high roll or a critical hit) scores far below a safe one, and a safe win with plenty of HP left scores highest.</p>
-      <p>Each boss Pokémon then gets its own answer. The search tries the combinations and keeps the best overall. One of yours can be the answer to two only when it wins both, because it'll be worn down by the second. Remaining slots go to one backup per boss Pokémon, starting with the shakiest matchup, so you never get several Pokémon for the same job. Any slots still open go to the Pokémon that add the most cover, so the team is always six when you have six to choose from. The top few plans and your current party are each played out 300 times. The plans are played as written, using the Set battle style that Nuzlocke runs use: when you knock one of theirs out, your Pokémon stays in. If it would lose to their next Pokémon, you hard-switch to the planned answer, but only if that answer can take a hit coming in and still win. After a faint, you send in the planned answer or its backup for free. The plan with the fewest expected faints is chosen, counting a loss as losing your whole team, since a wipe ends the run. Win chance only breaks ties.</p>
+      <p>Each boss Pokémon then gets its own answer. The search tries the combinations and keeps the best overall. One of yours can be the answer to two only when it wins both, because it'll be worn down by the second. Remaining slots go to one backup per boss Pokémon, starting with the shakiest matchup, so you never get several Pokémon for the same job. Any slots still open go to the Pokémon that add the most cover, so the team is always six when you have six to choose from. The top few plans and your current party are each played out 300 times. The plans are played as written, using the Set battle style that Nuzlocke runs use: when you knock one of theirs out, your Pokémon stays in. If it would lose to their next Pokémon, you hard-switch to the planned answer, but only if that answer can take a hit coming in and still win. After a faint, you send in the planned answer or its backup for free. Hazards and weather from the boss's team count too: once a setter has moved, every Pokémon you send in is judged on the HP it has left after Stealth Rock and Spikes, Toxic Spikes poison it, and sandstorm or hail chips both sides every turn. The playouts use the boss AI's real choices, including when it sets them. The plan with the fewest expected faints is chosen, counting a loss as losing your whole team, since a wipe ends the run. Win chance only breaks ties.</p>
     </details></section>`;
 }
 function tpUse() {
@@ -3423,9 +3700,15 @@ GD.addEventListener('click', ev => {
 });
 GD.addEventListener('change', ev => { if (ev.target.id === 'gjump') { const el = document.getElementById('gch' + ev.target.value); if (el) { el.open = true; el.scrollIntoView({ behavior: 'smooth', block: 'start' }) } } });
 const BD = document.getElementById('batdetail');
-BD.addEventListener('change', ev => { if (ev.target.dataset.bf) batChange(ev.target) });
+BD.addEventListener('change', ev => { if (ev.target.dataset.bf) return batChange(ev.target);
+  const k = ev.target.dataset.bt; if (!k) return;
+  const tl = btForm(); tl[k] = ev.target.type === 'checkbox' ? ev.target.checked : ev.target.value;
+  if (k === 'p') { tl.pOut = 'hit'; tl.pSec = false } if (k === 'b') { tl.bOut = 'hit'; tl.bSec = false }
+  batSave(); if (k !== 'php' && k !== 'bhp') renderTurnLog() });
 BD.addEventListener('click', ev => { const b = ev.target.closest('[data-bact]'); if (!b) return;
   if (b.dataset.bact === 'team') return tpRun();
+  if (b.dataset.bact === 'turn') return btAdvance();
+  if (b.dataset.bact === 'undo') return btUndo();
   if (b.dataset.bact === 'useteam') return tpUse();
   if (b.dataset.bact === 'reset') { const r = curRun(); BS = batFresh(r, BS ? BS.boss : r.beat, BS ? BS.v : 0); batSave(); renderBattle() } });
 
