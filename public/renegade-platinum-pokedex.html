@@ -567,6 +567,41 @@ details.gch .gpick, details.gch .gboss { background: var(--bg) }
 .gwhere { display: flex; flex-direction: column; align-items: flex-start; gap: 2px; margin-top: 4px }
 .gwhere .an, .gitem .an { border: 0; background: none; padding: 0; color: var(--accent); cursor: pointer; font: inherit; text-align: left }
 .gwhere .an:hover, .gitem .an:hover { text-decoration: underline }
+.fc { display: flex; flex-direction: column; align-items: stretch }
+.fcstep { border: 1px solid var(--line); border-radius: 12px; padding: 10px; background: var(--bg); display: flex; flex-direction: column; align-items: center }
+.fcnode, .fcact, .fcdiain { display: flex; align-items: center; gap: 8px; text-align: left }
+.fcstep img { width: 40px; height: 40px; image-rendering: pixelated; flex: none }
+.fcboss { background: var(--panel); border: 2px solid var(--chg); border-radius: 999px; padding: 4px 14px 4px 6px }
+.fcline { width: 2px; height: 12px; background: var(--line) }
+.fcdia { position: relative; padding: 10px 26px; background: var(--accent-soft); border: 2px solid var(--accent); clip-path: polygon(14px 0, calc(100% - 14px) 0, 100% 50%, calc(100% - 14px) 100%, 14px 100%, 0 50%); max-width: 100% }
+.fcbr { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; width: 100%; margin-top: 10px; position: relative }
+.fcbr::before { content: ""; position: absolute; top: -10px; left: 25%; right: 25%; height: 10px; border: 2px solid var(--line); border-bottom: 0; border-radius: 8px 8px 0 0 }
+.fcb { border: 1px solid var(--line); border-radius: 10px; padding: 6px 8px; background: var(--panel); min-width: 0 }
+.fcb.on { border: 2px solid var(--accent); box-shadow: 0 0 0 3px var(--accent-soft) }
+.fcb.off { opacity: .6 }
+.fclab { font: 700 .7rem var(--font-body); text-transform: uppercase; letter-spacing: .08em; margin-bottom: 4px }
+.fclab.yes { color: var(--new) } .fclab.no { color: var(--chg) }
+.fcact.none { color: var(--muted); font-size: .85rem }
+.fcbk { margin-top: 8px; display: flex; flex-wrap: wrap; gap: 4px 12px; align-items: center; font-size: .82rem; width: 100% }
+.fcbkm { display: inline-flex; align-items: center; gap: 4px }
+.fcbkm img { width: 28px !important; height: 28px !important }
+.fcwhy { margin-top: 6px; width: 100%; font-size: .78rem }
+.fcdown { text-align: center; color: var(--muted); font-size: 1.1rem; line-height: 1.6 }
+.fcend { text-align: center; font-weight: 700; padding: 8px; border-radius: 10px; border: 1px solid var(--line) }
+.fcend.good { color: var(--new) } .fcend.bad { color: var(--chg) }
+@media (max-width: 760px) { .fcbr { grid-template-columns: 1fr } .fcbr::before { display: none } .fcdia { clip-path: none; border-radius: 10px } }
+.bmap { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 0 }
+.bmap > li { border: 1px solid var(--line); border-radius: 10px; padding: 8px 10px; background: var(--panel); position: relative; margin-bottom: 18px }
+.bmap > li:not(:last-child)::after { content: "↓"; position: absolute; left: 50%; bottom: -18px; transform: translateX(-50%); color: var(--muted); font-size: .9rem; line-height: 18px }
+.bmap .bmend { text-align: center; font-weight: 700 } .bmap .bmend.good { color: var(--new) } .bmap .bmend.bad { color: var(--chg) }
+.bmrow { display: flex; align-items: center; gap: 10px; flex-wrap: wrap }
+.bmside { display: flex; align-items: center; gap: 6px; min-width: 170px }
+.bmside img { width: 40px; height: 40px; image-rendering: pixelated }
+.bmvs { color: var(--muted); font-size: .8rem }
+.bmrow .btag { margin-left: auto }
+.bmbar { display: inline-block; width: 90px; height: 7px; background: var(--line); border-radius: 4px; overflow: hidden; vertical-align: middle; margin-right: 4px }
+.bmbar i { display: block; height: 100% }
+.bmwhy { font-size: .84rem; margin-top: 4px }
 .btform { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 10px }
 .btform h5 { margin: 0 0 4px; font-size: .85rem }
 .btform select, .btform input[type=number] { font: 500 .85rem var(--font-body); padding: 5px 7px; border-radius: 7px; border: 1px solid var(--line); background: var(--bg); color: var(--ink); max-width: 100% }
@@ -2345,9 +2380,55 @@ function nsAiSwitch(S) {
 }
 
 // ---- Your side: a simple, sensible player ----
+// ---- status moves for your side ----
+const nsStKind = mv => { const st = NSTAT[mv]; return st ? st.k : '' };
+// would this status move work on foe right now (Gen 4 rules: no Grass powder immunity, no Electric paralysis immunity)?
+function nsStatusLands(S, me, foe, mv) {
+  const k = nsStKind(mv), ab = foe.ab, wx = nsWx(S);
+  if (!['sleep', 'para', 'brn', 'tox', 'psn', 'yawn'].includes(k)) return false;
+  if (foe.st || foe.hp <= 0 || S.sd[foe.side].sg > 0 || (ab === 'Leaf Guard' && wx === 'sun')) return false;
+  if (NSOUND.has(mv) && ab === 'Soundproof') return false;
+  if ((k === 'sleep' || k === 'yawn') && (ab === 'Insomnia' || ab === 'Vital Spirit' || (k === 'yawn' && foe.yawn))) return false;
+  if (k === 'para' && (ab === 'Limber' || (mv === 'Thunder Wave' && (defMult(foe.types, ab, 'Electric') === 0 || ab === 'Motor Drive' || ab === 'Volt Absorb')))) return false;
+  if (k === 'brn' && (foe.types.includes('Fire') || ab === 'Water Veil' || ab === 'Flash Fire')) return false;
+  if ((k === 'tox' || k === 'psn') && (foe.types.includes('Poison') || foe.types.includes('Steel') || ab === 'Immunity')) return false;
+  return true;
+}
+// chance a move hits (accuracy, Compound Eyes, Wide Lens, accuracy/evasion stages; never-miss moves are 1)
+function nsAccOf(S, me, foe, mv) {
+  const d = MV[mv]; if (!d || !d.a || me.ab === 'No Guard' || foe.ab === 'No Guard') return 1;
+  let a = d.a; const st = Math.max(-6, Math.min(6, (me.stg ? me.stg.acc : 0) - (foe.stg ? foe.stg.eva : 0)));
+  a *= st >= 0 ? (3 + st) / 3 : 3 / (3 - st);
+  if (me.ab === 'Compound Eyes') a *= 1.3; if (me.item === 'Wide Lens') a *= 1.1;
+  if (foe.item === 'Bright Powder' || foe.item === 'Lax Incense') a *= .9;
+  return Math.min(1, a / 100);
+}
+// a sensible status play for your side this turn, or null: sleep first, then paralysis on a faster foe, burn on a physical
+// attacker, set-up when it's safe, Toxic on something you can't knock out quickly. Never when an attack finishes it.
+function nsStatusPlay(S, me, foe, best) {
+  if (!best || best.ko >= .85 || foe.hp <= 0) return null;
+  const usable = nsUsable(S, me), hitsToKo = best.ev > 0 ? Math.ceil(foe.hp / best.ev) : 99;
+  if (hitsToKo <= 1) return null;
+  const opts = me.moves.filter((mv, i) => usable[i] && MV[mv] && MV[mv].c === 'St');
+  if (!opts.length) return null;
+  const their = Math.max(0, ...foe.moves.map(m => nsAiDmg(S, foe, me, m))), foePhys = foe.moves.some(m => MV[m] && MV[m].c === 'P' && nsAiDmg(S, foe, me, m) >= their * .8 && their > 0);
+  const faster = nsSpeed(S, me) > nsSpeed(S, foe), safeTurns = their > 0 ? Math.floor((me.hp - 1) / their) : 99;
+  const pick = (k, extra) => opts.filter(mv => nsStKind(mv) === k && nsStatusLands(S, me, foe, mv) && (!extra || extra(mv))).sort((a, b) => nsAccOf(S, me, foe, b) - nsAccOf(S, me, foe, a))[0];
+  let mv;
+  if ((mv = pick('sleep', m => nsAccOf(S, me, foe, m) >= .55)) && safeTurns >= (faster ? 0 : 1)) return mv;
+  if (!faster && hitsToKo >= 2 && (mv = pick('para', m => nsAccOf(S, me, foe, m) >= .7)) && safeTurns >= 1) return mv;
+  if (foePhys && hitsToKo >= 2 && (mv = pick('brn', m => nsAccOf(S, me, foe, m) >= .7)) && safeTurns >= (faster ? 0 : 1)) return mv;
+  // set-up: only while it can take two more hits, and only for the stat its best attack uses
+  const cls = MV[best.mv] && MV[best.mv].c, up = opts.find(m => { const st = NSTAT[m]; if (!st || !st.self) return false;
+    const k = cls === 'P' ? 'atk' : 'spa'; return (st.self[k] || 0) > 0 && me.stg[k] < 2 });
+  if (up && hitsToKo >= 2 && (safeTurns >= 3 || foe.st === 'slp' || foe.st === 'frz')) return up;
+  if (hitsToKo >= 4 && (mv = pick('tox') || pick('psn')) && safeTurns >= 2) return mv;
+  if (hitsToKo >= 2 && (mv = pick('yawn')) && safeTurns >= 2) return mv;
+  return null;
+}
 function nsPlayerMove(S, me, foe) {
   const opts = me.moves.filter((mv, i) => nsUsable(S, me)[i] && MV[mv].c !== 'St' && !NSELFKO.has(mv) && mv !== 'Focus Punch' && (mv !== 'Fake Out' || me.firstOut));
-  if (!opts.length) return me.moves.find((mv, i) => nsUsable(S, me)[i]) || me.moves[0];
+  if (!opts.length) { const st = me.moves.find((mv, i) => nsUsable(S, me)[i] && nsStatusLands(S, me, foe, mv)); return st || me.moves.find((mv, i) => nsUsable(S, me)[i]) || me.moves[0] }
   let best = null;
   opts.forEach(mv => {
     const x = nsRolls(S, me, foe, mv, false, null); if (!x) return;
@@ -2356,9 +2437,10 @@ function nsPlayerMove(S, me, foe) {
     let ev = Math.min(avg, foe.hp) * acc; if (NRECHARGE.has(mv) || (NCHARGE.has(mv) && !(mv === 'Solar Beam' && S.wx === 'sun') && me.item !== 'Power Herb')) ev /= 2;
     if (NRECOIL[mv] && me.ab !== 'Rock Head') ev -= 0.01;
     const sc = ko > 0 ? 1e6 * ko + (NPRIO[mv] > 0 ? 1e5 : 0) + ev : ev;
-    if (!best || sc > best.sc) best = { mv, sc };
+    if (!best || sc > best.sc) best = { mv, sc, ko, ev: avg * acc };
   });
-  return best ? best.mv : opts[0];
+  const st = nsStatusPlay(S, me, foe, best);
+  return st || (best ? best.mv : opts[0]);
 }
 // pick a replacement: the bench member that wins the one-on-one fastest
 function nsPlayerReplace(S, policy) {
@@ -2379,10 +2461,17 @@ function nsPlayerReplace(S, policy) {
 
 // ---- Battle engine ----
 function nsHeal(c, n) { if (c.hp > 0) c.hp = Math.min(c.max, c.hp + Math.max(1, n)) }
+// berries: which statuses each cures (the moment the status lands), and the HP and pinch berries (Gen 4 amounts)
+const NBCURE = { 'Cheri Berry': ['par'], 'Chesto Berry': ['slp'], 'Pecha Berry': ['psn', 'tox'], 'Rawst Berry': ['brn'], 'Aspear Berry': ['frz'], 'Persim Berry': ['conf'],
+  'Lum Berry': ['par', 'slp', 'psn', 'tox', 'brn', 'frz', 'conf'] };
+const NBHEAL8 = new Set(['Figy Berry', 'Wiki Berry', 'Mago Berry', 'Aguav Berry', 'Iapapa Berry']);
 function nsBerry(S, c) {
   if (c.hp <= 0 || !c.item) return;
   if (c.item === 'Sitrus Berry' && c.hp * 2 <= c.max) { nsHeal(c, Math.floor(c.max / 4)); nsUse(c) }
   else if (c.item === 'Oran Berry' && c.hp * 2 <= c.max) { nsHeal(c, 10); nsUse(c) }
+  else if (c.item === 'Berry Juice' && c.hp * 2 <= c.max) { nsHeal(c, 20); nsUse(c) }
+  else if (NBHEAL8.has(c.item) && c.hp * 2 <= c.max) { nsHeal(c, Math.floor(c.max / 8)); nsUse(c) }   // Gen 4: 1/8 (confuses it if its nature dislikes the flavour; not modelled)
+  else if (c.item === 'Lansat Berry' && c.hp * 4 <= c.max) { c.ff = true; nsUse(c) }
   else if (c.hp * 4 <= c.max && ['Salac Berry', 'Liechi Berry', 'Petaya Berry', 'Ganlon Berry', 'Apicot Berry', 'Starf Berry'].includes(c.item)) {
     const k = { 'Salac Berry': 'spe', 'Liechi Berry': 'atk', 'Petaya Berry': 'spa', 'Ganlon Berry': 'def', 'Apicot Berry': 'spd' }[c.item];
     if (k) nsStage(c, { [k]: 1 }); else nsStage(c, { [['atk', 'def', 'spa', 'spd', 'spe'][nsR(5)]]: 2 });
@@ -2390,7 +2479,14 @@ function nsBerry(S, c) {
   }
 }
 function nsUse(c) { c.item = ''; c.usedItem = true }
-function nsLum(c) { if (c.item === 'Lum Berry' && (c.st || c.conf > 0)) { c.st = ''; c.conf = 0; nsUse(c) } }
+// status berries (Cheri, Chesto, Pecha, Rawst, Aspear, Persim, Lum) cure as soon as the status lands
+function nsLum(c) {
+  const cures = NBCURE[c.item]; if (!cures) return;
+  const st = c.st && cures.includes(c.st), cf = c.conf > 0 && cures.includes('conf');
+  if (st) { c.st = ''; c.slp = 0; c.toxN = 0 }
+  if (cf) c.conf = 0;
+  if (st || cf) nsUse(c);
+}
 function nsStage(c, ch, byFoe) {
   if (byFoe && (c.ab === 'Clear Body' || c.ab === 'White Smoke')) return;
   Object.entries(ch).forEach(([k, v]) => {
@@ -2654,6 +2750,55 @@ function nsDuelNow(S, c, b, switching) {
   const tMe = best ? Math.ceil(b.hp / best) : 99, tThem = th ? Math.ceil(hp / th) : 99;
   return { win: nsSpeed(S, c) > nsSpeed(S, b) ? tMe <= tThem : tMe < tThem };
 }
+// one-on-one from the live state (current HP, stages, hazards, weather): average damage for you, the AI's highest roll for them
+const nsCanHit = c => c.moves.some(mv => MV[mv] && MV[mv].c !== 'St' && MV[mv].p);
+function nsDuelState(S, c, b, switching) {
+  let best = null; const fpOk = !nsCanHit(b);
+  c.moves.forEach(mv => { const d = MV[mv]; if (!d || d.c === 'St' || NSELFKO.has(mv) || (mv === 'Focus Punch' && !fpOk)) return; const x = nsRolls(S, c, b, mv, false, null); if (!x || !x.mult) return;
+    const hits = NHITS2.has(mv) ? 2 : NHITS25.has(mv) ? (c.ab === 'Skill Link' ? 5 : 3) : 1;
+    let ev = x.rolls.reduce((a, v) => a + v, 0) / 16 * hits * nsAccOf(S, c, b, mv); if (NRECHARGE.has(mv) || (NCHARGE.has(mv) && c.item !== 'Power Herb')) ev /= 2;
+    if (!best || ev > best.ev) best = { mv, ev, min: x.rolls[0] * hits } });
+  let their = null;
+  b.moves.forEach(mv => { const dm = nsAiDmg(S, b, c, mv); if (dm > 0 && (!their || dm > their.dmg)) their = { mv, dmg: dm } });
+  const sd = S.sd[c.side], fld = { sr: !!sd.sr, spk: sd.spk || 0, wx: nsWx(S) };
+  const stChip = x => x.ab === 'Magic Guard' ? 0 : (x.st === 'psn' || x.st === 'brn' || x.st === 'tox') ? Math.floor(x.max / 8) : 0;
+  const entry = switching ? tpEntry0(c, fld) : 0, chip = tpChip(c, { wx: fld.wx }, false) + stChip(c), bChip = tpChip(b, { wx: fld.wx }, false) + stChip(b);
+  let hp = c.hp - entry - (switching && their ? their.dmg : 0);
+  if (hp <= 0) return { win: false, left: 0, best, their, entry, dead: true };
+  const prio = c.moves.find(mv => { const d = MV[mv]; if (!d || d.c === 'St' || (NPRIO[mv] || 0) <= 0) return false; const x = nsRolls(S, c, b, mv, false, null);
+    return x && x.mult && x.rolls[0] * (NHITS2.has(mv) ? 2 : 1) >= b.hp && nsAccOf(S, c, b, mv) >= .9 && !b.moves.some(m => (NPRIO[m] || 0) > NPRIO[mv]) });
+  if (prio) return { win: true, left: Math.max(1, hp), hp, tMe: 1, tThem: 99, faster: true, best: { mv: prio, ev: b.hp }, their, entry, prio: true };
+  const tMe = best ? Math.ceil(b.hp / Math.max(1, best.ev + bChip)) : 99, tThem = their || chip ? Math.ceil(hp / Math.max(1, (their ? their.dmg : 0) + chip)) : 99;
+  const faster = nsSpeed(S, c) > nsSpeed(S, b), win = !!best && (faster ? tMe <= tThem : tMe < tThem);
+  const hitsTaken = faster ? tMe - 1 : tMe, left = Math.max(0, hp - (their ? hitsTaken * their.dmg : 0) - tMe * chip);
+  return { win, left: win ? Math.max(1, left) : 0, hp, tMe, tThem, faster, best, their, entry };
+}
+function nsSureKo(S, c, b) {
+  if (nsSpeed(S, c) <= nsSpeed(S, b)) return null;
+  return c.moves.find(mv => { const d = MV[mv]; if (!d || d.c === 'St' || (NPRIO[mv] || 0) < 0 || NRECHARGE.has(mv)) return false;
+    if ((NCHARGE.has(mv) && !(mv === 'Solar Beam' && nsWx(S) === 'sun') && c.item !== 'Power Herb') || (NINVULN.has(mv) && c.item !== 'Power Herb')) return false;   // two-turn moves aren't a one-turn KO
+    const x = nsRolls(S, c, b, mv, false, null); if (!x || !x.mult) return false;
+    const hits = NHITS2.has(mv) ? 2 : 1; return x.rolls[0] * hits >= b.hp && nsAccOf(S, c, b, mv) >= .95 }) || null;
+}
+// Nuzlocke play: if the boss's next hit can knock your Pokémon out and it can't finish the boss first, switch to one that survives coming in
+function nsSaveSwitch(S) {
+  const sd = S.sd[0], p = nsAct(S, 0), b = nsAct(S, 1);
+  if (p.charging || p.lock || p.recharge || b.hp <= 0) return -1;
+  const th = Math.max(0, ...b.moves.map(mv => nsAiDmg(S, b, p, mv)));
+  if (th < p.hp) return -1;
+  const me = nsDuelState(S, p, b, false);
+  if (nsSureKo(S, p, b)) return -1;   // it moves first and a reliable move's lowest roll finishes the boss
+  S.saveN = S.saveN || {}; if ((S.saveN[b.slot] || 0) >= 2) return -1;   // don't ping-pong forever
+  let pick = null;
+  sd.team.forEach((x, i) => { if (i === sd.a || x.hp <= 0) return;
+    // only to a teammate that takes the hit coming in AND wins from there; otherwise staying in and attacking does more
+    const d = nsDuelState(S, x, b, true); if (d.dead || !d.win) return;
+    const sc = d.left / x.max;
+    if (!pick || sc > pick.sc) pick = { i, sc } });
+  if (!pick) return -1;
+  S.saveN[b.slot] = (S.saveN[b.slot] || 0) + 1;
+  return pick.i;
+}
 // Set style: hard-switch to the planned answer only if the Pokémon out now loses and the answer still wins after taking a hit coming in
 function nsHardSwitch(S, plan) {
   if (!plan) return -1;
@@ -2684,7 +2829,8 @@ function nsBattle(P, B, opt) {
     if (!b0.recharge && !b0.charging && !b0.lock) { const sw = nsAiSwitch(S); if (sw >= 0) bAct = { sw } }
     if (!bAct) bAct = { mv: b0.charging || b0.lock || nsAiPick(S, opt.flags) };
     if (t === 1 && bAct.mv) out.firstMove = bAct.mv;
-    const hs = t === 1 && opt.first || p.charging || p.lock || p.recharge ? -1 : nsHardSwitch(S, opt.plan);
+    let hs = t === 1 && opt.first || p.charging || p.lock || p.recharge ? -1 : nsHardSwitch(S, opt.plan);
+    if (hs < 0 && !(t === 1 && opt.first)) hs = nsSaveSwitch(S);
     if (hs >= 0) (S.planSw = S.planSw || {})[b0.slot] = true;
     const pAct = t === 1 && opt.first ? opt.first : hs >= 0 ? { sw: hs } : { mv: p.charging || p.lock || nsPlayerMove(S, p, b0) }, pMv = pAct.mv;
     b0.lastPick = bAct.mv; p.lastPick = pMv;
@@ -2914,6 +3060,118 @@ function renderTurnLog() {
     ${log ? `<h4 class="tph4">Turn history</h4><ol class="btlog">${log}</ol>` : ''}
     <p class="sp" style="margin-top:6px">Logged turns use a middle damage roll and only the luck you tick (misses, crits, added effects). Ability effects like Static aren't assumed, so set a status on its card if one happened. Confusion, Leech Seed, Taunt and similar aren't carried between turns.</p></section>`;
 }
+// Walks the boss's remaining Pokémon in the order the trainer AI will likely send them, deciding at each step from both sides' current
+// HP: stay in, switch, or chip and pull out. HP carries forward. Returns steps for batMapHtml.
+function batMap(S0) {
+  const S = { sd: S0.sd.map(sd => Object.assign({}, sd, { team: sd.team.map(batCp) })), wx: S0.wx, wxT: S0.wxT };
+  const steps = [], R = { ko() {}, seen() {} };
+  for (let guard = 0; guard < 14; guard++) {
+    const b = nsAct(S, 1), p = nsAct(S, 0);
+    if (!b || b.hp <= 0) break;
+    if (!p || p.hp <= 0) { steps.push({ lost: true }); break }
+    const st = { b: b.name, bn: b.m.n, bhp: b.hp / b.max, p: p.name, pn: p.m.n, php: p.hp / p.max, faced: nsAct(S, 0) };
+    const stay = nsDuelState(S, p, b, false), th = stay.their;
+    const bench = S.sd[0].team.map((x, i) => ({ x, i })).filter(o => o.i !== S.sd[0].a && o.x.hp > 0);
+    const best = (bHp) => { let pick = null; const bb = Object.assign({}, b, { hp: bHp });
+      bench.forEach(o => { const d = nsDuelState(S, o.x, bb, true); const cost = (o.x.hp - d.left) / o.x.max; if (d.win && (!pick || cost < pick.cost)) pick = { ...o, d, cost } }); return pick };
+    const inRange = th && th.dmg >= p.hp, sure = inRange ? nsSureKo(S, p, b) : null;
+    if (stay.win && inRange && !sure && best(b.hp)) stay.win = false;   // a miss or a slow turn would cost it, and a safe switch exists
+    // flow-chart pieces: the HP your Pokémon needs to win by staying in, who else wins if switched in (backups), and both branches
+    const winners = [];
+    bench.forEach(o => { const d = nsDuelState(S, o.x, b, true); if (d.win) winners.push({ n: o.x.name, pn: o.x.m.n, mv: d.best.mv, end: d.left / o.x.max, cost: (o.x.hp - d.left) / o.x.max, take: d.their ? d.their.mv : '' }) });
+    winners.sort((a, c) => c.end - a.end);
+    // staying in isn't always best: switch when a teammate wins the matchup for clearly less of your team's HP
+    const cheap = winners.slice().sort((a, c) => a.cost - c.cost)[0];
+    if (stay.win && cheap && cheap.cost + .15 < (p.hp - stay.left) / p.max) { stay.win = false; st.cheaper = true }
+    const full = nsDuelState(S, Object.assign(batCp(p), { hp: p.max }), b, false);
+    let need = full.win ? p.max - full.left + 1 : Infinity;
+    if (full.win && th && !full.prio && (full.faster ? full.tMe - 1 : full.tMe) === 0 && !nsSureKo(S, Object.assign(batCp(p), { hp: p.max }), b)) need = Math.max(need, th.dmg + 1);   // an unreliable one-hit KO still has to survive a miss
+    Object.assign(st, { need: need === Infinity ? null : Math.min(100, Math.ceil(need / p.max * 100)), taken: stay.win ? 'yes' : 'no',
+      yes: full.win ? { mv: inRange && sure ? sure : (stay.win ? stay.best : full.best).mv, end: stay.win ? stay.left / p.max : null } : null, winners });
+    if (stay.win) {
+      const pull = th ? Math.ceil(th.dmg / p.max * 100) : 0, takes = th && stay.tMe - (stay.faster ? 1 : 0) > 0;
+      Object.assign(st, { kind: 'stay', mv: inRange && sure ? sure : stay.best.mv, endHp: stay.left / p.max,
+        why: `${p.name} wins from here${th ? `: ${th.mv} does up to ${Math.round(th.dmg / p.max * 100)}% to it` : ' and nothing it has can hurt it'}. Use ${inRange && sure ? sure : stay.best.mv}.`,
+        pull: inRange ? `Careful: it's in knock-out range, so this only works because it moves first and ${sure || stay.best.mv} knocks ${b.name} out in one hit${sure ? '' : ` (${Math.round(nsAccOf(S, p, b, stay.best.mv) * 100)}% to hit; a miss means it faints)`}.`
+          : takes && stay.left <= th.dmg * 1.2 ? `If a crit or high roll drops it below ${pull}%, switch out.` : '' });
+      p.hp = stay.left;
+    } else {
+      const sw = best(b.hp);
+      if (sw) {
+        const ko = th && th.dmg >= p.hp;
+        Object.assign(st, { kind: 'switch', to: sw.x.name, ton: sw.x.m.n, mv: sw.d.best.mv, endHp: sw.d.left / sw.x.max,
+          why: st.cheaper ? `${p.name} would win, but it would cost it ${Math.round((p.hp - stay.left) / p.max * 100)}% of its HP. ${sw.x.name} wins for less, taking ${sw.d.their ? sw.d.their.mv + ' coming in' : 'nothing coming in'}${sw.d.entry ? ` plus ${Math.round(sw.d.entry / sw.x.max * 100)}% from hazards` : ''}, and ${p.name} stays healthy for later.` : `${p.name} ${ko ? `is in knock-out range (${th.mv} does up to ${Math.round(th.dmg / p.max * 100)}%), so switch it out now` : 'loses this one'}. ${sw.x.name} takes ${sw.d.their ? sw.d.their.mv + ' coming in' : 'nothing coming in'}${sw.d.entry ? ` plus ${Math.round(sw.d.entry / sw.x.max * 100)}% from hazards` : ''} and still wins with ${sw.d.best.mv}.` });
+        if (th) { /* p left before taking the hit */ }
+        sw.x.hp = sw.d.left; S.sd[0].a = sw.i;
+      } else {
+        // chip it while that's safe, then hand over to whoever can finish it
+        const safeHits = th ? Math.max(0, Math.ceil(p.hp / th.dmg) - 1) : 99, myTurns = stay.best ? (stay.faster ? safeHits + 1 : safeHits) : 0;
+        const dealt = stay.best ? Math.min(b.hp - 1, Math.floor(myTurns * stay.best.ev)) : 0, fin = dealt > 0 ? best(b.hp - dealt) : null;
+        if (fin && myTurns > 0) {
+          Object.assign(st, { kind: 'chip', mv: stay.best.mv, to: fin.x.name, ton: fin.x.m.n, endHp: fin.d.left / fin.x.max,
+            why: `Nothing wins outright. ${p.name} uses ${stay.best.mv} ${myTurns} time${myTurns > 1 ? 's' : ''} (about ${Math.round(dealt / b.max * 100)}%), then switches out before ${th.mv} can knock it out. ${fin.x.name} comes in and finishes with ${fin.d.best.mv}.` });
+          p.hp = Math.max(1, p.hp - (stay.faster ? safeHits : safeHits) * th.dmg); fin.x.hp = fin.d.left; S.sd[0].a = fin.i;
+        } else {
+          Object.assign(st, { kind: 'danger', mv: stay.best ? stay.best.mv : '', why: `No safe answer from here. ${stay.best ? `${p.name}'s ${stay.best.mv} needs about ${stay.tMe} hit${stay.tMe === 1 ? '' : 's'}` : `${p.name} can't damage it`}${th ? `, and ${th.mv} knocks it out in ${stay.tThem} hit${stay.tThem === 1 ? '' : 's'}${stay.faster ? '' : `, moving first`}` : ''}. Expect to lose a Pokémon, or heal and set up first.` });
+          // whoever is in falls after the attacks it gets in first (a slower one gets one fewer)
+          const attacks = stay.best ? Math.max(0, stay.tThem - (stay.faster ? 0 : 1)) : 0;
+          b.hp = Math.max(1, b.hp - Math.floor((stay.best ? stay.best.ev : 0) * attacks));
+          st.why += attacks ? ` It gets about ${attacks} attack${attacks > 1 ? 's' : ''} in first.` : ` It's slower, so it falls before it attacks.`;
+          p.hp = 0; steps.push(st);
+          const nxt = bench.length ? bench.map(o => ({ o, d: nsDuelState(S, o.x, b, false) })).sort((a, c) => (c.d.win - a.d.win) || c.o.x.hp - a.o.x.hp)[0] : null;
+          if (!nxt) { steps.push({ lost: true }); break }
+          S.sd[0].a = nxt.o.i; continue;
+        }
+      }
+    }
+    b.hp = 0; steps.push(st);
+    // the trainer AI's replacement comes in (hazards on their side hit it)
+    const nx = nsAiReplace(S, b); if (nx < 0) { steps.push({ won: true }); break }
+    S.sd[1].a = nx; const nb = nsAct(S, 1), e = tpEntry0(nb, { sr: !!S.sd[1].sr, spk: S.sd[1].spk || 0 }); nb.hp = Math.max(1, nb.hp - e);
+  }
+  return steps;
+}
+function batMapHtml(steps, title, note) {
+  if (!steps.length) return '';
+  // consecutive no-safe-answer steps against the same Pokémon read as one
+  const merged = [];
+  steps.forEach(x => { const last = merged[merged.length - 1];
+    if (x.kind === 'danger' && last && last.kind === 'danger' && last.b === x.b) last.more = (last.more || []).concat(x.p); else merged.push(Object.assign({}, x)) });
+  merged.forEach(x => { if (x.more) x.why = `${[x.p, ...x.more].join(', ')} would each fall to ${x.b} before winning. Heal up, use a status move or set up before this point, or bring a Pokémon that outspeeds it or survives a hit.` });
+  const bar = v => `<span class="bmbar"><i style="width:${Math.max(0, Math.min(100, Math.round(v * 100)))}%;background:${v > .5 ? 'var(--new)' : v > .2 ? '#d7a91a' : 'var(--chg)'}"></i></span><small>${Math.round(v * 100)}%</small>`;
+  const pct = v => Math.round(v * 100) + '%', mon = (n, name) => `<img src="${nimg(n)}" alt="" title="${esc(name)}">`;
+  const yesBox = x => !x.yes ? '<div class="fcact none">Not possible: it loses even from full HP.</div>'
+    : `<div class="fcact">${mon(x.pn, x.p)}<div><b>Stay in</b> with ${esc(x.p)}<div class="sp">Use ${esc(x.yes.mv)}${x.yes.end != null ? ` · ends at about ${pct(x.yes.end)}` : x.need >= 100 ? ' · only from full HP' : x.need ? ` · needs at least ${x.need}% HP` : ''}</div></div></div>`;
+  const noBox = x => {
+    const w = x.winners[0];
+    if (x.kind === 'switch' || (x.taken === 'yes' && w)) { const to = x.kind === 'switch' ? { n: x.to, pn: x.ton, mv: x.mv, end: x.endHp } : w;
+      return `<div class="fcact">${mon(to.pn, to.n)}<div><b>Switch → ${esc(to.n)}</b><div class="sp">Use ${esc(to.mv)} · ends at about ${pct(to.end)}</div></div></div>` }
+    if (x.kind === 'chip') return `<div class="fcact">${mon(x.ton, x.to)}<div><b>Chip, then switch → ${esc(x.to)}</b><div class="sp">${esc(x.p)} uses ${esc(x.mv)} while it's safe · ${esc(x.to)} ends at about ${pct(x.endHp)}</div></div></div>`;
+    if (x.kind === 'danger') return `<div class="fcact none"><div><b>No safe answer</b><div class="sp">Expect to lose a Pokémon here.</div></div></div>`;
+    return '<div class="fcact none">Nobody else wins this one from here.</div>';
+  };
+  const backups = x => { const used = x.kind === 'switch' ? x.to : x.taken === 'yes' && x.winners[0] ? x.winners[0].n : '';
+    const list = x.winners.filter(w => w.n !== used && w.n !== x.to).slice(0, 2);
+    return list.length ? `<div class="fcbk"><span class="sp">Backups if that goes wrong:</span> ${list.map(w => `<span class="fcbkm">${mon(w.pn, w.n)}${esc(w.n)} <small>${esc(w.mv)} · ~${pct(w.end)} left</small></span>`).join('')}</div>` : '' };
+  const step = (x, i) => {
+    if (x.won) return '<div class="fcend good">All their Pokémon are down. You win.</div>';
+    if (x.lost) return '<div class="fcend bad">You run out of Pokémon here.</div>';
+    return `<div class="fcstep">
+      <div class="fcnode fcboss">${mon(x.bn, x.b)}<div><b>${esc(x.b)}</b> <span class="sp">${i === 0 ? 'in battle now' : 'comes in next'}</span><div>${bar(x.bhp)}</div></div></div>
+      <div class="fcline"></div>
+      <div class="fcdia"><div class="fcdiain">${mon(x.pn, x.p)}<div><b>${esc(x.p)}</b> at ${pct(x.php)}: stay in or switch?<div class="sp">${x.need >= 100 ? 'Staying in only works from full HP' : x.need ? `Staying in wins from ${x.need}% HP or more` : 'Staying in loses, even from full HP'}${x.cheaper ? ' · a switch costs less HP' : ''}</div></div></div></div>
+      <div class="fcbr">
+        <div class="fcb ${x.taken === 'yes' ? 'on' : 'off'}"><div class="fclab yes">Stay in</div>${yesBox(x)}</div>
+        <div class="fcb ${x.taken === 'no' ? 'on' : 'off'}"><div class="fclab no">Switch</div>${noBox(x)}</div>
+      </div>
+      ${backups(x)}
+      <div class="fcwhy sp">${esc(x.why || '')} ${x.pull ? esc(x.pull) : ''}</div>
+    </div>`;
+  };
+  return `<section class="card full"><h3>${title}</h3>${note ? `<p class="sp" style="margin:0 0 8px">${note}</p>` : ''}
+    <div class="fc">${merged.map((x, i) => step(x, i)).join('<div class="fcdown" aria-hidden="true">↓</div>')}</div>
+    <p class="sp" style="margin-top:8px">The highlighted branch is the one you're expected to take, given the HP each side has by then. The other branch is what to do if the fight goes differently. Average damage for you, the AI's highest roll for them, hazards and weather, and the Pokémon the trainer AI is likely to send next. Set style: you stay in after a knock-out unless the chart says to switch.</p></section>`;
+}
 function renderBattle() {
   const d = document.getElementById('batdetail'); if (!d) return;
   const r = curRun(), opt = (v, lab, cur) => `<option value="${esc(v)}" ${String(v) === String(cur) ? 'selected' : ''}>${esc(lab)}</option>`;
@@ -2974,6 +3232,7 @@ function batAnalyze() {
   batPrep(P, B, pa, ba);
   const S = batLiveS(P, B, pa, ba), me = P[pa], foe = B[ba];
   const fc = batForecast(S, 2000);
+  const mapHtml = batMapHtml(batMap(S), 'Battle map from here', 'Decisions from where the fight stands now, through the rest of their team.');
   const usable = nsUsable(S, me), options = [
     ...me.moves.filter((m, i) => usable[i]).map(mv => ({ mv, label: mv })),
     ...P.map((c, i) => ({ c, i })).filter(x => x.i !== pa && x.c.hp > 0).map(x => ({ sw: x.i, label: 'Switch to ' + x.c.name })) ];
@@ -2986,7 +3245,7 @@ function batAnalyze() {
     if (o.dt[me.key] === 1) a.meDie1++; if (o.bt[ba] === 1) a.foeKO1++;
   };
   let oi = 0;
-  const show = done => { if (tok === batTok) el.innerHTML = batHtml(S, me, foe, fc, options, acc, done, P, B) };
+  const show = done => { if (tok === batTok) el.innerHTML = batHtml(S, me, foe, fc, options, acc, done, P, B) + mapHtml };
   show(false);
   const step = () => {
     if (tok !== batTok) return;
@@ -3033,7 +3292,7 @@ function batHtml(S, me, foe, fc, options, acc, done, P, B) {
       <div class="bopts">${rows.map(orow).join('') || '<p class="empty">Working…</p>'}</div>
       <details class="simhow"><summary>How this works</summary>
         <p>The forecast samples the boss's choice 2,000 times from Platinum's trainer AI (the <a href="https://github.com/pret/pokeplatinum/tree/main/src/battle/trainer_ai" target="_blank" rel="noopener">pokeplatinum decompilation</a>, Basic + Evaluate Attack + Expert). Every move starts at 100. It loses 10 if it can't work and gains 4 (6 for +1 priority) if its highest roll knocks you out. It loses 1 if another move does more, then the move-specific Expert rules apply. The highest score wins and ties are random. The AI ignores crits and judges damage by its highest roll. It also treats Hyper Beam, Superpower, Explosion, Solar Beam, Eruption, Sucker Punch and Head Smash as doing no damage.</p>
-        <p>Each of your options is played out to the end of the fight 300 times. Every hit uses the same damage calculator as the Nuzlocke tab, with random rolls, crits, accuracy, status, weather, hazards and items. After this turn you're assumed to attack with your strongest move, and after a faint you send in your best matchup. The boss keeps following its AI.</p>
+        <p>Each of your options is played out to the end of the fight 300 times. Every hit uses the same damage calculator as the Nuzlocke tab, with random rolls, crits, accuracy, status, weather, hazards and items. After this turn you're assumed to play sensibly: put the boss's Pokémon to sleep or paralyse it when that helps, set up when it's safe, otherwise attack with your strongest move. After a faint you send in your best matchup. The boss keeps following its AI.</p>
         <p>Damage ranges ignore crits. The knock-out chance counts crits and accuracy. Boss HP is a percentage because the game only shows a bar. Turns left asleep or badly poisoned aren't shown in game, so those are estimated.</p>
       </details></section>`;
 }
@@ -3118,9 +3377,9 @@ function tpChip(c, x, mine) {
 // one-on-one: how fast each side knocks the other out, from full HP minus what the field takes on the way in
 function tpDuel(c, foe, x) {
   const S = { sd: [tpSide([c]), tpSide([foe])], wx: x && x.wx || '', wxT: x && x.wx ? 99 : 0 };
-  let best = null;
+  let best = null; const fpOk = !nsCanHit(foe);
   c.moves.forEach(mv => {
-    const d = MV[mv]; if (!d || d.c === 'St' || NSELFKO.has(mv)) return;
+    const d = MV[mv]; if (!d || d.c === 'St' || NSELFKO.has(mv) || (mv === 'Focus Punch' && !fpOk)) return;
     const x = nsRolls(S, c, foe, mv, false, null); if (!x || !x.mult) return;
     const hits = NHITS2.has(mv) ? 2 : NHITS25.has(mv) ? (c.ab === 'Skill Link' ? 5 : 3) : 1, acc = d.a ? d.a / 100 : 1;
     let ev = x.rolls.reduce((a, b) => a + b, 0) / 16 * hits * acc;
@@ -3144,7 +3403,31 @@ function tpDuel(c, foe, x) {
   const val = win ? Math.max(.05, 2 - taken - 1.6 * risk) : best ? Math.min(.6, best.ev * Math.min(tThem - 1, 6) / foe.max * .5) : 0;
   const swHp = their ? hp0 - their.dmg : hp0, swT = their || chip ? Math.ceil(swHp / Math.max(1, (their ? their.dmg : 0) + chip)) : 99;
   const swOk = swHp > 0 && (faster ? tMe <= swT : tMe < swT);
-  return { best, their, tMe, tThem, faster, win, taken, val, swOk, risk, pullAt, entry, chip, wx: x && x.wx || '' };
+  const base = { best, their, tMe, tThem, faster, win, taken, val, swOk, risk, pullAt, entry, chip, wx: x && x.wx || '' };
+  // opening with a status move: sleep (1–4 turns, counted as 2), paralysis (¼ Speed, 25% full paralysis), burn (halves physical hits, 1/8 a turn)
+  if (!best || !their) return base;
+  const scen = (hits, T, dmg, extra = 0) => { const tot = entry + extra + hits * dmg + T * chip, tk = Math.min(1, tot / c.max), w = tot < c.max;
+    const dMx = dmg + chip, dMn = Math.floor(dmg * .85) + chip;
+    const hp1 = hp0 - extra, rk = !w ? 1 : !hits ? 0 : hits * dMn >= hp1 ? 1 : hits * dMx >= hp1 ? .5 : (hits + 1) * dMx >= hp1 ? .1 * hits : 0;
+    return { w, tk, rk, v: w ? Math.max(.05, 2 - tk - 1.6 * rk) : .05 } };
+  const fail = scen(hitsTaken + 1, tMe + 1, their.dmg);   // the status move misses: one turn wasted
+  let alt = null;
+  c.moves.forEach(mv => {
+    const k = nsStKind(mv); if (!['sleep', 'para', 'brn'].includes(k) || !nsStatusLands(S, c, foe, mv)) return;
+    const a = nsAccOf(S, c, foe, mv); if (a < .5) return;
+    const T = tMe + 1; let ok;
+    if (k === 'sleep') { const z = 2, hits = faster ? Math.max(0, T - 1 - z) : 1 + Math.max(0, T - 1 - z); ok = scen(hits, T, their.dmg) }
+    else if (k === 'para') { const fasterP = nsSpeed(S, c) > Math.floor(nsSpeed(S, foe) / 4), acts = faster || fasterP ? T - 1 : T;
+      const hits = (faster ? 0 : 1) + Math.ceil(Math.max(0, acts - (faster ? 0 : 1)) * .75); ok = scen(hits, T, their.dmg) }
+    else { if (!MV[their.mv] || MV[their.mv].c !== 'P') return;
+      // burned from the end of the opening turn: later hits are halved, a slower Pokémon takes the first one at full power
+      const T2 = Math.ceil(foe.max / Math.max(1, best.ev + foeChip + foe.max / 8)) + 1;
+      ok = faster ? scen(T2 - 1, T2, Math.floor(their.dmg / 2)) : scen(T2 - 1, T2, Math.floor(their.dmg / 2), their.dmg) }
+    const v = a * ok.v + (1 - a) * fail.v;
+    if (v > (alt ? alt.v : base.val) + .05) alt = { v, mv, k, a, ok };
+  });
+  if (!alt) return base;
+  return Object.assign(base, { win: alt.ok.w, taken: alt.ok.tk, risk: alt.ok.rk, val: alt.v, stat: { mv: alt.mv, k: alt.k, a: alt.a } });
 }
 // Assign an answer to every boss Pokémon. One of yours can cover two, at a discount (it'll be worn down by the second).
 // Returns assignments best first: { sc, asg: [candidate index per boss Pokémon] }
@@ -3154,9 +3437,11 @@ function tpAssign(M, nB) {
   const dfs = (k, sc) => {
     if (k === nB) { out.push({ sc, asg: asg.slice() }); return }
     for (const c of top[k]) {
-      const u = use[c.i] || 0; if (u >= 2) continue;
-      // reusing one of yours only pays when it still wins
-      use[c.i] = u + 1; asg.push(c.i); dfs(k + 1, sc + (!u ? c.v : c.v >= 1 ? c.v * .8 - .05 : c.v * .4)); asg.pop(); use[c.i] = u;
+      const u = use[c.i] || { n: 0, wear: 0 }, d = M[c.i][k];
+      // staying in for more than one only pays while it still wins, and its earlier fights' damage adds up
+      if (u.n && (!d.win || u.wear + d.taken >= .9 || u.n >= 4)) continue;
+      use[c.i] = { n: u.n + 1, wear: u.wear + d.taken }; asg.push(c.i);
+      dfs(k + 1, sc + (!u.n ? c.v : c.v * (1 - u.wear * .7) - .05)); asg.pop(); use[c.i] = u.n ? u : undefined;
     }
   };
   dfs(0, 0);
@@ -3257,12 +3542,13 @@ const tpPct = (v, of) => Math.round(v / of * 100);
 // one matchup in words
 function tpLine(c, b, d) {
   const bm = d.best, th = d.their;
+  const st = d.stat ? `Open with <b>${esc(d.stat.mv)}</b> (${Math.round(d.stat.a * 100)}% to land; ${{ sleep: 'asleep for 1–4 turns, so it gets free hits', para: 'it moves at quarter Speed and loses 25% of its turns', brn: 'it does half damage with physical moves and loses 1/8 a turn' }[d.stat.k]}), then attack. ` : '';
   if (!bm) return `${esc(c.name)} has no attack that touches ${esc(b.name)}.`;
   const hit = `${esc(bm.mv)} does ${tpPct(bm.min, b.max)}–${tpPct(bm.max, b.max)}%${d.tMe === 1 ? ' (one-hit KO)' : ` (about ${d.tMe} hits)`}`;
   const back = !th ? ` and nothing ${esc(b.name)} has can hurt it` : th.dmg < c.max ? `; ${esc(th.mv)} does up to ${tpPct(th.dmg, c.max)}% back` : `; ${esc(th.mv)} can do up to ${tpPct(th.dmg, c.max)}%, enough to KO it`;
   const speed = d.faster ? `${esc(c.name)} moves first` : `${esc(b.name)} moves first`;
   const fld = [d.entry ? `hazards take ${tpPct(d.entry, c.max)}% as it comes in` : '', d.chip ? `it loses ${tpPct(d.chip, c.max)}% a turn to ${d.wx && tpChip(c, { wx: d.wx }, false) ? TPWXNAME[d.wx] : 'poison'}` : ''].filter(Boolean);
-  return `${hit}${back}. ${speed}.${fld.length ? ' On their field, ' + fld.join(' and ') + '.' : ''}`;
+  return `${st}${hit}${back}. ${speed}.${fld.length ? ' On their field, ' + fld.join(' and ') + '.' : ''}`;
 }
 // Set style: how the answer gets in when this boss Pokémon comes out, and who can just stay in
 function tpEntry(res, i, j) {
@@ -3319,6 +3605,15 @@ function tpPlanHtml(res) {
       ${j === 0 ? '' : `<div>${tpEntry(res, i, j)}</div>`}
       ${tpStealStep(res, j, i)}
       ${bk !== undefined ? `<div class="sp">If that goes wrong: <b>${esc(mine[bk].name)}</b>. ${tpLine(mine[bk], b, M[bk][j])}</div>` : ''}</li>` }).join('')}</ol>`;
+}
+// the battle map for the suggested team, from full HP with the planned lead
+function tpMapHtml(res) {
+  const { best, mine, boss } = res, ord = [best.lead, ...best.t.filter(i => i !== best.lead)];
+  const side = team => ({ team, a: 0, sr: 0, spk: 0, tsp: 0, ref: 0, ls: 0, tw: 0, sg: 0 });
+  const P = ord.map(i => batCp(mine[i])), B = boss.map(batCp);
+  P.forEach((c, k) => { c.side = 0; c.slot = k }); B.forEach((c, k) => { c.side = 1; c.slot = k });
+  const S = { sd: [side(P), side(B)], wx: '', wxT: 0 };
+  return batMapHtml(batMap(S), 'Battle map', 'Step by step from the opening, with HP carried from one fight to the next. Decisions change with the HP each side has left when the next Pokémon comes in.');
 }
 // why one chosen member is on the team
 function tpWhy(res, i) {
@@ -3380,6 +3675,7 @@ function renderTeamPick() {
         ${same ? '<span class="sp">Your party already matches.</span>' : '<button class="btn primary" data-bact="useteam">Use this team</button>'}</div>
       ${best.t.length < 6 ? `<p class="rnote" style="margin:10px 0 0">Only ${best.t.length} of your Pokémon can be used here, so the team is ${best.t.length}. ${su.out.length ? 'See “Left out” for why the others aren’t eligible.' : 'Catch or box more to fill all six slots.'}</p>` : ''}
       <h4 class="tph4">Battle plan</h4>${tpPlanHtml(res)}
+      ${tpMapHtml(res)}
       <h4 class="tph4">Why each Pokémon</h4><div class="tpgrid">${cards}</div>
       ${left.length || su.out.length ? `<details class="tpout"><summary>Left out (${left.length + su.out.length})</summary><ul>${left.map(o => `<li><b>${nm(o.x)}</b>: ${tpLeftOut(res, o.i)}</li>`).join('')}${su.out.map(o => `<li><b>${nm(o.x)}</b>: ${esc(o.why)}</li>`).join('')}</ul></details>` : ''}`;
   } else body = `<p class="sp">${tpRes ? 'Your Pokémon or the boss changed since the last suggestion. ' : ''}Builds a plan for each of ${esc(b ? b.label : '')}'s Pokémon from your ${su.cands.length} available party and box Pokémon${r.rules.caps && b ? ` at or under the level cap (${b.cap})` : ''}, with a backup for each where you have one.</p>`;
@@ -3387,7 +3683,7 @@ function renderTeamPick() {
     ${tpStealUi(r, su)}
     <details class="simhow"><summary>How the team is picked</summary>
       <p>Every available Pokémon is scored one-on-one against each of the boss's Pokémon with the damage calculator. The score counts how many hits your best move needs, how many hits their strongest move needs (judged the way the boss AI judges it), and who moves first. Keeping your Pokémon alive comes first. A win that could end in a faint (on a high roll or a critical hit) scores far below a safe one, and a safe win with plenty of HP left scores highest.</p>
-      <p>Each boss Pokémon then gets its own answer. The search tries the combinations and keeps the best overall. One of yours can be the answer to two only when it wins both, because it'll be worn down by the second. Remaining slots go to one backup per boss Pokémon, starting with the shakiest matchup, so you never get several Pokémon for the same job. Any slots still open go to the Pokémon that add the most cover, so the team is always six when you have six to choose from. The top few plans and your current party are each played out 300 times. The plans are played as written, using the Set battle style that Nuzlocke runs use: when you knock one of theirs out, your Pokémon stays in. If it would lose to their next Pokémon, you hard-switch to the planned answer, but only if that answer can take a hit coming in and still win. After a faint, you send in the planned answer or its backup for free. Hazards and weather from the boss's team count too: once a setter has moved, every Pokémon you send in is judged on the HP it has left after Stealth Rock and Spikes, Toxic Spikes poison it, and sandstorm or hail chips both sides every turn. The playouts use the boss AI's real choices, including when it sets them. The plan with the fewest expected faints is chosen, counting a loss as losing your whole team, since a wipe ends the run. Win chance only breaks ties.</p>
+      <p>Each boss Pokémon then gets its own answer. The search tries the combinations and keeps the best overall. One of yours can be the answer to two only when it wins both, because it'll be worn down by the second. Remaining slots go to one backup per boss Pokémon, starting with the shakiest matchup, so you never get several Pokémon for the same job. Any slots still open go to the Pokémon that add the most cover, so the team is always six when you have six to choose from. The top few plans and your current party are each played out 300 times. The plans are played as written, using the Set battle style that Nuzlocke runs use: when you knock one of theirs out, your Pokémon stays in. If it would lose to their next Pokémon, you hard-switch to the planned answer, but only if that answer can take a hit coming in and still win. After a faint, you send in the planned answer or its backup for free. Your Pokémon switch out before the boss's next hit can knock them out (unless they move first and a 95%+ accurate move finishes the boss), as long as a teammate can take that hit coming in, and one of yours stays in against several of theirs while it keeps winning. Status moves count too: an opening Sleep Powder, Hypnosis, Thunder Wave, Stun Spore or Will-O-Wisp is scored by its real accuracy (Compound Eyes included) and what it stops, and the playouts use sleep, paralysis, burn, set-up moves and Toxic when they help. Hazards and weather from the boss's team count too: once a setter has moved, every Pokémon you send in is judged on the HP it has left after Stealth Rock and Spikes, Toxic Spikes poison it, and sandstorm or hail chips both sides every turn. The playouts use the boss AI's real choices, including when it sets them. The plan with the fewest expected faints is chosen, counting a loss as losing your whole team, since a wipe ends the run. Win chance only breaks ties.</p>
     </details></section>`;
 }
 function tpUse() {
@@ -3809,22 +4105,38 @@ const NITEMFX = { 'Choice Band': 'Atk ×1.5, locked into one move', 'Choice Spec
 const NITEMOTHER = ['Leftovers', 'Black Sludge', 'Shell Bell', 'Sitrus Berry', 'Oran Berry', 'Lum Berry', 'Focus Sash', 'Focus Band', 'Choice Scarf', 'Quick Claw', "King's Rock", 'Razor Fang',
   'Scope Lens', 'Razor Claw', 'Wide Lens', 'Zoom Lens', 'Bright Powder', 'Lax Incense', 'White Herb', 'Mental Herb', 'Power Herb', 'Big Root', 'Light Clay', 'Damp Rock', 'Heat Rock',
   'Smooth Rock', 'Icy Rock', 'Flame Orb', 'Toxic Orb', 'Lucky Egg', 'Exp. Share', 'Amulet Coin', 'Everstone'];
+// berries you can hold for status, healing and pinch boosts (Gen 4 effects), shown in the item picker and notes
+const NBERRYCURE = ['Lum Berry', 'Cheri Berry', 'Chesto Berry', 'Pecha Berry', 'Rawst Berry', 'Aspear Berry', 'Persim Berry'];
+const NBERRYHP = ['Sitrus Berry', 'Oran Berry', 'Berry Juice', 'Figy Berry', 'Wiki Berry', 'Mago Berry', 'Aguav Berry', 'Iapapa Berry'];
+const NBERRYPINCH = ['Liechi Berry', 'Petaya Berry', 'Salac Berry', 'Ganlon Berry', 'Apicot Berry', 'Lansat Berry', 'Starf Berry'];
+const NBERRYFX = { 'Lum Berry': 'cures any status or confusion once', 'Cheri Berry': 'cures paralysis once', 'Chesto Berry': 'cures sleep once (pairs with Rest)',
+  'Pecha Berry': 'cures poison once', 'Rawst Berry': 'cures a burn once', 'Aspear Berry': 'cures freezing once', 'Persim Berry': 'cures confusion once',
+  'Sitrus Berry': 'heals 1/4 HP at half HP', 'Oran Berry': 'heals 10 HP at half HP', 'Berry Juice': 'heals 20 HP at half HP',
+  'Figy Berry': 'heals 1/8 HP at half HP; confuses if it dislikes spicy', 'Wiki Berry': 'heals 1/8 HP at half HP; confuses if it dislikes dry',
+  'Mago Berry': 'heals 1/8 HP at half HP; confuses if it dislikes sweet', 'Aguav Berry': 'heals 1/8 HP at half HP; confuses if it dislikes bitter',
+  'Iapapa Berry': 'heals 1/8 HP at half HP; confuses if it dislikes sour',
+  'Liechi Berry': '+1 Attack at 1/4 HP', 'Petaya Berry': '+1 Sp. Atk at 1/4 HP', 'Salac Berry': '+1 Speed at 1/4 HP', 'Ganlon Berry': '+1 Defense at 1/4 HP',
+  'Apicot Berry': '+1 Sp. Def at 1/4 HP', 'Lansat Berry': 'higher critical-hit rate at 1/4 HP', 'Starf Berry': '+2 to a random stat at 1/4 HP' };
 let NITEMGROUPS = null;
 function nItemGroups() {
   if (NITEMGROUPS) return NITEMGROUPS;
   const byType = o => Object.keys(o).sort((a, b) => TYPES.indexOf(o[a]) - TYPES.indexOf(o[b]) || a.localeCompare(b));
-  const known = new Set([...Object.keys(NITEMFX), ...Object.keys(NTYPEITEM), ...Object.keys(NBERRY), ...NITEMOTHER]);
+  const known = new Set([...Object.keys(NITEMFX), ...Object.keys(NTYPEITEM), ...Object.keys(NBERRY), ...NITEMOTHER, ...Object.keys(NBERRYFX)]);
   const bossItems = [...new Set(ROUTES.flatMap(L => L.subs.flatMap(x => x.tr.flatMap(t => t.team.map(p => p.item)))).filter(i => i && i !== '?' && !known.has(i)))];
   return NITEMGROUPS = [
     ['Boost damage', ['Choice Band', 'Choice Specs', 'Life Orb', 'Expert Belt', 'Muscle Band', 'Wise Glasses'].map(i => [i, i])],
     ['Boost one type (×1.2)', byType(NTYPEITEM).filter(i => !/Plate|Incense/.test(i)).map(i => [i, i + ' · ' + NTYPEITEM[i]])],
     ['Plates and incenses (×1.2)', byType(NTYPEITEM).filter(i => /Plate|Incense/.test(i)).map(i => [i, i + ' · ' + NTYPEITEM[i]])],
     ['Resist berries (halve one hit)', byType(NBERRY).map(i => [i, i + ' · ' + NBERRY[i]])],
+    ['Berries: cure status', NBERRYCURE.map(i => [i, i + ' · ' + NBERRYFX[i]])],
+    ['Berries: restore HP', NBERRYHP.map(i => [i, i + ' · ' + NBERRYFX[i]])],
+    ['Berries: pinch boosts', NBERRYPINCH.map(i => [i, i + ' · ' + NBERRYFX[i]])],
     ['Species items', ['Light Ball', 'Thick Club', 'Deep Sea Tooth', 'Deep Sea Scale', 'Soul Dew', 'Adamant Orb', 'Lustrous Orb', 'Griseous Orb'].map(i => [i, i])],
-    ['Other', [...NITEMOTHER, ...bossItems].sort((a, b) => a.localeCompare(b)).map(i => [i, i])]];
+    ['Other', [...NITEMOTHER, ...bossItems].filter(i => !NBERRYFX[i]).sort((a, b) => a.localeCompare(b)).map(i => [i, i])]];
 }
 function nItemNote(it) {
   if (!it) return '';
+  if (NBERRYFX[it]) return NBERRYFX[it].charAt(0).toUpperCase() + NBERRYFX[it].slice(1) + '. Used up after one trigger.';
   if (NTYPEITEM[it]) return NTYPEITEM[it] + ' moves ×1.2';
   if (NBERRY[it]) return it === 'Chilan Berry' ? 'Halves one Normal hit' : 'Halves one super-effective ' + NBERRY[it] + ' hit';
   return NITEMFX[it] || 'No effect on damage';
