@@ -602,6 +602,74 @@ details.gch .gpick, details.gch .gboss { background: var(--bg) }
 .bmbar { display: inline-block; width: 90px; height: 7px; background: var(--line); border-radius: 4px; overflow: hidden; vertical-align: middle; margin-right: 4px }
 .bmbar i { display: block; height: 100% }
 .bmwhy { font-size: .84rem; margin-top: 4px }
+.nplayer { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin-top: 8px; font-size: .85rem }
+.nplayer button { font: 600 .8rem var(--font-body); border: 1px solid var(--line); background: var(--panel); color: var(--muted); border-radius: 999px; padding: 4px 12px; cursor: pointer }
+.nplayer button[aria-pressed="true"] { background: var(--ink); color: var(--bg); border-color: var(--ink) }
+.nhero { display: flex; gap: 8px; align-items: center; font-size: .85rem; margin: 6px 0 }
+.nhero select { font: 500 .85rem var(--font-body); padding: 4px 8px; border-radius: 7px; border: 1px solid var(--line); background: var(--bg); color: var(--ink) }
+.trvarnote { margin: 0 0 8px }
+.ivlinked { margin: 8px 0 0; font-size: .85rem; padding: 6px 10px; border-left: 3px solid var(--accent); background: var(--accent-soft); border-radius: 4px }
+.evadd { display: flex; flex-wrap: wrap; gap: 8px 12px; align-items: flex-end; margin: 8px 0 }
+.evadd label { display: flex; flex-direction: column; font-size: .75rem; color: var(--muted); gap: 2px }
+.evadd input[type=number] { width: 5em } .evadd input:not([type]) , .evadd input[list] { min-width: 12em }
+.evadd input, .evrow input { font: 500 .88rem var(--font-body); padding: 5px 7px; border-radius: 7px; border: 1px solid var(--line); background: var(--bg); color: var(--ink) }
+.evadd label.chk { flex-direction: row; align-items: center; gap: 6px; color: var(--ink); font-size: .82rem; text-transform: none; letter-spacing: normal; padding-bottom: 6px }
+.evshare { display: flex; flex-wrap: wrap; gap: 4px 12px; align-items: center; margin-bottom: 8px; font-size: .82rem }
+.evshare label { display: inline-flex; align-items: center; gap: 4px; cursor: pointer }
+.evshare img { width: 28px; height: 28px; image-rendering: pixelated }
+.evshare .tag { font-size: .68rem; padding: 0 5px; border-radius: 4px; background: var(--accent-soft); color: var(--ink) }
+.evarea { display: flex; flex-wrap: wrap; gap: 6px 12px; align-items: flex-end; margin: 4px 0 8px }
+.evarea label { display: flex; flex-direction: column; font-size: .75rem; color: var(--muted); gap: 2px }
+.evarea select { font: 500 .88rem var(--font-body); padding: 5px 7px; border-radius: 7px; border: 1px solid var(--line); background: var(--bg); color: var(--ink); max-width: 100% }
+.evgroup { margin-bottom: 8px } .evgroup h4 { margin: 6px 0 4px; font-size: .74rem; letter-spacing: .06em; text-transform: uppercase; color: var(--muted) }
+.evpicks { display: flex; flex-wrap: wrap; gap: 4px }
+.evpick { display: inline-flex; align-items: center; gap: 4px; padding: 2px 8px 2px 4px; text-align: left }
+.evpick img { width: 32px; height: 32px; image-rendering: pixelated }
+.evpick span { display: flex; flex-direction: column; line-height: 1.15; font-size: .8rem } .evpick small { color: var(--muted); font-size: .7rem }
+.evtr { border: 1px solid var(--line); border-radius: 8px; padding: 6px 8px; margin-bottom: 6px }
+.evtrhd { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin-bottom: 4px; font-size: .85rem } .evtrhd .btn { margin-left: auto; padding: 2px 8px; font-size: .75rem }
+.evrecent { display: flex; flex-wrap: wrap; gap: 4px; align-items: center; margin-bottom: 8px }
+.evrecent .btn { display: inline-flex; align-items: center; gap: 4px; padding: 2px 8px }
+.evrecent img { width: 28px; height: 28px; image-rendering: pixelated }
+.evrows { display: flex; flex-direction: column; gap: 4px }
+.evrow { display: grid; grid-template-columns: 4em 5em 1fr auto; gap: 8px; align-items: center; font-size: .85rem }
+.evrow .lab { font-weight: 600 } .evrow input { width: 5em }
+.evbar { height: 8px; background: var(--line); border-radius: 4px; overflow: hidden } .evbar i { display: block; height: 100%; background: var(--accent) }
+.evvit { padding: 3px 8px; font-size: .74rem }
+.evlog { margin-top: 8px; font-size: .82rem } .evlog ul { margin: 4px 0 0; padding-left: 18px; max-height: 200px; overflow: auto }
+.pevs { font-size: .76rem; color: var(--muted); margin-top: 2px } .pevs:empty { margin: 0 }
+.tppick { margin: 10px 0; font-size: .85rem } .tppick > summary { cursor: pointer; font-weight: 600 }
+.tppick .chk { display: inline-flex; align-items: center; gap: 4px; margin: 6px 0 }
+.tppicks { display: flex; flex-wrap: wrap; gap: 2px 14px; margin: 4px 0 8px }
+.tppicks img { width: 30px; height: 30px; image-rendering: pixelated }
+.pjgrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 8px; margin-bottom: 8px }
+.pjrow { border: 1px solid var(--line); border-radius: 10px; padding: 8px 10px; font-size: .85rem }
+.pjrow ul { margin: 6px 0 0; padding-left: 18px } .pjrow li { margin-bottom: 3px }
+.pjrow .tphd img { width: 40px; height: 40px; image-rendering: pixelated } .pjto { color: var(--muted) }
+.pjstone { color: var(--chg); font-weight: 600 }
+.trarea { border: 1px solid var(--line); border-radius: 10px; margin-bottom: 8px; background: var(--bg) }
+.trarea > summary { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; padding: 8px 12px; cursor: pointer; list-style: none }
+.trarea > summary::-webkit-details-marker { display: none }
+.trarea > summary::before { content: "▸"; color: var(--muted); transition: transform .15s }
+.trarea[open] > summary::before { transform: rotate(90deg) }
+.trarea .trname { font-weight: 700 }
+.trarea > summary .sp { margin-left: auto }
+.trbody { padding: 0 10px 2px }
+.trctl .tbtns { margin-left: auto }
+.trctl { display: flex; flex-wrap: wrap; gap: 8px 16px; align-items: center }
+.trctl select { font: 500 .85rem var(--font-body); padding: 5px 8px; border-radius: 7px; border: 1px solid var(--line); background: var(--bg); color: var(--ink); max-width: 100% }
+.trrow { border: 1px solid var(--line); border-radius: 10px; padding: 8px 10px; margin-bottom: 8px; background: var(--panel) }
+.trrow.lv3 { border-left: 4px solid var(--chg) } .trrow.lv2 { border-left: 4px solid #d7a91a }
+.trhd { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin-bottom: 6px } .trhd .btag { margin-left: auto }
+.trteam { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 6px }
+.trmon { display: flex; gap: 6px; align-items: flex-start; font-size: .82rem; padding: 4px; border-radius: 8px; min-width: 0 }
+.trmon.bad { background: var(--chg-soft) } .trmon.warn { background: color-mix(in srgb, #d7a91a 14%, transparent) }
+.trmon img { width: 40px; height: 40px; image-rendering: pixelated; flex: none }
+.trmon ul { margin: 3px 0 0; padding-left: 16px } .trmv { margin-top: 1px }
+.nbulk { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px }
+.trow.selmode { cursor: pointer }
+.trow.sel { background: var(--chg-soft); box-shadow: inset 3px 0 0 var(--chg) }
+.nchk { margin-right: 6px; font-size: 1rem }
 .btform { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 10px }
 .btform h5 { margin: 0 0 4px; font-size: .85rem }
 .btform select, .btform input[type=number] { font: 500 .85rem var(--font-body); padding: 5px 7px; border-radius: 7px; border: 1px solid var(--line); background: var(--bg); color: var(--ink); max-width: 100% }
@@ -746,6 +814,8 @@ section.ncoll h3 { margin-bottom: 0 !important }
 .ivmon { display: flex; gap: 10px; align-items: center; margin-top: 12px }
 .ivmon img { width: 56px; height: 56px; image-rendering: pixelated }
 .ivmon .stypes { display: flex; gap: 4px; margin-top: 4px }
+.ivwarn { margin: 0 0 8px; padding: 6px 10px; border-left: 3px solid var(--chg); background: var(--chg-soft); border-radius: 4px; font-size: .85rem }
+.ivfold { display: flex; flex-wrap: wrap; gap: 4px 10px; align-items: center; margin: 0 0 8px; font-size: .82rem }
 .ivrows { display: flex; flex-direction: column; gap: 10px }
 .ivrow { display: grid; grid-template-columns: 72px repeat(6, minmax(0, 1fr)) 28px; gap: 6px; align-items: end; padding-bottom: 10px; border-bottom: 1px solid var(--line) }
 .ivrow:last-child { border-bottom: 0 }
@@ -917,7 +987,8 @@ section.ncoll h3 { margin-bottom: 0 !important }
   </div>
   <div class="main" id="nuzMain" hidden>
     <aside class="roster">
-      <div class="tbtns"><button class="btn primary" id="nnew">+ New run</button><button class="btn nrhide" id="nrhide" title="Hide the runs list" aria-controls="nlist">« Hide</button></div>
+      <div class="tbtns"><button class="btn primary" id="nnew">+ New run</button><button class="btn" id="nselect" title="Select runs to delete">Select</button><button class="btn nrhide" id="nrhide" title="Hide the runs list" aria-controls="nlist">« Hide</button></div>
+      <div class="nbulk" id="nbulk" hidden></div>
       <div class="count" id="ncount"></div>
       <div class="list tlist" id="nlist" role="list"></div>
       <div class="syncnote" id="nsync"></div>
@@ -1256,15 +1327,35 @@ function trainerHtml(t) {
     : `<div class="mons">${t.team.map(p => pkBtn(p.n, `<span class="pl">Lv. ${esc(p.lv)}</span>${p.f ? ` <span class="tag">${esc(p.f)}</span>` : ''}`)).join('')}</div>`;
   return `<div class="trainer"><div class="th"><span class="tn">${esc(t.name)}</span>${chips}</div>${team}</div>`;
 }
+// Does this trainer version apply to the run? Rival/assistant teams depend on your starter's type, and you face Dawn when you
+// play as Lucas (and Lucas when you play as Dawn). Unknowns (no starter set, character not chosen) keep every version.
+function trVarInfo(r) {
+  const st = r && r.enc && r.enc.starter && r.enc.starter.n && typeof STYPE !== 'undefined' ? STYPE[fam(r.enc.starter.n)] : '';
+  return { st: st || '', hero: (r && r.hero) || '' };
+}
+const TRASSIST = { Grass: 393, Fire: 387, Water: 390 };   // Lucas/Dawn pick the starter weak to yours: Grass → Piplup, Fire → Turtwig, Water → Chimchar
+function trApplies(r, t) {
+  const { st, hero } = trVarInfo(r), who = /PKMN Trainer (Lucas|Dawn)\b/.exec(t.name || '');
+  if (hero && who && who[1] === hero) return false;   // you face the other one
+  if (t.var) return !st || !/Your starter:/.test(t.var) || t.var.includes('Your starter: ' + st);
+  // some notes list the assistant's teams without a label; tell them apart by the starter on the team
+  if (st && who) { const line = t.team.map(p => fam(p.n)).find(n => n === 387 || n === 390 || n === 393); if (line && line !== TRASSIST[st]) return false }
+  return true;
+}
+let rAllVar = false;   // Routes tab: show every starter version instead of the run's
 function trainersHtml(sub) {
   if (!sub.tr.length) return '';
-  const main = sub.tr.filter(t => t.sec !== 'Rematches' && t.sec !== 'Master Trainer'), re = sub.tr.filter(t => t.sec === 'Rematches'), mt = sub.tr.filter(t => t.sec === 'Master Trainer');
+  const run = typeof NZ !== 'undefined' ? curRun() : null, vi = trVarInfo(run), hasVar = sub.tr.some(t => (t.var && /Your starter:/.test(t.var)) || /PKMN Trainer (Lucas|Dawn)/.test(t.name));
+  const fit = t => rAllVar || trApplies(run, t);
+  const main = sub.tr.filter(t => t.sec !== 'Rematches' && t.sec !== 'Master Trainer' && fit(t)), re = sub.tr.filter(t => t.sec === 'Rematches'), mt = sub.tr.filter(t => t.sec === 'Master Trainer');
   const groups = [];
   for (const t of main) { const g = groups[groups.length - 1];
     if (t.var && !t.full && g && g[0].var && !g[0].full && g[0].name === t.name) g.push(t); else groups.push([t]) }
   const groupHtml = g => g.length === 1 ? trainerHtml(g[0]) : `<div class="trainer"><div class="th"><span class="tn">${esc(g[0].name)}</span></div>${g.map(t =>
     `<div class="vrow"><span class="chip">${esc(t.var.split(' · ').filter(p => !t.name.includes(p)).join(' · '))}</span><div class="mons">${t.team.map(p => pkBtn(p.n, `<span class="pl">Lv. ${esc(p.lv)}</span>`)).join('')}</div></div>`).join('')}</div>`;
-  return `<section class="card full"><h3>Trainers</h3>${groups.map(groupHtml).join('')}</section>`
+  const varNote = hasVar && (vi.st || vi.hero) ? `<p class="sp trvarnote">${rAllVar ? 'Showing every starter version.' : `Showing the version for your Nuzlocke run “${esc(run.name)}”${vi.st ? ` (starter: ${vi.st}` : ' ('}${vi.hero ? `${vi.st ? ', ' : ''}${vi.hero === 'Lucas' ? 'playing as a boy' : 'playing as a girl'}` : ''}).`} <button class="an" data-rallvar>${rAllVar ? 'Show only my version' : 'Show all versions'}</button></p>`
+    : hasVar ? '<p class="sp trvarnote">These teams depend on your starter. Set your starter in the Nuzlocke tab to see only yours.</p>' : '';
+  return `<section class="card full"><h3>Trainers</h3>${varNote}${groups.map(groupHtml).join('')}</section>`
     + (re.length ? `<section class="card full"><h3>Rematches (Vs. Seeker)</h3>${re.map(trainerHtml).join('')}</section>` : '')
     + (mt.length ? `<section class="card full"><h3>Master Trainer (after becoming Champion)</h3>${mt.map(trainerHtml).join('')}</section>` : '');
 }
@@ -1290,6 +1381,7 @@ function renderRoute() {
   document.getElementById('rback').onclick = () => document.getElementById('app').classList.remove('rshowing');
 }
 document.getElementById('rdetail').addEventListener('click', e => {
+  if (e.target.closest('[data-rallvar]')) { rAllVar = !rAllVar; return renderRoute() }
   const ib = e.target.closest('.iname'); if (ib) { openItem(ib.dataset.i); return }
   const b = e.target.closest('.pk'); if (!b) return;
   setView('dex'); select(+b.dataset.n);
@@ -1471,8 +1563,8 @@ const NKEY = 'rp-nuzlocke';
 const NORDER = ['Twinleaf Town', 'Route 201', 'Lake Verity', 'Sandgem Town', 'Route 202', 'Jubilife City', 'Route 204 South', 'Ravaged Path', 'Route 203', 'Oreburgh Gate', 'Oreburgh City', 'Oreburgh Mine', 'Route 204 North',
   'Floaroma Town', 'Floaroma Meadow', 'Valley Windworks', 'Route 205 South', 'Eterna Forest', 'Route 205 North', 'Old Chateau', 'Eterna City', 'Route 211', 'Route 206', 'Wayward Cave', 'Route 207', 'Mt. Coronet', 'Route 208',
   'Hearthome City', 'Route 209', 'Lost Tower', 'Solaceon Town', 'Solaceon Ruins', 'Route 210', 'Route 215', 'Veilstone City', 'Route 214', 'Maniac Tunnel', 'Valor Lakefront', 'Route 213', 'Pastoria City',
-  'Great Marsh', 'Route 212', 'Trophy Garden', 'Celestic Town', 'Fuego Ironworks', 'Canalave City', 'Route 218', 'Iron Island', 'Lake Valor', 'Lake Acuity', 'Route 216', 'Route 217', 'Acuity Lakefront',
-  'Snowpoint City', 'Snowpoint Temple', 'Galactic HQ', 'Spear Pillar', 'Distortion World', 'Sunyshore City', 'Route 222', 'Route 219', 'Route 220', 'Route 221', 'Route 223', 'Victory Road', 'Pokémon League',
+  'Great Marsh', 'Route 212', 'Trophy Garden', 'Celestic Town', 'Fuego Ironworks', 'Route 218', 'Canalave City', 'Iron Island', 'Lake Valor', 'Lake Acuity', 'Route 216', 'Route 217', 'Acuity Lakefront',
+  'Snowpoint City', 'Snowpoint Temple', 'Galactic HQ', 'Spear Pillar', 'Distortion World', 'Route 222', 'Sunyshore City', 'Route 219', 'Route 220', 'Route 221', 'Route 223', 'Victory Road', 'Pokémon League',
   'Fight Area', 'Route 225', 'Survival Area', 'Route 226', 'Route 227', 'Stark Mountain', 'Route 228', 'Route 229', 'Route 230', 'Resort Area', 'Route 224', 'Seven Stars Restaurant', 'Sendoff Spring',
   'Turnback Cave', 'Fullmoon Island'];
 const NSPLIT = { 'Route 204': ['South', 'North'], 'Route 205': ['South', 'North'] };
@@ -1585,7 +1677,9 @@ const NST = { party: 'Party', box: 'Box', dead: 'Dead', missed: 'Missed', ko: 'K
 const NLOST = new Set(['missed', 'ko', 'skipped']);   // encounter used up without a catch
 const newRun = name => ({ id: 'n' + Date.now(), name, created: Date.now(), rules: { dupes: true, caps: true }, enc: {}, custom: [{ k: 'starter', label: 'Starter' }], beat: 0, notes: '' });
 let NZ = store.get(NKEY, null) || { runs: [], cur: null, updated: 0 };
-if (!NZ.runs.length) { NZ.runs.push(Object.assign(newRun('Run 1'), { created: 0, placeholder: true })); NZ.cur = NZ.runs[0].id }
+// a brand-new browser starts with a placeholder; nFresh remembers it so the first sync can drop it if the server already has real runs
+let nFresh = null;
+if (!NZ.runs.length) { NZ.runs.push(Object.assign(newRun('Run 1'), { created: 0, placeholder: true })); NZ.cur = nFresh = NZ.runs[0].id }
 const curRun = () => NZ.runs.find(r => r.id === NZ.cur) || NZ.runs[0];
 function nMigrate() {
   NZ.runs.forEach(r => Object.values(r.enc).forEach(e => (e.hist || []).forEach(x => { if (!x.n) x.n = e.caught || e.n })));
@@ -1621,6 +1715,10 @@ function nMerge(local, remote) {
 // take in the server's copy; push back if we hold anything it doesn't
 function nAdopt(d, push) {
   if (!d || !Array.isArray(d.runs)) return;
+  if (nFresh) {
+    if (d.runs.some(r => !r.placeholder)) { NZ.runs = NZ.runs.filter(r => r.id !== nFresh); if (NZ.cur === nFresh) NZ.cur = d.cur }
+    nFresh = null;
+  }
   const m = nMerge(NZ, d), changed = JSON.stringify(m.runs) !== JSON.stringify(NZ.runs);
   if (!m.runs.length) { m.runs.push(newRun('Run 1')); m.cur = m.runs[0].id }
   NZ = m; nMigrate(); store.set(NKEY, NZ);
@@ -1658,11 +1756,22 @@ function runStats(r) {
 }
 let nfilter = 'all';
 
+// bulk selection: null when not selecting, else the set of run ids ticked
+let nSel = null;
+// placeholder runs ("Run 1" made by a new browser, never named or created on purpose) when real runs exist too
+const nLeftovers = () => NZ.runs.some(r => !r.placeholder) ? NZ.runs.filter(r => r.placeholder && r.name === 'Run 1') : [];
 function renderRunList() {
-  document.getElementById('ncount').textContent = `${NZ.runs.length} run${NZ.runs.length === 1 ? '' : 's'}`;
+  document.getElementById('ncount').textContent = `${NZ.runs.length} run${NZ.runs.length === 1 ? '' : 's'}${nSel ? ` · ${nSel.size} selected` : ''}`;
+  const bulk = document.getElementById('nbulk'), selBtn = document.getElementById('nselect');
+  if (selBtn) selBtn.textContent = nSel ? 'Done' : 'Select';
+  if (bulk) { bulk.hidden = !nSel;
+    if (nSel) { const lo = nLeftovers();
+      bulk.innerHTML = `<button class="btn danger" id="nbdel" ${nSel.size ? '' : 'disabled'}>Delete selected (${nSel.size})</button>
+        ${lo.length ? `<button class="btn" id="nblo" title="Untouched &ldquo;Run 1&rdquo; placeholders, e.g. from opening the tracker in a new browser">Select leftover placeholder copies (${lo.length})</button>` : ''}
+        <button class="btn" id="nball">${nSel.size === NZ.runs.length ? 'Clear selection' : 'Select all'}</button>` } }
   document.getElementById('nlist').innerHTML = NZ.runs.map(r => {
-    const s = runStats(r), party = partyOf(r);
-    return `<button class="trow" role="listitem" data-r="${r.id}" ${r.id === NZ.cur ? 'aria-current="true"' : ''}><span class="nm">${esc(r.name)}</span><span class="meta">${r.beat}/${NBOSS.length} bosses · ${s.dead} dead</span>
+    const s = runStats(r), party = partyOf(r), on = nSel && nSel.has(r.id);
+    return `<button class="trow ${nSel ? 'selmode' : ''} ${on ? 'sel' : ''}" role="listitem" data-r="${r.id}" ${!nSel && r.id === NZ.cur ? 'aria-current="true"' : ''} ${nSel ? `aria-pressed="${!!on}"` : ''}><span class="nm">${nSel ? `<span class="nchk" aria-hidden="true">${on ? '☑' : '☐'}</span>` : ''}${esc(r.name)}${r.placeholder ? ' <small class="sp">placeholder</small>' : ''}</span><span class="meta">${r.beat}/${NBOSS.length} bosses · ${s.dead} dead</span>
       <span class="heads">${party.map(({ e }) => `<img src="${nimg(e.n)}" alt="${esc(monName(e.n))}" title="${esc(e.nick || monName(e.n))}">`).join('')}</span></button>`;
   }).join('');
   showNSync();
@@ -1768,7 +1877,8 @@ function monEditor(row, e, r, ctx) {
     <div class="pgrid"><div><label>Nature</label><select data-f="nat"><option value="">—</option>${NATURES.map(n => `<option value="${n}" ${n === e.nat ? 'selected' : ''}>${n} (${natDesc(n)})</option>`).join('')}</select></div>
       <div><label>Item</label>${nItemSelect(e.item || '')}</div></div>
     <div class="abd pitem" title="${esc(e.item ? e.item + ': ' + nItemNote(e.item) : '')}">${e.item ? esc(e.item) + ': ' + esc(nItemNote(e.item)) : 'No held item'}</div>
-    <label>Stats <small>base · yours at this level · expected</small><button class="ivgo" data-ivgo title="Work out this Pokémon's IVs from the stats you entered">Grade IVs</button></label><div class="pstats">${stats}</div>${nCharField(row, e)}${nIvBlock(row, e, sol)}
+    <label>Stats <small>base · yours at this level · expected</small><button class="ivgo" data-ivgo title="Open in the IV tab (linked): grade IVs and track EVs">IVs &amp; EVs</button></label><div class="pstats">${stats}</div>
+    <div class="pevs" title="Effort values tracked in the IV tab">${e.evTrack ? `EVs ${evTotal(e.evs)}/510${evTotal(e.evs) ? ' · ' + esc(evText(e.evs)) : ''}` : ''}</div>${nCharField(row, e)}${nIvBlock(row, e, sol)}
     <label>Moves</label><div class="mvs">${mvs}</div>`;
   const movesLine = (e.moves || []).filter(Boolean).join(' · ');
   return `<div class="tslot pmon ${ctx.over(e) ? 'over' : ''}" data-k="${k}">
@@ -1877,61 +1987,6 @@ function nDamage(A, D, mv, o) {
     rolls.push(x);
   }
   return { rolls, mult, why, P, Atk, Def };
-}
-
-function renderCalc() {
-  const el = document.getElementById('ncalc'); if (!el) return;
-  const r = curRun(), next = NBOSS[r.beat];
-  const team = next ? bossTeams(next, r)[0].team.filter(p => mons[p.n - 1]) : [];
-  const mine = [...partyOf(r), ...placed(r).filter(x => x.e.st === 'box')];
-  if (!team.length || !mine.length) { el.innerHTML = ''; return }
-  if (!(nCalc.bi >= 0 && nCalc.bi < team.length)) nCalc.bi = 0;
-  if (!mine.some(x => x.row.k === nCalc.mk)) nCalc.mk = mine[0].row.k;
-  const bp = team[nCalc.bi], me = mine.find(x => x.row.k === nCalc.mk).e, inc = nCalc.dir === 'in';
-  const moves = (inc ? bp.mv || [] : me.moves || []).filter(Boolean);
-  if (!moves.includes(nCalc.mv)) nCalc.mv = moves.find(isAttack) || moves[0] || '';
-  const B = nBossMon(bp, +nCalc.biv), M = nMineMon(me), A = inc ? B : M, D = inc ? M : B;
-  const opt = (v, lab, cur) => `<option value="${esc(v)}" ${String(v) === String(cur) ? 'selected' : ''}>${esc(lab)}</option>`;
-  const stages = cur => [6, 5, 4, 3, 2, 1, 0, -1, -2, -3, -4, -5, -6].map(s => opt(s, (s > 0 ? '+' : '') + s, cur)).join('');
-  let res = '';
-  if (!M.lv) res = `<p class="empty">Set a level for ${esc(M.name)} on its card to calculate.</p>`;
-  else if (!nCalc.mv) res = `<p class="empty">${inc ? esc(B.name) + ' has no moves listed.' : 'Pick moves for ' + esc(M.name) + ' on its card first.'}</p>`;
-  else {
-    const x = nDamage(A, D, nCalc.mv, nCalc), d = nCalc.mv === 'Hidden Power' && A.hp && A.hp.t ? Object.assign({}, MV[nCalc.mv], { t: A.hp.t }) : MV[nCalc.mv] || {};
-    if (x.note) res = `<p class="empty">${esc(x.note)}</p>`;
-    else {
-      const hp = D.stats.hp, mn = Math.min(...x.rolls), mx = Math.max(...x.rolls), pct = v => (v / hp * 100).toFixed(1);
-      const ohko = x.rolls.filter(v => v >= hp).length, best = mx ? Math.ceil(hp / mx) : 0, worst = mn ? Math.ceil(hp / mn) : 0;
-      const ko = !mx ? 'No damage' : mn >= hp ? 'Guaranteed one-hit KO' : ohko ? `${ohko} in 16 chance to one-hit KO` : best === worst ? `Guaranteed ${best}-hit KO` : `${best} to ${worst} hits to KO`;
-      const estNote = M.est.length ? `<p class="rnote" style="margin:10px 0 0">${esc(M.name)}'s ${esc(M.est.join(', '))} ${M.est.length === 1 ? 'is' : 'are'} estimated from its logged IVs (IV 15 where marked *), with no EVs. Enter its current stats on its card for exact numbers.</p>` : '';
-      res = `<div class="cres"><div class="cline"><span class="big">${mn}–${mx}</span><span class="pct">${pct(mn)}–${pct(mx)}% of ${esc(D.name)}'s ${hp} HP</span></div>
-        <div class="cbar" aria-hidden="true"><i style="width:${Math.min(100, mn / hp * 100)}%"></i><b style="left:${Math.min(100, mn / hp * 100)}%;width:${Math.max(0, Math.min(100, mx / hp * 100) - Math.min(100, mn / hp * 100))}%"></b></div>
-        <div class="ko ${mn >= hp || ohko ? 'k1' : ''}">${ko}</div>
-        <div class="cwho">${esc(A.name)} (Lv. ${A.lv}, ${d.c === 'P' ? 'Atk' : 'Sp.Atk'} ${A.stats[d.c === 'P' ? 'atk' : 'spa']}${A.item ? ', ' + esc(A.item) : ''}) → ${esc(D.name)} (Lv. ${D.lv}, ${d.c === 'P' ? 'Def' : 'Sp.Def'} ${D.stats[d.c === 'P' ? 'def' : 'spd']}, HP ${hp})</div>
-        ${x.why.length ? `<div class="cwhy">${esc(nCalc.mv)} ${d.t ? '(' + d.t + ', ' + (x.P || d.p || 'fixed') + ' power)' : ''}: ${esc(x.why.join(' · '))}</div>` : ''}
-        <div class="cwhy">Rolls: ${x.rolls.join(', ')}</div>${estNote}</div>`;
-    }
-  }
-  const needPw = nCalc.mv && MV[nCalc.mv] && MV[nCalc.mv].c !== 'St' && !MV[nCalc.mv].p;
-  el.innerHTML = `<section class="card full calc" data-sec="calc"><h3>Damage calculator</h3>
-    <div class="cdir" role="group" aria-label="Who attacks"><button data-cdir="in" aria-pressed="${inc}">${esc(next.label)} attacks you</button><button data-cdir="out" aria-pressed="${!inc}">You attack</button></div>
-    <div class="ccontrols">
-      <label>${esc(next.label)}'s Pokémon<select data-c="bi">${team.map((p, i) => opt(i, monName(p.n) + ' · Lv. ' + p.lv, nCalc.bi)).join('')}</select></label>
-      <label>Your Pokémon<select data-c="mk">${mine.map(x => opt(x.row.k, (x.e.nick || monName(x.e.n)) + (x.e.lv ? ' · Lv. ' + x.e.lv : '') + (x.e.st === 'box' ? ' (box)' : ''), nCalc.mk)).join('')}</select></label>
-      <label>Move<select data-c="mv">${moves.length ? moves.map(mv => opt(mv, mv + (mv === 'Hidden Power' && !inc ? ' · ' + (M.hp && M.hp.t || 'type not set') : MV[mv] ? ' · ' + MV[mv].t + (MV[mv].p ? ' ' + MV[mv].p : '') : ''), nCalc.mv)).join('') : '<option value="">— no moves —</option>'}</select></label>
-    </div>
-    <div class="copts">
-      <label class="cb"><input type="checkbox" data-c="crit" ${nCalc.crit ? 'checked' : ''}> Critical hit</label>
-      <label class="cb"><input type="checkbox" data-c="scr" ${nCalc.scr ? 'checked' : ''}> Reflect / Light Screen</label>
-      <label class="cb"><input type="checkbox" data-c="brn" ${nCalc.brn ? 'checked' : ''}> Attacker burned</label>
-      <label class="cb"><input type="checkbox" data-c="pinch" ${nCalc.pinch ? 'checked' : ''}> Attacker at low HP</label>
-      <label>Weather<select data-c="wx">${opt('', 'None', nCalc.wx)}${opt('sun', 'Sun', nCalc.wx)}${opt('rain', 'Rain', nCalc.wx)}${opt('sand', 'Sandstorm', nCalc.wx)}</select></label>
-      <label>Atk stage<select data-c="as">${stages(nCalc.as)}</select></label>
-      <label>Def stage<select data-c="ds">${stages(nCalc.ds)}</select></label>
-      <label title="Renegade Platinum bosses usually have perfect IVs">Boss IVs<select data-c="biv">${[31, 20, 10, 0].map(v => opt(v, v, nCalc.biv)).join('')}</select></label>
-      ${needPw || nCalc.pw ? `<label>Power override<input type="number" min="1" max="250" data-c="pw" value="${esc(nCalc.pw)}" placeholder="${MV[nCalc.mv] && MV[nCalc.mv].p || '?'}"></label>` : ''}
-    </div>${res}</section>`;
-  nDecorate();
 }
 
 // ---- Battle engine for the Battle tab ----
@@ -3205,8 +3260,9 @@ function renderBattle() {
       <p class="sp">Enter where the fight stands. It works out what ${esc(NBOSS[BS.boss].label)} will do this turn and which of your options gives you the best chance to win. Update the HP and status after each turn.</p>
       <div class="bcontrols"><label>Boss<select data-bf="boss">${NBOSS.map((b, i) => opt(i, b.label + ' · ' + b.area + (i === r.beat ? ' (next)' : ''), BS.boss)).join('')}</select></label>
         ${teams.length > 1 ? `<label>Team<select data-bf="v">${teams.map((t, i) => opt(i, t.var || 'Team ' + (i + 1), BS.v)).join('')}</select></label>` : ''}
+        <label title="Renegade Platinum bosses usually have perfect IVs">Boss IVs<select data-bf="biv">${[31, 20, 10, 0].map(v => opt(v, v, nCalc.biv)).join('')}</select></label>
         <button class="btn" data-bact="reset">Start over</button></div>
-      <p class="sp" style="margin-top:6px">Using run “${esc(r.name)}” · Boss IVs ${esc(nCalc.biv)} (set in the Nuzlocke damage calculator)</p></div>
+      <p class="sp" style="margin-top:6px">Using run “${esc(r.name)}”</p></div>
     <div id="batteam"></div>
     ${!party.length ? '<p class="empty">Add Pokémon with levels to your Nuzlocke party first.</p>' : `
     <section class="card full"><h3>${esc(NBOSS[BS.boss].label)}'s team</h3><div class="bslots">${team.map(bcard).join('')}</div>
@@ -3292,7 +3348,7 @@ function batHtml(S, me, foe, fc, options, acc, done, P, B) {
       <div class="bopts">${rows.map(orow).join('') || '<p class="empty">Working…</p>'}</div>
       <details class="simhow"><summary>How this works</summary>
         <p>The forecast samples the boss's choice 2,000 times from Platinum's trainer AI (the <a href="https://github.com/pret/pokeplatinum/tree/main/src/battle/trainer_ai" target="_blank" rel="noopener">pokeplatinum decompilation</a>, Basic + Evaluate Attack + Expert). Every move starts at 100. It loses 10 if it can't work and gains 4 (6 for +1 priority) if its highest roll knocks you out. It loses 1 if another move does more, then the move-specific Expert rules apply. The highest score wins and ties are random. The AI ignores crits and judges damage by its highest roll. It also treats Hyper Beam, Superpower, Explosion, Solar Beam, Eruption, Sucker Punch and Head Smash as doing no damage.</p>
-        <p>Each of your options is played out to the end of the fight 300 times. Every hit uses the same damage calculator as the Nuzlocke tab, with random rolls, crits, accuracy, status, weather, hazards and items. After this turn you're assumed to play sensibly: put the boss's Pokémon to sleep or paralyse it when that helps, set up when it's safe, otherwise attack with your strongest move. After a faint you send in your best matchup. The boss keeps following its AI.</p>
+        <p>Each of your options is played out to the end of the fight 300 times. Every hit uses the Gen 4 damage formula, with random rolls, crits, accuracy, status, weather, hazards and items. After this turn you're assumed to play sensibly: put the boss's Pokémon to sleep or paralyse it when that helps, set up when it's safe, otherwise attack with your strongest move. After a faint you send in your best matchup. The boss keeps following its AI.</p>
         <p>Damage ranges ignore crits. The knock-out chance counts crits and accuracy. Boss HP is a percentage because the game only shows a bar. Turns left asleep or badly poisoned aren't shown in game, so those are estimated.</p>
       </details></section>`;
 }
@@ -3311,6 +3367,7 @@ function batChange(t) {
   else if (f === 'plast') BS.plast = t.value;
   else if (f === 'wx') { BS.wx = t.value; BS.wxT = /sun|rain|sand|hail/.test(t.value) && batTeam(r).some(p => ['Drought', 'Drizzle', 'Sand Stream', 'Snow Warning'].includes(abName((p.ab || '').replace(/ \(.*\)$/, '')))) ? 99 : 5 }
   else if (f === 'wxT') BS.wxT = +t.value;
+  else if (f === 'biv') { nCalc.biv = +t.value; store.set('rp-ncalc', nCalc) }
   else if (f === 'steal') { const j = +t.dataset.i, cur = new Set(BS.steal || []); t.checked ? cur.add(j) : cur.delete(j); BS.steal = [...cur].sort((a, b) => a - b) }
   else if (f === 'sd') BS.sd[+t.dataset.i][t.dataset.k] = +t.value;
   else return;
@@ -3319,18 +3376,138 @@ function batChange(t) {
 // ---- Team picker: choose up to six from party + box for the selected boss, with reasons ----
 let tpRes = null, tpBusy = false, tpTok = 0;
 const tpSide = team => ({ team, a: 0, sr: 0, spk: 0, tsp: 0, ref: 0, ls: 0, tw: 0, sg: 0 });
+// ---- Projection: an under-leveled Pokémon as it would be at the boss's level cap. It levels up and evolves on the normal
+// schedule; stone, held-item and friendship evolutions are options, each tried at its best level (after the last move worth
+// waiting for), and kept only when they score better against this boss and the item can be found before it. ----
+const PJKEEP = new Set(['Spore', 'Hypnosis', 'Sleep Powder', 'Sing', 'Grass Whistle', 'Lovely Kiss', 'Yawn', 'Thunder Wave', 'Stun Spore', 'Glare', 'Will-O-Wisp', 'Toxic',
+  'Swords Dance', 'Dragon Dance', 'Nasty Plot', 'Calm Mind', 'Bulk Up', 'Rock Polish', 'Agility', 'Curse', 'Stealth Rock', 'Leech Seed', 'Roost', 'Recover', 'Synthesis',
+  'Moonlight', 'Morning Sun', 'Slack Off', 'Soft-Boiled', 'Milk Drink', 'Rest', 'Protect', 'Reflect', 'Light Screen', 'Substitute', 'Haze', 'Encore']);
+const pjNode = n => { const find = x => { if (!x) return null; if (x.num === n) return x; for (const k of x.k || []) { const r = find(k); if (r) return r } return null }; return find(mons[n - 1] && mons[n - 1].evo) };
+// how a child evolves: { lv } for level-ups, { item } for stones / held items, { item: 'friendship' }, or null (other methods)
+function pjHow(c) {
+  const m = c.m || '', lv = m.match(/^Lv\. ?(\d+)/); if (lv) return { lv: +lv[1] };
+  const use = m.match(/^Use (?:an? )?(.+?)(?: \(|$)/); if (use) return { item: use[1].trim() };
+  const hold = m.match(/holding (?:an? )?(.+?)(?: at | during | \(|$)/i); if (hold) return { item: hold[1].trim(), hold: true };
+  if (/friendship/i.test(m)) return { item: 'friendship' };
+  return null;
+}
+// the first area (up to the boss's chapter) where an item lies around; '' when it isn't found by then
+function pjItemWhere(item, upto) {
+  if (item === 'friendship') return 'friendship';
+  for (let i = 0; i <= upto && i < GUIDE.length; i++) for (const L of ROUTES) {
+    if (!GUIDE[i].areas.some(a => gArea(a).n === L.n)) continue;
+    if ((L.items || []).some(it => it.i === item)) return L.n;
+  }
+  return '';
+}
+// every way it could develop by the cap: segments of [species, from, to] levels it learns moves over, plus its evolutions
+function pjPaths(n, at, cap) {
+  const nd = pjNode(n), kids = (nd && nd.k || []).filter(c => mons[c.num - 1]).map(c => ({ c, h: pjHow(c) })).filter(o => o.h);
+  const lvK = kids.filter(o => o.h.lv), itK = kids.filter(o => o.h.item), out = [], note = [];
+  itK.forEach(({ c, h }) => {
+    // evolve now, or right after any level where it still learns something itself
+    const S = [...new Set([at, ...mons[n - 1].lu.map(([l]) => l).filter(l => l > at && l <= cap)])];
+    S.forEach(sl => pjPaths(c.num, sl, cap).forEach(p => out.push({ segs: [{ n, from: at, to: sl }, ...p.segs], evo: [{ to: c.num, lv: sl, item: h.item, hold: h.hold, now: sl === at }, ...p.evo], note: p.note })));
+  });
+  if (lvK.length === 1 && Math.max(lvK[0].h.lv, at + 1) <= cap) {
+    const L = Math.max(lvK[0].h.lv, at + 1);
+    pjPaths(lvK[0].c.num, L - 1, cap).forEach(p => out.push({ segs: [{ n, from: at, to: L }, ...p.segs], evo: [{ to: lvK[0].c.num, lv: L }, ...p.evo], note: p.note }));
+  } else {
+    if (lvK.length > 1 && Math.min(...lvK.map(o => o.h.lv)) <= cap) note.push(`At Lv. ${Math.min(...lvK.map(o => o.h.lv))} it evolves into ${lvK.map(o => mons[o.c.num - 1].name).join(' or ')} (depends on the Pokémon), so it's shown unevolved.`);
+    else if (lvK.length === 1) note.push(`Evolves into ${mons[lvK[0].c.num - 1].name} at Lv. ${lvK[0].h.lv}, after this boss.`);
+    out.push({ segs: [{ n, from: at, to: cap }], evo: [], note });
+  }
+  return out;
+}
+// rough value of a move against each boss Pokémon (for picking four)
+function pjMoveVals(mv, P, foes, hpt) {
+  const d = MV[mv]; if (!d || !isAttack(mv) || !d.p || NSELFKO.has(mv)) return null;
+  const t = mv === 'Hidden Power' ? hpt : d.t; if (!t) return null;
+  const p = mv === 'Hidden Power' ? 60 : d.p, stab = P.types.includes(t) ? 1.5 : 1, acc = d.a ? d.a / 100 : 1, st = d.c === 'P' ? P.stats.atk : P.stats.spa;
+  return foes.map(b => p * acc * stab * st / Math.max(1, d.c === 'P' ? b.stats.def : b.stats.spd) * defMult(b.types, b.ab, t));
+}
+function pjPickMoves(P, cur, pool, foes, hpt) {
+  const keep = cur.filter(m => PJKEEP.has(m) || TPSTEAL.has(m)).slice(0, 3), chosen = [...keep], best = foes.map(() => 0);
+  const vals = new Map([...new Set([...cur, ...pool])].map(m => [m, pjMoveVals(m, P, foes, hpt)]));
+  keep.forEach(m => { const v = vals.get(m); if (v) v.forEach((x, i) => best[i] = Math.max(best[i], x)) });
+  while (chosen.length < 4) {
+    let bm = null, bg = 0;
+    vals.forEach((v, m) => { if (!v || chosen.includes(m)) return; const g = v.reduce((a, x, i) => a + Math.max(0, x - best[i]), 0) + .05 * v.reduce((a, x) => a + x, 0); if (g > bg) { bg = g; bm = m } });
+    // nothing adds more: keep what it already knows (Low Kick and other unscored moves), then useful status moves it learns
+    if (!bm) bm = cur.find(m => !chosen.includes(m)) || pool.find(m => !chosen.includes(m) && PJKEEP.has(m)) || pool.find(m => !chosen.includes(m) && vals.get(m));
+    if (!bm) break;
+    chosen.push(bm); const v = vals.get(bm); if (v) v.forEach((x, i) => best[i] = Math.max(best[i], x));
+  }
+  return { moves: chosen, score: best.reduce((a, x) => a + x, 0) };
+}
+const pjCache = new Map();
+function pjProject(e, cap, bossTeam, chIdx) {
+  const key = JSON.stringify([e.n, e.lv, e.moves, e.nat, e.ab, e.hpt, e.ch, e.item, (e.hist || []).length, cap, BS.boss, BS.v, nCalc.biv]);
+  if (pjCache.has(key)) return pjCache.get(key);
+  const lv0 = +e.lv, foes = bossTeam.map(p => nBossMon(p, +nCalc.biv)), field = tpField(foes.map((b, i) => nsMake(b, (bossTeam[i].mv || []).filter(Boolean), 1, i, 'b' + i)));
+  const bossC = foes.map((b, i) => nsMake(b, (bossTeam[i].mv || []).filter(Boolean), 1, i, 'b' + i));
+  const cur0 = (e.moves || []).filter(m => MV[m]), cur = cur0.length ? cur0 : mons[e.n - 1].lu.filter(([l]) => l <= lv0).map(([, m]) => m).filter(m => MV[m]).slice(-4);
+  const slot = Math.max(0, mons[e.n - 1].v[ver].abilities.indexOf(nAb(e)));
+  const build = p => {
+    const nf = p.evo.length ? p.evo[p.evo.length - 1].to : e.n, ab = mons[nf - 1].v[ver].abilities;
+    const pool = []; p.segs.forEach(sg => mons[sg.n - 1].lu.forEach(([l, mv]) => { if (l > sg.from && l <= sg.to && MV[mv] && !pool.some(x => x.mv === mv) && !cur.includes(mv)) pool.push({ mv, lv: l, n: sg.n }) }));
+    const e2 = Object.assign({}, e, { n: nf, lv: String(cap), stats: {}, ab: ab[slot] || ab[0], moves: cur });
+    const P = nMineMon(e2), pick = pjPickMoves(P, cur, pool.map(x => x.mv), foes, e.hpt);
+    e2.moves = pick.moves;
+    return { p, e2, pool, mvScore: pick.score };
+  };
+  // per final form: the stone level whose moves score best (earliest on a tie), then forms compared in one-on-one matchups
+  const byForm = new Map();
+  pjPaths(e.n, lv0, cap).forEach(p => { const v = build(p), k = p.evo.map(x => x.to + (x.item ? ':' + x.item : '')).join('>'), o = byForm.get(k);
+    if (!o || v.mvScore > o.mvScore * 1.001) byForm.set(k, v) });
+  const forms = [...byForm.values()].map(v => {
+    const c = nsMake(nMineMon(v.e2), v.e2.moves, 0, 0, 'pj');
+    v.val = bossC.reduce((a, b, j) => a + tpDuel(c, b, tpCtx(field, j)).val, 0);
+    v.items = v.p.evo.filter(x => x.item).map(x => ({ item: x.item, where: pjItemWhere(x.item, chIdx) }));
+    v.ok = v.items.every(x => x.where);
+    return v;
+  });
+  // the normal schedule (no stones/items) unless an item form clearly does better and is obtainable
+  const plain = forms.find(v => !v.items.length) || forms[0];
+  const best = forms.filter(v => v.ok).reduce((a, v) => v.val > a.val * 1.05 + .05 ? v : a, plain);
+  const missed = forms.filter(v => !v.ok && v.val > best.val * 1.05 + .05).sort((a, b) => b.val - a.val)[0];
+  const res = { e: best.e2, from: lv0, to: cap, evo: best.p.evo, note: best.p.note, items: best.items, newMoves: best.pool.filter(x => best.e2.moves.includes(x.mv)), pool: best.pool,
+    missed: missed ? { n: missed.e2.n, items: missed.items } : null, alt: forms.filter(v => v !== best).map(v => ({ n: v.e2.n, val: v.val })) };
+  pjCache.set(key, res); if (pjCache.size > 300) pjCache.delete(pjCache.keys().next().value);
+  return res;
+}
+// a projection in words
+function pjLines(pj) {
+  const nm = n => esc(mons[n - 1].name), L = [];
+  pj.evo.forEach((x, i) => {
+    const from = i ? pj.evo[i - 1].to : pj.orig;
+    if (!x.item) return L.push(`Evolves into <b>${nm(x.to)}</b> at Lv. ${x.lv}.`);
+    const after = pj.pool.filter(m => m.n === from && m.lv === x.lv && pj.e.moves.includes(m.mv)).map(m => esc(m.mv)), it = pj.items.find(o => o.item === x.item) || {};
+    const how = x.item === 'friendship' ? 'with high friendship (level it up while it\'s happy; a Soothe Bell helps)' : x.hold ? `by levelling it up holding a ${esc(x.item)}` : `with a <b>${esc(x.item)}</b>`;
+    L.push(`<span class="pjstone">Evolve into <b>${nm(x.to)}</b> ${how} ${x.now ? 'now' : `at Lv. ${x.lv}${after.length ? `, after it learns ${after.join(' and ')}` : ''}`}.</span>${it.where && it.where !== 'friendship' ? ` <span class="sp">${esc(x.item)}: ${esc(it.where)}.</span>` : ''} It scores better against this boss than staying ${nm(from)}.`);
+  });
+  if (pj.newMoves.length) L.push(`Learns ${pj.newMoves.map(m => `${esc(m.mv)} (Lv. ${m.lv})`).join(', ')} on the way.`);
+  L.push(`Moves at Lv. ${pj.to}: ${pj.e.moves.map(esc).join(' · ')}.`);
+  (pj.note || []).forEach(n => L.push(esc(n)));
+  if (pj.missed) L.push(`<span class="sp">${nm(pj.missed.n)} would do better, but no ${pj.missed.items.filter(x => !x.where).map(x => esc(x.item)).join(' or ')} turns up before this boss.</span>`);
+  return L;
+}
 function tpSetup(r) {
   const b = NBOSS[BS.boss], team = batTeam(r);
   const all = placed(r).filter(x => x.e.st === 'party' || x.e.st === 'box');
-  const cap = b ? b.cap : 100, out = [];
+  const cap = b ? b.cap : 100, out = [], proj = BS.proj !== false && !!b && team.length > 0, pick = Array.isArray(BS.pick) ? BS.pick : null;
+  const chIdx = Math.max(0, GUIDE.findIndex(c => c.b.includes(BS.boss)));
   const cands = all.filter(x => {
+    if (pick && !pick.includes(x.row.k)) { out.push({ x, why: 'Not picked for this plan' }); return false }
     if (!+x.e.lv) { out.push({ x, why: 'No level set on its card' }); return false }
-    if (!(x.e.moves || []).filter(m => MV[m]).length) { out.push({ x, why: 'No moves picked on its card' }); return false }
+    if (!(x.e.moves || []).filter(m => MV[m]).length && !(proj && +x.e.lv < cap)) { out.push({ x, why: 'No moves picked on its card' }); return false }
     if (r.rules.caps && +x.e.lv > cap) { out.push({ x, why: `Over the level cap (Lv. ${x.e.lv}, cap ${cap})` }); return false }
     return true;
-  });
-  const sig = JSON.stringify([r.id, BS.boss, BS.v, nCalc.biv, BS.steal || [], cands.map(x => [x.row.k, x.e.n, x.e.lv, x.e.moves, x.e.item, x.e.ab, x.e.nat, x.e.stats, x.e.hist])]);
-  return { b, team, cands, out, sig };
+  }).map(x => { if (!proj || +x.e.lv >= cap) return x;
+    const pj = Object.assign({ orig: x.e.n }, pjProject(x.e, cap, team, chIdx));
+    return { row: x.row, e: Object.assign(pj.e, { st: x.e.st }), orig: x.e, pj } });
+  const sig = JSON.stringify([r.id, BS.boss, BS.v, nCalc.biv, BS.steal || [], proj, cands.map(x => [x.row.k, x.e.n, x.e.lv, x.e.moves, x.e.item, x.e.ab, x.e.nat, x.e.stats, x.e.hist])]);
+  return { b, team, cands, out, sig, all, proj, pick, cap };
 }
 // What the boss's team does to the field, and from which of their Pokémon on. Hazards land on your side once the setter has
 // had a turn, so they hit everything you send in against the Pokémon after it. Ability weather starts when its user comes out
@@ -3663,7 +3840,7 @@ function renderTeamPick() {
   else if (tpRes && tpRes.sig === su.sig) {
     const res = tpRes, best = res.best, ord = [best.lead, ...best.t.filter(i => i !== best.lead)];
     const cards = ord.map(i => { const x = su.cands[i];
-      return `<div class="tpm"><div class="tphd"><img src="${nimg(x.e.n)}" alt=""><div><b>${nm(x)}</b> <span class="sp">Lv. ${esc(x.e.lv)}${x.e.st === 'box' ? ' · from box' : ''}</span>
+      return `<div class="tpm"><div class="tphd"><img src="${nimg(x.e.n)}" alt=""><div><b>${nm(x)}</b> <span class="sp">${x.pj ? `Lv. ${x.pj.from} → <b>${x.pj.to}</b> (projected)${x.e.n !== x.orig.n && x.e.nick ? ' as ' + esc(monName(x.e.n)) : ''}` : 'Lv. ' + esc(x.e.lv)}${x.e.st === 'box' ? ' · from box' : ''}</span>
         <div class="stypes">${res.mine[i].types.map(typeBadge).join('')}</div></div></div><ul>${tpWhy(res, i).map(l => `<li>${l}</li>`).join('')}</ul></div>` }).join('');
     const left = su.cands.map((x, i) => ({ x, i })).filter(o => !best.t.includes(o.i));
     const inParty = new Set(best.t.map(i => su.cands[i].row.k)), curKeys = partyOf(r).map(x => x.row.k);
@@ -3676,15 +3853,27 @@ function renderTeamPick() {
       ${best.t.length < 6 ? `<p class="rnote" style="margin:10px 0 0">Only ${best.t.length} of your Pokémon can be used here, so the team is ${best.t.length}. ${su.out.length ? 'See “Left out” for why the others aren’t eligible.' : 'Catch or box more to fill all six slots.'}</p>` : ''}
       <h4 class="tph4">Battle plan</h4>${tpPlanHtml(res)}
       ${tpMapHtml(res)}
+      ${(() => { const lv = ord.map(i => su.cands[i]).filter(x => x.pj), others = left.map(o => o.x).filter(x => x.pj);
+        const one = x => `<div class="pjrow"><div class="tphd"><img src="${nimg(x.orig.n)}" alt="">${x.e.n !== x.orig.n ? `<span class="pjto">→</span><img src="${nimg(x.e.n)}" alt="">` : ''}<div><b>${nm(x)}</b> <span class="sp">Lv. ${x.pj.from} → ${x.pj.to} · +${x.pj.to - x.pj.from} levels</span></div></div><ul>${pjLines(x.pj).map(l => `<li>${l}</li>`).join('')}</ul></div>`;
+        return lv.length || others.length ? `<h4 class="tph4">Leveling plan to Lv. ${su.cap}</h4><p class="sp" style="margin:0 0 6px">Under-leveled Pokémon are planned as they'd be at the level cap: levelled, evolved on schedule, with the best moves they'd know by then.</p>
+          <div class="pjgrid">${lv.map(one).join('')}</div>${others.length ? `<details class="tpout"><summary>Leveling plans for the rest (${others.length})</summary><div class="pjgrid">${others.map(one).join('')}</div></details>` : ''}` : '' })()}
       <h4 class="tph4">Why each Pokémon</h4><div class="tpgrid">${cards}</div>
       ${left.length || su.out.length ? `<details class="tpout"><summary>Left out (${left.length + su.out.length})</summary><ul>${left.map(o => `<li><b>${nm(o.x)}</b>: ${tpLeftOut(res, o.i)}</li>`).join('')}${su.out.map(o => `<li><b>${nm(o.x)}</b>: ${esc(o.why)}</li>`).join('')}</ul></details>` : ''}`;
   } else body = `<p class="sp">${tpRes ? 'Your Pokémon or the boss changed since the last suggestion. ' : ''}Builds a plan for each of ${esc(b ? b.label : '')}'s Pokémon from your ${su.cands.length} available party and box Pokémon${r.rules.caps && b ? ` at or under the level cap (${b.cap})` : ''}, with a backup for each where you have one.</p>`;
   el.innerHTML = `<section class="card full"><div class="nhead"><h3>Team for ${esc(b ? b.label : '')}</h3><button class="btn ${tpRes && tpRes.sig === su.sig ? '' : 'primary'}" data-bact="team" ${tpBusy || !su.cands.length ? 'disabled' : ''}>${tpRes && tpRes.sig === su.sig ? 'Suggest again' : 'Suggest a team'}</button></div>${body}
     ${tpStealUi(r, su)}
+    ${tpPickUi(r, su)}
     <details class="simhow"><summary>How the team is picked</summary>
       <p>Every available Pokémon is scored one-on-one against each of the boss's Pokémon with the damage calculator. The score counts how many hits your best move needs, how many hits their strongest move needs (judged the way the boss AI judges it), and who moves first. Keeping your Pokémon alive comes first. A win that could end in a faint (on a high roll or a critical hit) scores far below a safe one, and a safe win with plenty of HP left scores highest.</p>
       <p>Each boss Pokémon then gets its own answer. The search tries the combinations and keeps the best overall. One of yours can be the answer to two only when it wins both, because it'll be worn down by the second. Remaining slots go to one backup per boss Pokémon, starting with the shakiest matchup, so you never get several Pokémon for the same job. Any slots still open go to the Pokémon that add the most cover, so the team is always six when you have six to choose from. The top few plans and your current party are each played out 300 times. The plans are played as written, using the Set battle style that Nuzlocke runs use: when you knock one of theirs out, your Pokémon stays in. If it would lose to their next Pokémon, you hard-switch to the planned answer, but only if that answer can take a hit coming in and still win. After a faint, you send in the planned answer or its backup for free. Your Pokémon switch out before the boss's next hit can knock them out (unless they move first and a 95%+ accurate move finishes the boss), as long as a teammate can take that hit coming in, and one of yours stays in against several of theirs while it keeps winning. Status moves count too: an opening Sleep Powder, Hypnosis, Thunder Wave, Stun Spore or Will-O-Wisp is scored by its real accuracy (Compound Eyes included) and what it stops, and the playouts use sleep, paralysis, burn, set-up moves and Toxic when they help. Hazards and weather from the boss's team count too: once a setter has moved, every Pokémon you send in is judged on the HP it has left after Stealth Rock and Spikes, Toxic Spikes poison it, and sandstorm or hail chips both sides every turn. The playouts use the boss AI's real choices, including when it sets them. The plan with the fewest expected faints is chosen, counting a loss as losing your whole team, since a wipe ends the run. Win chance only breaks ties.</p>
     </details></section>`;
+}
+function tpPickUi(r, su) {
+  const pk = su.pick, n = su.all.length, on = x => !pk || pk.includes(x.row.k);
+  return `<details class="tppick" ${pk ? 'open' : ''}><summary>Plan with ${pk ? `${su.all.filter(on).length} picked Pokémon` : `all ${n} party and box Pokémon`}${su.proj ? ` · under-leveled ones projected to Lv. ${su.cap}` : ''}</summary>
+    <label class="chk"><input type="checkbox" id="tpproj" ${BS.proj !== false ? 'checked' : ''}> Project under-leveled Pokémon to the level cap (Lv. ${su.cap}): level them up, evolve them on schedule, and note when a stone is worth it</label>
+    <div class="tppicks">${su.all.map(x => `<label class="chk"><input type="checkbox" data-tppick="${esc(x.row.k)}" ${on(x) ? 'checked' : ''}><img src="${nimg(x.e.n)}" alt="">${esc(x.e.nick || monName(x.e.n))} <span class="sp">${x.e.lv ? 'Lv. ' + esc(x.e.lv) : 'no level'}${x.e.st === 'box' ? ' · box' : ''}</span></label>`).join('')}</div>
+    <div class="tbtns"><button class="btn" data-tppickall="1">Pick all</button><button class="btn" data-tppickall="0">Pick none</button><button class="btn primary" data-bact="team" ${tpBusy ? 'disabled' : ''}>Build a plan from these</button></div></details>`;
 }
 function tpUse() {
   const r = curRun(); if (!tpRes) return; const su = tpRes.su, best = tpRes.best;
@@ -3932,7 +4121,8 @@ function gAheadHtml(ch, r) {
 // items held by trainers in a chapter's areas: Thief or Covet takes them, and in Gen 4 you keep them
 function gSteal(ch) {
   const by = new Map(), cap = Math.max(...ch.b.map(bi => NBOSS[bi] ? NBOSS[bi].cap : 0));
-  ROUTES.forEach(L => L.subs.forEach(x => { if (!gInCh(ch, L, x)) return; x.tr.forEach(t => { if (!t.full || t.sec === 'Master Trainer' || Math.max(...t.team.map(p => parseInt(p.lv) || 0)) > cap + 10) return; t.team.forEach(p => {
+  const run = curRun();
+  ROUTES.forEach(L => L.subs.forEach(x => { if (!gInCh(ch, L, x)) return; x.tr.forEach(t => { if (!t.full || t.sec === 'Master Trainer' || !trApplies(run, t) || Math.max(...t.team.map(p => parseInt(p.lv) || 0)) > cap + 10) return; t.team.forEach(p => {
     const it = (p.item || '').trim(); if (!it || it === '?' || it === 'None') return;
     const o = by.get(it) || { i: it, who: new Set(), area: L.n }; o.who.add(t.name.replace(/ R\d$/, '') + "\u2019s " + monName(p.n)); by.set(it, o) }) }) }));
   return [...by.values()].sort((a, b) => a.i.localeCompare(b.i));
@@ -3997,11 +4187,17 @@ GD.addEventListener('click', ev => {
 GD.addEventListener('change', ev => { if (ev.target.id === 'gjump') { const el = document.getElementById('gch' + ev.target.value); if (el) { el.open = true; el.scrollIntoView({ behavior: 'smooth', block: 'start' }) } } });
 const BD = document.getElementById('batdetail');
 BD.addEventListener('change', ev => { if (ev.target.dataset.bf) return batChange(ev.target);
+  if (ev.target.id === 'tpproj') { BS.proj = ev.target.checked; batSave(); return renderTeamPick() }
+  if (ev.target.dataset.tppick) { const r = curRun(), all = tpSetup(r).all.map(x => x.row.k), k = ev.target.dataset.tppick;
+    const cur = new Set(Array.isArray(BS.pick) ? BS.pick : all); ev.target.checked ? cur.add(k) : cur.delete(k);
+    BS.pick = all.every(x => cur.has(x)) ? null : [...cur]; batSave(); return renderTeamPick() }
   const k = ev.target.dataset.bt; if (!k) return;
   const tl = btForm(); tl[k] = ev.target.type === 'checkbox' ? ev.target.checked : ev.target.value;
   if (k === 'p') { tl.pOut = 'hit'; tl.pSec = false } if (k === 'b') { tl.bOut = 'hit'; tl.bSec = false }
   batSave(); if (k !== 'php' && k !== 'bhp') renderTurnLog() });
-BD.addEventListener('click', ev => { const b = ev.target.closest('[data-bact]'); if (!b) return;
+BD.addEventListener('click', ev => { const pa = ev.target.closest('[data-tppickall]');
+  if (pa) { BS.pick = pa.dataset.tppickall === '1' ? null : []; batSave(); return renderTeamPick() }
+  const b = ev.target.closest('[data-bact]'); if (!b) return;
   if (b.dataset.bact === 'team') return tpRun();
   if (b.dataset.bact === 'turn') return btAdvance();
   if (b.dataset.bact === 'undo') return btUndo();
@@ -4027,7 +4223,7 @@ function nLog(e) {
   const same = x => +x.lv === +e.lv && (x.n || e.n) === e.n, prev = (e.hist || []).find(same), first = !(e.hist || []).length;
   e.hist = (e.hist || []).filter(x => !same(x));
   // the first level ever logged is usually right after the catch, before any battles; it can be unticked in the log
-  if (Object.keys(st).length) e.hist.push({ lv: +e.lv, n: e.n, st, fresh: prev ? !!prev.fresh : first });
+  if (Object.keys(st).length) e.hist.push(Object.assign({ lv: +e.lv, n: e.n, st, fresh: prev ? !!prev.fresh : first }, e.evTrack ? { ev: evSnap(e) } : prev && prev.ev ? { ev: prev.ev } : {}));
   e.hist.sort((a, b) => a.lv - b.lv);
 }
 // a new level starts a fresh set of stats; the old level's stats stay in the log
@@ -4059,8 +4255,9 @@ function nSolveIVs(e) {
       }
     }
   }
+  const hpBad = e.hpt ? !ivHpNarrow(s, e.hpt) : false;
   IVSTATS.forEach(k => { if (s[k]) s[k].low = s[k].low.filter(iv => s[k].c.includes(iv)) });
-  return { s, evs, levels: H.length };
+  return { s, evs, levels: H.length, hpBad };
 }
 const nOpenLog = new Set();
 // Highest IV, from the Characteristic on its summary screen; shown as a one-line summary once picked
@@ -4191,6 +4388,100 @@ function nEvolve(e, to) {
   e.ab = newAbs[slot] || newAbs[0]; e.stats = {};
 }
 
+// ---- Trainers ahead: who in the coming areas threatens your party, and why ----
+// Regular trainers in RP's notes list species and levels only; in Gen 4 a Pokémon without a custom set knows the last
+// four moves it learned by level-up at its level, which is what's used here. Important trainers keep their real sets.
+// routes in Trainers ahead you've collapsed (remembered across visits and re-renders)
+const nTrClosed = new Set(store.get('rp-trclosed', []));
+function nTrAreaState() { ND.querySelectorAll('details.trarea').forEach(d => { d.open = !nTrClosed.has(d.dataset.area) }) }
+let nTrCh = null, nTrAll = false, nTrKey = '', nTrOut = '';   // last result, reused until the party or settings change
+function trMoves(p) {
+  if (p.mv && p.mv.filter(Boolean).length) return p.mv.filter(m => MV[m]);
+  const m = mons[p.n - 1], lv = parseInt(p.lv) || 1, out = [];
+  (m ? m.lu : []).forEach(([l, mv]) => { if (l <= lv && MV[mv]) { const i = out.indexOf(mv); if (i >= 0) out.splice(i, 1); out.push(mv) } });
+  return out.slice(-4);
+}
+const TRBOOM = new Set(['Explosion', 'Self-Destruct']);
+// highest roll of one move (multi-hit moves at their usual count)
+function trHit(S, A, D, mv, low) { const d = MV[mv]; if (!d || d.c === 'St') return 0; const x = nsRolls(S, A, D, mv, false, null); if (!x || !x.mult) return 0;
+  return x.rolls[low ? 0 : 15] * (NHITS2.has(mv) ? 2 : NHITS25.has(mv) ? 3 : 1) }
+function trThreat(r, t, mine) {
+  const iv = +nCalc.biv, side = team => ({ team, a: 0, sr: 0, spk: 0, tsp: 0, ref: 0, ls: 0, tw: 0, sg: 0 }), half = Math.ceil(mine.length / 2);
+  const mons2 = t.team.filter(p => mons[p.n - 1]).map((p, i) => {
+    const moves = trMoves(p), foe = nsMake(nBossMon(p, iv), moves, 1, i, 't' + i), notes = [];
+    let lvl = 0;
+    const per = mine.map(me => { const S = { sd: [side([me]), side([foe])], wx: '', wxT: 0 };
+      const hits = moves.filter(mv => !TRBOOM.has(mv)).map(mv => ({ mv, dmg: trHit(S, foe, me, mv), low: trHit(S, foe, me, mv, true) })).sort((a, b) => b.dmg - a.dmg), top = hits[0] || { dmg: 0, low: 0 };
+      const sure = hits.find(h => h.low >= me.max);
+      const boom = moves.filter(mv => TRBOOM.has(mv)).map(mv => ({ mv, dmg: trHit(S, foe, me, mv) })).sort((a, b) => b.dmg - a.dmg)[0];
+      return { me, top, boom, sure, faster: nsSpeed(S, foe) > nsSpeed(S, me),
+        se: moves.some(mv => MV[mv] && MV[mv].c !== 'St' && MV[mv].p && defMult(me.types, me.ab, MV[mv].t) >= 2) } });
+    const name = mn => esc(mn.name), pct = (d, me) => Math.min(999, Math.round(d / me.max * 100));
+    const boomers = per.filter(x => x.boom && x.boom.dmg > 0);
+    if (boomers.length) { const kos = boomers.filter(x => x.boom.dmg >= x.me.max), mv = boomers[0].boom.mv;
+      notes.push(`<b>${mv}</b>: ${kos.length ? `can knock out ${kos.map(x => name(x.me)).join(', ')}` : `up to ${Math.max(...boomers.map(x => pct(x.boom.dmg, x.me)))}% to ${name(boomers.sort((a, b) => b.boom.dmg / b.me.max - a.boom.dmg / a.me.max)[0].me)}`}`);
+      lvl = Math.max(lvl, kos.length ? 3 : 2) }
+    const ohko = per.filter(x => x.top.dmg >= x.me.max);
+    if (ohko.length) {
+      // any roll vs only a high roll: a guaranteed KO while moving first (or KOs on three of yours) is Danger; otherwise Watch
+      notes.push(`One-hit KO on ${ohko.map(x => `${name(x.me)} (${esc((x.sure || x.top).mv)}${x.sure ? ', any roll' : ', high roll'}${x.faster ? ', moves first' : ''})`).join(', ')}`);
+      lvl = Math.max(lvl, ohko.some(x => x.sure && x.faster) || ohko.length >= 3 ? 3 : 2) }
+    const se = per.filter(x => x.se);
+    if (mine.length >= 2 && se.length >= half) { notes.push(`Coverage: super-effective on ${se.length} of your ${mine.length}`); lvl = Math.max(lvl, se.length >= mine.length - 1 ? 2 : 1) }
+    const fastHard = per.filter(x => x.faster && x.top.dmg * 2 >= x.me.max);
+    if (mine.length >= 2 && fastHard.length >= half && !ohko.length) { notes.push(`Fast and strong: faster than ${fastHard.length} of yours and takes half their HP or more a hit`); lvl = Math.max(lvl, 2) }
+    return { p, moves, foe, notes, lvl };
+  });
+  return { mons: mons2, lvl: Math.max(0, ...mons2.map(x => x.lvl)) };
+}
+// play order for an area and sub-area: the encounter list's order (which splits Route 204 and 205), then within a town
+// the main area first and sub-areas in the order you fight their bosses (Eterna: Gym, then the Galactic Building)
+const TRAFTER = { 'Oreburgh City · Gym': 'Oreburgh Mine', 'Jubilife City · Trainer School': 'Jubilife City', 'Eterna City · Gym': 'Eterna City', 'Eterna City · Galactic Building': 'Eterna City',
+  'Hearthome City · Gym': 'Hearthome City', 'Veilstone City · Gym': 'Veilstone City', 'Pastoria City · Gym': 'Pastoria City', 'Canalave City · Gym': 'Canalave City',
+  'Snowpoint City · Gym': 'Snowpoint City', 'Sunyshore City · Gym': 'Sunyshore City' };
+const TRSUBORD = { West: 1, South: 1, North: 2, East: 2 };   // Route 211 West before East; Routes 210 and 212 handled by the split order below
+function trOrder(L, x) {
+  const key = L.n + ' · ' + x.n, after = x.n && TRAFTER[key], split = x.n ? NORDER.indexOf(L.n + ' ' + x.n) : -1;
+  if (after) { const boss = NBOSS.findIndex(b => b.area === L.n && b.sub === x.n); return [NORDER.indexOf(after), 5 + (boss >= 0 ? boss : 0)] }
+  if (split >= 0) return [split, 0];
+  const base = NORDER.indexOf(L.n), sub = !x.n ? 0 : L.n === 'Route 212' ? { North: 1, South: 2 }[x.n] || 3 : L.n === 'Route 210' ? { South: 1, North: 2 }[x.n] || 3 : TRSUBORD[x.n] || 3;
+  return [base < 0 ? 9999 : base, sub];
+}
+function nTrainersHtml(r) {
+  const mine = partyOf(r).filter(x => +x.e.lv && (x.e.moves || []).filter(m => MV[m]).length).map((x, i) => nsMake(nMineMon(x.e), (x.e.moves || []).filter(Boolean), 0, i, x.row.k));
+  const chNext = Math.max(0, GUIDE.findIndex(c => c.b.includes(r.beat)));
+  if (nTrCh === null || !GUIDE[nTrCh]) nTrCh = chNext < 0 ? 0 : chNext;
+  const ch = GUIDE[nTrCh], st = r.enc.starter && STYPE[fam(r.enc.starter.n)];
+  const key = JSON.stringify([r.id, nTrCh, nTrAll, nCalc.biv, ver, chNext, st, r.hero || '', mine.map(c => [c.m.n, c.m.lv, c.moves, c.ab, c.item, c.m.stats])]);
+  if (key === nTrKey) return nTrOut;
+  const head = `<div class="trctl"><label>Chapter<select id="ntrch">${GUIDE.map((c, i) => `<option value="${i}" ${i === nTrCh ? 'selected' : ''}>${i + 1}. ${esc(c.title)}${i === chNext ? ' (you are here)' : ''}</option>`).join('')}</select></label>
+    <label class="chk"><input type="checkbox" id="ntrall" ${nTrAll ? 'checked' : ''}> Show every trainer</label>
+    <span class="tbtns"><button class="btn" data-trareas="open">Expand all</button><button class="btn" data-trareas="close">Collapse all</button></span></div>`;
+  if (!mine.length) return `<section class="card full" data-sec="trainers"><h3>Trainers ahead</h3>${head}<p class="empty">Give your party Pokémon a level and moves on their cards, and this shows which trainers threaten them.</p></section>`;
+  const blocks = [], cap = Math.max(...ch.b.map(bi => NBOSS[bi] ? NBOSS[bi].cap : 0));
+  ROUTES.forEach(L => L.subs.forEach(x => { if (!gInCh(ch, L, x)) return;
+    // skip post-game teams (far above this chapter's level cap) and starter variants that don't match your starter
+    const trs = x.tr.filter(t => t.sec !== 'Rematches' && t.sec !== 'Master Trainer' && !/After (Champion|Stark)/.test(t.when || '') && Math.max(...t.team.map(p => parseInt(p.lv) || 0)) <= cap + 10
+      && trApplies(r, t));
+    if (!trs.length) return;
+    const rows = trs.map(t => ({ t, th: trThreat(r, t, mine) })).filter(o => nTrAll || o.th.lvl >= 2);
+    blocks.push({ ord: trOrder(L, x), area: L.n + (x.n ? ' · ' + x.n : ''), total: trs.length, rows: rows.sort((a, b) => b.th.lvl - a.th.lvl) });
+  }));
+  const tag = l => l >= 3 ? '<span class="btag bad">Danger</span>' : l === 2 ? '<span class="btag">Watch</span>' : l === 1 ? '<span class="btag">Minor</span>' : '<span class="btag good">Fine</span>';
+  const trHtml = ({ t, th }) => `<div class="trrow lv${th.lvl}"><div class="trhd"><b>${esc(t.name)}</b>${t.re ? ' <span class="chip">Rematch</span>' : ''}${t.full ? ' <span class="chip">full set known</span>' : ''} ${tag(th.lvl)}</div>
+    <div class="trteam">${th.mons.map(x => `<div class="trmon ${x.lvl >= 3 ? 'bad' : x.lvl === 2 ? 'warn' : ''}"><img src="${nimg(x.p.n)}" alt=""><div><b>${esc(monName(x.p.n))}</b> <span class="sp">Lv. ${esc(x.p.lv)}${x.p.item ? ' · ' + esc(x.p.item) : ''}</span>
+      <div class="sp trmv">${x.moves.map(m => TRBOOM.has(m) ? `<b class="bko">${esc(m)}</b>` : esc(m)).join(' · ') || 'no moves known'}</div>${x.notes.length ? `<ul>${x.notes.map(n => `<li>${n}</li>`).join('')}</ul>` : ''}</div></div>`).join('')}</div></div>`;
+  blocks.sort((a, b) => a.ord[0] - b.ord[0] || a.ord[1] - b.ord[1]);   // the order you reach them
+  const shown = blocks.reduce((a, b) => a + b.rows.length, 0), total = blocks.reduce((a, b) => a + b.total, 0);
+  nTrKey = key;
+  return nTrOut = `<section class="card full" data-sec="trainers"><h3>Trainers ahead</h3>${head}
+    <p class="sp" style="margin:6px 0 8px">${nTrAll ? `All ${total} trainers` : `${shown} of ${total} trainers are flagged for your party`} in ${esc(ch.title)}. Checked against your ${mine.length} party Pokémon as they are now (levels, moves, abilities), with trainer IVs at the Battle tab's Boss IVs setting (${nCalc.biv}).</p>
+    ${blocks.filter(b => b.rows.length).map(b => { const dn = b.rows.filter(o => o.th.lvl >= 3).length, wn = b.rows.filter(o => o.th.lvl === 2).length;
+      return `<details class="trarea" data-area="${esc(b.area)}"><summary><span class="trname">${esc(b.area)}</span>
+        ${dn ? `<span class="btag bad">${dn} danger</span>` : ''}${wn ? `<span class="btag">${wn} watch</span>` : ''}<span class="sp">${b.rows.length}${nTrAll ? '' : ' of ' + b.total} trainer${(nTrAll ? b.rows.length : b.total) === 1 ? '' : 's'}</span></summary>
+        <div class="trbody">${b.rows.map(trHtml).join('')}</div></details>` }).join('') || '<p class="empty">No trainer here threatens your party. Show every trainer to see them all.</p>'}
+    <details class="simhow"><summary>How this is worked out</summary><p>Important trainers (gym leaders, rivals, Galactic bosses) use their real sets from Renegade Platinum's notes. Other trainers' notes list only species and levels, so their moves are the last four each Pokémon learns by level-up at that level, which is what Gen 4 gives a trainer Pokémon without a custom set. Each Pokémon is checked against each of yours with its highest damage roll. <b>Danger</b> means Explosion or Self-Destruct can knock one of yours out, it knocks one of yours out on any damage roll while moving first, or it can knock out three or more of yours. <b>Watch</b> means a one-hit KO only on a high roll, Explosion/Self-Destruct that can't KO, super-effective coverage on nearly all your party, or being faster than most of your party while taking half their HP a hit.</p></details></section>`;
+}
 function renderRunTop() {
   const r = curRun(), s = runStats(r), next = NBOSS[r.beat], all = placed(r);
   const party = partyOf(r), box = all.filter(x => x.e.st === 'box'), dead = all.filter(x => x.e.st === 'dead');
@@ -4215,14 +4506,17 @@ function renderRunTop() {
     : `<section class="card full" data-sec="cap"><h3>Level caps</h3><p class="empty">Every boss is beaten. Congratulations!</p></section>`;
   document.getElementById('ntop').innerHTML = `<div class="rhero"><input class="tname" id="nname" value="${esc(r.name)}" aria-label="Run name" maxlength="40">
       <div class="nsum"><span><b>${s.used}</b>/${runRows(r).length} encounters</span><span class="${s.party > 6 ? 'bad' : ''}"><b>${s.party}</b>/6 party</span><span><b>${s.box}</b> boxed</span><span><b>${s.dead}</b> dead</span><span><b>${s.lost}</b> missed</span><span><b>${r.beat}</b>/${NBOSS.length} bosses</span></div>
+      <div class="nplayer" role="group" aria-label="Player"><span class="sp">Player</span><button data-hero="Lucas" aria-pressed="${r.hero === 'Lucas'}">♂ Boy</button><button data-hero="Dawn" aria-pressed="${r.hero === 'Dawn'}">♀ Girl</button>
+        <span class="sp">${r.hero ? `You battle Pokémon Trainer ${r.hero === 'Lucas' ? 'Dawn' : 'Lucas'}.` : 'Pick one to see only the assistant you battle (a boy faces Dawn, a girl faces Lucas).'}</span></div>
       <div class="tbtns" style="margin-top:10px"><button class="btn primary" id="nteam" ${s.party ? '' : 'disabled'}>Check party in Team builder</button><button class="btn" id="ndup">Duplicate</button><button class="btn danger" id="ndel" ${NZ.runs.length < 2 ? 'disabled' : ''}>Delete</button></div></div>
     ${cap}
-    <div id="ncalc"></div>
+    ${nTrainersHtml(r)}
     <section class="card full nzone" data-zone="party" data-sec="party"><h3>Party · ${party.length}/6</h3>${verdicts}${party.length ? `<div class="pslots">${party.map(x => monEditor(x.row, x.e, r, ctx)).join('')}</div>` : '<p class="empty">Pick a Pokémon on an encounter below and it joins your party.</p>'}
       ${s.party > 6 ? '<p class="rnote" style="margin:10px 0 0">That\'s more than 6. Box one.</p>' : ''}</section>
     ${box.length || party.length ? `<section class="card full nzone" data-zone="box" data-sec="box"><h3>Box · ${box.length}</h3>${box.length ? `<div class="pslots">${box.map(x => monEditor(x.row, x.e, r, ctx)).join('')}</div>` : '<p class="empty">Drag a party Pokémon here, or use “To box”.</p>'}</section>` : ''}
     ${dead.length ? `<section class="card full" data-sec="grave"><h3>Graveyard · ${dead.length}</h3><div class="nparty">${dead.map(card).join('')}</div></section>` : ''}`;
-  renderCalc(); nDecorate();
+  nTrAreaState();
+  nDecorate();
   ND.querySelectorAll('[data-zone="party"] .pslots').forEach(g => {
     const cards = [...g.children].filter(c => c.classList.contains('pmon')), n = Math.max(0, ...cards.map(c => c.children.length));
     cards.forEach(c => c.style.gridRow = 'span ' + n);
@@ -4254,6 +4548,7 @@ function renderRun(full = true) {
     <section class="card full nrules" data-sec="rules"><h3>Rules &amp; notes</h3>
       <label class="chk"><input type="checkbox" data-rule="dupes" ${r.rules.dupes ? 'checked' : ''}> Dupes clause: flag species whose evolution line you already caught</label>
       <label class="chk"><input type="checkbox" data-rule="caps" ${r.rules.caps ? 'checked' : ''}> Level caps: warn when a party member is above the next boss's highest level</label>
+      <label class="nhero">Player <select id="nhero"><option value="" ${!r.hero ? 'selected' : ''}>Not set (show both Lucas and Dawn)</option><option value="Lucas" ${r.hero === 'Lucas' ? 'selected' : ''}>Boy (you battle Dawn)</option><option value="Dawn" ${r.hero === 'Dawn' ? 'selected' : ''}>Girl (you battle Lucas)</option></select></label>
       <textarea id="nnotes" rows="3" placeholder="Run notes, house rules…">${esc(r.notes || '')}</textarea></section>`;
   nDecorate();
 }
@@ -4279,7 +4574,8 @@ function nRefreshTop() {
     const el = key && ND.querySelector(key); if (el) el.focus({ preventScroll: true });
   }, 0);
 }
-ND.addEventListener('toggle', ev => { const d = ev.target; if (d.classList && d.classList.contains('phist')) { d.open ? nOpenLog.add(d.dataset.hk) : nOpenLog.delete(d.dataset.hk); return }
+ND.addEventListener('toggle', ev => { const d = ev.target;
+  if (d.classList && d.classList.contains('trarea')) { d.open ? nTrClosed.delete(d.dataset.area) : nTrClosed.add(d.dataset.area); store.set('rp-trclosed', [...nTrClosed]); return } if (d.classList && d.classList.contains('phist')) { d.open ? nOpenLog.add(d.dataset.hk) : nOpenLog.delete(d.dataset.hk); return }
   if (!d.classList || !d.classList.contains('pmore')) return;
   const k = d.closest('.pmon').dataset.k; d.open ? nOpen.add(k) : nOpen.delete(k) }, true);
 let nDrag = null;
@@ -4315,16 +4611,13 @@ ND.addEventListener('drop', ev => {
 });
 ND.addEventListener('change', ev => {
   const t = ev.target, r = curRun();
-  if (t.dataset.c) {
-    const c = t.dataset.c; nCalc[c] = t.type === 'checkbox' ? t.checked : ['bi', 'as', 'ds', 'biv'].includes(c) ? +t.value : t.value;
-    if (c === 'bi' || c === 'mk') nCalc.mv = '';
-    if (c === 'mv' || c === 'bi' || c === 'mk') nCalc.pw = '';
-    store.set('rp-ncalc', nCalc); return renderCalc();
-  }
+  if (t.id === 'ntrch') { nTrCh = +t.value; return renderRunTop() }
+  if (t.id === 'ntrall') { nTrAll = t.checked; return renderRunTop() }
   if (t.id === 'nname') { r.name = t.value.trim() || 'Untitled run'; return ncommit(false) }
   if (t.id === 'nnotes') { r.notes = t.value; return saveRuns() }
   if (t.id === 'nfilter') { nfilter = t.value; return renderRun() }
   if (t.dataset.rule) { r.rules[t.dataset.rule] = t.checked; return ncommit(true) }
+  if (t.id === 'nhero') { r.hero = t.value; return ncommit(true) }
   if (t.dataset.b !== undefined) { const i = +t.dataset.b; r.beat = t.checked ? i + 1 : i; return ncommit(true) }
   const pm = t.closest('.pmon');
   if (pm && t.dataset.f) {
@@ -4369,6 +4662,11 @@ ND.addEventListener('change', ev => {
 });
 ND.addEventListener('click', ev => {
   const t = ev.target, r = curRun(), app = document.getElementById('app');
+  const trAreas = t.closest && t.closest('[data-trareas]');
+  if (trAreas) { const open = trAreas.dataset.trareas === 'open';
+    ND.querySelectorAll('details.trarea').forEach(d => { open ? nTrClosed.delete(d.dataset.area) : nTrClosed.add(d.dataset.area); d.open = open });
+    store.set('rp-trclosed', [...nTrClosed]); return }
+  const heroBtn = t.closest && t.closest('[data-hero]'); if (heroBtn) { r.hero = r.hero === heroBtn.dataset.hero ? '' : heroBtn.dataset.hero; return ncommit(true) }
   if (t.id === 'nback') return app.classList.remove('nshowing');
   if (t.id === 'nrshow') return nSetRost(false);
   if (t.id === 'nbeat') { r.beat = Math.min(NBOSS.length, r.beat + 1); return ncommit(true) }
@@ -4388,8 +4686,6 @@ ND.addEventListener('click', ev => {
     setTimeout(() => { const s = ND.querySelector(`.pmon[data-k="${CSS.escape(k)}"] [data-f="ch"]`); if (s) s.focus() }, 30); return }
   const ig = t.closest('button[data-ivgo]');
   if (ig) { const e = r.enc[ig.closest('.pmon').dataset.k]; if (e) { ivLoad(e); setView('ivs') } return }
-  const cd = t.closest('button[data-cdir]');
-  if (cd) { nCalc.dir = cd.dataset.cdir; nCalc.mv = ''; nCalc.pw = ''; store.set('rp-ncalc', nCalc); return renderCalc() }
   const pmv = t.closest('button[data-mv]');
   if (pmv) { const k = pmv.closest('.pmon').dataset.k, i = partyOf(r).findIndex(x => x.row.k === k); nPlace(r, k, i + +pmv.dataset.mv); return ncommit(true) }
   const gb = t.closest('button.gbtn');
@@ -4405,12 +4701,29 @@ ND.addEventListener('click', ev => {
   if (t.classList.contains('goto')) { setView('dex'); select(e.n) }
 });
 document.getElementById('nlist').addEventListener('click', e => { const b = e.target.closest('.trow'); if (!b) return;
+  if (nSel) { const id = b.dataset.r; nSel.has(id) ? nSel.delete(id) : nSel.add(id); return renderRunList() }
   NZ.cur = b.dataset.r; store.set(NKEY, NZ); renderRunList(); renderRun();
   document.getElementById('app').classList.add('nshowing'); ND.scrollTop = 0 });
 let nRostHidden = !!store.get('rp-nrost', false);
 function nSetRost(hide) { nRostHidden = hide; store.set('rp-nrost', hide); document.getElementById('nuzMain').classList.toggle('rcoll', hide) }
 nSetRost(nRostHidden);
 document.getElementById('nrhide').onclick = () => nSetRost(true);
+document.getElementById('nselect').onclick = () => { nSel = nSel ? null : new Set(); renderRunList() };
+document.getElementById('nbulk').addEventListener('click', e => {
+  const t = e.target.closest('button'); if (!t || !nSel) return;
+  if (t.id === 'nblo') { nLeftovers().forEach(r => nSel.add(r.id)); return renderRunList() }
+  if (t.id === 'nball') { nSel = nSel.size === NZ.runs.length ? new Set() : new Set(NZ.runs.map(r => r.id)); return renderRunList() }
+  if (t.id === 'nbdel') {
+    if (!nSel.size) return;
+    if (nSel.size >= NZ.runs.length) return alert('Keep at least one run. Untick one, or start a new run first.');
+    const names = NZ.runs.filter(r => nSel.has(r.id)).map(r => r.name);
+    if (!confirm(`Delete ${nSel.size} run${nSel.size > 1 ? 's' : ''}? This can't be undone.\n\n${[...new Set(names)].slice(0, 6).map(n => '• ' + n + (names.filter(x => x === n).length > 1 ? ' ×' + names.filter(x => x === n).length : '')).join('\n')}`)) return;
+    NZ.deleted = [...new Set([...(NZ.deleted || []), ...nSel])];   // deletions stick through sync, so they don't come back from the server
+    NZ.runs = NZ.runs.filter(r => !nSel.has(r.id));
+    if (!NZ.runs.some(r => r.id === NZ.cur)) NZ.cur = NZ.runs[0].id;
+    nSel = null; ncommit(true);
+  }
+});
 document.getElementById('nnew').onclick = () => {
   const r = newRun('Run ' + (NZ.runs.length + 1)); NZ.runs.push(r); NZ.cur = r.id; ncommit(true); document.getElementById('app').classList.add('nshowing');
 };
@@ -4433,6 +4746,26 @@ const ivJudge = iv => iv === 31 ? 'Best' : iv === 30 ? 'Fantastic' : iv >= 26 ? 
 const ivTone = iv => iv >= 26 ? 'g4' : iv >= 16 ? 'g3' : iv >= 1 ? 'g2' : 'g1';
 const ivList = c => { const out = []; for (let i = 0; i < c.length; i++) { let j = i; while (j + 1 < c.length && c[j + 1] === c[j] + 1) j++; out.push(j > i ? c[i] + '–' + c[j] : '' + c[i]); i = j } return out.join(', ') };
 const ivSave = () => store.set(IVKEY, IVS);
+// ---- EVs: yields by species (PokeAPI; order HP, Atk, Def, SpA, SpD, Spe) and Gen 4 gain rules ----
+const EVY = "000100,000110,000210,000001,000101,000300,001000,001010,000030,100000,002000,000210,000001,002000,020010,000001,000002,000003,000001,000002,000001,000002,010000,020000,000002,000003,001000,002000,100000,200000,300000,010000,020000,030000,200000,300000,000001,000011,200000,300000,000001,000002,000100,000200,000300,010000,021000,000010,000101,000001,000002,000001,000002,000100,000200,010000,020000,010000,020000,000001,000002,003000,000100,000200,000300,010000,020000,030000,010000,020000,030000,000010,000020,001000,002000,003000,000001,000002,100000,002000,000100,000200,010000,010000,020000,000010,000020,100000,110000,001000,002000,000100,000200,000300,001000,000010,000020,010000,020000,000001,000002,001000,000200,001000,002000,020000,000020,200000,001000,002000,001000,020000,200000,001000,200000,000100,001100,010000,020000,000001,000002,000020,010000,000200,000002,000200,020000,010001,000001,020000,200000,100000,000010,200000,000002,020000,000100,001000,002000,001000,020000,000002,200000,000030,000300,000300,010000,020000,030000,000300,300000,000010,001010,001020,000001,000101,000300,010000,011000,021000,010000,000002,100000,200000,000010,000020,010000,020000,000003,100000,200000,000001,000010,100000,000010,000020,000100,000101,000100,000200,000300,000030,200000,300000,002000,000030,000010,000002,000003,000001,000100,000200,000001,100000,200000,000200,000020,000001,000020,000010,010100,200000,000200,001000,002000,100000,001000,002000,010000,020000,010000,020000,001010,020000,000001,010000,020000,000100,002000,010000,110000,001010,000100,010100,000001,000020,002000,000100,000200,010110,100000,011000,000200,010000,000001,010000,000020,000100,000001,000001,002000,300000,000102,120000,001020,010000,020000,030000,000030,000030,300000,000001,000002,000003,000100,010100,030000,010000,020000,030000,010000,020000,000001,000002,100000,002000,000300,002000,000030,000010,000020,000030,001000,020000,030000,000001,000002,000001,002000,000100,000200,000300,000001,000110,100000,020000,100000,000002,300000,001000,000002,200000,100000,200000,300000,100000,200000,100000,001000,000001,100001,011000,011000,001000,002000,003000,000001,000002,000001,000002,000001,000001,000001,000001,000200,100000,200000,010000,020000,100000,200000,000100,010100,002000,000010,000020,000100,010000,010001,010002,000100,010100,000010,000020,020000,010100,000200,020000,100000,200000,010000,020000,000010,000020,000010,000020,010000,020000,000001,000020,100000,000010,010000,020000,000010,001010,200000,000110,020000,100000,100000,200000,100000,200000,300000,001000,011000,000200,101000,000001,010000,002000,030000,001000,002000,003000,003000,000030,002010,000030,000300,000300,030000,020100,300000,010101,010000,011000,021000,000001,000101,010101,000100,000200,000300,000001,000002,030000,100000,020000,001000,020000,010000,020000,030000,000100,000300,010000,020000,001000,002000,000010,000020,010100,000001,001010,000001,000001,000002,000100,000200,100000,200000,000002,100000,200000,000001,000002,000110,020000,000001,000002,000100,000001,200000,001000,001010,001000,000010,100000,010000,001010,010000,020000,030000,100000,010000,010100,001000,002000,001000,002000,010000,020000,020000,000001,000002,000010,010000,010100,010001,000300,300000,030000,002000,030000,000300,000210,020000,002000,000200,002000,030000,000300,030000,001020,001020,000002,000101,002010,010110,020100,000300,000300,000300,030000,300000,000030,100000,300000,000201,300000,300000".split(',').map(x => [...x].map(Number));
+const EVPOWER = { 'Power Weight': 'hp', 'Power Bracer': 'atk', 'Power Belt': 'def', 'Power Lens': 'spa', 'Power Band': 'spd', 'Power Anklet': 'spe' };
+const EVVIT = { hp: 'HP Up', atk: 'Protein', def: 'Iron', spa: 'Calcium', spd: 'Zinc', spe: 'Carbos' };
+function evSnap(e) { return Object.fromEntries(IVSTATS.map(k => [k, +(e.evs || {})[k] || 0])) }
+const evTotal = o => IVSTATS.reduce((a, k) => a + (+(o || {})[k] || 0), 0);
+const evText = o => IVSTATS.filter(k => +(o || {})[k]).map(k => (+o[k]) + ' ' + SL[k]).join(' · ');
+// add EVs within the caps (255 a stat, 510 in all); returns what was actually added
+function evAdd(e, add, why) {
+  e.evs = e.evs || {}; e.evTrack = true; let tot = evTotal(e.evs); const got = {};
+  IVSTATS.forEach(k => { const v = Math.max(0, Math.min(+add[k] || 0, 255 - (+e.evs[k] || 0), 510 - tot)); if (v) { e.evs[k] = (+e.evs[k] || 0) + v; tot += v; got[k] = v } });
+  if (Object.keys(got).length) e.evlog = [{ why, got, t: Date.now() }, ...(e.evlog || [])].slice(0, 40);
+  return got;
+}
+// EVs for beating n (count times): Macho Brace doubles the yield, a Power item adds 4 to its stat, Pokérus doubles the lot
+function evForDefeat(e, n, count, pkrs) {
+  const y = EVY[n - 1] || [0, 0, 0, 0, 0, 0], add = {}, macho = e.item === 'Macho Brace' ? 2 : 1, pw = EVPOWER[e.item];
+  IVSTATS.forEach((k, i) => { const one = (y[i] * macho + (pw === k ? 4 : 0)) * (pkrs ? 2 : 1); if (one) add[k] = one * count });
+  return add;
+}
 // Can this IV produce every logged stat for stat k? Entries are in level order. EVs never go down from one level to the next;
 // they're 0 up to the last "no battles yet" entry, and an entry with EVs entered uses those. Only floor(EV/4) affects stats.
 function ivFits(k, iv, ent, baseOf, nat) {
@@ -4446,6 +4779,7 @@ function ivFits(k, iv, ent, baseOf, nat) {
   return true;
 }
 
+let ivHpBad = false;   // the Hidden Power type you entered can't come from these IVs
 function ivSolve() {
   const m = mons[IVS.n - 1]; if (!m) return null;
   const v = m.v[ver], rows = IVS.rows.filter(r => +r.lv), out = {};
@@ -4467,6 +4801,7 @@ function ivSolve() {
       out[ck].c = out[ck].c.filter(iv => iv >= floor);
     }
   }
+  ivHpBad = IVS.hpt ? !ivHpNarrow(out, IVS.hpt) : false;
   return out;
 }
 // the first level above the latest entry where this stat's candidate IVs would give different stats
@@ -4475,6 +4810,19 @@ function ivNarrowAt(k, c) {
   const last = rows.reduce((a, r) => +r.lv > +a.lv ? r : a, rows[0] || { lv: 0, ev: {} });
   for (let L = (+last.lv || 0) + 1; L <= 100; L++) if (new Set(c.map(iv => ivStat(k, b, L, iv, +(last.ev || {})[k], IVS.nat))).size > 1) return L;
   return 0;
+}
+// sol: stat -> { c } (missing stats count as unknown). Returns false when no IVs left can give that type (nothing is changed then).
+function ivHpNarrow(sol, type) {
+  const ti = HPTYPES.indexOf(type); if (ti < 0) return true;
+  const order = ['hp', 'atk', 'def', 'spe', 'spa', 'spd'], par = order.map(k => sol[k] ? new Set(sol[k].c.map(iv => iv & 1)) : new Set([0, 1]));
+  const ok = order.map(() => new Set());
+  for (let bits = 0; bits < 64; bits++) {
+    if (!order.every((k, b) => par[b].has((bits >> b) & 1)) || Math.floor(bits * 15 / 63) !== ti) continue;
+    order.forEach((k, b) => ok[b].add((bits >> b) & 1));
+  }
+  if (!ok[0].size) return false;
+  order.forEach((k, b) => { if (sol[k]) sol[k].c = sol[k].c.filter(iv => ok[b].has(iv & 1)) });
+  return true;
 }
 function ivHiddenPower(sol) {
   const lists = IVSTATS.map(k => sol[k].c); if (lists.some(l => !l.length) || lists.reduce((a, l) => a * l.length, 1) > 50000) return null;
@@ -4490,33 +4838,99 @@ function ivHiddenPower(sol) {
   return { types: [...types], pmin, pmax };
 }
 
+let ivAllRows = false;   // IV tab shows only the latest level unless expanded
+const ivEvOpen = new Set();   // rows whose "EVs (if known)" you opened; closed otherwise (the EV section has the same numbers)
 function renderIv() {
+  const lk = ivLinked(); if (IVS.link && !lk) IVS.link = null; if (lk) { if (JSON.stringify(lk.e.hist || []) !== IVS.sync) ivPull(lk.e); else Object.assign(IVS, { n: lk.e.n, nat: lk.e.nat || '', ch: lk.e.ch || '', hpt: lk.e.hpt || '' }) }
   const d = document.getElementById('ivdetail'), m = IVS.n && mons[IVS.n - 1];
   const r = curRun(), nz = [...partyOf(r), ...placed(r).filter(x => x.e.st === 'box')];
   const chOpts = IVSTATS.map(k => `<optgroup label="Highest IV: ${SL[k]}">${IVCHAR[k].map((t, i) => `<option value="${k}:${i}" ${IVS.ch === k + ':' + i ? 'selected' : ''}>${t}</option>`).join('')}</optgroup>`).join('');
   const row = (rw, i) => {
-    const hasEv = IVSTATS.some(k => +(rw.ev || {})[k]);
     return `<div class="ivrow" data-r="${i}"><label>Level${rw.n && rw.n !== IVS.n ? ' · as ' + esc(monName(rw.n)) : ''}<input type="number" min="1" max="100" data-iv="lv" value="${esc(rw.lv || '')}"></label>
       ${IVSTATS.map(k => { const md = natMod(IVS.nat, k); return `<label class="${md > 1 ? 'up' : md < 1 ? 'dn' : ''}">${SL[k]}<input type="number" min="1" max="999" data-iv="st" data-s="${k}" value="${esc((rw.st || {})[k] || '')}"></label>` }).join('')}
       ${IVS.rows.length > 1 ? `<button class="x" data-ivdel="${i}" title="Remove this level" aria-label="Remove">×</button>` : '<span></span>'}
       <label class="ivfresh"><input type="checkbox" data-iv="fresh" ${rw.fresh ? 'checked' : ''}> No battles yet at this level (no EVs)</label>
-      <details class="ivev" ${hasEv ? 'open' : ''}><summary>EVs (if known)</summary><div class="ivevs">${IVSTATS.map(k => `<label>${SL[k]}<input type="number" min="0" max="255" data-iv="ev" data-s="${k}" value="${esc((rw.ev || {})[k] || '')}" placeholder="0"></label>`).join('')}</div></details></div>`;
+      <details class="ivev" ${ivEvOpen.has(i) ? 'open' : ''}><summary>EVs (if known)</summary><div class="ivevs">${IVSTATS.map(k => `<label>${SL[k]}<input type="number" min="0" max="255" data-iv="ev" data-s="${k}" value="${esc((rw.ev || {})[k] || '')}" placeholder="0"></label>`).join('')}</div></details></div>`;
   };
+  // the latest level, plus the one before it while the latest is still empty (just added)
+  const nR = IVS.rows.length, blank = rw => !IVSTATS.some(k => +(rw.st || {})[k]);
+  const from = ivAllRows ? 0 : Math.max(0, nR - (nR > 1 && blank(IVS.rows[nR - 1]) ? 2 : 1)), hid = IVS.rows.slice(0, from);
+  const fold = nR > 1 ? `<div class="ivfold">${ivAllRows ? `<span class="sp">All ${nR} levels</span><button class="an" data-ivfold>Show only the latest</button>`
+    : `<span class="sp">${hid.length} earlier level${hid.length === 1 ? '' : 's'} hidden (Lv. ${hid.map(x => esc(x.lv || '?')).join(', ')})</span><button class="an" data-ivfold>Show all ${nR} levels</button>`}</div>` : '';
   d.innerHTML = `<div class="rhero"><h2>IV grading</h2>
       <p class="ivsub">Work out a Pokémon's IVs (0–31) from its stats, level and nature. Add its stats again after it levels up to narrow them down.</p>
       <div class="ivtop">
-        <label>Pokémon<input id="ivmon" list="monlist" value="${m ? esc(m.name) : ''}" placeholder="Name or #" autocomplete="off"></label>
+        ${nz.length ? `<label>Nuzlocke Pokémon<select id="ivload"><option value="">— scratchpad (not saved to a run) —</option>${nz.map(x => `<option value="${esc(x.row.k)}" ${lk && lk.run.id === r.id && IVS.link.k === x.row.k ? 'selected' : ''}>${esc(x.e.nick || monName(x.e.n))}${x.e.lv ? ' · Lv. ' + esc(x.e.lv) : ''}${x.e.st === 'box' ? ' (box)' : ''}</option>`).join('')}</select></label>` : ''}
+        <label>Pokémon<input id="ivmon" list="monlist" value="${m ? esc(m.name) : ''}" placeholder="Name or #" autocomplete="off" ${lk ? 'disabled title="Set by the linked Nuzlocke Pokémon"' : ''}></label>
         <label>Nature<select id="ivnat"><option value="">— pick —</option>${NATURES.map(n => `<option value="${n}" ${n === IVS.nat ? 'selected' : ''}>${n} (${natDesc(n)})</option>`).join('')}</select></label>
         <label>Characteristic (optional)<select id="ivch"><option value="">—</option>${chOpts}</select></label>
-        ${nz.length ? `<label>Load from Nuzlocke<select id="ivload"><option value="">${esc(r.name)}…</option>${nz.map(x => `<option value="${esc(x.row.k)}">${esc(x.e.nick || monName(x.e.n))}${x.e.lv ? ' · Lv. ' + esc(x.e.lv) : ''}${x.e.st === 'box' ? ' (box)' : ''}</option>`).join('')}</select></label>` : ''}
-      </div>${m ? `<div class="ivmon"><img src="${nimg(m.num)}" alt=""><div><div class="nn">${esc(m.name)}</div><div class="stypes">${m.v[ver].types.map(typeBadge).join('')}</div></div></div>` : ''}</div>
-    ${m ? `<section class="card full"><h3>Stats from the summary screen</h3><div class="ivrows">${IVS.rows.map(row).join('')}</div>
-        <div class="tbtns" style="margin-top:10px"><button class="btn" id="ivadd">+ Stats at another level</button><button class="btn" id="ivclear">Clear</button></div>
+        <label title="Hidden Power's type, from its summary screen or a move tutor/TM check. Each IV's odd/even bit sets it, so it narrows every stat.">Hidden Power type (optional)<select id="ivhpt"><option value="">—</option>${HPTYPES.map(t => `<option value="${t}" ${t === IVS.hpt ? 'selected' : ''}>${t}</option>`).join('')}</select></label>
+      </div>
+      ${lk ? `<p class="ivlinked">Linked to <b>${esc(lk.e.nick || monName(lk.e.n))}</b> in “${esc(lk.run.name)}”. Changes here save to its Nuzlocke card, and its card shows the same IVs and EVs.</p>` : ''}${m ? `<div class="ivmon"><img src="${nimg(m.num)}" alt=""><div><div class="nn">${esc(m.name)}</div><div class="stypes">${m.v[ver].types.map(typeBadge).join('')}</div></div></div>` : ''}</div>
+    ${m ? `<section class="card full"><h3>Stats from the summary screen</h3>${from || ivAllRows ? fold : ''}<div class="ivrows">${IVS.rows.map(row).filter((_, i) => i >= from).join('')}</div>
+        <div class="tbtns" style="margin-top:10px"><button class="btn" id="ivadd">+ Stats at another level</button>${lk ? '' : '<button class="btn" id="ivclear">Clear</button>'}</div>
         <p class="ivsub" style="margin-top:10px">Wild Pokémon start with no EVs, but every battle adds some. If it has fought, enter its EVs, or use stats from right after you caught it.</p></section>
+      ${lk ? ivEvHtml(lk.e) : ''}
       <div id="ivres"></div>` : '<p class="empty" style="margin-top:16px">Pick a Pokémon to start, or load one from your Nuzlocke run.</p>'}`;
   renderIvResults();
 }
 
+// who else gets the EVs from a logged battle: party keys ticked by hand; untouched ones default to the Exp. Share holder
+let evAlso = {};
+const evShares = (run, me) => partyOf(run).filter(x => x.e !== me).map(x => ({ k: x.row.k, e: x.e, on: x.row.k in evAlso ? evAlso[x.row.k] : x.e.item === 'Exp. Share' }));
+// areas in play order for the EV picker (Routes 204/205 split into their two visits, like the encounter list)
+let EVAREAS = null;
+function evAreas() {
+  if (EVAREAS) return EVAREAS;
+  const out = [];
+  ROUTES.forEach(L => {
+    const parts = NSPLIT[L.n], rest = parts ? L.subs.filter(x => !parts.includes(x.n)) : L.subs;
+    const groups = [...(parts || []).map(p => ({ n: L.n + ' ' + p, subs: L.subs.filter(x => x.n === p) })), ...(rest.length ? [{ n: L.n, subs: rest }] : [])];
+    groups.forEach(g => { if (!g.subs.some(x => x.wild.length || x.tr.length)) return;
+      out.push({ n: g.n, L, subs: g.subs, ord: Math.min(...g.subs.map(x => { const o = trOrder(L, x); return o[0] * 100 + o[1] })) }) });
+  });
+  return EVAREAS = out.sort((a, b) => a.ord - b.ord);
+}
+// where you are: the area you picked last, else the furthest area (in play order) with an encounter logged in the run
+function evLatest(r) {
+  let best = null;
+  Object.keys(r.enc).forEach(k => { const e = r.enc[k]; if (!e || !(e.n || e.st)) return; const a = evAreas().find(a => nkey(a.n) === nkey(k)); if (a && (!best || a.ord > best.ord)) best = a });
+  return best;
+}
+function evHere(r) { return evAreas().find(a => a.n === r.evArea) || evLatest(r) || evAreas()[0] }
+function evAreaHtml(lk, e) {
+  const r = lk.run, A = evHere(r), latest = evLatest(r), li = ROUTES.indexOf(A.L);
+  const pick = (n, extra) => `<button class="btn evpick" data-evpick="${n}" title="Beat ${esc(monName(n))}${extra ? ' (' + esc(extra) + ')' : ''}: +${esc(evText(evForDefeat(e, n, 1, e.pkrs)) || '0')}"><img src="${nimg(n)}" alt=""><span>${esc(monName(n))}<small>${esc(evText(evForDefeat(e, n, 1, e.pkrs)) || '—')}</small></span></button>`;
+  const wild = new Map();
+  A.subs.forEach(x => x.wild.forEach(w => w.mons.forEach(([n]) => { const how = (x.n ? x.n + ' · ' : '') + w.m.replace(/^[^\p{L}\p{N}]+/u, ''); if (!wild.has(n)) wild.set(n, []); if (!wild.get(n).includes(how)) wild.get(n).push(how) })));
+  const trs = A.subs.flatMap(x => x.tr.map(t => ({ t, x })).filter(o => o.t.sec !== 'Rematches' && o.t.sec !== 'Master Trainer' && trApplies(r, o.t)));
+  return `<div class="evarea"><label>Area<select id="evarea">${evAreas().map(a => `<option value="${esc(a.n)}" ${a === A ? 'selected' : ''}>${esc(a.n)}${a === latest ? ' (latest encounter)' : ''}</option>`).join('')}</select></label>
+      ${A !== latest && latest ? `<button class="an" data-evlatest>Back to ${esc(latest.n)}</button>` : ''}<span class="sp">Click a Pokémon to log one win against it.</span></div>
+    ${wild.size ? `<div class="evgroup"><h4>Wild</h4><div class="evpicks">${[...wild].map(([n, how]) => pick(n, how.join(', '))).join('')}</div></div>` : ''}
+    ${trs.length ? `<div class="evgroup"><h4>Trainers</h4>${trs.map(({ t, x }) => `<div class="evtr"><div class="evtrhd"><b>${esc(t.name)}</b>${x.n ? ` <span class="sp">${esc(x.n)}</span>` : ''}<button class="btn" data-evteam="${li}|${A.L.subs.indexOf(x)}|${x.tr.indexOf(t)}" title="Log a win over the whole team">Beat whole team</button></div>
+      <div class="evpicks">${t.team.map(p => pick(p.n, 'Lv. ' + p.lv)).join('')}</div></div>`).join('')}</div>` : ''}
+    ${!wild.size && !trs.length ? '<p class="empty">No wild Pokémon or trainers listed here.</p>' : ''}`;
+}
+function ivEvHtml(e) {
+  const lk = ivLinked(), sh = lk ? evShares(lk.run, e) : [];
+  const ev = e.evs || {}, tot = evTotal(ev), pw = EVPOWER[e.item];
+  const bars = IVSTATS.map(k => `<div class="evrow"><span class="lab">${SL[k]}</span><input type="number" min="0" max="255" data-evset="${k}" value="${+ev[k] || 0}" aria-label="${SL[k]} EVs">
+    <span class="evbar"><i style="width:${(+ev[k] || 0) / 255 * 100}%"></i></span><button class="btn evvit" data-evvit="${k}" title="${EVVIT[k]}: +10 ${SL[k]} EVs (vitamins stop at 100)" ${(+ev[k] || 0) >= 100 || tot >= 510 ? 'disabled' : ''}>+${EVVIT[k]}</button></div>`).join('');
+  const recent = [...new Set((e.evlog || []).map(x => x.n).filter(Boolean))].slice(0, 8);
+  return `<section class="card full"><h3>EVs · ${tot}/510</h3>
+    <p class="ivsub">Effort values from battles. Log what it beats (pick from the area you're in, or search) and the EVs are added from each species' yield. Every level you record keeps the EVs it had, so the IVs above can be exact instead of a range.</p>
+    ${e.item === 'Macho Brace' || pw ? `<p class="ivsub"><b>Holding ${esc(e.item)}:</b> ${e.item === 'Macho Brace' ? 'EVs from battles are doubled' : `+4 ${SL[pw]} EVs per battle`}.</p>` : ''}
+    ${sh.length ? `<div class="evshare"><span class="sp">Also gets the EVs:</span> ${sh.map(x => `<label class="chk" title="${x.e.item === 'Exp. Share' ? 'Holding the Exp. Share: gets the full EVs too' : 'Tick if it also battled (each participant gets the full EVs)'}"><input type="checkbox" data-evalso="${esc(x.k)}" ${x.on ? 'checked' : ''}><img src="${nimg(x.e.n)}" alt="">${esc(x.e.nick || monName(x.e.n))}${x.e.item === 'Exp. Share' ? ' <span class="tag">Exp. Share</span>' : ''}${x.e.item === 'Macho Brace' ? ' <span class="tag">×2</span>' : EVPOWER[x.e.item] ? ` <span class="tag">+4 ${SL[EVPOWER[x.e.item]]}</span>` : ''}${x.e.pkrs ? ' <span class="tag">Pokérus</span>' : ''}</label>`).join('')}</div>` : ''}
+    ${lk ? evAreaHtml(lk, e) : ''}
+    <div class="evadd"><label>Not listed? Search<input id="evmon" list="monlist" placeholder="Pokémon (name or #)" autocomplete="off"></label>
+      <label>Times<input id="evcount" type="number" min="1" max="99" value="1"></label>
+      <label class="chk"><input type="checkbox" id="evpkrs" ${e.pkrs ? 'checked' : ''}> Has Pokérus (×2)</label>
+      <button class="btn primary" id="evgo">Add EVs</button></div>
+    ${recent.length ? `<div class="evrecent"><span class="sp">Again:</span> ${recent.map(n => `<button class="btn" data-evagain="${n}" title="Beat another ${esc(monName(n))}: ${esc(evText(evForDefeat(e, n, 1, e.pkrs)))}"><img src="${nimg(n)}" alt="">${esc(monName(n))}</button>`).join('')}</div>` : ''}
+    <div class="evrows">${bars}</div>
+    ${(e.evlog || []).length ? `<details class="evlog"><summary>EV log · ${e.evlog.length}</summary><ul>${e.evlog.map(x => `<li>${esc(x.why)}: +${esc(evText(x.got))}</li>`).join('')}</ul></details>
+      <div class="tbtns" style="margin-top:6px"><button class="btn" id="evundo">Undo last</button><button class="btn danger" id="evreset">Reset EVs</button></div>` : ''}</section>`;
+}
 function renderIvResults() {
   const el = document.getElementById('ivres'); if (!el) return;
   const m = mons[IVS.n - 1], sol = ivSolve(); if (!m || !sol) { el.innerHTML = ''; return }
@@ -4543,35 +4957,94 @@ function renderIvResults() {
         <div class="sp">IV total ${tmin === tmax ? tmin : tmin + '–' + tmax} of 186 (${Math.round(pct)}%)${best.length ? ' · 30+ in ' + best.join(', ') : ''}</div>
         ${hp && hp.types.length > 4 ? `<div class="sp">Hidden Power: could be any of ${hp.types.length} types. Narrow the IVs to pin it down.</div>` : ''}${hp && hp.types.length <= 4 ? `<div class="sp">Hidden Power: ${hp.types.map(t => `<span class="mtype" style="background:${TC[t]}">${t}</span>`).join(' ')} ${hp.pmin === hp.pmax ? hp.pmin : hp.pmin + '–' + hp.pmax} power</div>` : ''}</div></div>`;
   }
-  el.innerHTML = `<section class="card full"><h3>Results</h3>${total}
+  const hpNote = !IVS.hpt ? '' : ivHpBad ? `<p class="ivwarn">No IVs that fit these stats give Hidden Power ${esc(IVS.hpt)}, so it isn't used. Check the type, nature or stats.</p>`
+    : `<p class="sp" style="margin:0 0 8px">Narrowed by Hidden Power ${esc(IVS.hpt)}: each stat keeps only the odd or even IVs that can give that type.</p>`;
+  el.innerHTML = `<section class="card full"><h3>Results</h3>${hpNote}${total}
     <div class="tablewrap"><table class="ivtable"><thead><tr><th>Stat</th><th>Base</th><th>Possible IVs</th><th class="bar">0 ··· 31</th><th>Judge</th></tr></thead><tbody>${rows}</tbody></table></div>
     <div class="legend"><span>Judge wording follows the in-game IV judge: Best 31 · Fantastic 30 · Very good 26–29 · Pretty good 16–25 · Decent 1–15 · No good 0.</span></div></section>`;
 }
 
+// The IV tab can be linked to a Nuzlocke Pokémon: its levels, stats, nature, characteristic and EVs are that card's, both ways.
+function ivLinked() {
+  const L = IVS.link; if (!L) return null;
+  const run = NZ.runs.find(x => x.id === L.run), e = run && run.enc[L.k];
+  return e && e.n ? { run, e } : null;
+}
+function ivPull(e) {
+  const H = e.hist && e.hist.length ? e.hist : +e.lv ? [{ lv: +e.lv, n: e.n, st: e.stats || {} }] : [];
+  Object.assign(IVS, { n: e.n, nat: e.nat || '', ch: e.ch || '', hpt: e.hpt || '',
+    rows: H.length ? H.map(x => ({ lv: String(x.lv), n: x.n, st: Object.assign({}, x.st), ev: Object.assign({}, x.ev || {}), fresh: !!x.fresh })) : [{ lv: e.lv || '', st: {}, ev: e.evTrack ? evSnap(e) : {} }] });
+  IVS.sync = JSON.stringify(e.hist || []);
+}
+// write the IV tab's rows back to the card: its log, and its current level/stats from the highest level entered
+function ivPush() {
+  const lk = ivLinked(); if (!lk) return; const { run, e } = lk;
+  const rows = IVS.rows.filter(r => +r.lv);
+  e.hist = rows.map(r => Object.assign({ lv: +r.lv, n: r.n || e.n, st: Object.fromEntries(Object.entries(r.st || {}).filter(([, v]) => +v)), fresh: !!r.fresh },
+    Object.keys(r.ev || {}).length ? { ev: Object.assign({}, r.ev) } : {})).filter(x => Object.keys(x.st).length).sort((a, b) => a.lv - b.lv);
+  e.nat = IVS.nat; e.ch = IVS.ch; e.hpt = IVS.hpt || '';
+  const top = rows.filter(r => (r.n || e.n) === e.n).sort((a, b) => +b.lv - +a.lv)[0];
+  if (top && +top.lv >= (+e.lv || 0)) { e.lv = String(+top.lv); e.stats = Object.assign({}, top.st || {}) }
+  IVS.sync = JSON.stringify(e.hist); run.updated = Date.now(); saveRuns();
+}
 function ivLoad(e) {
-  const H = e.hist && e.hist.length ? e.hist : +e.lv ? [{ lv: +e.lv, st: e.stats || {} }] : [];
-  IVS = { n: e.n, nat: e.nat || '', ch: e.ch || '', rows: H.length ? H.map(x => ({ lv: String(x.lv), n: x.n, st: Object.assign({}, x.st), ev: {}, fresh: !!x.fresh })) : [{ lv: e.lv || '', st: {}, ev: {} }] }; ivSave();
+  const r = NZ.runs.find(x => Object.values(x.enc).includes(e)) || curRun(), k = Object.keys(r.enc).find(k => r.enc[k] === e);
+  IVS = { link: { run: r.id, k }, n: e.n, nat: '', ch: '', rows: [] }; evAlso = {}; ivEvOpen.clear(); ivPull(e); ivSave();
 }
 const IVD = document.getElementById('ivdetail');
 IVD.addEventListener('input', ev => {
   const t = ev.target, rw = t.closest('.ivrow'); if (!rw || !t.dataset.iv) return;
   const r = IVS.rows[+rw.dataset.r], f = t.dataset.iv;
   if (f === 'fresh') r.fresh = t.checked; else if (f === 'lv') r.lv = t.value; else { r[f] = r[f] || {}; if (t.value) r[f][t.dataset.s] = +t.value; else delete r[f][t.dataset.s] }
-  ivSave(); renderIvResults();
+  ivSave(); if (IVS.link) ivPush(); renderIvResults();
 });
 IVD.addEventListener('change', ev => {
   const t = ev.target;
   if (t.id === 'ivmon') { const m = monByName(t.value); if (!m) { t.setCustomValidity('Pick a Pokémon from the list'); t.reportValidity(); return } t.setCustomValidity(''); IVS.n = m.num; ivSave(); return renderIv() }
-  if (t.id === 'ivnat') { IVS.nat = t.value; ivSave(); return renderIv() }
-  if (t.id === 'ivch') { IVS.ch = t.value; ivSave(); return renderIvResults() }
-  if (t.id === 'ivload') { const e = curRun().enc[t.value]; if (e) { ivLoad(e); renderIv() } }
+  if (t.id === 'ivnat') { IVS.nat = t.value; ivSave(); if (IVS.link) ivPush(); return renderIv() }
+  if (t.id === 'ivch') { IVS.ch = t.value; ivSave(); if (IVS.link) ivPush(); return renderIvResults() }
+  if (t.id === 'ivhpt') { IVS.hpt = t.value; ivSave(); if (IVS.link) ivPush(); return renderIvResults() }
+  if (t.id === 'ivload') { const e = curRun().enc[t.value]; if (e) ivLoad(e); else { IVS.link = null; ivSave() } return renderIv() }
+  const lk = ivLinked(); if (!lk) return;
+  if (t.dataset.evset) { const e = lk.e; e.evs = e.evs || {}; e.evTrack = true; const k = t.dataset.evset, others = evTotal(e.evs) - (+e.evs[k] || 0);
+    e.evs[k] = Math.max(0, Math.min(255, 510 - others, +t.value || 0)); lk.run.updated = Date.now(); saveRuns(); return renderIv() }
+  if (t.dataset.evalso) { evAlso[t.dataset.evalso] = t.checked; return renderIv() }
+  if (t.id === 'evarea') { lk.run.evArea = t.value; lk.run.updated = Date.now(); saveRuns(); return renderIv() }
+  if (t.id === 'evpkrs') { lk.e.pkrs = t.checked; lk.run.updated = Date.now(); saveRuns(); return renderIv() }
 });
+IVD.addEventListener('toggle', ev => { const d = ev.target, rw = d.closest && d.classList.contains('ivev') && d.closest('.ivrow'); if (!rw) return;
+  d.open ? ivEvOpen.add(+rw.dataset.r) : ivEvOpen.delete(+rw.dataset.r) }, true);
 IVD.addEventListener('click', ev => {
   const t = ev.target;
-  if (t.id === 'ivadd') { const last = IVS.rows[IVS.rows.length - 1]; IVS.rows.push({ lv: last && +last.lv ? String(+last.lv + 1) : '', st: {}, ev: Object.assign({}, last ? last.ev : {}) }); ivSave(); renderIv();
+  const lk = ivLinked();
+  const evDone = (got, why) => { if (!Object.keys(got).length) alert('No EVs added: it has hit the cap (255 a stat, 510 in all) for those stats.'); lk.run.updated = Date.now(); saveRuns(); renderIv() };
+  const evLog = (list, why) => {   // list: [[species, times], ...]
+    const g = 'g' + Date.now();
+    const give = x => { const add = {}; list.forEach(([n, c]) => { const a = evForDefeat(x, n, c, x.pkrs); IVSTATS.forEach(k => { if (a[k]) add[k] = (add[k] || 0) + a[k] }) });
+      const got = evAdd(x, add, why); if (Object.keys(got).length) Object.assign(x.evlog[0], { n: list.length === 1 ? list[0][0] : undefined, g }); return got };
+    const got = give(lk.e), others = evShares(lk.run, lk.e).filter(x => x.on).map(x => give(x.e));
+    if (!Object.keys(got).length && others.some(o => Object.keys(o).length)) { lk.run.updated = Date.now(); saveRuns(); return renderIv() }
+    return evDone(got) };
+  const one = lk && (t.closest('[data-evagain]') || t.closest('[data-evpick]'));
+  if (one) { const m = mons[+(one.dataset.evagain || one.dataset.evpick) - 1]; return m && evLog([[m.num, 1]], 'Beat ' + m.name) }
+  const team = lk && t.closest('[data-evteam]');
+  if (team) { const [li, si, ti] = team.dataset.evteam.split('|').map(Number), tr = ROUTES[li] && ROUTES[li].subs[si] && ROUTES[li].subs[si].tr[ti]; if (!tr) return;
+    return evLog(tr.team.map(p => [p.n, 1]), `Beat ${tr.name}'s team (${tr.team.map(p => monName(p.n)).join(', ')})`) }
+  if (lk && t.closest('[data-evlatest]')) { delete lk.run.evArea; lk.run.updated = Date.now(); saveRuns(); return renderIv() }
+  if (lk && t.id === 'evgo') {
+    const m = monByName(document.getElementById('evmon').value);
+    if (!m) { const i = document.getElementById('evmon'); i.setCustomValidity('Pick a Pokémon from the list'); i.reportValidity(); return }
+    const n = Math.max(1, Math.min(99, +document.getElementById('evcount').value || 1));
+    return evLog([[m.num, n]], `Beat ${m.name}${n > 1 ? ' ×' + n : ''}`) }
+  if (lk && t.dataset.evvit) { const k = t.dataset.evvit, room = Math.max(0, 100 - (+(lk.e.evs || {})[k] || 0)); return evDone(evAdd(lk.e, { [k]: Math.min(10, room) }, EVVIT[k])) }
+  if (lk && t.id === 'evundo') { const x = (lk.e.evlog || []).shift(), back = (o, y) => IVSTATS.forEach(k => { if (y.got[k]) o.evs[k] = Math.max(0, (+o.evs[k] || 0) - y.got[k]) });
+    if (x) { back(lk.e, x); if (x.g) Object.values(lk.run.enc).forEach(o => { if (o && o !== lk.e && o.evlog && o.evlog[0] && o.evlog[0].g === x.g) back(o, o.evlog.shift()) }) } lk.run.updated = Date.now(); saveRuns(); return renderIv() }
+  if (lk && t.id === 'evreset') { if (!confirm('Reset this Pokémon\'s EVs to 0? The log is cleared too.')) return; lk.e.evs = {}; lk.e.evlog = []; lk.run.updated = Date.now(); saveRuns(); return renderIv() }
+  if (t.id === 'ivadd') { const last = IVS.rows[IVS.rows.length - 1]; IVS.rows.push({ lv: last && +last.lv ? String(+last.lv + 1) : '', n: lk ? lk.e.n : undefined, st: {}, ev: lk && lk.e.evTrack ? evSnap(lk.e) : Object.assign({}, last ? last.ev : {}) }); ivSave(); if (lk) ivPush(); renderIv();
     const ins = IVD.querySelectorAll('.ivrow'); const s = ins[ins.length - 1].querySelector('[data-iv="st"]'); if (s) s.focus(); return }
-  if (t.id === 'ivclear') { IVS.rows = [{ lv: '', st: {}, ev: {} }]; IVS.ch = ''; ivSave(); return renderIv() }
-  if (t.dataset.ivdel !== undefined) { IVS.rows.splice(+t.dataset.ivdel, 1); ivSave(); return renderIv() }
+  if (t.id === 'ivclear') { IVS.rows = [{ lv: '', st: {}, ev: {} }]; IVS.ch = ''; IVS.hpt = ''; ivSave(); return renderIv() }
+  if (t.closest('[data-ivfold]')) { ivAllRows = !ivAllRows; return renderIv() }
+  if (t.dataset.ivdel !== undefined) { IVS.rows.splice(+t.dataset.ivdel, 1); ivSave(); if (lk) ivPush(); return renderIv() }
 });
 
 // ---- Moves view: every move Pokémon can learn in RP, with filters and who learns it ----
