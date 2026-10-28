@@ -4958,7 +4958,10 @@ function renderIvResults() {
         ${hp && hp.types.length > 4 ? `<div class="sp">Hidden Power: could be any of ${hp.types.length} types. Narrow the IVs to pin it down.</div>` : ''}${hp && hp.types.length <= 4 ? `<div class="sp">Hidden Power: ${hp.types.map(t => `<span class="mtype" style="background:${TC[t]}">${t}</span>`).join(' ')} ${hp.pmin === hp.pmax ? hp.pmin : hp.pmin + '–' + hp.pmax} power</div>` : ''}</div></div>`;
   }
   const hpNote = !IVS.hpt ? '' : ivHpBad ? `<p class="ivwarn">No IVs that fit these stats give Hidden Power ${esc(IVS.hpt)}, so it isn't used. Check the type, nature or stats.</p>`
-    : `<p class="sp" style="margin:0 0 8px">Narrowed by Hidden Power ${esc(IVS.hpt)}: each stat keeps only the odd or even IVs that can give that type.</p>`;
+    : (() => {
+      const par = IVSTATS.map(k => { const c = sol[k] ? sol[k].c : []; const p = new Set(c.map(iv => iv & 1)); return p.size === 1 ? `${SL[k]} ${p.has(1) ? 'odd' : 'even'}` : '' }).filter(Boolean);
+      return `<p class="sp" style="margin:0 0 8px">Hidden Power ${esc(IVS.hpt)} only comes from certain odd/even IV mixes, so IVs that don't fit are ruled out. ${par.length ? `Known so far: ${par.join(', ')}${par.length < 6 ? '. The other stats could still be either.' : '.'}` : 'It doesn\'t rule anything out yet. Add more levels to narrow it further.'}</p>`;
+    })();
   el.innerHTML = `<section class="card full"><h3>Results</h3>${hpNote}${total}
     <div class="tablewrap"><table class="ivtable"><thead><tr><th>Stat</th><th>Base</th><th>Possible IVs</th><th class="bar">0 ··· 31</th><th>Judge</th></tr></thead><tbody>${rows}</tbody></table></div>
     <div class="legend"><span>Judge wording follows the in-game IV judge: Best 31 · Fantastic 30 · Very good 26–29 · Pretty good 16–25 · Decent 1–15 · No good 0.</span></div></section>`;
