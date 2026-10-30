@@ -253,6 +253,11 @@ tr:last-child td { border-bottom: 0 }
 .cv .by { color: var(--muted); margin-top: 3px; overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical }
 .addteam { margin-top: 12px }
 .syncnote { font-size: .72rem; color: var(--muted) }
+.syncbanner { position: sticky; top: 0; z-index: 50; display: flex; flex-wrap: wrap; align-items: center; gap: 6px 12px; margin: 10px 0 0; padding: 10px 14px; border: 1px solid var(--chg); border-radius: 10px; background: var(--chg-soft); color: var(--ink); font-size: .85rem }
+.syncbanner[hidden] { display: none }
+.syncbanner b { color: var(--chg) }
+.syncbanner span { flex: 1 1 260px }
+.syncbanner .btn { flex: none }
 .mfilters { display: grid; grid-template-columns: 1fr 1fr; gap: 8px }
 .mfilters input[type=search] { grid-column: 1 / -1 }
 .mfilters input[type=search], .mfilters select { font: 500 .85rem var(--font-body); padding: 7px 8px; border-radius: 8px; border: 1px solid var(--line); background: var(--panel); color: var(--ink); min-width: 0; width: 100% }
@@ -925,6 +930,7 @@ section.ncoll h3 { margin-bottom: 0 !important }
       <button id="v-classic" aria-pressed="false">Classic</button>
     </div>
   </header>
+  <div class="syncbanner" id="nbanner" role="status" hidden></div>
   <div class="main" id="dexMain">
     <aside class="roster">
       <div class="filters">
@@ -1696,17 +1702,39 @@ function nMigrate() {
   }));
 }
 nMigrate();
-let nsyncState = 'local', nsyncTimer = null;
+// nsyncState: 'pending' until Forge first answers, then 'synced' or 'offline'. nLost: names of runs whose edits here lost a conflict.
+let nsyncState = 'pending', nsyncTimer = null, nBusy = false, nAgain = false, nLost = [];
+// this browser's id, so the server can tell this device's own earlier saves from another device's
+const NDEV = store.get('rp-device', null) || (() => { const d = 'd' + Date.now().toString(36) + Math.random().toString(36).slice(2, 8); store.set('rp-device', d); return d })();
 function saveRuns() {
   NZ.updated = Date.now(); const cr = NZ.runs.find(r => r.id === NZ.cur); if (cr) cr.updated = NZ.updated; store.set(NKEY, NZ);
-  clearTimeout(nsyncTimer);
-  nsyncTimer = setTimeout(() => fetch('/api/pokedex-nuzlocke', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(NZ) })
-    .then(r => r.ok ? r.json() : Promise.reject()).then(d => { nsyncState = 'synced'; nAdopt(d, false); showNSync() }).catch(() => { nsyncState = 'local'; showNSync() }), 600);
+  nPush();
+}
+// send the runs to Forge, one request at a time so a slow save can't race the next one
+function nPush() { clearTimeout(nsyncTimer); nsyncTimer = setTimeout(nSend, 600) }
+function nSend() {
+  if (nBusy) { nAgain = true; return }
+  nBusy = true;
+  fetch('/api/pokedex-nuzlocke', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ ...NZ, dev: NDEV }) })
+    .then(r => r.ok ? r.json() : Promise.reject()).then(d => { nsyncState = 'synced'; nAdopt(d, false) }).catch(() => { nsyncState = 'offline' })
+    .finally(() => { nBusy = false; showNSync(); if (nAgain) { nAgain = false; nSend() } });
 }
 function showNSync() {
-  const el = document.getElementById('nsync'); if (!el) return;
-  el.textContent = nsyncState === 'synced' ? 'Runs sync across your devices through Forge.' : 'Runs are saved in this browser.';
+  const el = document.getElementById('nsync');
+  if (el) el.textContent = nsyncState === 'synced' ? 'Runs sync across your devices through Forge.' : nsyncState === 'offline' ? 'Not synced: Forge can\'t be reached.' : 'Checking Forge…';
+  const b = document.getElementById('nbanner'); if (!b) return;
+  if (nLost.length) b.innerHTML = `<span><b>Edits on this device weren't saved.</b> ${esc(nLost.join(', '))} changed on another device since this one last synced, so the newer copy replaced this device's edits. They're kept on the Forge server in pokedex-nuzlocke-conflicts.json.</span><button class="btn" data-nbanner="ok">OK</button>`;
+  else if (nsyncState === 'offline') b.innerHTML = `<span><b>Can't reach Forge.</b> Your Nuzlocke runs on this device may be out of date. Hold off on changes until it reconnects: if a run was changed on another device, edits made here will be discarded.</span><button class="btn" data-nbanner="retry">Retry</button>`;
+  b.hidden = !nLost.length && nsyncState !== 'offline';
 }
+document.getElementById('nbanner').addEventListener('click', e => {
+  const a = e.target.closest('[data-nbanner]'); if (!a) return;
+  if (a.dataset.nbanner === 'ok') { nLost = []; showNSync() } else { a.disabled = true; a.textContent = 'Checking…'; nPull() }
+});
+// a run edited here since this device last synced, whose server copy another device has also changed since then.
+// The server rejects these edits by the same rule (mergeNuzlocke in server.js).
+const nStamp = (r, copy) => r.updated || copy.updated || 0;
+const nConflict = (l, s, local, remote) => { const st = nStamp(s, remote); return nStamp(l, local) > st && st > ((local.base || {})[l.id] || 0) && s.by !== NDEV };
 // merge two copies of the run list: newest version of each run wins (a run's own stamp, else its copy's), deletions stick
 function nMerge(local, remote) {
   const del = new Set([...(local.deleted || []), ...(remote.deleted || [])]), by = new Map();
@@ -1715,27 +1743,39 @@ function nMerge(local, remote) {
   const all = [...by.values()].map(x => x.r).sort((a, b) => (a.created || 0) - (b.created || 0)), real = all.filter(r => !(r.placeholder && !r.updated)), runs = real.length ? real : all;
   return { runs, cur: runs.some(r => r.id === local.cur) ? local.cur : (runs[0] || {}).id, deleted: [...del], updated: Math.max(local.updated || 0, remote.updated || 0) };
 }
-// take in the server's copy; push back if we hold anything it doesn't
+// take in the server's copy (stale local edits give way to it); push back if we hold anything it doesn't
 function nAdopt(d, push) {
   if (!d || !Array.isArray(d.runs)) return;
   if (nFresh) {
     if (d.runs.some(r => !r.placeholder)) { NZ.runs = NZ.runs.filter(r => r.id !== nFresh); if (NZ.cur === nFresh) NZ.cur = d.cur }
     nFresh = null;
   }
-  const m = nMerge(NZ, d), changed = JSON.stringify(m.runs) !== JSON.stringify(NZ.runs);
+  const before = JSON.stringify(NZ.runs), sv = new Map(d.runs.map(r => [r.id, r]));
+  const lost = NZ.runs.filter(r => sv.has(r.id) && nConflict(r, sv.get(r.id), NZ, d));
+  if (lost.length) {
+    // the server files edits it rejected itself; send it the ones caught here so they're kept too
+    const unfiled = lost.filter(r => !(d.rejected || []).includes(r.id));
+    if (unfiled.length) fetch('/api/pokedex-nuzlocke/conflicts', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ runs: unfiled, dev: NDEV }) }).catch(() => {});
+    NZ.runs = NZ.runs.map(r => lost.includes(r) ? sv.get(r.id) : r);
+    nLost = [...new Set([...nLost, ...lost.map(r => r.name)])];
+  }
+  const m = nMerge(NZ, d), changed = JSON.stringify(m.runs) !== before;
   if (!m.runs.length) { m.runs.push(newRun('Run 1')); m.cur = m.runs[0].id }
+  m.base = Object.fromEntries(d.runs.map(r => [r.id, nStamp(r, d)]));
   NZ = m; nMigrate(); store.set(NKEY, NZ);
   if (changed && view === 'nuzlocke') { renderRunList(); renderRun() }
-  if (push && JSON.stringify(m.runs) !== JSON.stringify(d.runs)) saveRuns();
+  if (push && JSON.stringify(m.runs) !== JSON.stringify(d.runs)) nPush();
 }
 function nPull() {
-  fetch('/api/pokedex-nuzlocke', { cache: 'no-store' }).then(r => r.ok ? r.json() : null).then(d => {
-    if (!d || !Array.isArray(d.runs)) return;
-    nsyncState = 'synced'; nAdopt(d, true); showNSync();
-  }).catch(() => {});
+  fetch('/api/pokedex-nuzlocke', { cache: 'no-store' }).then(r => r.ok ? r.json() : Promise.reject()).then(d => {
+    if (!d || !Array.isArray(d.runs)) return Promise.reject();
+    nsyncState = 'synced'; nAdopt(d, true);
+  }).catch(() => { nsyncState = 'offline' }).finally(showNSync);
 }
 nPull();
 document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible') nPull() });
+addEventListener('online', nPull);
+setInterval(() => { if (nsyncState === 'offline' && document.visibilityState === 'visible') nPull() }, 30000);
 
 
 const isCaught = e => e && e.n && (e.st === 'party' || e.st === 'box' || e.st === 'dead');
