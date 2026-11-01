@@ -642,6 +642,7 @@ details.gch .gpick, details.gch .gboss { background: var(--bg) }
 .evbar { height: 8px; background: var(--line); border-radius: 4px; overflow: hidden } .evbar i { display: block; height: 100%; background: var(--accent) }
 .evvit { padding: 3px 8px; font-size: .74rem }
 .evlog { margin-top: 8px; font-size: .82rem } .evlog ul { margin: 4px 0 0; padding-left: 18px; max-height: 200px; overflow: auto }
+.evlog li.evlv { list-style: none; margin-left: -18px; padding: 2px 0; color: var(--accent); font-weight: 600 }
 .pevs { font-size: .76rem; color: var(--muted); margin-top: 2px } .pevs:empty { margin: 0 }
 .tppick { margin: 10px 0; font-size: .85rem } .tppick > summary { cursor: pointer; font-weight: 600 }
 .tppick .chk { display: inline-flex; align-items: center; gap: 4px; margin: 6px 0 }
@@ -652,6 +653,8 @@ details.gch .gpick, details.gch .gboss { background: var(--bg) }
 .pjrow ul { margin: 6px 0 0; padding-left: 18px } .pjrow li { margin-bottom: 3px }
 .pjrow .tphd img { width: 40px; height: 40px; image-rendering: pixelated } .pjto { color: var(--muted) }
 .pjstone { color: var(--chg); font-weight: 600 }
+.pjevo { display: flex; align-items: center; gap: 8px; margin-top: 6px; font-size: .8rem; color: var(--muted) }
+.pjevo select { flex: 1; min-width: 0; font: 500 .8rem var(--font-body); padding: 4px 6px; border-radius: 7px; border: 1px solid var(--line); background: var(--panel); color: var(--ink) }
 .trarea { border: 1px solid var(--line); border-radius: 10px; margin-bottom: 8px; background: var(--bg) }
 .trarea > summary { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; padding: 8px 12px; cursor: pointer; list-style: none }
 .trarea > summary::-webkit-details-marker { display: none }
@@ -3145,7 +3148,9 @@ function renderTurnLog() {
     return `<select data-bt="${side ? 'bOut' : 'pOut'}">${opt('hit', st ? 'Worked' : 'Hit', cur)}${opt('miss', st ? 'Missed / failed' : 'Missed', cur)}${st ? '' : opt('crit', 'Critical hit', cur)}</select>
       ${btHasChance(mv) ? `<label class="chk"><input type="checkbox" data-bt="${side ? 'bSec' : 'pSec'}" ${secOn ? 'checked' : ''}> Added effect happened</label>` : ''}` };
   const log = (BS.log || []).map(e => `<li><b>Turn ${e.t}</b><ul>${(e.steps || []).map(x => `<li><span class="bthead">${esc(x.head)}</span>${x.fx.length ? `<ul>${x.fx.map(y => `<li>${y}</li>`).join('')}</ul>` : ''}</li>`).join('')}${(e.did || []).map(x => `<li class="sp">${esc(x)}</li>`).join('')}${e.fx.map(x => `<li>${x}</li>`).join('')}</ul>${e.est ? '<div class="sp">Damage is a middle-roll estimate. If the game showed different numbers, fix the HP on the cards above.</div>' : ''}</li>`).join('');
-  el.innerHTML = `<section class="card full"><div class="nhead"><h3>Log a turn${BS.turn ? ' <small class="sp">· turn ' + (BS.turn + 1) + ' next</small>' : ''}</h3>${(BS.hist || []).length ? '<button class="btn" data-bact="undo">Undo last turn</button>' : ''}</div>
+  const min = store.get('rp-btlog-min', false);
+  el.innerHTML = `<section class="card full"><div class="nhead"><h3>Log a turn${BS.turn ? ' <small class="sp">· turn ' + (BS.turn + 1) + ' next</small>' : ''}</h3><div class="tbtns">${(BS.hist || []).length ? '<button class="btn" data-bact="undo">Undo last turn</button>' : ''}<button class="btn" data-bact="logmin" aria-expanded="${!min}" aria-controls="btlogbody">${min ? 'Show ▾' : 'Hide ▴'}</button></div></div>
+    <div id="btlogbody" ${min ? 'hidden' : ''}>
     <p class="sp">After a turn in the game, pick what both sides did and press Advance. The board updates (HP, status, stat changes, hazards, weather, items) and the effects are listed below.</p>
     <div class="btform">
       <div><h5>${esc(me.name)} <span class="sp">(you)</span></h5>${actSel(0, me, P, tl.p)} ${outSel(0, tl.pOut, tl.pSec)}</div>
@@ -3156,7 +3161,7 @@ function renderTurnLog() {
     </div>
     <div class="tbtns" style="margin-top:8px"><button class="btn primary" data-bact="turn" ${tl.p && tl.b ? '' : 'disabled'}>Advance turn ▸</button>${tl.p && tl.b ? '' : '<span class="sp">Pick both actions first.</span>'}</div>
     ${log ? `<h4 class="tph4">Turn history</h4><ol class="btlog">${log}</ol>` : ''}
-    <p class="sp" style="margin-top:6px">Logged turns use a middle damage roll and only the luck you tick (misses, crits, added effects). Ability effects like Static aren't assumed, so set a status on its card if one happened. Confusion, Leech Seed, Taunt and similar aren't carried between turns.</p></section>`;
+    <p class="sp" style="margin-top:6px">Logged turns use a middle damage roll and only the luck you tick (misses, crits, added effects). Ability effects like Static aren't assumed, so set a status on its card if one happened. Confusion, Leech Seed, Taunt and similar aren't carried between turns.</p></div></section>`;
 }
 // Walks the boss's remaining Pokémon in the order the trainer AI will likely send them, deciding at each step from both sides' current
 // HP: stay in, switch, or chip and pull out. HP carries forward. Returns steps for batMapHtml.
@@ -3443,18 +3448,26 @@ function pjItemWhere(item, upto) {
   }
   return '';
 }
-// every way it could develop by the cap: segments of [species, from, to] levels it learns moves over, plus its evolutions
-function pjPaths(n, at, cap) {
-  const nd = pjNode(n), kids = (nd && nd.k || []).filter(c => mons[c.num - 1]).map(c => ({ c, h: pjHow(c) })).filter(o => o.h);
+// does this evolution-tree node lead to species t (or is it t)?
+const pjLeads = (x, t) => x.num === t || (x.k || []).some(c => pjLeads(c, t));
+// every species further down a Pokémon's line, in tree order with its depth, for the evolution picker
+function pjEvoOpts(n) {
+  const out = [], walk = (x, d) => (x.k || []).forEach(c => { if (!mons[c.num - 1]) return; out.push({ n: c.num, d, m: c.m }); walk(c, d + 1) });
+  const nd = pjNode(n); if (nd) walk(nd, 0); return out;
+}
+// every way it could develop by the cap: segments of [species, from, to] levels it learns moves over, plus its evolutions.
+// plan (a species number) keeps only the branches leading to it; plan === n means it stays as it is.
+function pjPaths(n, at, cap, plan) {
+  const nd = pjNode(n), kids = (nd && nd.k || []).filter(c => mons[c.num - 1] && (!plan || pjLeads(c, plan))).map(c => ({ c, h: pjHow(c) })).filter(o => o.h);
   const lvK = kids.filter(o => o.h.lv), itK = kids.filter(o => o.h.item), out = [], note = [];
   itK.forEach(({ c, h }) => {
     // evolve now, or right after any level where it still learns something itself
     const S = [...new Set([at, ...mons[n - 1].lu.map(([l]) => l).filter(l => l > at && l <= cap)])];
-    S.forEach(sl => pjPaths(c.num, sl, cap).forEach(p => out.push({ segs: [{ n, from: at, to: sl }, ...p.segs], evo: [{ to: c.num, lv: sl, item: h.item, hold: h.hold, now: sl === at }, ...p.evo], note: p.note })));
+    S.forEach(sl => pjPaths(c.num, sl, cap, plan).forEach(p => out.push({ segs: [{ n, from: at, to: sl }, ...p.segs], evo: [{ to: c.num, lv: sl, item: h.item, hold: h.hold, now: sl === at }, ...p.evo], note: p.note })));
   });
   if (lvK.length === 1 && Math.max(lvK[0].h.lv, at + 1) <= cap) {
     const L = Math.max(lvK[0].h.lv, at + 1);
-    pjPaths(lvK[0].c.num, L - 1, cap).forEach(p => out.push({ segs: [{ n, from: at, to: L }, ...p.segs], evo: [{ to: lvK[0].c.num, lv: L }, ...p.evo], note: p.note }));
+    pjPaths(lvK[0].c.num, L - 1, cap, plan).forEach(p => out.push({ segs: [{ n, from: at, to: L }, ...p.segs], evo: [{ to: lvK[0].c.num, lv: L }, ...p.evo], note: p.note }));
   } else {
     if (lvK.length > 1 && Math.min(...lvK.map(o => o.h.lv)) <= cap) note.push(`At Lv. ${Math.min(...lvK.map(o => o.h.lv))} it evolves into ${lvK.map(o => mons[o.c.num - 1].name).join(' or ')} (depends on the Pokémon), so it's shown unevolved.`);
     else if (lvK.length === 1) note.push(`Evolves into ${mons[lvK[0].c.num - 1].name} at Lv. ${lvK[0].h.lv}, after this boss.`);
@@ -3485,7 +3498,9 @@ function pjPickMoves(P, cur, pool, foes, hpt) {
 }
 const pjCache = new Map();
 function pjProject(e, cap, bossTeam, chIdx) {
-  const key = JSON.stringify([e.n, e.lv, e.moves, e.nat, e.ab, e.hpt, e.ch, e.item, (e.hist || []).length, cap, BS.boss, BS.v, nCalc.biv]);
+  // the evolution picked on its leveling plan (e.evoPlan), if it's still this species or one further down its line
+  const plan = +e.evoPlan && (+e.evoPlan === e.n || (pjNode(e.n) || {}).k && pjNode(e.n).k.some(c => pjLeads(c, +e.evoPlan))) ? +e.evoPlan : 0;
+  const key = JSON.stringify([e.n, e.lv, e.moves, e.nat, e.ab, e.hpt, e.ch, e.item, (e.hist || []).length, cap, BS.boss, BS.v, nCalc.biv, plan]);
   if (pjCache.has(key)) return pjCache.get(key);
   const lv0 = +e.lv, foes = bossTeam.map(p => nBossMon(p, +nCalc.biv)), field = tpField(foes.map((b, i) => nsMake(b, (bossTeam[i].mv || []).filter(Boolean), 1, i, 'b' + i)));
   const bossC = foes.map((b, i) => nsMake(b, (bossTeam[i].mv || []).filter(Boolean), 1, i, 'b' + i));
@@ -3501,7 +3516,7 @@ function pjProject(e, cap, bossTeam, chIdx) {
   };
   // per final form: the stone level whose moves score best (earliest on a tie), then forms compared in one-on-one matchups
   const byForm = new Map();
-  pjPaths(e.n, lv0, cap).forEach(p => { const v = build(p), k = p.evo.map(x => x.to + (x.item ? ':' + x.item : '')).join('>'), o = byForm.get(k);
+  pjPaths(e.n, lv0, cap, plan).forEach(p => { const v = build(p), k = p.evo.map(x => x.to + (x.item ? ':' + x.item : '')).join('>'), o = byForm.get(k);
     if (!o || v.mvScore > o.mvScore * 1.001) byForm.set(k, v) });
   const forms = [...byForm.values()].map(v => {
     const c = nsMake(nMineMon(v.e2), v.e2.moves, 0, 0, 'pj');
@@ -3510,11 +3525,13 @@ function pjProject(e, cap, bossTeam, chIdx) {
     v.ok = v.items.every(x => x.where);
     return v;
   });
-  // the normal schedule (no stones/items) unless an item form clearly does better and is obtainable
+  // the normal schedule (no stones/items) unless an item form clearly does better and is obtainable.
+  // With an evolution picked, go as far toward it as the cap allows, whatever scores best.
   const plain = forms.find(v => !v.items.length) || forms[0];
-  const best = forms.filter(v => v.ok).reduce((a, v) => v.val > a.val * 1.05 + .05 ? v : a, plain);
-  const missed = forms.filter(v => !v.ok && v.val > best.val * 1.05 + .05).sort((a, b) => b.val - a.val)[0];
-  const res = { e: best.e2, from: lv0, to: cap, evo: best.p.evo, note: best.p.note, items: best.items, newMoves: best.pool.filter(x => best.e2.moves.includes(x.mv)), pool: best.pool,
+  const best = plan ? forms.reduce((a, v) => v.p.evo.length > a.p.evo.length || v.p.evo.length === a.p.evo.length && v.val > a.val ? v : a)
+    : forms.filter(v => v.ok).reduce((a, v) => v.val > a.val * 1.05 + .05 ? v : a, plain);
+  const missed = plan ? null : forms.filter(v => !v.ok && v.val > best.val * 1.05 + .05).sort((a, b) => b.val - a.val)[0];
+  const res = { e: best.e2, from: lv0, to: cap, evo: best.p.evo, note: best.p.note, items: best.items, newMoves: best.pool.filter(x => best.e2.moves.includes(x.mv)), pool: best.pool, planned: !!plan,
     missed: missed ? { n: missed.e2.n, items: missed.items } : null, alt: forms.filter(v => v !== best).map(v => ({ n: v.e2.n, val: v.val })) };
   pjCache.set(key, res); if (pjCache.size > 300) pjCache.delete(pjCache.keys().next().value);
   return res;
@@ -3527,7 +3544,9 @@ function pjLines(pj) {
     if (!x.item) return L.push(`Evolves into <b>${nm(x.to)}</b> at Lv. ${x.lv}.`);
     const after = pj.pool.filter(m => m.n === from && m.lv === x.lv && pj.e.moves.includes(m.mv)).map(m => esc(m.mv)), it = pj.items.find(o => o.item === x.item) || {};
     const how = x.item === 'friendship' ? 'with high friendship (level it up while it\'s happy; a Soothe Bell helps)' : x.hold ? `by levelling it up holding a ${esc(x.item)}` : `with a <b>${esc(x.item)}</b>`;
-    L.push(`<span class="pjstone">Evolve into <b>${nm(x.to)}</b> ${how} ${x.now ? 'now' : `at Lv. ${x.lv}${after.length ? `, after it learns ${after.join(' and ')}` : ''}`}.</span>${it.where && it.where !== 'friendship' ? ` <span class="sp">${esc(x.item)}: ${esc(it.where)}.</span>` : ''} It scores better against this boss than staying ${nm(from)}.`);
+    L.push(`<span class="pjstone">Evolve into <b>${nm(x.to)}</b> ${how} ${x.now ? 'now' : `at Lv. ${x.lv}${after.length ? `, after it learns ${after.join(' and ')}` : ''}`}.</span>${it.where && it.where !== 'friendship' ? ` <span class="sp">${esc(x.item)}: ${esc(it.where)}.</span>` : ''}${pj.planned
+      ? (it.where ? '' : ` <span class="sp">No ${esc(x.item)} turns up before this boss, so you'll need one from somewhere else.</span>`)
+      : ` It scores better against this boss than staying ${nm(from)}.`}`);
   });
   if (pj.newMoves.length) L.push(`Learns ${pj.newMoves.map(m => `${esc(m.mv)} (Lv. ${m.lv})`).join(', ')} on the way.`);
   L.push(`Moves at Lv. ${pj.to}: ${pj.e.moves.map(esc).join(' · ')}.`);
@@ -3549,7 +3568,7 @@ function tpSetup(r) {
   }).map(x => { if (!proj || +x.e.lv >= cap) return x;
     const pj = Object.assign({ orig: x.e.n }, pjProject(x.e, cap, team, chIdx));
     return { row: x.row, e: Object.assign(pj.e, { st: x.e.st }), orig: x.e, pj } });
-  const sig = JSON.stringify([r.id, BS.boss, BS.v, nCalc.biv, BS.steal || [], proj, cands.map(x => [x.row.k, x.e.n, x.e.lv, x.e.moves, x.e.item, x.e.ab, x.e.nat, x.e.stats, x.e.hist])]);
+  const sig = JSON.stringify([r.id, BS.boss, BS.v, nCalc.biv, BS.steal || [], proj, cands.map(x => [x.row.k, x.e.n, x.e.lv, x.e.moves, x.e.item, x.e.ab, x.e.nat, x.e.stats, x.e.hist, x.e.evoPlan])]);
   return { b, team, cands, out, sig, all, proj, pick, cap };
 }
 // What the boss's team does to the field, and from which of their Pokémon on. Hazards land on your side once the setter has
@@ -3897,7 +3916,10 @@ function renderTeamPick() {
       <h4 class="tph4">Battle plan</h4>${tpPlanHtml(res)}
       ${tpMapHtml(res)}
       ${(() => { const lv = ord.map(i => su.cands[i]).filter(x => x.pj), others = left.map(o => o.x).filter(x => x.pj);
-        const one = x => `<div class="pjrow"><div class="tphd"><img src="${nimg(x.orig.n)}" alt="">${x.e.n !== x.orig.n ? `<span class="pjto">→</span><img src="${nimg(x.e.n)}" alt="">` : ''}<div><b>${nm(x)}</b> <span class="sp">Lv. ${x.pj.from} → ${x.pj.to} · +${x.pj.to - x.pj.from} levels</span></div></div><ul>${pjLines(x.pj).map(l => `<li>${l}</li>`).join('')}</ul></div>`;
+        const evoSel = x => { const opts = pjEvoOpts(x.orig.n), cur = +x.orig.evoPlan; if (!opts.length) return '';
+          const opt = (v, label) => `<option value="${v}" ${cur === v ? 'selected' : ''}>${label}</option>`;
+          return `<label class="pjevo">Evolution <select data-evoplan="${esc(x.row.k)}"><option value="">Auto: best against this boss</option>${opts.map(o => opt(o.n, '  '.repeat(o.d) + esc(mons[o.n - 1].name) + (o.m ? ` (${esc(o.m)})` : ''))).join('')}${opt(x.orig.n, 'Don\'t evolve')}</select></label>` };
+        const one = x => `<div class="pjrow"><div class="tphd"><img src="${nimg(x.orig.n)}" alt="">${x.e.n !== x.orig.n ? `<span class="pjto">→</span><img src="${nimg(x.e.n)}" alt="">` : ''}<div><b>${nm(x)}</b> <span class="sp">Lv. ${x.pj.from} → ${x.pj.to} · +${x.pj.to - x.pj.from} levels</span></div></div>${evoSel(x)}<ul>${pjLines(x.pj).map(l => `<li>${l}</li>`).join('')}</ul></div>`;
         return lv.length || others.length ? `<h4 class="tph4">Leveling plan to Lv. ${su.cap}</h4><p class="sp" style="margin:0 0 6px">Under-leveled Pokémon are planned as they'd be at the level cap: levelled, evolved on schedule, with the best moves they'd know by then.</p>
           <div class="pjgrid">${lv.map(one).join('')}</div>${others.length ? `<details class="tpout"><summary>Leveling plans for the rest (${others.length})</summary><div class="pjgrid">${others.map(one).join('')}</div></details>` : ''}` : '' })()}
       <h4 class="tph4">Why each Pokémon</h4><div class="tpgrid">${cards}</div>
@@ -4231,6 +4253,8 @@ GD.addEventListener('change', ev => { if (ev.target.id === 'gjump') { const el =
 const BD = document.getElementById('batdetail');
 BD.addEventListener('change', ev => { if (ev.target.dataset.bf) return batChange(ev.target);
   if (ev.target.id === 'tpproj') { BS.proj = ev.target.checked; batSave(); return renderTeamPick() }
+  if (ev.target.dataset.evoplan) { const r = curRun(), e = r.enc[ev.target.dataset.evoplan]; if (!e) return;
+    if (ev.target.value) e.evoPlan = +ev.target.value; else delete e.evoPlan; r.updated = Date.now(); saveRuns(); return tpRun() }
   if (ev.target.dataset.tppick) { const r = curRun(), all = tpSetup(r).all.map(x => x.row.k), k = ev.target.dataset.tppick;
     const cur = new Set(Array.isArray(BS.pick) ? BS.pick : all); ev.target.checked ? cur.add(k) : cur.delete(k);
     BS.pick = all.every(x => cur.has(x)) ? null : [...cur]; batSave(); return renderTeamPick() }
@@ -4244,6 +4268,7 @@ BD.addEventListener('click', ev => { const pa = ev.target.closest('[data-tppicka
   if (b.dataset.bact === 'team') return tpRun();
   if (b.dataset.bact === 'turn') return btAdvance();
   if (b.dataset.bact === 'undo') return btUndo();
+  if (b.dataset.bact === 'logmin') { store.set('rp-btlog-min', !store.get('rp-btlog-min', false)); return renderTurnLog() }
   if (b.dataset.bact === 'useteam') return tpUse();
   if (b.dataset.bact === 'reset') { const r = curRun(); BS = batFresh(r, BS ? BS.boss : r.beat, BS ? BS.v : 0); batSave(); renderBattle() } });
 
@@ -4266,7 +4291,9 @@ function nLog(e) {
   const same = x => +x.lv === +e.lv && (x.n || e.n) === e.n, prev = (e.hist || []).find(same), first = !(e.hist || []).length;
   e.hist = (e.hist || []).filter(x => !same(x));
   // the first level ever logged is usually right after the catch, before any battles; it can be unticked in the log
-  if (Object.keys(st).length) e.hist.push(Object.assign({ lv: +e.lv, n: e.n, st, fresh: prev ? !!prev.fresh : first }, e.evTrack ? { ev: evSnap(e) } : prev && prev.ev ? { ev: prev.ev } : {}));
+  // t: when the level was first logged (older entries have none; the EV log places those by their EVs)
+  if (Object.keys(st).length) e.hist.push(Object.assign({ lv: +e.lv, n: e.n, st, fresh: prev ? !!prev.fresh : first }, prev ? (prev.t ? { t: prev.t } : {}) : { t: Date.now() },
+    e.evTrack ? { ev: evSnap(e) } : prev && prev.ev ? { ev: prev.ev } : {}));
   e.hist.sort((a, b) => a.lv - b.lv);
 }
 // a new level starts a fresh set of stats; the old level's stats stay in the log
@@ -4954,6 +4981,20 @@ function evAreaHtml(lk, e) {
       <div class="evpicks">${t.team.map(p => pick(p.n, 'Lv. ' + p.lv)).join('')}</div></div>`).join('')}</div>` : ''}
     ${!wild.size && !trs.length ? '<p class="empty">No wild Pokémon or trainers listed here.</p>' : ''}`;
 }
+// the EV log (newest first) with the logged levels slotted in: by when the level was logged, else by the EVs it had then
+function evLogRows(e) {
+  const log = e.evlog || [], hist = (e.hist || []).filter(h => +h.lv).sort((a, b) => a.lv - b.lv);
+  let cur = evTotal(e.evs); const after = log.map(x => { const a = cur; cur -= evTotal(x.got); return a });
+  const pos = h => { const i = h.t ? log.findIndex(x => x.t <= h.t) : h.ev ? after.findIndex(a => a <= evTotal(h.ev)) : -1; return i < 0 ? log.length : i };
+  const lvs = hist.map((h, i) => ({ h, at: pos(h), first: !i, evo: i && h.n && hist[i - 1].n && h.n !== hist[i - 1].n }));
+  const lvRow = x => `<li class="evlv">${x.first ? `Logged at Lv. ${x.h.lv}` : x.evo ? `Evolved into ${esc(monName(x.h.n))} · Lv. ${x.h.lv}` : `Level up: Lv. ${x.h.lv}`}</li>`;
+  const out = [];
+  for (let i = 0; i <= log.length; i++) {
+    lvs.filter(x => x.at === i).reverse().forEach(x => out.push(lvRow(x)));
+    if (log[i]) out.push(`<li>${esc(log[i].why)}: +${esc(evText(log[i].got))}</li>`);
+  }
+  return out.join('');
+}
 function ivEvHtml(e) {
   const lk = ivLinked(), sh = lk ? evShares(lk.run, e) : [];
   const ev = e.evs || {}, tot = evTotal(ev), pw = EVPOWER[e.item];
@@ -4971,7 +5012,7 @@ function ivEvHtml(e) {
       <button class="btn primary" id="evgo">Add EVs</button></div>
     ${recent.length ? `<div class="evrecent"><span class="sp">Again:</span> ${recent.map(n => `<button class="btn" data-evagain="${n}" title="Beat another ${esc(monName(n))}: ${esc(evText(evForDefeat(e, n, 1, e.pkrs)))}"><img src="${nimg(n)}" alt="">${esc(monName(n))}</button>`).join('')}</div>` : ''}
     <div class="evrows">${bars}</div>
-    ${(e.evlog || []).length ? `<details class="evlog"><summary>EV log · ${e.evlog.length}</summary><ul>${e.evlog.map(x => `<li>${esc(x.why)}: +${esc(evText(x.got))}</li>`).join('')}</ul></details>
+    ${(e.evlog || []).length ? `<details class="evlog"><summary>EV log · ${e.evlog.length}</summary><ul>${evLogRows(e)}</ul></details>
       <div class="tbtns" style="margin-top:6px"><button class="btn" id="evundo">Undo last</button><button class="btn danger" id="evreset">Reset EVs</button></div>` : ''}</section>`;
 }
 function renderIvResults() {
