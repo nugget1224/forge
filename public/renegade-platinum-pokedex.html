@@ -513,6 +513,33 @@ button.gbtn:hover { border-color: var(--accent) }
 .bslot .bact, .bslot .bsmv { grid-column: 1 / -1 }
 .bslot .bsmv { font-size: .72rem; overflow-wrap: anywhere }
 .bslot input[type=number], .bslot select { box-sizing: border-box; width: 100%; max-width: 100% }
+.bfold { margin-top: 10px; border-top: 1px dashed var(--line); padding-top: 8px }
+.bfold > summary { cursor: pointer; font-size: .84rem; color: var(--ink) }
+.bfold > summary b { font-weight: 700 }
+.bsect { font-family: var(--font-display); font-size: 1.15rem; margin: 18px 0 -4px }
+.badvice { margin-top: 16px; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr)); gap: 16px; align-items: start }
+.badvice > .card { margin: 0 }
+.simset { border: 1px solid var(--line); border-radius: 10px; padding: 8px 12px; margin: 8px 0 4px; background: var(--bg) }
+.simmodes { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 16px; font-size: .84rem }
+#batdetail .simset label.chk { flex-direction: row; align-items: center; gap: 6px; text-transform: none; letter-spacing: 0; font-size: .84rem; color: var(--ink) }
+.simord { list-style: none; margin: 8px 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px; counter-reset: so }
+.simord li { counter-increment: so; display: flex; align-items: center; gap: 4px; border: 1px solid var(--line); border-radius: 8px; padding: 2px 4px 2px 8px; background: var(--panel); font-size: .84rem }
+.simord li::before { content: counter(so); font: 700 .75rem var(--font-data); color: var(--muted) }
+.simord img { width: 32px; height: 32px; image-rendering: pixelated }
+.simord .btn { padding: 2px 6px; font-size: .7rem }
+.simalt { font-size: .82rem; margin-top: 6px }
+.bsim .ssum { display: flex; flex-wrap: wrap; gap: 12px 20px; align-items: center; margin: 8px 0 12px }
+.bsim .sbig { font: 700 2.4rem var(--font-data); line-height: 1; display: flex; flex-direction: column; align-items: center }
+.bsim .sbig small { font: 600 .66rem var(--font-body); text-transform: uppercase; letter-spacing: .07em; color: var(--muted); margin-top: 4px }
+.bsim .sbig.good { color: var(--new) } .bsim .sbig.ok { color: #d7a91a } .bsim .sbig.bad { color: var(--chg) }
+.bsim .sdist { display: flex; flex-wrap: wrap; gap: 4px 14px; font-size: .82rem; margin-top: 4px; color: var(--muted) }
+.bsim .sdist b { color: var(--ink) }
+.bsim .sgrid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); gap: 8px 24px }
+.bsim .smon { display: flex; align-items: center; gap: 8px; padding: 4px 0; font-size: .86rem; border-bottom: 1px solid var(--line) }
+.bsim .smon img { width: 40px; height: 40px; image-rendering: pixelated; flex: 0 0 40px }
+.bsim .smon > div { flex: 1; min-width: 0 }
+.bsim .sbar { width: 80px; height: 6px; border-radius: 3px; background: var(--bg); border: 1px solid var(--line); overflow: hidden; flex: 0 0 80px }
+.bsim .sbar i { display: block; height: 100%; background: var(--chg) }
 .bactive { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 14px; margin: 12px 0 6px; font-size: .86rem }
 .bstg { display: flex; flex-wrap: wrap; gap: 6px }
 .bstg label { width: 64px }
@@ -648,7 +675,15 @@ details.gch .gpick, details.gch .gboss { background: var(--bg) }
 .tppick .chk { display: inline-flex; align-items: center; gap: 4px; margin: 6px 0 }
 .tppicks { display: flex; flex-wrap: wrap; gap: 2px 14px; margin: 4px 0 8px }
 .tppicks img { width: 30px; height: 30px; image-rendering: pixelated }
-.pjgrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 8px; margin-bottom: 8px }
+.pjbox > summary { cursor: pointer; display: flex; align-items: baseline; flex-wrap: wrap; gap: 4px 10px }
+.pjbox > summary h3 { margin: 0 }
+.pjbox .pjgrid { margin: 0 }
+.pjbox .stypes .btag { margin-left: 4px }
+.pjrow.pjlead { border-color: var(--accent) }
+.pjrole { margin: 6px 0 0; font-size: .82rem; line-height: 1.45 }
+#batdetail label.pjevo { flex-direction: row; align-items: center; gap: 8px; margin-top: 6px }
+#batdetail .pjevo select { flex: 1; max-width: 100% }
+.pjgrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 260px), 1fr)); gap: 8px; margin-bottom: 8px }
 .pjrow { border: 1px solid var(--line); border-radius: 10px; padding: 8px 10px; font-size: .85rem }
 .pjrow ul { margin: 6px 0 0; padding-left: 18px } .pjrow li { margin-bottom: 3px }
 .pjrow .tphd img { width: 40px; height: 40px; image-rendering: pixelated } .pjto { color: var(--muted) }
@@ -2484,8 +2519,19 @@ function nsAiSwitch(S) {
 // ---- status moves for your side ----
 const nsStKind = mv => { const st = NSTAT[mv]; return st ? st.k : '' };
 // would this status move work on foe right now (Gen 4 rules: no Grass powder immunity, no Electric paralysis immunity)?
+// why a status move would fail on foe right now, or '' (it might work)
+function nsWontWork(S, me, foe, mv) {
+  const k = nsStKind(mv), nm = foe.name;
+  if (k === 'leech') return foe.seed ? nm + ' is already seeded' : foe.types.includes('Grass') ? "Grass types can't be seeded" : '';
+  if (['sleep', 'para', 'brn', 'tox', 'psn', 'yawn'].includes(k) && !nsStatusLands(S, me, foe, mv))
+    return foe.st ? nm + ' already has a status condition' : k === 'yawn' && foe.yawn ? nm + ' is already drowsy' : nm + " can't get it right now";
+  if (k === 'conf' && foe.conf) return nm + ' is already confused';
+  if (k === 'taunt' && foe.taunt) return nm + ' is already taunted';
+  return '';
+}
 function nsStatusLands(S, me, foe, mv) {
   const k = nsStKind(mv), ab = foe.ab, wx = nsWx(S);
+  if (k === 'leech') return foe.hp > 0 && !foe.seed && !foe.types.includes('Grass') && ab !== 'Magic Guard' && ab !== 'Liquid Ooze';
   if (!['sleep', 'para', 'brn', 'tox', 'psn', 'yawn'].includes(k)) return false;
   if (foe.st || foe.hp <= 0 || S.sd[foe.side].sg > 0 || (ab === 'Leaf Guard' && wx === 'sun')) return false;
   if (NSOUND.has(mv) && ab === 'Soundproof') return false;
@@ -2524,6 +2570,7 @@ function nsStatusPlay(S, me, foe, best) {
     const k = cls === 'P' ? 'atk' : 'spa'; return (st.self[k] || 0) > 0 && me.stg[k] < 2 });
   if (up && hitsToKo >= 2 && (safeTurns >= 3 || foe.st === 'slp' || foe.st === 'frz')) return up;
   if (hitsToKo >= 4 && (mv = pick('tox') || pick('psn')) && safeTurns >= 2) return mv;
+  if (hitsToKo >= 3 && (mv = pick('leech')) && safeTurns >= 2) return mv;
   if (hitsToKo >= 2 && (mv = pick('yawn')) && safeTurns >= 2) return mv;
   return null;
 }
@@ -2619,7 +2666,7 @@ function nsDamage(S, c, n, R) {
   return before - c.hp;
 }
 function nsEnter(S, side, i, R) {
-  const sd = S.sd[side], c = sd.team[i]; sd.a = i; nsReset(c); c.firstOut = true;
+  const sd = S.sd[side], c = sd.team[i]; sd.a = i; nsReset(c); c.firstOut = true; c.toxN = 0;
   R.seen(c);
   if (c.ab !== 'Magic Guard') {
     if (sd.sr) nsDamage(S, c, Math.floor(c.max * nsTypeMult('Rock', c.types) / 8), R);
@@ -2815,7 +2862,8 @@ function nsEndTurn(S, R) {
     if (c.item === 'Leftovers') nsHeal(c, Math.floor(c.max / 16));
     if (c.item === 'Black Sludge') { if (c.types.includes('Poison')) nsHeal(c, Math.floor(c.max / 16)); else if (!mg) nsDamage(S, c, Math.floor(c.max / 8), R) }
     const foe = nsAct(S, 1 - c.side);
-    if (c.seed && !mg) { const n = nsDamage(S, c, Math.floor(c.max / 8), R); if (foe.hp > 0) nsHeal(foe, n) }
+    if (c.seed && !mg) { const n = nsDamage(S, c, Math.floor(c.max / 8), R);
+      if (foe.hp > 0 && n > 0) { const h = Math.floor(n * (foe.item === 'Big Root' ? 1.3 : 1)); if (c.ab === 'Liquid Ooze') { if (foe.ab !== 'Magic Guard') nsDamage(S, foe, h, R) } else nsHeal(foe, h) } }
     if (c.hp <= 0) return;
     if ((c.st === 'psn' || c.st === 'tox') && c.ab === 'Poison Heal') nsHeal(c, Math.floor(c.max / 8));
     else if (c.st === 'psn' && !mg) nsDamage(S, c, Math.floor(c.max / 8), R);
@@ -2862,16 +2910,25 @@ function nsDuelState(S, c, b, switching) {
   let their = null;
   b.moves.forEach(mv => { const dm = nsAiDmg(S, b, c, mv); if (dm > 0 && (!their || dm > their.dmg)) their = { mv, dmg: dm } });
   const sd = S.sd[c.side], fld = { sr: !!sd.sr, spk: sd.spk || 0, wx: nsWx(S) };
-  const stChip = x => x.ab === 'Magic Guard' ? 0 : (x.st === 'psn' || x.st === 'brn' || x.st === 'tox') ? Math.floor(x.max / 8) : 0;
-  const entry = switching ? tpEntry0(c, fld) : 0, chip = tpChip(c, { wx: fld.wx }, false) + stChip(c), bChip = tpChip(b, { wx: fld.wx }, false) + stChip(b);
+  // end-of-turn damage on turn k from now; badly poisoned grows each turn from where its counter is
+  const stChip = (x, k) => x.ab === 'Magic Guard' || (x.ab === 'Poison Heal' && /psn|tox/.test(x.st)) ? 0 : x.st === 'tox' ? Math.floor(x.max * Math.min(15, (x.toxN || 0) + k) / 16) : (x.st === 'psn' || x.st === 'brn') ? Math.floor(x.max / 8) : 0;
+  const entry = switching ? tpEntry0(c, fld) : 0, wxC = tpChip(c, { wx: fld.wx }, false), wxB = tpChip(b, { wx: fld.wx }, false);
+  const seedOf = x => x.ab === 'Magic Guard' ? 0 : Math.floor(x.max / 8), cSeed = c.seed && !switching ? seedOf(c) : 0, bSeed = b.seed ? seedOf(b) : 0;
+  const gain = (n, to, from) => !n ? 0 : from.ab === 'Liquid Ooze' ? -Math.floor(n * (to.item === 'Big Root' ? 1.3 : 1)) : Math.floor(n * (to.item === 'Big Root' ? 1.3 : 1));
+  const cNet = cSeed - gain(bSeed, c, b), bNet = bSeed - gain(cSeed, b, c);
+  const chipAt = k => wxC + stChip(switching ? Object.assign({}, c, { toxN: 0 }) : c, k) + cNet, bChipAt = k => wxB + stChip(b, k) + bNet;
+  const chipSum = (f, t) => { let n = 0; for (let k = 1; k <= t; k++) n += f(k); return n };
+  // turns until hp runs out taking per-turn hits plus that turn's chip
+  const turnsTo = (hp0, per, f) => { let left = hp0; for (let t = 1; t <= 99; t++) { left -= per + f(t); if (left <= 0) return t } return 99 };
+  const chip = chipAt(1);
   let hp = c.hp - entry - (switching && their ? their.dmg : 0);
   if (hp <= 0) return { win: false, left: 0, best, their, entry, dead: true };
   const prio = c.moves.find(mv => { const d = MV[mv]; if (!d || d.c === 'St' || (NPRIO[mv] || 0) <= 0) return false; const x = nsRolls(S, c, b, mv, false, null);
     return x && x.mult && x.rolls[0] * (NHITS2.has(mv) ? 2 : 1) >= b.hp && nsAccOf(S, c, b, mv) >= .9 && !b.moves.some(m => (NPRIO[m] || 0) > NPRIO[mv]) });
   if (prio) return { win: true, left: Math.max(1, hp), hp, tMe: 1, tThem: 99, faster: true, best: { mv: prio, ev: b.hp }, their, entry, prio: true };
-  const tMe = best ? Math.ceil(b.hp / Math.max(1, best.ev + bChip)) : 99, tThem = their || chip ? Math.ceil(hp / Math.max(1, (their ? their.dmg : 0) + chip)) : 99;
+  const tMe = best ? turnsTo(b.hp, best.ev, bChipAt) : 99, tThem = their || chip || chipAt(2) ? turnsTo(hp, their ? their.dmg : 0, chipAt) : 99;
   const faster = nsSpeed(S, c) > nsSpeed(S, b), win = !!best && (faster ? tMe <= tThem : tMe < tThem);
-  const hitsTaken = faster ? tMe - 1 : tMe, left = Math.max(0, hp - (their ? hitsTaken * their.dmg : 0) - tMe * chip);
+  const hitsTaken = faster ? tMe - 1 : tMe, left = Math.min(c.max, Math.max(0, hp - (their ? hitsTaken * their.dmg : 0) - chipSum(chipAt, tMe)));
   return { win, left: win ? Math.max(1, left) : 0, hp, tMe, tThem, faster, best, their, entry };
 }
 function nsSureKo(S, c, b) {
@@ -2931,7 +2988,7 @@ function nsBattle(P, B, opt) {
     if (!bAct) bAct = { mv: b0.charging || b0.lock || nsAiPick(S, opt.flags) };
     if (t === 1 && bAct.mv) out.firstMove = bAct.mv;
     let hs = t === 1 && opt.first || p.charging || p.lock || p.recharge ? -1 : nsHardSwitch(S, opt.plan);
-    if (hs < 0 && !(t === 1 && opt.first)) hs = nsSaveSwitch(S);
+    if (hs < 0 && !(t === 1 && opt.first) && !opt.noSwitch) hs = nsSaveSwitch(S);
     if (hs >= 0) (S.planSw = S.planSw || {})[b0.slot] = true;
     const pAct = t === 1 && opt.first ? opt.first : hs >= 0 ? { sw: hs } : { mv: p.charging || p.lock || nsPlayerMove(S, p, b0) }, pMv = pAct.mv;
     b0.lastPick = bAct.mv; p.lastPick = pMv;
@@ -2991,11 +3048,12 @@ const batSave = () => store.set(BKEY, BS);
 function batBuild(r) {
   const team = batTeam(r), party = batParty(r);
   const P = party.map((x, i) => { const c = nsMake(nMineMon(x.e), (x.e.moves || []).filter(Boolean), 0, i, x.row.k), s = BS.p[x.row.k] || {};
-    if (s.hp !== undefined && s.hp !== '') c.hp = Math.max(0, Math.min(c.max, +s.hp)); c.st = s.st || ''; return c });
+    if (s.hp !== undefined && s.hp !== '') c.hp = Math.max(0, Math.min(c.max, +s.hp)); c.st = s.st || ''; c.toxN = c.st === 'tox' ? +s.tn || 0 : 0; c.seed = !!s.seed; return c });
   const B = team.map((p, i) => { const c = nsMake(nBossMon(p, +nCalc.biv), (p.mv || []).filter(Boolean), 1, i, 'b' + i), s = BS.b[i] || {};
-    const pct = Math.max(0, Math.min(100, +(s.hp ?? 100))); c.hp = pct <= 0 ? 0 : Math.max(1, Math.round(c.max * pct / 100)); c.st = s.st || ''; if (s.item === false) { c.item = ''; c.usedItem = true } return c });
+    const pct = Math.max(0, Math.min(100, +(s.hp ?? 100))); c.hp = pct <= 0 ? 0 : Math.max(1, Math.round(c.max * pct / 100)); c.st = s.st || ''; c.toxN = c.st === 'tox' ? +s.tn || 0 : 0; c.seed = !!s.seed; if (s.item === false) { c.item = ''; c.usedItem = true } return c });
   let pa = party.findIndex(x => x.row.k === BS.pa); if (pa < 0 || !P[pa] || P[pa].hp <= 0) pa = P.findIndex(c => c.hp > 0);
   let ba = BS.ba; if (!B[ba] || B[ba].hp <= 0) ba = B.findIndex(c => c.hp > 0);
+  P.forEach((c, i) => { if (i !== pa) c.seed = false }); B.forEach((c, i) => { if (i !== ba) c.seed = false });
   return { P, B, party, team, pa, ba };
 }
 function batPrep(P, B, pa, ba) {
@@ -3039,7 +3097,7 @@ const btForm = () => BS.tl = Object.assign({ p: '', pOut: 'hit', pSec: false, b:
 // moves with a chance-based added effect (100% effects always happen)
 const btHasChance = mv => { const x = NSEC[mv], y = NSELF[mv]; return !!((x && ((x[0] && x[0] < 100) || x[2])) || (y && y[0] < 100)) };
 function btSnap(S) {
-  return { m: S.sd.flatMap((sd, side) => sd.team.map((c, i) => ({ side, i, key: c.key, name: c.name, hp: c.hp, max: c.max, st: c.st, stg: Object.assign({}, c.stg), item: c.item }))),
+  return { m: S.sd.flatMap((sd, side) => sd.team.map((c, i) => ({ side, i, key: c.key, name: c.name, hp: c.hp, max: c.max, st: c.st, stg: Object.assign({}, c.stg), item: c.item, seed: !!c.seed }))),
     sd: S.sd.map(sd => ({ a: sd.a, sr: sd.sr, spk: sd.spk, tsp: sd.tsp, ref: sd.ref, ls: sd.ls, tw: sd.tw })), wx: S.wx, wxT: S.wxT };
 }
 // what changed between two snapshots, in words
@@ -3053,6 +3111,7 @@ function btDiff(a, z, S) {
       else out.push(`${who(m)} ${d < 0 ? 'lost ' + -d : 'recovered ' + d} HP (${o.hp} → ${m.hp} of ${m.max}).`);
       if (o.hp > 0 && m.hp <= 0) out.push(`<b>${who(m)} fainted.</b>`);
     }
+    if (m.seed && !o.seed && m.hp > 0) out.push(`${who(m)} was seeded.`);
     if (m.st !== o.st) out.push(m.st ? `${who(m)} is now ${BT_STNAME[m.st]}.` : `${who(m)} is no longer ${BT_STNAME[o.st]}.`);
     Object.keys(BT_STGNAME).forEach(st => { const d = m.stg[st] - o.stg[st]; if (d && m.hp > 0 && a.sd[m.side].a === m.i && z.sd[m.side].a === m.i)
       out.push(`${who(m)}'s ${BT_STGNAME[st]} ${d > 0 ? 'rose' : 'fell'} ${Math.abs(d)} (now ${m.stg[st] > 0 ? '+' : ''}${m.stg[st]}).`) });
@@ -3117,8 +3176,8 @@ function btAdvance() {
   if (next) effects.push(`They'll send out <b>${next}</b> next (the trainer AI's pick). Change it under their team if they chose differently.`);
   if (pNow.hp <= 0 && nsBench(S.sd[0]).length) effects.push('<b>Pick who you send in next</b> under Your party.');
   // write the new state back to the board
-  P.forEach(c => { const k = c.key, o = BS.p[k] = BS.p[k] || {}; o.hp = c.hp; o.st = c.st });
-  B.forEach((c, i) => { BS.b[i].hp = c.hp <= 0 ? 0 : Math.max(1, Math.round(c.hp / c.max * 100)); BS.b[i].st = c.st; if (c.usedItem && !c.item) BS.b[i].item = false });
+  P.forEach(c => { const k = c.key, o = BS.p[k] = BS.p[k] || {}; o.hp = c.hp; o.st = c.st; o.tn = c.st === 'tox' ? c.toxN : 0; o.seed = !!c.seed });
+  B.forEach((c, i) => { BS.b[i].hp = c.hp <= 0 ? 0 : Math.max(1, Math.round(c.hp / c.max * 100)); BS.b[i].st = c.st; BS.b[i].tn = c.st === 'tox' ? c.toxN : 0; BS.b[i].seed = !!c.seed; if (c.usedItem && !c.item) BS.b[i].item = false });
   const pa2 = S.sd[0].a, ba2 = S.sd[1].a;
   BS.pa = P[pa2] && P[pa2].hp > 0 ? P[pa2].key : (P.find(c => c.hp > 0) || {}).key || ''; BS.ba = ba2;
   BS.pstg = Object.assign({}, P[pa2].stg); BS.bstg = Object.assign({}, B[ba2].stg);
@@ -3161,7 +3220,7 @@ function renderTurnLog() {
     </div>
     <div class="tbtns" style="margin-top:8px"><button class="btn primary" data-bact="turn" ${tl.p && tl.b ? '' : 'disabled'}>Advance turn ▸</button>${tl.p && tl.b ? '' : '<span class="sp">Pick both actions first.</span>'}</div>
     ${log ? `<h4 class="tph4">Turn history</h4><ol class="btlog">${log}</ol>` : ''}
-    <p class="sp" style="margin-top:6px">Logged turns use a middle damage roll and only the luck you tick (misses, crits, added effects). Ability effects like Static aren't assumed, so set a status on its card if one happened. Confusion, Leech Seed, Taunt and similar aren't carried between turns.</p></div></section>`;
+    <p class="sp" style="margin-top:6px">Logged turns use a middle damage roll and only the luck you tick (misses, crits, added effects). Ability effects like Static aren't assumed, so set a status on its card if one happened. Confusion, Taunt and similar aren't carried between turns; Leech Seed is.</p></div></section>`;
 }
 // Walks the boss's remaining Pokémon in the order the trainer AI will likely send them, deciding at each step from both sides' current
 // HP: stay in, switch, or chip and pull out. HP carries forward. Returns steps for batMapHtml.
@@ -3282,7 +3341,7 @@ function renderBattle() {
   batState(r);
   const teams = batTeams(r, BS.boss), team = batTeam(r), party = batParty(r);
   const { P, B, pa, ba } = batBuild(r);
-  const sts = cur => opt('', 'Healthy', cur) + [['par', 'Paralyzed'], ['brn', 'Burned'], ['psn', 'Poisoned'], ['tox', 'Toxic'], ['slp', 'Asleep'], ['frz', 'Frozen']].map(([v, l]) => opt(v, l, cur)).join('');
+  const sts = cur => opt('', 'Healthy', cur) + [['par', 'Paralyzed'], ['brn', 'Burned'], ['psn', 'Poisoned'], ['tox', 'Badly poisoned'], ['slp', 'Asleep'], ['frz', 'Frozen']].map(([v, l]) => opt(v, l, cur)).join('');
   const stg = (who, obj) => `<div class="bstg">${[['atk', 'Atk'], ['def', 'Def'], ['spa', 'SpA'], ['spd', 'SpD'], ['spe', 'Spe'], ['acc', 'Acc'], ['eva', 'Eva']].map(([k, l]) =>
     `<label>${l}<select data-bf="stg" data-who="${who}" data-k="${k}">${[6, 5, 4, 3, 2, 1, 0, -1, -2, -3, -4, -5, -6].map(v => opt(v, (v > 0 ? '+' : '') + v, obj[k] || 0)).join('')}</select></label>`).join('')}</div>`;
   const bcard = (p, i) => { const s = BS.b[i], c = B[i], act = i === ba, out = c.hp <= 0;
@@ -3291,6 +3350,8 @@ function renderBattle() {
       <label class="bact"><input type="radio" name="batb" data-bf="ba" data-i="${i}" ${act ? 'checked' : ''} ${out ? 'disabled' : ''}> In battle</label>
       <label>HP %<input type="number" min="0" max="100" data-bf="bhp" data-i="${i}" value="${esc(s.hp)}"></label>
       <label>Status<select data-bf="bst" data-i="${i}">${sts(s.st)}</select></label>
+      ${act && !out ? `<label class="bact" title="Loses 1/8 of its max HP each turn, which heals your Pokémon in battle. Ends when it switches out."><input type="checkbox" data-bf="bseed" data-i="${i}" ${s.seed ? 'checked' : ''}> Leech Seeded</label>` : ''}
+      ${s.st === 'tox' ? `<label title="Its next end-of-turn hit is (turns + 1)/16 of its max HP. Switching out starts it over.">Turns badly poisoned<input type="number" min="0" max="15" data-bf="btn" data-i="${esc(i)}" value="${esc(s.tn || 0)}"></label>` : ''}
       ${p.item ? `<label class="bact"><input type="checkbox" data-bf="bitem" data-i="${i}" ${s.item !== false ? 'checked' : ''}> Holding ${esc(p.item)}</label>` : ''}
       <div class="sp bsmv">${(p.mv || []).filter(Boolean).map(esc).join(' · ')}</div></div>` };
   const pcard = (x, i) => { const s = BS.p[x.row.k] || {}, c = P[i], act = i === pa, out = c.hp <= 0;
@@ -3299,34 +3360,129 @@ function renderBattle() {
       <label class="bact"><input type="radio" name="batp" data-bf="pa" data-k="${esc(x.row.k)}" ${act ? 'checked' : ''} ${out ? 'disabled' : ''}> In battle</label>
       <label>HP <small>of ${c.max}</small><input type="number" min="0" max="${c.max}" data-bf="php" data-k="${esc(x.row.k)}" value="${esc(s.hp ?? '')}" placeholder="${c.max}"></label>
       <label>Status<select data-bf="pst" data-k="${esc(x.row.k)}">${sts(s.st)}</select></label>
+      ${act && !out ? `<label class="bact" title="Loses 1/8 of its max HP each turn, which heals their Pokémon in battle. Ends when it switches out."><input type="checkbox" data-bf="pseed" data-k="${esc(x.row.k)}" ${s.seed ? 'checked' : ''}> Leech Seeded</label>` : ''}
+      ${s.st === 'tox' ? `<label title="Its next end-of-turn hit is (turns + 1)/16 of its max HP. Switching out starts it over.">Turns badly poisoned<input type="number" min="0" max="15" data-bf="ptn" data-k="${esc(x.row.k)}" value="${esc(s.tn || 0)}"></label>` : ''}
       <div class="sp bsmv">${(x.e.moves || []).filter(Boolean).map(esc).join(' · ') || 'No moves picked'}${x.e.item ? ' · ' + esc(x.e.item) : ''}</div></div>` };
   const sdOpts = (i, k, n, lab) => `<label>${lab}<select data-bf="sd" data-i="${i}" data-k="${k}">${[...Array(n + 1).keys()].map(v => opt(v, v === 0 ? 'None' : k === 'sr' ? 'Up' : String(v), BS.sd[i][k])).join('')}</select></label>`;
   const sideHtml = (i, lab) => `<div class="bfside"><h4>${lab}</h4><div class="bfgrid">${sdOpts(i, 'sr', 1, 'Stealth Rock')}${sdOpts(i, 'spk', 3, 'Spikes')}${sdOpts(i, 'tsp', 2, 'Toxic Spikes')}
       ${sdOpts(i, 'ref', 8, 'Reflect turns')}${sdOpts(i, 'ls', 8, 'Light Screen turns')}${sdOpts(i, 'tw', 3, 'Tailwind turns')}</div></div>`;
-  const pAct = P[pa], bAct = B[ba];
+  const pAct = P[pa], bAct = B[ba], bl = NBOSS[BS.boss].label;
+  const stgOn = o => Object.entries(o || {}).filter(([, v]) => +v).map(([k, v]) => `${k === 'acc' ? 'Acc' : k === 'eva' ? 'Eva' : SL[k] || k} ${v > 0 ? '+' : ''}${v}`);
+  const fold = (key, sum, body, on) => `<details class="bfold" data-bopen="${key}" ${batOpen.has(key) || on ? 'open' : ''}><summary>${sum}</summary>${body}</details>`;
+  const stgBox = (who, c, obj, fresh, extra) => { const on = stgOn(obj);
+    return fold(who + 'stg', `<b>${esc(c.name)}</b>: ${on.length ? on.join(', ') : 'no stat changes'}${fresh ? ' · just sent out' : ''}`,
+      `<div class="bactive"><label class="bact"><input type="checkbox" data-bf="${who}fresh" ${fresh ? 'checked' : ''}> Just sent out</label>${extra || ''}</div>${stg(who, obj)}`, on.length > 0) };
+  const wxName = { sun: 'Sun', rain: 'Rain', sand: 'Sandstorm', hail: 'Hail' };
+  const fieldOn = [BS.wx ? wxName[BS.wx] + (BS.wxT >= 99 ? '' : ` (${BS.wxT} turns)`) : '',
+    ...[0, 1].flatMap(i => { const x = BS.sd[i], who = i ? 'their side' : 'your side';
+      return [x.sr ? 'Stealth Rock' : '', x.spk ? x.spk + '× Spikes' : '', x.tsp ? x.tsp + '× Toxic Spikes' : '', x.ref ? 'Reflect' : '', x.ls ? 'Light Screen' : '', x.tw ? 'Tailwind' : ''].filter(Boolean).map(t => t + ' on ' + who) })].filter(Boolean);
   d.innerHTML = `<div class="rhero"><h2>Battle assistant</h2>
-      <p class="sp">Enter where the fight stands. It works out what ${esc(NBOSS[BS.boss].label)} will do this turn and which of your options gives you the best chance to win. Update the HP and status after each turn.</p>
+      <p class="sp">Pick the boss, then either simulate the whole fight with your current party, or enter where a fight stands to get advice for this turn.</p>
       <div class="bcontrols"><label>Boss<select data-bf="boss">${NBOSS.map((b, i) => opt(i, b.label + ' · ' + b.area + (i === r.beat ? ' (next)' : ''), BS.boss)).join('')}</select></label>
         ${teams.length > 1 ? `<label>Team<select data-bf="v">${teams.map((t, i) => opt(i, t.var || 'Team ' + (i + 1), BS.v)).join('')}</select></label>` : ''}
         <label title="Renegade Platinum bosses usually have perfect IVs">Boss IVs<select data-bf="biv">${[31, 20, 10, 0].map(v => opt(v, v, nCalc.biv)).join('')}</select></label>
-        <button class="btn" data-bact="reset">Start over</button></div>
+        <button class="btn" data-bact="reset" title="Full HP, no status, back to turn 1">Start over</button></div>
       <p class="sp" style="margin-top:6px">Using run “${esc(r.name)}”</p></div>
+    <div id="batsim"></div>
     <div id="batteam"></div>
+    <div id="batlvl"></div>
     ${!party.length ? '<p class="empty">Add Pokémon with levels to your Nuzlocke party first.</p>' : `
-    <section class="card full"><h3>${esc(NBOSS[BS.boss].label)}'s team</h3><div class="bslots">${team.map(bcard).join('')}</div>
-      ${bAct ? `<div class="bactive"><b>${esc(bAct.name)}</b> stat changes<label class="bact"><input type="checkbox" data-bf="bfresh" ${BS.bfresh ? 'checked' : ''}> Just sent out</label></div>${stg('b', BS.bstg)}` : ''}</section>
+    <h3 class="bsect">The fight now</h3>
+    <section class="card full"><h3>${esc(bl)}'s team</h3><div class="bslots">${team.map(bcard).join('')}</div>
+      ${bAct ? stgBox('b', bAct, BS.bstg, BS.bfresh) : ''}</section>
     <section class="card full"><h3>Your party</h3><div class="bslots">${party.map(pcard).join('')}</div>
-      ${pAct ? `<div class="bactive"><b>${esc(pAct.name)}</b> stat changes<label class="bact"><input type="checkbox" data-bf="pfresh" ${BS.pfresh ? 'checked' : ''}> Just sent out</label>
-        <label class="blast">Your last move<select data-bf="plast">${opt('', '—', BS.plast)}${pAct.moves.map(m => opt(m, m, BS.plast)).join('')}</select></label></div>${stg('p', BS.pstg)}` : ''}</section>
-    <section class="card full"><h3>Field</h3><div class="bfgrid"><label>Weather<select data-bf="wx">${opt('', 'None', BS.wx)}${opt('sun', 'Sun', BS.wx)}${opt('rain', 'Rain', BS.wx)}${opt('sand', 'Sandstorm', BS.wx)}${opt('hail', 'Hail', BS.wx)}</select></label>
+      ${pAct ? stgBox('p', pAct, BS.pstg, BS.pfresh, `<label class="blast">Your last move<select data-bf="plast">${opt('', '—', BS.plast)}${pAct.moves.map(m => opt(m, m, BS.plast)).join('')}</select></label>`) : ''}
+      ${fold('field', `<b>Field</b>: ${fieldOn.length ? esc(fieldOn.join(', ')) : 'no weather, hazards or screens'}`, `<div class="bfgrid" style="margin-top:8px"><label>Weather<select data-bf="wx">${opt('', 'None', BS.wx)}${opt('sun', 'Sun', BS.wx)}${opt('rain', 'Rain', BS.wx)}${opt('sand', 'Sandstorm', BS.wx)}${opt('hail', 'Hail', BS.wx)}</select></label>
       ${BS.wx ? `<label>Turns left<select data-bf="wxT">${[1, 2, 3, 4, 5, 6, 7, 8].map(v => opt(v, v, BS.wxT)).concat(opt(99, 'Permanent (ability)', BS.wxT)).join('')}</select></label>` : ''}</div>
-      <div class="bfsides">${sideHtml(0, 'Your side')}${sideHtml(1, 'Their side')}</div></section>
+      <div class="bfsides">${sideHtml(0, 'Your side')}${sideHtml(1, 'Their side')}</div>`)}</section>
+    <div id="batres"></div>
     <div id="batlog"></div>
-    <div id="batres"></div>`}`;
-  renderTeamPick(); renderTurnLog();
+    <div id="batmap"></div>`}`;
+  renderSim();
+  renderTeamPick(); renderLevelPlan(); renderTurnLog();
   batQueue();
 }
 function batQueue() { clearTimeout(batTimer); batTimer = setTimeout(batAnalyze, 120) }
+const batOpen = new Set();   // folded sections the player has opened
+// Simulate the whole fight from turn 1: full HP, items unused. Send-in order is either "best matchup" (your "In battle" Pokémon leads,
+// and after a faint whoever matches up best comes in) or your own order (first leads, then the next one still standing).
+// Same engine and play style as "Your best move", run many times; the other order runs alongside for comparison.
+let simRes = null, simTok = 0;
+const SIMN = 600;
+// your send-in order: saved keys first, then anyone new in party order
+function simOrder(r) {
+  const party = batParty(r), keys = party.map(x => x.row.k), saved = (BS.simOrd || []).filter(k => keys.includes(k));
+  return [...saved, ...keys.filter(k => !saved.includes(k))].map(k => party.find(x => x.row.k === k));
+}
+const simMode = () => BS.simMode === 'order' ? 'order' : 'best';
+function simSig(r) { return JSON.stringify([BS.boss, BS.v, nCalc.biv, BS.pa, simMode(), !!BS.simNoSw, simOrder(r).map(x => x.row.k), batParty(r).map(x => [x.row.k, x.e.n, x.e.lv, x.e.moves, x.e.item, x.e.ab, x.e.nat, x.e.stats])]) }
+function batSim() {
+  const r = curRun(), party = batParty(r), team = batTeam(r); if (!party.length || !team.length) return;
+  const lead = Math.max(0, party.findIndex(x => x.row.k === BS.pa)), byBest = [party[lead], ...party.filter((_, i) => i !== lead)], byMine = simOrder(r);
+  const mode = simMode(), noSw = mode === 'order' && !!BS.simNoSw, theirs = team.map(p => nBossMon(p, +nCalc.biv)), mm = new Map(party.map(x => [x.row.k, nMineMon(x.e)]));
+  const setup = (list, repl, noSwitch) => ({ list, repl, noSwitch });
+  const main = mode === 'order' ? setup(byMine, 'order', noSw) : setup(byBest, 'best', false), alt = mode === 'order' ? setup(byBest, 'best', false) : setup(byMine, 'order', false);
+  const tok = ++simTok, res = simRes = { sig: simSig(r), boss: BS.boss, mode, noSw, n: 0, win: 0, stall: 0, turns: 0, lost: [0, 0, 0, 0, 0, 0, 0],
+    mons: main.list.map(x => ({ k: x.row.k, n: x.e.n, name: x.e.nick || monName(x.e.n), die: 0, by: {} })), foes: theirs.map(m => ({ n: m.n, name: m.name, kills: 0, down: 0 })),
+    alt: { n: 0, win: 0, dead: 0 } };
+  const fight = cfg => {
+    const P = cfg.list.map((x, i) => nsMake(mm.get(x.row.k), (x.e.moves || []).filter(Boolean), 0, i, x.row.k)), B = theirs.map((m, i) => nsMake(m, (team[i].mv || []).filter(Boolean), 1, i, 'b' + i));
+    return nsBattle(P, B, { flags: flagsOf(), repl: cfg.repl, noSwitch: cfg.noSwitch });
+  };
+  const one = () => {
+    const o = fight(main), dead = new Set(o.deaths);
+    res.n++; if (o.win) res.win++; if (o.stall) res.stall++; res.turns += o.turns; res.lost[Math.min(6, dead.size)]++;
+    res.mons.forEach(m => { if (dead.has(m.k)) { m.die++; const k = o.killer[m.k]; if (k) m.by[k] = (m.by[k] || 0) + 1 } });
+    Object.values(o.killer).forEach(nm => { const fo = res.foes.find(x => x.name === nm); if (fo) fo.kills++ });
+    o.bossKO.forEach(i => { if (res.foes[i]) res.foes[i].down++ });
+    const a = fight(alt); res.alt.n++; if (a.win) res.alt.win++; res.alt.dead += new Set(a.deaths).size;
+  };
+  const step = () => {
+    if (tok !== simTok) return;
+    const t0 = performance.now(); while (res.n < SIMN && performance.now() - t0 < 40) one();
+    renderSim(); if (res.n < SIMN) setTimeout(step, 0);
+  };
+  renderSim(); setTimeout(step, 0);
+}
+function renderSim() {
+  const el = document.getElementById('batsim'); if (!el) return;
+  const r = curRun(), x = simRes, party = batParty(r), mode = simMode();
+  if (!party.length || !batTeam(r).length) { el.innerHTML = ''; return }
+  const ord = simOrder(r), lead = party.find(p => p.row.k === BS.pa) || party[0];
+  const orderUi = `<div class="simset"><div class="simmodes"><span class="sp">Send-in order</span>
+      <label class="chk"><input type="radio" name="simmode" data-simmode="best" ${mode === 'best' ? 'checked' : ''}> Best matchup after each faint <span class="sp">(${esc(lead.e.nick || monName(lead.e.n))} leads)</span></label>
+      <label class="chk"><input type="radio" name="simmode" data-simmode="order" ${mode === 'order' ? 'checked' : ''}> My order</label></div>
+    ${mode === 'order' ? `<ol class="simord">${ord.map((p, i) => `<li><img src="${nimg(p.e.n)}" alt=""><span>${esc(p.e.nick || monName(p.e.n))}${i === 0 ? ' <small class="sp">leads</small>' : ''}</span>
+        <button class="btn" data-simmv="${esc(p.row.k)}:-1" ${i === 0 ? 'disabled' : ''} aria-label="Move up">▲</button><button class="btn" data-simmv="${esc(p.row.k)}:1" ${i === ord.length - 1 ? 'disabled' : ''} aria-label="Move down">▼</button></li>`).join('')}</ol>
+      <label class="chk"><input type="checkbox" data-simnosw ${BS.simNoSw ? 'checked' : ''}> Only switch when one faints (no switching mid-fight)</label>
+      <p class="sp" style="margin:4px 0 0">The first one leads. After a faint, the next one in this list that's still standing comes in.</p>` : ''}</div>`;
+  if (!x || x.boss !== BS.boss) {
+    el.innerHTML = `<section class="card full bsim"><div class="nhead"><h3>Simulate the fight</h3><button class="btn primary" data-bact="sim">Simulate the fight ▸</button></div>${orderUi}</section>`; return }
+  const done = x.n >= SIMN, stale = done && x.sig !== simSig(r), pc = v => Math.round(v / Math.max(1, x.n) * 100) + '%', w = x.win / Math.max(1, x.n);
+  const lostAvg = x.lost.reduce((a, c, i) => a + c * i, 0) / Math.max(1, x.n);
+  const dist = [[0, 'nobody'], [1, '1 Pokémon'], [2, '2'], [3, '3 or more']].map(([i, lab]) => ({ lab, v: i === 3 ? x.lost.slice(3).reduce((a, c) => a + c, 0) : x.lost[i] }));
+  const monRow = m => { const top = Object.entries(m.by).sort((a, b) => b[1] - a[1])[0];
+    return `<div class="smon"><img src="${nimg(m.n)}" alt=""><div><b>${esc(m.name)}</b><div class="sp">${m.die ? `faints in ${pc(m.die)} of fights${top ? `, mostly to ${esc(top[0])}` : ''}` : 'never fainted'}</div></div>
+      <span class="sbar"><i style="width:${Math.round(m.die / Math.max(1, x.n) * 100)}%"></i></span></div>` };
+  const foes = x.foes.slice().sort((a, b) => b.kills - a.kills);
+  const tone = w >= .9 ? 'good' : w >= .6 ? 'ok' : 'bad';
+  // the other send-in order, run alongside
+  const aw = x.alt.n ? x.alt.win / x.alt.n : 0, ad = x.alt.n ? x.alt.dead / x.alt.n : 0, gap = Math.round((w - aw) * 100);
+  const altName = x.mode === 'order' ? 'Best matchup after each faint' : 'Your order', altLine = x.alt.n ? `<div class="simalt">${altName}: <b>${Math.round(aw * 100)}%</b> win, lose ${ad < .05 ? 'nobody' : ad.toFixed(1) + ' Pokémon'} on average${done ? ` · ${Math.abs(gap) <= 3 ? 'about the same' : gap > 0 ? `this order is ${gap}% better` : `<b>that order is ${-gap}% better</b>`}` : ''}</div>` : '';
+  const how = x.mode === 'order' ? `${esc(x.mons[0].name)} leads and the rest come in in your order after each faint${x.noSw ? ', with no switching mid-fight' : ', switching mid-fight only to dodge a knock-out'}`
+    : `${esc(x.mons[0].name)} leads (set “In battle” on Your party to change it), and after a faint the best matchup comes in`;
+  el.innerHTML = `<section class="card full bsim"><div class="nhead"><h3>Simulated fight vs ${esc(NBOSS[x.boss].label)}${done ? '' : ` <small class="sp">${x.n} of ${SIMN}…</small>`}</h3>
+      <div class="tbtns">${done ? '<button class="btn" data-bact="sim">Run again</button>' : ''}<button class="btn" data-bact="simclose">Close</button></div></div>
+    ${orderUi}
+    ${stale ? '<p class="ivwarn">Your party, send-in order or the boss settings changed since this ran. Run it again to update.</p>' : ''}
+    <div class="ssum"><div class="sbig ${tone}">${Math.round(w * 100)}%<small>win chance</small></div>
+      <div><div><b>You lose ${lostAvg < .05 ? 'nobody' : lostAvg.toFixed(1) + ' Pokémon'}</b> on average · about ${Math.round(x.turns / Math.max(1, x.n))} turns</div>
+        <div class="sdist">${dist.map(d => `<span><b>${pc(d.v)}</b> lose ${d.lab}</span>`).join('')}</div>
+        ${x.stall ? `<div class="sp">${pc(x.stall)} of fights hit the 120-turn limit and count as losses.</div>` : ''}${altLine}</div></div>
+    <div class="sgrid"><div><h4 class="tph4">Your Pokémon${x.mode === 'order' ? ', in send-in order' : ''}</h4>${x.mons.map(monRow).join('')}</div>
+      <div><h4 class="tph4">Their biggest threats</h4>${foes.map(f => `<div class="smon"><img src="${nimg(f.n)}" alt=""><div><b>${esc(f.name)}</b><div class="sp">${f.kills / Math.max(1, x.n) >= .05 ? `knocks out ${(f.kills / Math.max(1, x.n)).toFixed(1)} of yours per fight` : 'rarely knocks anything out'}</div></div></div>`).join('')}</div></div>
+    <p class="sp" style="margin-top:8px">${x.n} simulated fights from turn 1 with full HP and unused items. ${how}. You play sensibly (status and set-up when it helps, otherwise your strongest move); the boss follows Platinum's trainer AI. It doesn't use healing items, and Set style means no free switch after a knock-out.</p></section>`;
+}
 
 // forecast + rank every option, a few hundred full playouts each, in small slices so the page stays responsive
 function batAnalyze() {
@@ -3336,10 +3492,12 @@ function batAnalyze() {
   batPrep(P, B, pa, ba);
   const S = batLiveS(P, B, pa, ba), me = P[pa], foe = B[ba];
   const fc = batForecast(S, 2000);
-  const mapHtml = batMapHtml(batMap(S), 'Battle map from here', 'Decisions from where the fight stands now, through the rest of their team.');
-  const usable = nsUsable(S, me), options = [
-    ...me.moves.filter((m, i) => usable[i]).map(mv => ({ mv, label: mv })),
+  const mapEl = document.getElementById('batmap'); if (mapEl) mapEl.innerHTML = batMapHtml(batMap(S), 'Battle map from here', 'Decisions from where the fight stands now, through the rest of their team.');
+  // status moves that would just fail this turn aren't ranked; they're listed with the reason
+  const usable = nsUsable(S, me), nope = me.moves.filter((m, i) => usable[i] && MV[m] && MV[m].c === 'St').map(mv => ({ mv, why: nsWontWork(S, me, foe, mv) })).filter(x => x.why), options = [
+    ...me.moves.filter((m, i) => usable[i] && !nope.some(x => x.mv === m)).map(mv => ({ mv, label: mv })),
     ...P.map((c, i) => ({ c, i })).filter(x => x.i !== pa && x.c.hp > 0).map(x => ({ sw: x.i, label: 'Switch to ' + x.c.name })) ];
+  options.nope = nope;
   const K = 300, acc = options.map(() => ({ n: 0, win: 0, dead: 0, dead2: 0, meDie1: 0, foeKO1: 0, stall: 0 }));
   const run = (oi) => {
     const P2 = P.map(batCp), B2 = B.map(batCp); batPrep(P2, B2, pa, ba);
@@ -3349,7 +3507,7 @@ function batAnalyze() {
     if (o.dt[me.key] === 1) a.meDie1++; if (o.bt[ba] === 1) a.foeKO1++;
   };
   let oi = 0;
-  const show = done => { if (tok === batTok) el.innerHTML = batHtml(S, me, foe, fc, options, acc, done, P, B) + mapHtml };
+  const show = done => { if (tok === batTok) el.innerHTML = batHtml(S, me, foe, fc, options, acc, done, P, B) };
   show(false);
   const step = () => {
     if (tok !== batTok) return;
@@ -3383,33 +3541,41 @@ function batHtml(S, me, foe, fc, options, acc, done, P, B) {
   const orow = (x, k) => { const o = x.o, a = x.a, w = a.win / a.n, h = o.mv ? batHit(S, me, foe, o.mv) : null, d = o.mv ? MV[o.mv] || {} : {};
     const inc = o.sw !== undefined ? P[o.sw] : null, take = inc && likely ? batHit(S, foe, inc, likely) : null;
     const now = o.mv ? (d.c === 'St' ? 'Status move' : h ? (h.mult === 0 ? 'No effect' : `Hits for ${rng(h)} ${koTxt(h)}`) : '') : take && take.mult !== 0 ? `Takes ${rng(take)} from ${esc(likely)} coming in` : likely ? `Comes in safely against ${esc(likely)}` : '';
-    const tags = (x === best ? '<span class="btag good">Best</span>' : '') + (safest && x === safest && x !== best ? '<span class="btag">Safest</span>' : '');
+    const tags = (x === best ? '<span class="btag good" title="Highest win chance, or within the noise of it with fewer of your Pokémon lost">Best</span>' : '') + (safest && x === safest && x !== best ? '<span class="btag">Safest</span>' : '');
+    const die = Math.round(a.meDie1 / a.n * 100), lose = a.dead / a.n;
     return `<div class="borow ${x === best ? 'best' : ''}"><div class="bohd"><b>${esc(o.label)}</b>${d.t ? ` <span class="mtype" style="background:${TC[d.t]}">${d.t}</span>` : ''}${tags}
-        <span class="bowin">${Math.round(w * 100)}%</span></div>
+        <span class="bowin" title="Chance to win the fight">${Math.round(w * 100)}%</span></div>
       <div class="bobar"><i style="width:${w * 100}%"></i></div>
-      <div class="sp">${now}${now ? ' · ' : ''}${(a.dead / a.n).toFixed(1)} of your Pokémon die on average · ${esc(me.name)} faints this turn ${Math.round(a.meDie1 / a.n * 100)}%${o.mv ? ` · ${esc(foe.name)} faints this turn ${Math.round(a.foeKO1 / a.n * 100)}%` : ''}</div></div>` };
+      <div class="sp">${now}${now ? ' · ' : ''}lose ${lose < .05 ? 'nobody' : lose.toFixed(1) + ' Pokémon'} on average${die ? ` · <span class="bko">${esc(me.name)} faints this turn ${die}%</span>` : ''}</div></div>` };
   const faster = nsSpeed(S, me) > nsSpeed(S, foe) ? 'You move first' : nsSpeed(S, me) < nsSpeed(S, foe) ? `${esc(foe.name)} moves first` : 'Speed tie';
-  return `<section class="card full"><h3>What ${esc(foe.name)} will do</h3><p class="sp">${esc(foe.name)} ${foe.hp}/${foe.max} HP · ${esc(me.name)} ${me.hp}/${me.max} HP · ${faster} (speed ${nsSpeed(S, me)} vs ${nsSpeed(S, foe)}) unless priority applies</p>
+  const TOP = 4, shown = rows.slice(0, TOP), more = rows.slice(TOP);
+  return `<div class="badvice"><section class="card"><h3>What ${esc(foe.name)} will do</h3><p class="sp">${esc(foe.name)} ${Math.round(foe.hp / foe.max * 100)}% HP vs ${esc(me.name)} ${me.hp}/${me.max} HP · ${faster} (Speed ${nsSpeed(S, me)} vs ${nsSpeed(S, foe)})</p>
       <div class="bfc">${frows || '<p class="empty">No moves listed.</p>'}</div></section>
-    <section class="card full"><h3>Your best move${done ? '' : ' <small class="sp">working…</small>'}</h3>
-      <p class="sp">Win chance if you pick this now, then keep battling sensibly (300 playouts each, ±3%).</p>
-      <div class="bopts">${rows.map(orow).join('') || '<p class="empty">Working…</p>'}</div>
+    <section class="card"><h3>Your best move${done ? '' : ' <small class="sp">working…</small>'}</h3>
+      <p class="sp">Chance to win the fight if you do this now, then keep battling sensibly. Differences of 3% or less are noise.</p>
+      <div class="bopts">${shown.map(orow).join('') || '<p class="empty">Working…</p>'}</div>
+      ${(options.nope || []).length ? `<p class="sp" style="margin:8px 0 0">Not ranked, because they'd fail this turn: ${options.nope.map(x => `<b>${esc(x.mv)}</b> (${esc(x.why)})`).join(', ')}.</p>` : ''}
+      ${more.length ? `<details class="bfold" data-bopen="moreopts" ${batOpen.has('moreopts') ? 'open' : ''}><summary>${more.length} more option${more.length > 1 ? 's' : ''}</summary><div class="bopts">${more.map(orow).join('')}</div></details>` : ''}
       <details class="simhow"><summary>How this works</summary>
         <p>The forecast samples the boss's choice 2,000 times from Platinum's trainer AI (the <a href="https://github.com/pret/pokeplatinum/tree/main/src/battle/trainer_ai" target="_blank" rel="noopener">pokeplatinum decompilation</a>, Basic + Evaluate Attack + Expert). Every move starts at 100. It loses 10 if it can't work and gains 4 (6 for +1 priority) if its highest roll knocks you out. It loses 1 if another move does more, then the move-specific Expert rules apply. The highest score wins and ties are random. The AI ignores crits and judges damage by its highest roll. It also treats Hyper Beam, Superpower, Explosion, Solar Beam, Eruption, Sucker Punch and Head Smash as doing no damage.</p>
         <p>Each of your options is played out to the end of the fight 300 times. Every hit uses the Gen 4 damage formula, with random rolls, crits, accuracy, status, weather, hazards and items. After this turn you're assumed to play sensibly: put the boss's Pokémon to sleep or paralyse it when that helps, set up when it's safe, otherwise attack with your strongest move. After a faint you send in your best matchup. The boss keeps following its AI.</p>
         <p>Damage ranges ignore crits. The knock-out chance counts crits and accuracy. Boss HP is a percentage because the game only shows a bar. Turns left asleep or badly poisoned aren't shown in game, so those are estimated.</p>
-      </details></section>`;
+      </details></section></div>`;
 }
 function batChange(t) {
   const r = curRun(), f = t.dataset.bf; batState(r);
   if (f === 'boss') { BS = batFresh(r, +t.value, 0) }
   else if (f === 'v') { BS = batFresh(r, BS.boss, +t.value) }
-  else if (f === 'ba') { BS.ba = +t.dataset.i; BS.bstg = {}; BS.bfresh = true }
-  else if (f === 'pa') { BS.pa = t.dataset.k; BS.pstg = {}; BS.pfresh = true; BS.plast = '' }
+  else if (f === 'ba') { BS.b.forEach(x => x.seed = false); BS.ba = +t.dataset.i; BS.bstg = {}; BS.bfresh = true }
+  else if (f === 'pa') { Object.values(BS.p).forEach(x => x.seed = false); BS.pa = t.dataset.k; BS.pstg = {}; BS.pfresh = true; BS.plast = '' }
   else if (f === 'bhp') BS.b[+t.dataset.i].hp = t.value === '' ? 100 : Math.max(0, Math.min(100, +t.value));
-  else if (f === 'bst') BS.b[+t.dataset.i].st = t.value;
+  else if (f === 'bst') { BS.b[+t.dataset.i].st = t.value; BS.b[+t.dataset.i].tn = 0 }
+  else if (f === 'btn') BS.b[+t.dataset.i].tn = Math.max(0, Math.min(15, +t.value || 0));
+  else if (f === 'ptn') { const o = BS.p[t.dataset.k] = BS.p[t.dataset.k] || {}; o.tn = Math.max(0, Math.min(15, +t.value || 0)) }
   else if (f === 'bitem') BS.b[+t.dataset.i].item = t.checked;
-  else if (f === 'php' || f === 'pst') { const s = BS.p[t.dataset.k] = BS.p[t.dataset.k] || {}; if (f === 'php') { if (t.value === '') delete s.hp; else s.hp = Math.max(0, +t.value) } else s.st = t.value }
+  else if (f === 'bseed') BS.b[+t.dataset.i].seed = t.checked;
+  else if (f === 'pseed') { const o = BS.p[t.dataset.k] = BS.p[t.dataset.k] || {}; o.seed = t.checked }
+  else if (f === 'php' || f === 'pst') { const s = BS.p[t.dataset.k] = BS.p[t.dataset.k] || {}; if (f === 'php') { if (t.value === '') delete s.hp; else s.hp = Math.max(0, +t.value) } else { s.st = t.value; s.tn = 0 } }
   else if (f === 'stg') { const o = t.dataset.who === 'b' ? BS.bstg : BS.pstg; o[t.dataset.k] = +t.value }
   else if (f === 'bfresh' || f === 'pfresh') BS[f] = t.checked;
   else if (f === 'plast') BS.plast = t.value;
@@ -3423,6 +3589,7 @@ function batChange(t) {
 }
 // ---- Team picker: choose up to six from party + box for the selected boss, with reasons ----
 let tpRes = null, tpBusy = false, tpTok = 0;
+let lvRes = null, lvBusy = false, lvTok = 0;   // the Leveling plan card's own run
 const tpSide = team => ({ team, a: 0, sr: 0, spk: 0, tsp: 0, ref: 0, ls: 0, tw: 0, sg: 0 });
 // ---- Projection: an under-leveled Pokémon as it would be at the boss's level cap. It levels up and evolves on the normal
 // schedule; stone, held-item and friendship evolutions are options, each tried at its best level (after the last move worth
@@ -3554,10 +3721,10 @@ function pjLines(pj) {
   if (pj.missed) L.push(`<span class="sp">${nm(pj.missed.n)} would do better, but no ${pj.missed.items.filter(x => !x.where).map(x => esc(x.item)).join(' or ')} turns up before this boss.</span>`);
   return L;
 }
-function tpSetup(r) {
+function tpSetup(r, o = {}) {
   const b = NBOSS[BS.boss], team = batTeam(r);
   const all = placed(r).filter(x => x.e.st === 'party' || x.e.st === 'box');
-  const cap = b ? b.cap : 100, out = [], proj = BS.proj !== false && !!b && team.length > 0, pick = Array.isArray(BS.pick) ? BS.pick : null;
+  const cap = b ? b.cap : 100, out = [], proj = (o.lv || BS.proj !== false) && !!b && team.length > 0, pick = !o.lv && Array.isArray(BS.pick) ? BS.pick : null;
   const chIdx = Math.max(0, GUIDE.findIndex(c => c.b.includes(BS.boss)));
   const cands = all.filter(x => {
     if (pick && !pick.includes(x.row.k)) { out.push({ x, why: 'Not picked for this plan' }); return false }
@@ -3568,7 +3735,7 @@ function tpSetup(r) {
   }).map(x => { if (!proj || +x.e.lv >= cap) return x;
     const pj = Object.assign({ orig: x.e.n }, pjProject(x.e, cap, team, chIdx));
     return { row: x.row, e: Object.assign(pj.e, { st: x.e.st }), orig: x.e, pj } });
-  const sig = JSON.stringify([r.id, BS.boss, BS.v, nCalc.biv, BS.steal || [], proj, cands.map(x => [x.row.k, x.e.n, x.e.lv, x.e.moves, x.e.item, x.e.ab, x.e.nat, x.e.stats, x.e.hist, x.e.evoPlan])]);
+  const sig = JSON.stringify([r.id, BS.boss, BS.v, nCalc.biv, o.lv ? [] : BS.steal || [], proj, cands.map(x => [x.row.k, x.e.n, x.e.lv, x.e.moves, x.e.item, x.e.ab, x.e.nat, x.e.stats, x.e.hist, x.e.evoPlan])]);
   return { b, team, cands, out, sig, all, proj, pick, cap };
 }
 // What the boss's team does to the field, and from which of their Pokémon on. Hazards land on your side once the setter has
@@ -3736,17 +3903,17 @@ function tpTeamOf(asg, M, must = []) {
   }
   return { t: team, asg, backup };
 }
-function tpRun() {
-  const r = curRun(); batState(r); const su = tpSetup(r);
-  if (!su.cands.length || !su.team.length || tpBusy) return;
-  tpBusy = true; const tok = ++tpTok;
+function tpRun(mode) {
+  const lv = mode === 'lv', r = curRun(); batState(r); const su = tpSetup(r, { lv });
+  if (!su.cands.length || !su.team.length || (lv ? lvBusy : tpBusy)) return;
+  const tok = lv ? (lvBusy = true, ++lvTok) : (tpBusy = true, ++tpTok), redraw = lv ? renderLevelPlan : renderTeamPick;
   const mine = su.cands.map((x, i) => nsMake(nMineMon(x.e), (x.e.moves || []).filter(Boolean), 0, i, x.row.k));
   const boss = su.team.map((p, i) => nsMake(nBossMon(p, +nCalc.biv), (p.mv || []).filter(Boolean), 1, i, 'b' + i));
   const field = tpField(boss);
   const M = mine.map(c => boss.map((b, j) => tpDuel(c, b, tpCtx(field, j))));
   // the top few distinct plans get played out
   // steal goal: each wanted item gets a thief, and the thieves are guaranteed a place on the team
-  const steal = (BS.steal || []).filter(j => j < boss.length && boss[j].item).map(j => tpThiefFor(su, mine, boss, M, j));
+  const steal = (lv ? [] : BS.steal || []).filter(j => j < boss.length && boss[j].item).map(j => tpThiefFor(su, mine, boss, M, j));
   const must = [...new Set(steal.filter(x => x.i >= 0).map(x => x.i))];
   const plans = [], seen = new Set();
   for (const a of tpAssign(M, boss.length)) { if (new Set([...a.asg, ...must]).size > 6) continue; const p = tpTeamOf(a.asg, M, must), k = p.t.slice().sort().join() + '|' + a.asg.join(); if (!seen.has(k)) { seen.add(k); p.sc = a.sc; plans.push(p) } if (plans.length >= 8) break }
@@ -3755,9 +3922,9 @@ function tpRun() {
   if (curIdx.length) tests.push({ t: curIdx, cur: true, lead: curIdx.slice().sort((a, b) => M[b][0].val - M[a][0].val)[0] });
   tests.forEach(x => { x.n = 0; x.win = 0; x.dead = 0; x.clean = 0; x.E = 0; x.deaths = {} });
   const K = 300, cp = c => Object.assign({}, c, { stg: Object.assign({}, c.stg) });
-  let ti = 0; renderTeamPick();
+  let ti = 0; redraw();
   const step = () => {
-    if (tok !== tpTok) return;
+    if (tok !== (lv ? lvTok : tpTok)) return;
     const t0 = performance.now();
     while (ti < tests.length && performance.now() - t0 < 35) {
       const x = tests[ti], ord = [x.lead, ...x.t.filter(i => i !== x.lead)];
@@ -3766,14 +3933,14 @@ function tpRun() {
       x.n++; if (o.win) x.win++; const dd = new Set(o.deaths); x.dead += dd.size; if (o.win && !dd.size) x.clean++; x.E += o.win ? dd.size : 6; if (o.win) x.Ewin = (x.Ewin || 0) + dd.size; dd.forEach(k => x.deaths[k] = (x.deaths[k] || 0) + 1);
       if (x.n >= K) ti++;
     }
-    const el = document.getElementById('tpprog'); if (el) el.textContent = `Testing plan ${Math.min(ti + 1, tests.length)} of ${tests.length}…`;
+    const el = document.getElementById(lv ? 'lvprog' : 'tpprog'); if (el) el.textContent = `Testing plan ${Math.min(ti + 1, tests.length)} of ${tests.length}…`;
     if (ti < tests.length) return setTimeout(step, 0);
     const picks = tests.filter(x => !x.cur);
     // the best-scoring plan stands unless another clearly plays out better
     const best = picks.reduce((b, x) => { const dE = b.E / b.n - x.E / x.n, dw = x.win / x.n - b.win / b.n; return dE > .15 || (Math.abs(dE) <= .15 && dw > .03) ? x : b }, picks[0]);
-    tpBusy = false;
-    tpRes = { sig: su.sig, su, mine, boss, M, best, field, steal, cur: tests.find(x => x.cur) || null };
-    renderTeamPick();
+    const res = { sig: su.sig, su, mine, boss, M, best, field, steal, cur: tests.find(x => x.cur) || null };
+    if (lv) { lvBusy = false; lvRes = res } else { tpBusy = false; tpRes = res }
+    redraw();
   };
   setTimeout(step, 0);
 }
@@ -3915,13 +4082,7 @@ function renderTeamPick() {
       ${best.t.length < 6 ? `<p class="rnote" style="margin:10px 0 0">Only ${best.t.length} of your Pokémon can be used here, so the team is ${best.t.length}. ${su.out.length ? 'See “Left out” for why the others aren’t eligible.' : 'Catch or box more to fill all six slots.'}</p>` : ''}
       <h4 class="tph4">Battle plan</h4>${tpPlanHtml(res)}
       ${tpMapHtml(res)}
-      ${(() => { const lv = ord.map(i => su.cands[i]).filter(x => x.pj), others = left.map(o => o.x).filter(x => x.pj);
-        const evoSel = x => { const opts = pjEvoOpts(x.orig.n), cur = +x.orig.evoPlan; if (!opts.length) return '';
-          const opt = (v, label) => `<option value="${v}" ${cur === v ? 'selected' : ''}>${label}</option>`;
-          return `<label class="pjevo">Evolution <select data-evoplan="${esc(x.row.k)}"><option value="">Auto: best against this boss</option>${opts.map(o => opt(o.n, '  '.repeat(o.d) + esc(mons[o.n - 1].name) + (o.m ? ` (${esc(o.m)})` : ''))).join('')}${opt(x.orig.n, 'Don\'t evolve')}</select></label>` };
-        const one = x => `<div class="pjrow"><div class="tphd"><img src="${nimg(x.orig.n)}" alt="">${x.e.n !== x.orig.n ? `<span class="pjto">→</span><img src="${nimg(x.e.n)}" alt="">` : ''}<div><b>${nm(x)}</b> <span class="sp">Lv. ${x.pj.from} → ${x.pj.to} · +${x.pj.to - x.pj.from} levels</span></div></div>${evoSel(x)}<ul>${pjLines(x.pj).map(l => `<li>${l}</li>`).join('')}</ul></div>`;
-        return lv.length || others.length ? `<h4 class="tph4">Leveling plan to Lv. ${su.cap}</h4><p class="sp" style="margin:0 0 6px">Under-leveled Pokémon are planned as they'd be at the level cap: levelled, evolved on schedule, with the best moves they'd know by then.</p>
-          <div class="pjgrid">${lv.map(one).join('')}</div>${others.length ? `<details class="tpout"><summary>Leveling plans for the rest (${others.length})</summary><div class="pjgrid">${others.map(one).join('')}</div></details>` : ''}` : '' })()}
+      ${ord.some(i => su.cands[i].pj) ? '<p class="sp" style="margin:10px 0 0">Under-leveled Pokémon are planned as they’d be at the level cap. The Leveling plan below has a team built for levelling up.</p>' : ''}
       <h4 class="tph4">Why each Pokémon</h4><div class="tpgrid">${cards}</div>
       ${left.length || su.out.length ? `<details class="tpout"><summary>Left out (${left.length + su.out.length})</summary><ul>${left.map(o => `<li><b>${nm(o.x)}</b>: ${tpLeftOut(res, o.i)}</li>`).join('')}${su.out.map(o => `<li><b>${nm(o.x)}</b>: ${esc(o.why)}</li>`).join('')}</ul></details>` : ''}`;
   } else body = `<p class="sp">${tpRes ? 'Your Pokémon or the boss changed since the last suggestion. ' : ''}Builds a plan for each of ${esc(b ? b.label : '')}'s Pokémon from your ${su.cands.length} available party and box Pokémon${r.rules.caps && b ? ` at or under the level cap (${b.cap})` : ''}, with a backup for each where you have one.</p>`;
@@ -3933,6 +4094,38 @@ function renderTeamPick() {
       <p>Each boss Pokémon then gets its own answer. The search tries the combinations and keeps the best overall. One of yours can be the answer to two only when it wins both, because it'll be worn down by the second. Remaining slots go to one backup per boss Pokémon, starting with the shakiest matchup, so you never get several Pokémon for the same job. Any slots still open go to the Pokémon that add the most cover, so the team is always six when you have six to choose from. The top few plans and your current party are each played out 300 times. The plans are played as written, using the Set battle style that Nuzlocke runs use: when you knock one of theirs out, your Pokémon stays in. If it would lose to their next Pokémon, you hard-switch to the planned answer, but only if that answer can take a hit coming in and still win. After a faint, you send in the planned answer or its backup for free. Your Pokémon switch out before the boss's next hit can knock them out (unless they move first and a 95%+ accurate move finishes the boss), as long as a teammate can take that hit coming in, and one of yours stays in against several of theirs while it keeps winning. Status moves count too: an opening Sleep Powder, Hypnosis, Thunder Wave, Stun Spore or Will-O-Wisp is scored by its real accuracy (Compound Eyes included) and what it stops, and the playouts use sleep, paralysis, burn, set-up moves and Toxic when they help. Hazards and weather from the boss's team count too: once a setter has moved, every Pokémon you send in is judged on the HP it has left after Stealth Rock and Spikes, Toxic Spikes poison it, and sandstorm or hail chips both sides every turn. The playouts use the boss AI's real choices, including when it sets them. The plan with the fewest expected faints is chosen, counting a loss as losing your whole team, since a wipe ends the run. Win chance only breaks ties.</p>
     </details></section>`;
 }
+// ---- Leveling plan: the best team from every party and box Pokémon, each one as it'd be at the boss's level cap ----
+// Runs the team planner's simulations with projection always on (tpRun('lv')), separately from the Team card.
+function renderLevelPlan() {
+  const el = document.getElementById('batlvl'); if (!el) return;
+  const r = curRun(), b = NBOSS[BS.boss]; if (!b || !batTeam(r).length) { el.innerHTML = ''; return }
+  const su = tpSetup(r, { lv: true }), cap = su.cap, res = lvRes && lvRes.sig === su.sig ? lvRes : null;
+  const nm = x => esc(x.orig.nick || monName(x.orig.n));
+  const evoSel = x => { const opts = pjEvoOpts(x.orig.n), cur = +x.orig.evoPlan; if (!opts.length) return '';
+    const opt = (v, label) => `<option value="${v}" ${cur === v ? 'selected' : ''}>${label}</option>`;
+    return `<label class="pjevo">Evolution <select data-evoplan="${esc(x.row.k)}"><option value="">Auto: best against this boss</option>${opts.map(o => opt(o.n, '  '.repeat(o.d) + esc(mons[o.n - 1].name) + (o.m ? ` (${esc(o.m)})` : ''))).join('')}${opt(x.orig.n, 'Don\'t evolve')}</select></label>` };
+  const one = (x, i, role) => { const o = x.orig || x.e;
+    return `<div class="pjrow${i === 0 ? ' pjlead' : ''}"><div class="tphd"><img src="${nimg(o.n)}" alt="">${x.e.n !== o.n ? `<span class="pjto">→</span><img src="${nimg(x.e.n)}" alt="">` : ''}<div><b>${esc(o.nick || monName(o.n))}</b>
+      <span class="sp">${x.pj ? `Lv. ${x.pj.from} → ${x.pj.to} · +${x.pj.to - x.pj.from} level${x.pj.to - x.pj.from === 1 ? "" : "s"}` : `Lv. ${esc(o.lv)} · at the cap`}${o.st === 'box' ? ' · from box' : ''}</span>
+      <div class="stypes">${mons[x.e.n - 1].v[ver].types.map(typeBadge).join('')}${i === 0 ? ' <span class="btag good">Lead</span>' : ''}</div></div></div>
+      ${role ? `<p class="pjrole">${role}</p>` : ''}${x.pj ? evoSel(x) + `<ul>${pjLines(x.pj).map(l => `<li>${l}</li>`).join('')}</ul>` : ''}</div>` };
+  let body;
+  if (!su.cands.length) body = '<p class="empty">No living party or box Pokémon with a level set.</p>';
+  else if (lvBusy) body = '<p class="sp" id="lvprog" style="margin:8px 0 0">Scoring matchups…</p>';
+  else if (res) {
+    const best = res.best, ord = [best.lead, ...best.t.filter(i => i !== best.lead)], under = ord.filter(i => su.cands[i].pj).length;
+    const inParty = new Set(ord.map(i => su.cands[i].row.k)), curKeys = partyOf(r).map(x => x.row.k);
+    const same = curKeys.length === inParty.size && curKeys.every(k => inParty.has(k)) && curKeys[0] === su.cands[best.lead].row.k;
+    body = `<div class="tpsum" style="margin-top:8px"><span class="bowin">${tpPct(best.win, best.n)}%</span><span class="sp">to win once this team is levelled to Lv. ${cap} · ${tpPct(best.clean, best.n)}% with nobody fainting · ${under} of ${ord.length} need levels</span>
+        ${same ? '<span class="sp">Your party already matches.</span>' : '<button class="btn" data-bact="lvuse">Use this team</button>'}</div>
+      <p class="sp" style="margin:8px 0 0">Each Pokémon as it'd be at Lv. ${cap}: levelled, evolved on schedule, with the best moves it'd know by then. Listed in send-in order.</p>
+      <div class="pjgrid" style="margin-top:8px">${ord.map((i, n) => one(su.cands[i], n, tpWhy(res, i)[0])).join('')}</div>`;
+  } else body = `<p class="sp" style="margin:8px 0 0">${lvRes ? 'Your Pokémon or the boss changed since the last plan. ' : ''}Finds the best team for ${esc(b.label)} from all ${su.cands.length} of your party and box Pokémon, simulating each one as it'd be at the level cap (Lv. ${cap}), then shows how to level and evolve each member to get there.</p>`;
+  // whether it's open is remembered
+  el.innerHTML = `<section class="card full"><details class="pjbox" data-pjbox ${store.get('rp-pjopen', true) ? 'open' : ''}><summary><h3>Leveling plan to Lv. ${cap}</h3> <span class="sp">${res ? 'best team levelled up' : 'best team, levelled up from simulations'}</span></summary>
+    <div class="tbtns" style="margin-top:8px"><button class="btn ${res ? '' : 'primary'}" data-bact="lvteam" ${lvBusy || !su.cands.length ? 'disabled' : ''}>${res ? 'Plan again' : 'Find the best levelled team'}</button></div>
+    ${body}</details></section>`;
+}
 function tpPickUi(r, su) {
   const pk = su.pick, n = su.all.length, on = x => !pk || pk.includes(x.row.k);
   return `<details class="tppick" ${pk ? 'open' : ''}><summary>Plan with ${pk ? `${su.all.filter(on).length} picked Pokémon` : `all ${n} party and box Pokémon`}${su.proj ? ` · under-leveled ones projected to Lv. ${su.cap}` : ''}</summary>
@@ -3940,8 +4133,8 @@ function tpPickUi(r, su) {
     <div class="tppicks">${su.all.map(x => `<label class="chk"><input type="checkbox" data-tppick="${esc(x.row.k)}" ${on(x) ? 'checked' : ''}><img src="${nimg(x.e.n)}" alt="">${esc(x.e.nick || monName(x.e.n))} <span class="sp">${x.e.lv ? 'Lv. ' + esc(x.e.lv) : 'no level'}${x.e.st === 'box' ? ' · box' : ''}</span></label>`).join('')}</div>
     <div class="tbtns"><button class="btn" data-tppickall="1">Pick all</button><button class="btn" data-tppickall="0">Pick none</button><button class="btn primary" data-bact="team" ${tpBusy ? 'disabled' : ''}>Build a plan from these</button></div></details>`;
 }
-function tpUse() {
-  const r = curRun(); if (!tpRes) return; const su = tpRes.su, best = tpRes.best;
+function tpUse(res = tpRes) {
+  const r = curRun(); if (!res) return; const su = res.su, best = res.best;
   const keys = [best.lead, ...best.t.filter(i => i !== best.lead)].map(i => su.cands[i].row.k);
   if (keys.some(k => !r.enc[k])) return;
   partyOf(r).forEach(x => { if (!keys.includes(x.row.k)) x.e.st = 'box' });
@@ -4251,10 +4444,14 @@ GD.addEventListener('click', ev => {
 });
 GD.addEventListener('change', ev => { if (ev.target.id === 'gjump') { const el = document.getElementById('gch' + ev.target.value); if (el) { el.open = true; el.scrollIntoView({ behavior: 'smooth', block: 'start' }) } } });
 const BD = document.getElementById('batdetail');
+BD.addEventListener('toggle', ev => { const k = ev.target.dataset && ev.target.dataset.bopen; if (k) ev.target.open ? batOpen.add(k) : batOpen.delete(k);
+  if (ev.target.hasAttribute && ev.target.hasAttribute('data-pjbox')) store.set('rp-pjopen', ev.target.open) }, true);
 BD.addEventListener('change', ev => { if (ev.target.dataset.bf) return batChange(ev.target);
   if (ev.target.id === 'tpproj') { BS.proj = ev.target.checked; batSave(); return renderTeamPick() }
+  if (ev.target.dataset.simmode) { BS.simMode = ev.target.dataset.simmode; batSave(); return renderSim() }
+  if (ev.target.hasAttribute('data-simnosw')) { BS.simNoSw = ev.target.checked; batSave(); return renderSim() }
   if (ev.target.dataset.evoplan) { const r = curRun(), e = r.enc[ev.target.dataset.evoplan]; if (!e) return;
-    if (ev.target.value) e.evoPlan = +ev.target.value; else delete e.evoPlan; r.updated = Date.now(); saveRuns(); return tpRun() }
+    if (ev.target.value) e.evoPlan = +ev.target.value; else delete e.evoPlan; r.updated = Date.now(); saveRuns(); if (lvRes) tpRun('lv'); else renderLevelPlan(); return tpRes ? tpRun() : renderTeamPick() }
   if (ev.target.dataset.tppick) { const r = curRun(), all = tpSetup(r).all.map(x => x.row.k), k = ev.target.dataset.tppick;
     const cur = new Set(Array.isArray(BS.pick) ? BS.pick : all); ev.target.checked ? cur.add(k) : cur.delete(k);
     BS.pick = all.every(x => cur.has(x)) ? null : [...cur]; batSave(); return renderTeamPick() }
@@ -4262,10 +4459,18 @@ BD.addEventListener('change', ev => { if (ev.target.dataset.bf) return batChange
   const tl = btForm(); tl[k] = ev.target.type === 'checkbox' ? ev.target.checked : ev.target.value;
   if (k === 'p') { tl.pOut = 'hit'; tl.pSec = false } if (k === 'b') { tl.bOut = 'hit'; tl.bSec = false }
   batSave(); if (k !== 'php' && k !== 'bhp') renderTurnLog() });
-BD.addEventListener('click', ev => { const pa = ev.target.closest('[data-tppickall]');
+BD.addEventListener('click', ev => { const mv = ev.target.closest('[data-simmv]');
+  if (mv) { const r = curRun(), [k, d] = [mv.dataset.simmv.slice(0, mv.dataset.simmv.lastIndexOf(':')), +mv.dataset.simmv.slice(mv.dataset.simmv.lastIndexOf(':') + 1)];
+    const ord = simOrder(r).map(x => x.row.k), i = ord.indexOf(k), j = i + d; if (i < 0 || j < 0 || j >= ord.length) return;
+    [ord[i], ord[j]] = [ord[j], ord[i]]; BS.simOrd = ord; batSave(); return renderSim() }
+  const pa = ev.target.closest('[data-tppickall]');
   if (pa) { BS.pick = pa.dataset.tppickall === '1' ? null : []; batSave(); return renderTeamPick() }
   const b = ev.target.closest('[data-bact]'); if (!b) return;
   if (b.dataset.bact === 'team') return tpRun();
+  if (b.dataset.bact === 'lvteam') return tpRun('lv');
+  if (b.dataset.bact === 'lvuse') return tpUse(lvRes);
+  if (b.dataset.bact === 'sim') return batSim();
+  if (b.dataset.bact === 'simclose') { simTok++; simRes = null; return renderSim() }
   if (b.dataset.bact === 'turn') return btAdvance();
   if (b.dataset.bact === 'undo') return btUndo();
   if (b.dataset.bact === 'logmin') { store.set('rp-btlog-min', !store.get('rp-btlog-min', false)); return renderTurnLog() }
@@ -4299,18 +4504,28 @@ function nLog(e) {
 // a new level starts a fresh set of stats; the old level's stats stay in the log
 function nSetLevel(e, lv) { if (String(lv) !== String(e.lv || '')) { nLog(e); e.stats = {} } e.lv = lv }
 // IVs consistent with every logged level (exact, no EVs); if battles' EVs make that impossible, a looser range
+const EVSLOP = [0, 4, 8, 16, 32];   // how far off a tracked EV log may be before IVs give up
 function nSolveIVs(e) {
+  const H = e.hist || [], ev = H.some(x => x.ev && Object.keys(x.ev).length);
+  let out = null;
+  for (const slop of ev ? EVSLOP : [0]) {
+    out = nSolveIVsAt(e, slop); if (!out) return out;
+    if (IVSTATS.every(k => !out.s[k] || out.s[k].c.length)) { out.slop = slop; return out }
+  }
+  return nSolveIVsAt(e, 0);
+}
+function nSolveIVsAt(e, slop) {
   const m = mons[e.n - 1], H = e.hist || []; if (!m || !H.length) return null;
   const b = m.v[ver].stats, bs = x => (mons[(x.n || e.n) - 1] || m).v[ver].stats, s = {}; let evs = false;
   IVSTATS.forEach(k => {
     const ent = H.filter(x => +x.st[k]).slice().sort((a, b) => a.lv - b.lv); if (!ent.length) { s[k] = null; return }
-    const c = [...Array(32).keys()].filter(iv => ivFits(k, iv, ent, bs, e.nat));
+    const c = [...Array(32).keys()].filter(iv => ivFits(k, iv, ent, bs, e.nat, slop));
     // * = no IV explains every level without EVs, so its battles' EVs are part of the picture
     const low = c.filter(iv => ent.every(x => ivStat(k, bs(x)[k], x.lv, iv, 0, e.nat) === +x.st[k]));   // fits with no EVs at all
     const loose = c.length > 0 && !low.length;
     if (loose) evs = true;
     // nothing fits: which single entry, if it were left out, would let the rest fit? (likely typos)
-    const bad = !c.length && ent.length > 1 ? ent.filter((x, i) => [...Array(32).keys()].some(iv => ivFits(k, iv, ent.filter((_, j) => j !== i), bs, e.nat))) : [];
+    const bad = !c.length && ent.length > 1 ? ent.filter((x, i) => [...Array(32).keys()].some(iv => ivFits(k, iv, ent.filter((_, j) => j !== i), bs, e.nat, slop))) : [];
     s[k] = { c, loose, low, bad };
   });
   if (e.ch) {
@@ -4327,7 +4542,7 @@ function nSolveIVs(e) {
   }
   const hpBad = e.hpt ? !ivHpNarrow(s, e.hpt) : false;
   IVSTATS.forEach(k => { if (s[k]) s[k].low = s[k].low.filter(iv => s[k].c.includes(iv)) });
-  return { s, evs, levels: H.length, hpBad };
+  return { s, evs: evs || slop > 0, levels: H.length, hpBad, slop: 0 };
 }
 const nOpenLog = new Set();
 // Highest IV, from the Characteristic on its summary screen; shown as a one-line summary once picked
@@ -4355,7 +4570,8 @@ function nIvBlock(row, e, sol) {
   const badMap = new Map(); IVSTATS.forEach(k => sol.s[k] && sol.s[k].bad.forEach(b => badMap.set(b, [...(badMap.get(b) || []), k])));
   const typo = IVSTATS.filter(k => sol.s[k] && !sol.s[k].c.length && sol.s[k].bad.length).map(k => SL[k] + ' at ' + sol.s[k].bad.map(b => 'Lv. ' + b.lv).join(' or '));
   const lowShown = IVSTATS.some(k => sol.s[k] && sol.s[k].low.length && sol.s[k].low.length < sol.s[k].c.length);
-  const notes = typo.length ? `<div class="pivnote bad">Possible typo: ${esc(typo.join('; '))}. It's highlighted in the stat log.</div>` : '';
+  const notes = (typo.length ? `<div class="pivnote bad">Possible typo: ${esc(typo.join('; '))}. It's highlighted in the stat log.</div>` : '')
+    + (sol.slop ? `<div class="pivnote" title="The logged stats don't fit the EV log exactly, usually from a battle missed or logged twice, or EVs logged after the level-up. IVs allow for that.">EV log looks off by a few points, so these IVs allow ±${sol.slop} EVs.</div>` : '');
   const likely = lowShown ? `<div class="pivnote" title="Assumes its battles haven't added enough EVs to change any stat yet. True early on; less so as it levels.">If its EVs are still near 0: ${IVSTATS.map(k => sol.s[k] && sol.s[k].low.length ? SL[k] + ' ' + ivList(sol.s[k].low) : null).filter(Boolean).join(' · ')}</div>` : '';
   return `<label class="pivlab">IVs <small>from ${H.length} logged level${H.length === 1 ? '' : 's'}${grade}${sol.evs ? ' · <span title="Later stats include EVs from battles, so those IVs are a range rather than exact">* has battle EVs</span>' : ''}</small></label><div class="pivwrap"><div class="pivs">${cells}</div>${notes}</div>
     <details class="phist" data-hk="${esc(row.k)}" ${nOpenLog.has(row.k) ? 'open' : ''}><summary>Stat log · ${H.length} level${H.length === 1 ? '' : 's'}${H.some(x => x.fresh) ? ' · ' + H.filter(x => x.fresh).length + ' before battles' : ''}</summary>${likely}
@@ -4371,7 +4587,10 @@ const NITEMFX = { 'Choice Band': 'Atk ×1.5, locked into one move', 'Choice Spec
   'Griseous Orb': 'Giratina only: Ghost and Dragon moves ×1.2' };
 const NITEMOTHER = ['Leftovers', 'Black Sludge', 'Shell Bell', 'Sitrus Berry', 'Oran Berry', 'Lum Berry', 'Focus Sash', 'Focus Band', 'Choice Scarf', 'Quick Claw', "King's Rock", 'Razor Fang',
   'Scope Lens', 'Razor Claw', 'Wide Lens', 'Zoom Lens', 'Bright Powder', 'Lax Incense', 'White Herb', 'Mental Herb', 'Power Herb', 'Big Root', 'Light Clay', 'Damp Rock', 'Heat Rock',
-  'Smooth Rock', 'Icy Rock', 'Flame Orb', 'Toxic Orb', 'Lucky Egg', 'Exp. Share', 'Amulet Coin', 'Everstone'];
+  'Smooth Rock', 'Icy Rock', 'Flame Orb', 'Toxic Orb', 'Lucky Egg', 'Exp. Share', 'Amulet Coin', 'Everstone',
+  // the rest of the held items the route data places
+  'Soothe Bell', 'Macho Brace', 'Power Weight', 'Power Bracer', 'Power Belt', 'Power Lens', 'Power Band', 'Power Anklet', 'Cleanse Tag', 'Destiny Knot', 'Grip Claw',
+  'Iron Ball', 'Lagging Tail', 'Luck Incense', 'Full Incense', 'Pure Incense', 'Metronome', 'Shed Shell', 'Smoke Ball', 'Sticky Barb', 'Lucky Punch', 'Stick', 'Metal Powder', 'Quick Powder'];
 // berries you can hold for status, healing and pinch boosts (Gen 4 effects), shown in the item picker and notes
 const NBERRYCURE = ['Lum Berry', 'Cheri Berry', 'Chesto Berry', 'Pecha Berry', 'Rawst Berry', 'Aspear Berry', 'Persim Berry'];
 const NBERRYHP = ['Sitrus Berry', 'Oran Berry', 'Berry Juice', 'Figy Berry', 'Wiki Berry', 'Mago Berry', 'Aguav Berry', 'Iapapa Berry'];
@@ -4399,8 +4618,11 @@ function nItemGroups() {
     ['Berries: restore HP', NBERRYHP.map(i => [i, i + ' · ' + NBERRYFX[i]])],
     ['Berries: pinch boosts', NBERRYPINCH.map(i => [i, i + ' · ' + NBERRYFX[i]])],
     ['Species items', ['Light Ball', 'Thick Club', 'Deep Sea Tooth', 'Deep Sea Scale', 'Soul Dew', 'Adamant Orb', 'Lustrous Orb', 'Griseous Orb'].map(i => [i, i])],
-    ['Other', [...NITEMOTHER, ...bossItems].filter(i => !NBERRYFX[i]).sort((a, b) => a.localeCompare(b)).map(i => [i, i])]];
+    ['Other', [...new Set([...NITEMOTHER, ...bossItems])].filter(i => !NBERRYFX[i] && !NTYPEITEM[i] && !NITEMFX[i]).sort((a, b) => a.localeCompare(b)).map(i => [i, i])]];
 }
+// items picked most recently on any card go first in the dropdown
+const NITEMRECENT = 6;
+function nItemUsed(it) { if (it) store.set('rp-item-recent', [it, ...store.get('rp-item-recent', []).filter(x => x !== it)].slice(0, NITEMRECENT)) }
 function nItemNote(it) {
   if (!it) return '';
   if (NBERRYFX[it]) return NBERRYFX[it].charAt(0).toUpperCase() + NBERRYFX[it].slice(1) + '. Used up after one trigger.';
@@ -4410,8 +4632,12 @@ function nItemNote(it) {
 }
 function nItemSelect(cur) {
   const groups = nItemGroups(), all = new Set(groups.flatMap(g => g[1].map(x => x[0])));
+  const label = new Map(groups.flatMap(g => g[1])), recent = store.get('rp-item-recent', []).filter(i => label.has(i));
+  // the current item is selected in its own group, not in Recently used
+  const opt = (v, t, sel) => `<option value="${esc(v)}" ${sel ? 'selected' : ''}>${esc(t)}</option>`;
   return `<select data-f="item" aria-label="Held item"><option value="">— none —</option>${cur && !all.has(cur) ? `<option value="${esc(cur)}" selected>${esc(cur)}</option>` : ''}
-    ${groups.map(([lab, items]) => `<optgroup label="${esc(lab)}">${items.map(([v, t]) => `<option value="${esc(v)}" ${v === cur ? 'selected' : ''}>${esc(t)}</option>`).join('')}</optgroup>`).join('')}</select>`;
+    ${recent.length ? `<optgroup label="Recently used">${recent.map(i => opt(i, label.get(i), false)).join('')}</optgroup>` : ''}
+    ${groups.map(([lab, items]) => `<optgroup label="${esc(lab)}">${items.map(([v, t]) => opt(v, t, v === cur)).join('')}</optgroup>`).join('')}</select>`;
 }
 
 // ---- Hidden Power: type and power come from IVs; the move data's "Normal" is only a placeholder ----
@@ -4697,7 +4923,7 @@ ND.addEventListener('change', ev => {
     else if (fld === 'nick') e.nick = t.value.trim();
     else if (fld === 'ab') e.ab = t.value;
     else if (fld === 'nat') e.nat = t.value;
-    else if (fld === 'item') e.item = t.value.trim();
+    else if (fld === 'item') { e.item = t.value.trim(); nItemUsed(e.item) }
     else if (fld === 'hpt') e.hpt = t.value;
     else if (fld === 'ch') { e.ch = t.value; nChEdit.delete(k) }
     else if (fld === 'evo') { if (+t.value) { nEvolve(e, +t.value); return ncommit(true) } return }
@@ -4837,12 +5063,17 @@ function evForDefeat(e, n, count, pkrs) {
   return add;
 }
 // Can this IV produce every logged stat for stat k? Entries are in level order. EVs never go down from one level to the next;
-// they're 0 up to the last "no battles yet" entry, and an entry with EVs entered uses those. Only floor(EV/4) affects stats.
-function ivFits(k, iv, ent, baseOf, nat) {
+// they're 0 up to the last "no battles yet" entry, and an entry with EVs entered uses those, give or take slop EVs
+// (a missed or doubled battle in the EV log, or EVs logged after the level-up). Only floor(EV/4) affects stats.
+function ivFits(k, iv, ent, baseOf, nat, slop = 0) {
   const last = ent.reduce((a, x, i) => x.fresh ? i : a, -1); let q = 0;
   for (let i = 0; i < ent.length; i++) {
-    const x = ent[i], s = +x.st[k], b = baseOf(x)[k], lv = +x.lv, known = x.ev && x.ev[k] !== undefined && x.ev[k] !== '' ? Math.floor(+x.ev[k] / 4) : null;
-    if (i <= last || known !== null) { const qq = i <= last ? 0 : known; if (ivStat(k, b, lv, iv, qq * 4, nat) !== s) return false; q = Math.max(q, qq); continue }
+    const x = ent[i], s = +x.st[k], b = baseOf(x)[k], lv = +x.lv, known = x.ev && x.ev[k] !== undefined && x.ev[k] !== '' ? +x.ev[k] : null;
+    if (i <= last) { if (ivStat(k, b, lv, iv, 0, nat) !== s) return false; continue }
+    if (known !== null) {
+      let qq = Math.max(q, Math.floor(Math.max(0, known - slop) / 4)); const hi = Math.floor((known + slop) / 4);
+      while (qq < hi && ivStat(k, b, lv, iv, qq * 4, nat) < s) qq++;
+      if (ivStat(k, b, lv, iv, qq * 4, nat) !== s) return false; q = qq; continue }
     let qq = q; while (qq < 63 && ivStat(k, b, lv, iv, qq * 4, nat) < s) qq++;
     if (ivStat(k, b, lv, iv, qq * 4, nat) !== s) return false; q = qq;
   }
@@ -4850,14 +5081,23 @@ function ivFits(k, iv, ent, baseOf, nat) {
 }
 
 let ivHpBad = false;   // the Hidden Power type you entered can't come from these IVs
+let ivSlop = 0;   // how far off the entered EVs had to be allowed for every stat to fit
 function ivSolve() {
+  const ev = IVS.rows.some(r => +r.lv && r.ev && Object.values(r.ev).some(x => x !== '' && x !== undefined));
+  for (const slop of ev ? EVSLOP : [0]) {
+    const out = ivSolveAt(slop); if (!out) return out;
+    if (IVSTATS.every(k => !out[k].used || out[k].c.length)) { ivSlop = slop; return out }
+  }
+  ivSlop = 0; return ivSolveAt(0);
+}
+function ivSolveAt(slop) {
   const m = mons[IVS.n - 1]; if (!m) return null;
   const v = m.v[ver], rows = IVS.rows.filter(r => +r.lv), out = {};
   IVSTATS.forEach(k => {
     let c = [...Array(32).keys()], used = false;
     const ent = rows.filter(r => +(r.st || {})[k]).sort((a, b) => +a.lv - +b.lv); used = ent.length > 0;
     const baseOf = r => (r.n && mons[r.n - 1] ? mons[r.n - 1].v[ver] : v).stats;
-    c = c.filter(iv => ivFits(k, iv, ent, baseOf, IVS.nat));
+    c = c.filter(iv => ivFits(k, iv, ent, baseOf, IVS.nat, slop));
     const loose = c.length > 0 && ent.length > 1 && !c.some(iv => ent.every(r => ivStat(k, baseOf(r)[k], +r.lv, iv, +((r.ev || {})[k]) || 0, IVS.nat) === +r.st[k]));
     out[k] = { c, used, loose };
   });
@@ -5046,7 +5286,8 @@ function renderIvResults() {
       const par = IVSTATS.map(k => { const c = sol[k] ? sol[k].c : []; const p = new Set(c.map(iv => iv & 1)); return p.size === 1 ? `${SL[k]} ${p.has(1) ? 'odd' : 'even'}` : '' }).filter(Boolean);
       return `<p class="sp" style="margin:0 0 8px">Hidden Power ${esc(IVS.hpt)} only comes from certain odd/even IV mixes, so IVs that don't fit are ruled out. ${par.length ? `Known so far: ${par.join(', ')}${par.length < 6 ? '. The other stats could still be either.' : '.'}` : 'It doesn\'t rule anything out yet. Add more levels to narrow it further.'}</p>`;
     })();
-  el.innerHTML = `<section class="card full"><h3>Results</h3>${hpNote}${total}
+  const slopNote = ivSlop ? `<p class="sp" style="margin:0 0 8px">The stats don't fit the entered EVs exactly, so these IVs allow the EVs to be off by up to ${ivSlop}. This usually means a battle was missed or logged twice, or EVs were logged after the level-up.</p>` : '';
+  el.innerHTML = `<section class="card full"><h3>Results</h3>${slopNote}${hpNote}${total}
     <div class="tablewrap"><table class="ivtable"><thead><tr><th>Stat</th><th>Base</th><th>Possible IVs</th><th class="bar">0 ··· 31</th><th>Judge</th></tr></thead><tbody>${rows}</tbody></table></div>
     <div class="legend"><span>Judge wording follows the in-game IV judge: Best 31 · Fantastic 30 · Very good 26–29 · Pretty good 16–25 · Decent 1–15 · No good 0.</span></div></section>`;
 }
@@ -5212,10 +5453,12 @@ document.getElementById('mdetail').addEventListener('click', e => { const b = e.
 // ---- Items view: every item the route data places, with in-game text, effect, where to get it and what it evolves ----
 // Description is Platinum's in-game text and Effect is the battle/field effect (both via PokeAPI); locations come from ROUTES.
 const ITEMD = {"Adamant Orb":{"c":"species-specific","d":"A brightly gleaming orb to be held by DIALGA. It boosts the power of Dragon-​ and Steel-type moves.","e":"Boosts the damage from Dialga’s Dragon-type and Steel-type moves by 20%."},"Amulet Coin":{"c":"training","d":"An item to be held by a Pokémon. It doubles a battle’s prize money if the holding Pokémon joins in.","e":"Held: Doubles the money earned from a battle. Does not stack with Luck Incense."},"Azure Flute":{"c":"event-items","d":"A flute that puts out echoing sounds that do not seem to be of this world. It is unknown who made it.","e":"Allows entry into the Hall of Origin. Unreleased."},"Bicycle":{"c":"gameplay","d":"A folding Bicycle that enables much faster movement than the Running Shoes.","e":"Use for fast transit."},"Big Root":{"c":"held-items","d":"A Pokémon hold item that boosts the power of HP-stealing moves to let the holder recover more HP.","e":"Held: Increases HP recovered from draining moves, Ingrain, and Aqua Ring by 3/10 (30%)."},"Black Belt":{"c":"type-enhancement","d":"An item to be held by a Pokémon. It is a belt that boosts determination and Fighting-type moves.","e":"Held: Fighting-Type moves from holder do 20% more damage."},"Black Flute":{"c":"spelunking","d":"A black flute made from blown glass. Its melody makes wild Pokémon less likely to appear.","e":"Halves the wild Pokémon encounter rate."},"Black Glasses":{"c":"type-enhancement","d":"An item to be held by a Pokémon. It is a shady-looking pair of glasses that boosts Dark-type moves.","e":"Held: Dark-Type moves from holder do 20% more damage."},"Black Sludge":{"c":"held-items","d":"A hold item that gradually restores the HP of Poison-type Pokémon. It inflicts damage on all other types.","e":"Held: Poison-type holder recovers 1/16 (6.25%) max HP each turn. Non-Poison-Types take 1/8 (12.5%) max HP damage."},"Blue Flute":{"c":"flutes","d":"A blue flute made from blown glass. Its melody awakens a single Pokémon from sleep.","e":"Cures sleep."},"Blue Orb":{"c":"plot-advancement","d":"A shiny blue orb that is said to have a legend and has a deep connection with the Hoenn region.","e":"Summons Kyogre to the Embedded Tower."},"Blue Scarf":{"c":"scarves","d":"An item to be held by a Pokémon. It boosts the “Beauty” aspect of the holder in a Contest.","e":"Raises the holder’s Beauty while in a contest."},"Bright Powder":{"c":"held-items","d":"An item to be held by a Pokémon. It casts a tricky glare that lowers the opponent’s accuracy.","e":"Held: Increases the holder’s evasion by 1/9 (11 1/9%)."},"Charcoal":{"c":"type-enhancement","d":"An item to be held by a Pokémon. It is a combustible fuel that boosts the power of Fire-type moves.","e":"Held: Fire-Type moves from holder do 20% more damage."},"Choice Band":{"c":"choice","d":"An item to be held by a Pokémon. This headband ups Attack, but allows the use of only one kind of move.","e":"Held: Increases Attack by 50%, but restricts the holder to only one move."},"Choice Scarf":{"c":"choice","d":"An item to be held by a Pokémon. This scarf boosts Speed, but allows the use of only one kind of move.","e":"Held: Increases Speed by 50%, but restricts the holder to only one move."},"Choice Specs":{"c":"choice","d":"An item to be held by a Pokémon. These distinctive glasses boost Sp. Atk, but allow only one kind of move to be used.","e":"Held: Increases Special Attack by 50%, but restricts the holder to only one move."},"Cleanse Tag":{"c":"training","d":"An item to be held by a Pokémon. It helps keep wild Pokémon away if the holder is the first one in the party.","e":"Prevents wild encounters of level lower than your party’s lead Pokémon."},"Coin Case":{"c":"gameplay","d":"A case for holding Coins obtained at the Game Corner. It holds up to 50,000 Coins.","e":"Holds coins for the Game Corner."},"Damp Rock":{"c":"held-items","d":"A Pokémon hold item that extends the duration of the move Rain Dance used by the holder.","e":"Held: Rain Dance by the holder lasts 8 rounds instead of 5."},"Dawn Stone":{"c":"evolution","d":"A peculiar stone that makes certain species of Pokémon evolve. It sparkles like eyes.","e":"Evolves a male Kirlia into Gallade or a female Snorunt into Froslass."},"Deep Sea Scale":{"c":"species-specific","d":"An item to be held by CLAMPERL. A scale that shines a faint pink, it raises the Sp. Def stat.","e":"Doubles Clamperl’s Special Defense. Traded on a Clamperl: Holder evolves into Gorebyss."},"Deep Sea Tooth":{"c":"species-specific","d":"An item to be held by CLAMPERL. A fang that gleams a sharp silver, it raises the Sp. Atk stat.","e":"Doubles Clamperl’s Special Attack. Traded on a Clamperl: Holder evolves into Huntail."},"Destiny Knot":{"c":"held-items","d":"A long, thin, bright red string to be held by a Pokémon. If the holder becomes infatuated, the foe does too.","e":"Held: Infatuates opposing Pokémon when holder is inflicted with infatuation."},"Draco Plate":{"c":"plates","d":"An item to be held by a Pokémon. It is a stone tablet that boosts the power of Dragon-type moves.","e":"Held: Dragon-Type moves from holder do 20% more damage. Changes Arceus’s and Judgment’s type to Dragon."},"Dragon Fang":{"c":"type-enhancement","d":"An item to be held by a Pokémon. It is a hard and sharp fang that ups the power of Dragon-type moves.","e":"Held: Dragon-Type moves from holder do 20% more damage."},"Dragon Scale":{"c":"evolution","d":"A thick and tough scale. Dragon-type Pokémon may be holding this item when caught.","e":"Traded on a Seadra: Holder evolves into Kingdra."},"Dread Plate":{"c":"plates","d":"An item to be held by a Pokémon. It is a stone tablet that boosts the power of Dark-type moves.","e":"Held: Dark-Type moves from holder do 20% more damage. Changes Arceus’s and Judgment’s type to Dark."},"Dubious Disc":{"c":"evolution","d":"A transparent device overflowing with dubious data. Its producer is unknown.","e":"Traded on a Porygon2: Holder evolves into Porygon-Z."},"Dusk Stone":{"c":"evolution","d":"A peculiar stone that makes certain species of Pokémon evolve. It is as dark as dark can be.","e":"Evolves a Lampent into Chandelure, a Misdreavus into Mismagius, or a Murkrow into Honchkrow."},"Earth Plate":{"c":"plates","d":"An item to be held by a Pokémon. It is a stone tablet that boosts the power of Ground-type moves.","e":"Held: Ground-Type moves from holder do 20% more damage. Changes Arceus’s and Judgment’s type to Ground."},"Electirizer":{"c":"evolution","d":"A box packed with a tremendous amount of electric energy. It is loved by a certain Pokémon.","e":"Traded on an Electabuzz: Holder evolves into Electivire."},"Everstone":{"c":"training","d":"An item to be held by a Pokémon. The Pokémon holding this peculiar stone is prevented from evolving.","e":"Held: Prevents level-based evolution from occuring."},"Exp. Share":{"c":"training","d":"An item to be held by a Pokémon. The holder gets a share of a battle’s Exp. Points without battling.","e":"Held: Half the experience from a battle is split between Pokémon holding this item."},"Expert Belt":{"c":"held-items","d":"An item to be held by a Pokémon. It is a well-worn belt that slightly boosts the power of supereffective moves.","e":"Held: Holder’s Super Effective moves do 20% extra damage."},"Fashion Case":{"c":"gameplay","d":"A fancy case for the tidy and organized storage of colorful Pokémon Accessories.","e":"Holds Pokémon Accessories for use in Contests."},"Fire Stone":{"c":"evolution","d":"A peculiar stone that makes certain species of Pokémon evolve. It is colored orange.","e":"Evolves an Eevee into Flareon, a Growlithe into Arcanine, a Pansear into Simisear, or a Vulpix into Ninetales."},"Fist Plate":{"c":"plates","d":"An item to be held by a Pokémon. It is a stone tablet that boosts the power of Fighting-type moves.","e":"Held: Fighting-Type moves from holder do 20% more damage. Changes Arceus’s and Judgment’s type to Fighting."},"Flame Orb":{"c":"bad-held-items","d":"An item to be held by a Pokémon. It is a bizarre orb that inflicts a burn on the holder in battle.","e":"Held: Inflicts Burn on the holder at the end of the turn. Activates after Burn damage would occur."},"Flame Plate":{"c":"plates","d":"An item to be held by a Pokémon. It is a stone tablet that boosts the power of Fire-type moves.","e":"Held: Fire-Type moves from holder do 20% more damage. Changes Arceus’s and Judgment’s type to Fire."},"Focus Band":{"c":"held-items","d":"An item to be held by a Pokémon. The holder may endure a potential KO attack, leaving it with just 1 HP.","e":"Held: Holder has 10% chance to survive attacks or self-inflicted damage at 1 HP."},"Focus Sash":{"c":"held-items","d":"An item to be held by a Pokémon. If it has full HP, the holder will endure one potential KO attack, leaving 1 HP.","e":"Held: Holder survives any single-hit attack at 1 HP if at max HP, then the item is consumed."},"Full Incense":{"c":"bad-held-items","d":"An item to be held by a Pokémon. It is an exotic-smelling incense that makes the holder bloated and slow moving.","e":"Held: Holder moves last in its priority bracket. Breeding: Snorlax begets a Munchlax Egg."},"Galactic Key":{"c":"plot-advancement","d":"A card key for disengaging security systems in the Galactic HQ. Losing it can result in punishment, apparently.","e":"Grants access to Galactic HQ in Veilstone City."},"Good Rod":{"c":"gameplay","d":"A new, good-quality fishing rod. Use it by any body of water to fish for wild aquatic Pokémon.","e":"Used to catch Pokémon in bodies of water."},"Green Scarf":{"c":"scarves","d":"An item to be held by a Pokémon. It boosts the “Smart” aspect of the holder in a Contest.","e":"Raises the holder’s Smartness while in a contest."},"Grip Claw":{"c":"held-items","d":"A Pokémon hold item that extends the duration of multiturn attacks like Bind and Wrap.","e":"Held: Holder’s multi-turn trapping moves last 5 turns."},"Griseous Orb":{"c":"species-specific","d":"A glowing orb to be held by GIRATINA. It boosts the power of Dragon- and Ghost-type moves.","e":"Boosts the damage from Giratina’s Dragon-type and Ghost-type moves by 20%, and transforms it into Origin Forme."},"HM01 Cut":{"c":"all-machines","d":"The foe is cut with a scythe or a claw. It can also be used to cut down thin trees.","e":"Teaches Cut to a compatible Pokémon."},"HM02 Fly":{"c":"all-machines","d":"The user soars, then strikes on the second turn. It can also be used to fly to any familiar town.","e":"Teaches Fly to a compatible Pokémon."},"HM03 Surf":{"c":"all-machines","d":"It swamps the entire battlefield with a giant wave. It can also be used to cross water.","e":"Teaches Surf to a compatible Pokémon."},"HM04 Strength":{"c":"all-machines","d":"The foe is slugged with a punch thrown at maximum power. It can also be used to move boulders.","e":"Teaches Strength to a compatible Pokémon."},"HM05 Defog":{"c":"all-machines","d":"Obstacles are moved, reducing the foe’s evasion stat. It can also be used to clear deep fog.","e":"Teaches Waterfall to a compatible Pokémon. (HS: Whirlpool DPP: Defog Gen III & II & I: Flash)"},"HM06 Rock Smash":{"c":"all-machines","d":"The user slugs the foe with a shattering punch. It can also smash cracked boulders.","e":"Teaches Dive to a compatible Pokémon. (Gen IV & III: Rock Smash Gen II: Whirlpool)"},"HM07 Waterfall":{"c":"all-machines","d":"The user charges the foe at an awesome speed. It can also be used to climb a waterfall.","e":"Teaches a move to a compatible Pokémon. (Gen IV & III & II: Waterfall)"},"HM08 Rock Climb":{"c":"all-machines","d":"A charging attack that may also leave the foe confused. It can also be used to scale rocky walls.","e":"Teaches a move to a compatible Pokémon. (Gen IV: Rock Climb Gen III: Dive)"},"Hard Stone":{"c":"type-enhancement","d":"An item to be held by a Pokémon. It is an unbreakable stone that ups the power of Rock-type moves.","e":"Held: Rock-Type moves from holder do 20% more damage."},"Heat Rock":{"c":"held-items","d":"A Pokémon hold item that extends the duration of the move Sunny Day used by the holder.","e":"Held: Sunny Day by the holder lasts 8 rounds instead of 5."},"Ice Stone":{"c":"evolution","d":"A peculiar stone that can make certain species of Pokémon evolve. It has an unmistakable snowflake pattern.","e":"Evolves an Alola Sandshrew into Alola Sandslash or an Alola Vulpix into Alola Ninetales."},"Icicle Plate":{"c":"plates","d":"An item to be held by a Pokémon. It is a stone tablet that boosts the power of Ice-type moves.","e":"Held: Ice-Type moves from holder do 20% more damage. Changes Arceus’s and Judgment’s type to Ice."},"Icy Rock":{"c":"held-items","d":"A Pokémon hold item that extends the duration of the move Hail used by the holder.","e":"Held: Hail by the holder lasts 8 rounds instead of 5."},"Insect Plate":{"c":"plates","d":"An item to be held by a Pokémon. It is a stone tablet that boosts the power of Bug-type moves.","e":"Held: Bug-Type moves from holder do 20% more damage. Changes Arceus’s and Judgment’s type to Bug."},"Iron Ball":{"c":"bad-held-items","d":"A Pokémon hold item that cuts Speed. It makes Flying-type and levitating holders susceptible to Ground moves.","e":"Held: Holder’s Speed is halved. Negates all Ground-type immunities, and makes Flying-types take neutral damage from Ground-type moves. Arena Trap. Spikes, and Toxic Spikes affect the holder."},"Iron Plate":{"c":"plates","d":"An item to be held by a Pokémon. It is a stone tablet that boosts the power of Steel-type moves.","e":"Held: Steel-Type moves from holder do 20% more damage. Changes Arceus’s and Judgment’s type to Steel."},"Jade Orb":{"c":"plot-advancement","d":"A shiny green orb that is said to have a legend and has a deep connection with the Hoenn region.","e":"Summons Rayquaza to the Embedded Tower."},"Journal":{"c":"gameplay","d":"A notebook that keeps a day-to-day record of your adventure so far.","e":"Records prior significant activities the player took."},"King's Rock":{"c":"held-items","d":"An item to be held by a Pokémon. It may cause the foe to flinch when the holder inflicts damage.","e":"Held: Damaging moves gain a 10% chance to make their target flinch. Traded on a Poliwhirl: Holder evolves into Politoed. Traded on a Slowpoke: Holder evolves into Slowking."},"Lagging Tail":{"c":"bad-held-items","d":"An item to be held by a Pokémon. It is tremendously heavy and makes the holder move slower than usual.","e":"Held: Holder moves last in its priority bracket."},"Lax Incense":{"c":"held-items","d":"An item to be held by a Pokémon. The tricky aroma of this incense lowers the foe’s accuracy.","e":"Held: Holder’s evasion is increased by 5%. Breeding: Wobbuffet begets a Wynaut Egg."},"Leaf Stone":{"c":"evolution","d":"A peculiar stone that makes certain species of Pokémon evolve. It has a leaf pattern.","e":"Evolves an Exeggcute into Exeggutor, a Gloom into Vileplume, a Nuzleaf into Shiftry, a Pansage into Simisage, or a Weepinbell into Victreebel."},"Leftovers":{"c":"held-items","d":"An item to be held by a Pokémon. The holder’s HP is gradually restored during battle.","e":"Held: Restores 1/16 (6.25%) holder’s max HP at the end of each turn."},"Life Orb":{"c":"held-items","d":"An item to be held by a Pokémon. It boosts the power of moves, but at the cost of some HP on each hit.","e":"Held: Holder’s moves inflict 30% extra damage, but cost 10% max HP."},"Light Ball":{"c":"species-specific","d":"An item to be held by PIKACHU. It is a puzzling orb that raises the Attack and Sp. Atk stat.","e":"Doubles Pikachu’s Attack and Special Attack. Breed on Pikachu or Raichu: Pichu Egg will have Volt Tackle."},"Light Clay":{"c":"held-items","d":"A Pokémon hold item that extends the duration of barrier moves like Light Screen and Reflect used by the holder.","e":"Held: Light Screen and Reflect used by the holder last 8 rounds instead of 5."},"Luck Incense":{"c":"training","d":"An item to be held by a Pokémon. It doubles a battle’s prize money if the holding Pokémon joins in.","e":"Held: Doubles the money earned from a battle. Does not stack with Amulet Coin. Breeding: Chansey and Blissey beget a Happiny Egg."},"Lucky Egg":{"c":"training","d":"An item to be held by a Pokémon. It is an egg filled with happiness that earns extra Exp. Points in battle.","e":"Held: Increases EXP earned in battle by 50%."},"Lucky Punch":{"c":"species-specific","d":"An item to be held by CHANSEY. It is a pair of gloves that boosts CHANSEY’s critical-hit ratio.","e":"Raises Chansey’s critical hit ratio by two stages."},"Lunar Wing":{"c":"event-items","d":"A feather that glows like the moon. It is said to possess the power to dispel nightmares.","e":"Cures sailor’s son of nightmares in Canalave City."},"Lustrous Orb":{"c":"species-specific","d":"A beautifully glowing orb to be held by PALKIA. It boosts the power of Dragon-​ and Water-type moves.","e":"Boosts the damage from Palkia’s Dragon-type and Water-type moves by 20%."},"Macho Brace":{"c":"effort-training","d":"An item to be held by a Pokémon. It is a stiff and heavy brace that promotes strong growth but lowers Speed.","e":"Held: Holder gains double effort values from battles, but has halved Speed in battle."},"Magmarizer":{"c":"evolution","d":"A box packed with a tremendous amount of magma energy. It is loved by a certain Pokémon.","e":"Traded on a Magmar: Holder evolves into Magmortar."},"Magnet":{"c":"type-enhancement","d":"An item to be held by a Pokémon. It is a powerful magnet that boosts the power of Electric-type moves.","e":"Held: Electric-Type moves from holder do 20% more damage."},"Meadow Plate":{"c":"plates","d":"An item to be held by a Pokémon. It is a stone tablet that boosts the power of Grass-type moves.","e":"Held: Grass-Type moves from holder do 20% more damage. Changes Arceus’s and Judgment’s type to Grass."},"Member Card":{"c":"event-items","d":"A card needed for entering the inn in Canalave City. Oddly, the last date marked on it was 50 years ago.","e":"Allows access to Newmoon Island and Darkrai."},"Mental Herb":{"c":"held-items","d":"An item to be held by a Pokémon. It snaps the holder out of infatuation. It can be used only once.","e":"Held: Consumed to cure infatuation. Gen V: Also removes Taunt, Encore, Torment, Disable, and Cursed Body."},"Metal Coat":{"c":"type-enhancement","d":"An item to be held by a Pokémon. It is a special metallic film that ups the power of Steel-type moves.","e":"Held: Steel-Type moves from holder do 20% more damage."},"Metal Powder":{"c":"species-specific","d":"An item to be held by DITTO. Extremely fine yet hard, this odd powder boosts the Defense stat.","e":"Raises Ditto’s Defense and Special Defense by 50%. The boost is lost after transforming."},"Metronome":{"c":"held-items","d":"A Pokémon hold item that boosts a move used consecutively. Its effect is reset if another move is used.","e":"Held: Consectutive uses of the same attack have a cumulative damage boost of 10%. Maximum 100% boost."},"Mind Plate":{"c":"plates","d":"An item to be held by a Pokémon. It is a stone tablet that boosts the power of Psychic-type moves.","e":"Held: Psychic-Type moves from holder do 20% more damage. Changes Arceus’s and Judgment’s type to Psychic."},"Miracle Seed":{"c":"type-enhancement","d":"An item to be held by a Pokémon. It is a seed imbued with life that ups the power of Grass-type moves.","e":"Held: Grass-Type moves from holder do 20% more damage."},"Moon Stone":{"c":"evolution","d":"A peculiar stone that makes certain species of Pokémon evolve. It is as black as the night sky.","e":"Evolves a Clefairy into Clefable, a Jigglypuff into Wigglytuff, a Munna into Musharna, a Nidorina into Nidoqueen, a Nidorino into Nidoking, or a Skitty into Delcatty."},"Muscle Band":{"c":"held-items","d":"An item to be held by a Pokémon. It is a headband that slightly boosts the power of physical moves.","e":"Held: Boosts the damage of physical moves used by the holder by 10%."},"Mysterious Invitation":{"c":"event-items","d":"","e":"Key item (called the Odd Invitation in-game). Opens the portal in Oreburgh Gate's basement after the credits."},"Mystic Water":{"c":"type-enhancement","d":"An item to be held by a Pokémon. It is a teardrop-shaped gem that ups the power of Water-type moves.","e":"Held: Water-Type moves from holder do 20% more damage."},"Never-Melt Ice":{"c":"type-enhancement","d":"An item to be held by a Pokémon. It is a piece of ice that repels heat and boosts Ice-type moves.","e":"Held: Ice-Type moves from holder do 20% more damage."},"Oak's Letter":{"c":"event-items","d":"A letter from Prof. Oak. Written in it is a request for you to go to Rt. 224.","e":"Allows access to Seabreak path, Flower Paradise, and Shaymin."},"Odd Incense":{"c":"type-enhancement","d":"An item to be held by a Pokémon. It is an exotic-smelling incense that boosts the power of Psychic-type moves.","e":"Held: Psychic-Type moves from holder do 20% more damage. Breeding: Mr. Mime begets a Mime Jr. Egg."},"Old Charm":{"c":"plot-advancement","d":"An ancient good-luck charm made of Pokémon bones to be taken to the elder of Celestic Town.","e":"Trade to Cynthia’s grandmother in Celestic Town for HM04 (Surf)."},"Old Rod":{"c":"gameplay","d":"An old and beat-up fishing rod. Use it by any body of water to fish for wild aquatic Pokémon.","e":"Used to catch Pokémon in bodies of water."},"Oval Stone":{"c":"evolution","d":"A peculiar stone that makes certain species of Pokémon evolve. It is shaped like an egg.","e":"Level-up during Day on a Happiny: Holder evolves into Chansey."},"Pal Pad":{"c":"gameplay","d":"A convenient notepad that is used for registering your friends, Friend Codes, and keeping a record of game play.","e":"Use to record Friend Codes and check your own."},"Parcel":{"c":"plot-advancement","d":"A parcel entrusted in your care. You are supposed to deliver it to your childhood friend who left Twinleaf Town.","e":"Given to the trainer’s rival in Jubilife City. Contains Town Maps."},"Pink Scarf":{"c":"scarves","d":"An item to be held by a Pokémon. It boosts the “Cute” aspect of the holder in a Contest.","e":"Raises the holder’s Cuteness while in a contest."},"Poffin Case":{"c":"gameplay","d":"A case for storing Poffin cooked from Berries.","e":"Holds Poffins."},"Poison Barb":{"c":"type-enhancement","d":"An item to be held by a Pokémon. It is a small, poisonous barb that ups the power of Poison-type moves.","e":"Held: Poison-Type moves from holder do 20% more damage."},"Poké Radar":{"c":"gameplay","d":"A tool that can search out Pokémon that are hiding in grass. Its battery is recharged as you walk.","e":"Use to track down rare or shiny Pokémon. 50 steps to recharge."},"Power Anklet":{"c":"effort-training","d":"A Pokémon hold item that promotes Speed gain on leveling, but reduces the Speed stat.","e":"Held: Holder gains 4 Speed effort values, but has halved Speed in battle."},"Power Band":{"c":"effort-training","d":"A Pokémon hold item that promotes Sp. Def gain on leveling, but reduces the Speed stat.","e":"Held: Holder gains 4 Special Defense effort values, but has halved Speed in battle."},"Power Belt":{"c":"effort-training","d":"A Pokémon hold item that promotes Defense gain on leveling, but reduces the Speed stat.","e":"Held: Holder gains 4 Defense effort values, but has halved Speed in battle."},"Power Bracer":{"c":"effort-training","d":"A Pokémon hold item that promotes Attack gain on leveling, but reduces the Speed stat.","e":"Held: Holder gains 4 Attack effort values, but has halved Speed in battle."},"Power Herb":{"c":"held-items","d":"A single-use item to be held by a Pokémon. It allows the immediate use of a move that charges on the first turn.","e":"Held: Both turns of a two-turn charge move happen at once. Consumed upon use."},"Power Lens":{"c":"effort-training","d":"A Pokémon hold item that promotes Sp. Atk gain on leveling, but reduces the Speed stat.","e":"Held: Holder gains 4 Special Attack effort values, but has halved Speed in battle."},"Power Weight":{"c":"effort-training","d":"A Pokémon hold item that promotes HP gain on leveling, but reduces the Speed stat.","e":"Held: Holder gains 4 HP effort values, but has halved Speed in battle."},"Prism Scale":{"c":"evolution","d":"A mysterious scale that evolves certain Pokémon. It shines in rainbow colors.","e":"Traded on a Feebas: Holder evolves into Milotic."},"Protector":{"c":"evolution","d":"A protective item of some sort. It is extremely stiff and heavy. It is loved by a certain Pokémon.","e":"Traded on a Rhydon: Holder evolves into Rhyperior."},"Pure Incense":{"c":"training","d":"An item to be held by a Pokémon. It helps keep wild Pokémon away if the holder is the first one in the party.","e":"Prevents wild encounters of level lower than your party’s lead Pokémon. Breeding: Chimecho begets a Chingling Egg."},"Quick Claw":{"c":"held-items","d":"An item to be held by a Pokémon. A light, sharp claw that lets the bearer move first occasionally.","e":"Held: Holder has a 3/16 (18.75%) chance to move first."},"Quick Powder":{"c":"species-specific","d":"An item to be held by DITTO. Extremely fine yet hard, this odd powder boosts the Speed stat.","e":"Doubles Ditto’s Speed when held. The boost is lost after transforming."},"Rainbow Wing":{"c":"plot-advancement","d":"A mystical, rainbow feather that sparkles.","e":"Summons Ho-Oh at the top of the Bell Tower."},"Razor Claw":{"c":"held-items","d":"An item to be held by a Pokémon. It is a sharply hooked claw that ups the holder’s critical-hit ratio.","e":"Held: Raises the holder’s critical hit ratio by one stage. Held by a Sneasel while levelling up at night: Holder evolves into Weavile."},"Razor Fang":{"c":"held-items","d":"An item to be held by a Pokémon. It may cause the foe to flinch when the holder inflicts damage.","e":"Held: Damaging moves gain a 10% chance to make their target flinch. Held by a Gligar while levelling up: Holder evolves into Gliscor."},"Reaper Cloth":{"c":"evolution","d":"A cloth imbued with horrifyingly strong spiritual energy. It is loved by a certain Pokémon.","e":"Traded on a Dusclops: Holder evolves into Dusknoir."},"Red Flute":{"c":"flutes","d":"A red flute made from blown glass. Its melody snaps a single Pokémon out of infatuation.","e":"Cures attraction."},"Red Orb":{"c":"plot-advancement","d":"A shiny red orb that is said to have a legend and has a deep connection with the Hoenn region.","e":"Summons Groudon to the Embedded Tower."},"Red Scarf":{"c":"scarves","d":"An item to be held by a Pokémon. It boosts the “Cool” aspect of the holder in a Contest.","e":"Raises the holder’s Coolness while in a contest."},"Rock Incense":{"c":"type-enhancement","d":"An item to be held by a Pokémon. It is an exotic-smelling incense that boosts the power of Rock-type moves.","e":"Held: Rock-Type moves from holder do 20% more damage. Breeding: Sudowoodo begets a Bonsly Egg."},"Rose Incense":{"c":"type-enhancement","d":"An item to be held by a Pokémon. It is an exotic-smelling incense that boosts the power of Grass-type moves.","e":"Held: Grass-Type moves from holder do 20% more damage. Breeding: Roselia or Roserade beget a Budew Egg."},"Scope Lens":{"c":"held-items","d":"An item to be held by a Pokémon. It is a lens that boosts the holder’s critical-hit ratio.","e":"Held: Raises the holder’s critical hit ratio by one stage."},"Sea Incense":{"c":"type-enhancement","d":"An item to be held by a Pokémon. It is incense with a curious aroma that boosts the power of Water-type moves.","e":"Held: Water-Type moves from holder do 20% more damage. Breeding: Marill or Azumarill beget an Azurill Egg."},"Seal Case":{"c":"gameplay","d":"A case for storing Seals that can be applied to the capsule cases of Poké Balls.","e":"Stores Seals that can be applied to Poké Ball capsules."},"Secret Key":{"c":"event-items","d":"A high-tech key that has to be used at a specific location. It emits a special electric signal to open a door.","e":"Gen IV: The key to Rotom’s appliance room. Gen III: The key to Cinnabar Gym."},"Secret Potion":{"c":"plot-advancement","d":"A fantastic medicine dispensed by the pharmacy in Cianwood City. It fully heals a Pokémon of any ailment.","e":"Used to heal the Ampharos at the top of Olivine Lighthouse."},"Sharp Beak":{"c":"type-enhancement","d":"An item to be held by a Pokémon. It is a long, sharp beak that boosts the power of Flying-type moves.","e":"Held: Flying-Type moves from holder do 20% more damage."},"Shed Shell":{"c":"held-items","d":"A tough, discarded carapace to be held by a Pokémon. It enables the holder to switch with a waiting Pokémon in battle.","e":"Held: Holder can bypass all trapping effects and switch out. Multi-turn moves still cannot be switched out of."},"Shell Bell":{"c":"held-items","d":"An item to be held by a Pokémon. The holder’s HP is restored a little every time it inflicts damage.","e":"Held: Holder receives 1/8 of the damage it deals when attacking."},"Shiny Stone":{"c":"evolution","d":"A peculiar stone that makes certain species of Pokémon evolve. It shines with a dazzling light.","e":"Evolves a Minccino into Cinccino, a Roselia into Roserade, or a Togetic into Togekiss."},"Silk Scarf":{"c":"type-enhancement","d":"An item to be held by a Pokémon. It is a sumptuous scarf that boosts the power of Normal-type moves.","e":"Held: Normal-Type moves from holder do 20% more damage."},"Silver Powder":{"c":"type-enhancement","d":"An item to be held by a Pokémon. It is a shiny, silver powder that ups the power of Bug-type moves.","e":"Held: Bug-Type moves from holder do 20% more damage."},"Silver Wing":{"c":"plot-advancement","d":"A strange, silvery feather that sparkles.","e":"Summons Lugia to the Whirl Islands."},"Sky Plate":{"c":"plates","d":"An item to be held by a Pokémon. It is a stone tablet that boosts the power of Flying-type moves.","e":"Held: Flying-Type moves from holder do 20% more damage. Changes Arceus’s and Judgment’s type to Flying."},"Smoke Ball":{"c":"held-items","d":"An item to be held by a Pokémon. It enables the holder to flee from any wild Pokémon without fail.","e":"Held: Allows the Holder to escape from any wild battle."},"Smooth Rock":{"c":"held-items","d":"A Pokémon hold item that extends the duration of the move Sandstorm used by the holder.","e":"Held: Sandstorm by the holder lasts 8 rounds instead of 5."},"Soft Sand":{"c":"type-enhancement","d":"An item to be held by a Pokémon. It is a loose, silky sand that boosts the power of Ground-type moves.","e":"Held: Ground-Type moves from holder do 20% more damage."},"Soothe Bell":{"c":"training","d":"An item to be held by a Pokémon. It is a bell with a comforting chime that calms the holder and makes it friendly.","e":"Held: Doubles the happiness earned by the holder."},"Soul Dew":{"c":"species-specific","d":"A wondrous orb to be held by LATIOS or LATIAS. It raises both the Sp. Atk and Sp. Def stats.","e":"Raises Latias and Latios’s Special Attack and Special Defense by 50%."},"Spell Tag":{"c":"type-enhancement","d":"An item to be held by a Pokémon. It is a sinister, eerie tag that boosts the power of Ghost-type moves.","e":"Held: Ghost-Type moves from holder do 20% more damage."},"Splash Plate":{"c":"plates","d":"An item to be held by a Pokémon. It is a stone tablet that boosts the power of Water-type moves.","e":"Held: Water-Type moves from holder do 20% more damage. Changes Arceus’s and Judgment’s type to Water."},"Spooky Plate":{"c":"plates","d":"An item to be held by a Pokémon. It is a stone tablet that boosts the power of Ghost-type moves.","e":"Held: Ghost-Type moves from holder do 20% more damage. Changes Arceus’s and Judgment’s type to Ghost."},"Sprayduck":{"c":"gameplay","d":"A watering can shaped like a PSYDUCK. It helps promote healthy growth of Berries planted in soft soil.","e":"Used to water berries."},"Stick":{"c":"species-specific","d":"An item to be held by FARFETCH’D. It is a very long and stiff stalk of leek that boosts the critical-hit ratio.","e":"Raises Farfetch’d’s critical hit ratio by two stages."},"Sticky Barb":{"c":"bad-held-items","d":"A hold item that damages the holder on every turn. It may latch on to foes that touch the holder.","e":"Held: Holder takes 1/8 (12.5%) its max HP at the end of each turn. When the holder is hit by a contact move, the attacking Pokémon takes 1/8 its max HP in damage and receive the item if not holding one."},"Stone Plate":{"c":"plates","d":"An item to be held by a Pokémon. It is a stone tablet that boosts the power of Rock-type moves.","e":"Held: Rock-Type moves from holder do 20% more damage. Changes Arceus’s and Judgment’s type to Rock."},"Suite Key":{"c":"event-items","d":"A key to one of the suites at the luxury hotel by a lake. For some odd reason, it often disappears.","e":"Opens a locked building in the Lakeside Resort."},"Sun Stone":{"c":"evolution","d":"A peculiar stone that makes certain species of Pokémon evolve. It is as red as the sun.","e":"Evolves a Cottonee into Whimsicott, a Gloom into Bellossom, a Petilil into Lilligant, or a Sunkern into Sunflora."},"Super Rod":{"c":"gameplay","d":"An awesome, high-tech fishing rod. Use it by any body of water to fish for wild aquatic Pokémon.","e":"Used to catch Pokémon in bodies of water."},"Tea":{"c":"plot-advancement","d":"A thirst-quenching tea prepared by an old lady.","e":"Grants access to Saffron City."},"Thick Club":{"c":"species-specific","d":"An item to be held by CUBONE or MAROWAK. It is a hard bone of some sort that boosts the Attack stat.","e":"Doubles Cubone or Marowak’s Attack."},"Thunder Stone":{"c":"evolution","d":"A peculiar stone that makes certain species of Pokémon evolve. It has a thunderbolt pattern.","e":"Evolves an Eelektrik into Eelektross, an Eevee into Jolteon, or a Pikachu into Raichu."},"Town Map":{"c":"gameplay","d":"A very convenient map that can be viewed anytime. It even shows your present location.","e":"Use to see the overworld map."},"Toxic Orb":{"c":"bad-held-items","d":"An item to be held by a Pokémon. It is a bizarre orb that badly poisons the holder in battle.","e":"Held: Inflicts Toxic on the holder at the end of the turn. Activates after Poison damage would occur."},"Toxic Plate":{"c":"plates","d":"An item to be held by a Pokémon. It is a stone tablet that boosts the power of Poison-type moves.","e":"Held: Poison-Type moves from holder do 20% more damage. Changes Arceus’s and Judgment’s type to Poison."},"Twisted Spoon":{"c":"type-enhancement","d":"An item to be held by a Pokémon. It is a spoon imbued with telekinetic power that boosts Psychic-type moves.","e":"Held: Psychic-Type moves from holder do 20% more damage."},"Up-Grade":{"c":"evolution","d":"A transparent device filled with all sorts of data. It was produced by Silph Co.","e":"Traded on a Porygon: Holder evolves into Porygon2."},"VS Seeker":{"c":"gameplay","d":"A device that indicates Trainers who want to battle. Its battery charges while you walk.","e":"Allows rebattling of on-screen trainers. 100 steps to recharge."},"Vs. Recorder":{"c":"gameplay","d":"An amazing device that can record a battle either between friends or at a special battle facility.","e":"Records wireless, Wi-Fi, or Battle Frontier battles, and stores points."},"Water Stone":{"c":"evolution","d":"A peculiar stone that makes certain species of Pokémon evolve. It is a clear, light blue.","e":"Evolves an Eevee into Vaporeon, a Lombre into Ludicolo, a Panpour into Simipour, a Poliwhirl into Poliwrath, a Shellder into Cloyster, or a Staryu into Starmie."},"Wave Incense":{"c":"type-enhancement","d":"An item to be held by a Pokémon. It is an exotic-smelling incense that boosts the power of Water-type moves.","e":"Held: Water-Type moves from holder do 20% more damage. Breeding: Mantine begets a Mantyke Egg."},"White Flute":{"c":"spelunking","d":"A white flute made from blown glass. Its melody makes wild Pokémon more likely to appear.","e":"Doubles the wild Pokémon encounter rate."},"White Herb":{"c":"held-items","d":"An item to be held by a Pokémon. It restores any lowered stat in battle. It can be used only once.","e":"Held: Resets all lowered stats to normal at end of turn. Consumed after use."},"Wide Lens":{"c":"held-items","d":"An item to be held by a Pokémon. It is a magnifying lens that slightly boosts the accuracy of moves.","e":"Held: Provides a 1/10 (10%) boost in accuracy to the holder."},"Wise Glasses":{"c":"held-items","d":"An item to be held by a Pokémon. It is a thick pair of glasses that slightly boosts the power of special moves.","e":"Held: Boosts the damage of special moves used by the holder by 1/10 (10%)."},"Works Key":{"c":"plot-advancement","d":"A large key for operating the doors of the Valley Windworks in the canyon. It was held by a Team Galactic Grunt.","e":"Grants access to Valley Windworks."},"Yellow Flute":{"c":"flutes","d":"A yellow flute made from blown glass. Its melody snaps a single Pokémon out of confusion.","e":"Cures confusion."},"Yellow Scarf":{"c":"scarves","d":"An item to be held by a Pokémon. It boosts the “Tough” aspect of the holder in a Contest.","e":"Raises the holder’s Toughness while in a contest."},"Zap Plate":{"c":"plates","d":"An item to be held by a Pokémon. It is a stone tablet that boosts the power of Electric-type moves.","e":"Held: Electric-Type moves from holder do 20% more damage. Changes Arceus’s and Judgment’s type to Electric."},"Zoom Lens":{"c":"held-items","d":"An item to be held by a Pokémon. If the holder moves after the foe, its accuracy will be boosted.","e":"Held: Provides a 1/5 (20%) boost in accuracy if the holder moves after the target."},"Gracidea Flower":{"c":"event-items","d":"A flower sometimes bundled in bouquets to convey gratitude on special occasions like birthdays.","e":"Changes an unfrozen Shaymin to Sky Forme in the day."},"GS Ball":{"c":"event-items","d":"A mysterious Poké Ball. Its purpose is unknown.","e":"Key item. Take it to the shrine in Eterna Forest to make Celebi appear."}};
+// Berries: Platinum's in-game text and effect (PokeAPI) and where Platinum has them (Serebii's item dex). l: "Area" or "Area|bm" (Berry Master)
+const BERRYD = {"Cheri Berry":{"k":"Healing & status cures","d":"A Poffin ingredient. It may be used or held by a Pokémon to recover from paralysis.","e":"Held: Consumed when paralyzed to cure paralysis.","l":["Route 205","Route 208|bm","Route 214","Floaroma Town"]},"Chesto Berry":{"k":"Healing & status cures","d":"A Poffin ingredient. It may be used or held by a Pokémon to recover from sleep.","e":"Held: Consumed when asleep to cure sleep.","l":["Route 205","Route 208|bm","Route 209","Route 210","Route 214","Floaroma Town"]},"Pecha Berry":{"k":"Healing & status cures","d":"A Poffin ingredient. It may be used or held by a Pokémon to recover from poison.","e":"Held: Consumed when poisoned to cure poison.","l":["Route 205","Route 208|bm","Route 211","Route 212","Route 215","Route 221","Floaroma Town"]},"Rawst Berry":{"k":"Healing & status cures","d":"A Poffin ingredient. It may be used or held by a Pokémon to recover from a burn.","e":"Held: Consumed when burned to cure a burn.","l":["Route 206","Route 208|bm","Route 213","Route 218","Floaroma Town"]},"Aspear Berry":{"k":"Healing & status cures","d":"A Poffin ingredient. It may be used or held by a Pokémon to defrost it. ","e":"Held: Consumed when frozen to cure frozen.","l":["Route 208|bm","Route 210","Route 211","Route 212"]},"Leppa Berry":{"k":"Healing & status cures","d":"A Poffin ingredient. It may be used or held by a Pokémon to restore a move’s PP by 10.","e":"Held: Consumed when a move runs out of PP to restore its PP by 10.","l":["Route 208|bm","Route 209","Route 221","Resort Area"]},"Oran Berry":{"k":"Healing & status cures","d":"A Poffin ingredient. It may be used or held by a Pokémon to heal the user by just 10 HP.","e":"Held: Consumed at 1/2 max HP to recover 10 HP.","l":["Route 205","Route 208|bm","Floaroma Town"]},"Persim Berry":{"k":"Healing & status cures","d":"A Poffin ingredient. It may be used or held by a Pokémon to recover from confusion.","e":"Held: Consumed when confused to cure confusion.","l":["Route 208|bm","Route 218","Solaceon Town","Pastoria City"]},"Lum Berry":{"k":"Healing & status cures","d":"A Poffin ingredient. It may be used or held by a Pokémon to recover from any status problem.","e":"Held: Consumed to cure any status condition or confusion.","l":["Route 208|bm","Route 212","Resort Area"]},"Sitrus Berry":{"k":"Healing & status cures","d":"A Poffin ingredient. It may be used or held by a Pokémon to heal the user’s HP a little.","e":"Held: Consumed at 1/2 max HP to recover 1/4 max HP.","l":["Route 208|bm","Route 210","Route 212","Route 214","Route 224","Fuego Ironworks"]},"Figy Berry":{"k":"Healing (may confuse)","d":"A Poffin ingredient. If held by a Pokémon, it restores the user’s HP in a pinch, but may also cause confusion.","e":"Held: Consumed at 1/2 max HP to restore 1/8 max HP. Confuses Pokémon that dislike spicy flavor.","l":["Route 208|bm","Route 218","Solaceon Town"]},"Wiki Berry":{"k":"Healing (may confuse)","d":"A Poffin ingredient. If held by a Pokémon, it restores the user’s HP in a pinch, but may also cause confusion.","e":"Held: Consumed at 1/2 max HP to restore 1/8 max HP. Confuses Pokémon that dislike dry flavor.","l":["Route 208|bm","Route 210","Route 215","Route 222"]},"Mago Berry":{"k":"Healing (may confuse)","d":"A Poffin ingredient. If held by a Pokémon, it restores the user’s HP in a pinch, but may also cause confusion.","e":"Held: Consumed at 1/2 max HP to restore 1/8 max HP. Confuses Pokémon that dislike sweet flavor.","l":["Route 208|bm","Route 215","Route 221","Route 222"]},"Aguav Berry":{"k":"Healing (may confuse)","d":"A Poffin ingredient. If held by a Pokémon, it restores the user’s HP in a pinch, but may also cause confusion.","e":"Held: Consumed at 1/2 max HP to restore 1/8 max HP. Confuses Pokémon that dislike bitter flavor.","l":["Route 208|bm","Route 210","Route 213","Route 222"]},"Iapapa Berry":{"k":"Healing (may confuse)","d":"A Poffin ingredient. If held by a Pokémon, it restores the user’s HP in a pinch, but may also cause confusion.","e":"Held: Consumed at 1/2 max HP to restore 1/8 max HP. Confuses Pokémon that dislike sour flavor.","l":["Route 208|bm","Route 211","Route 213"]},"Razz Berry":{"k":"Poffin ingredient","d":"A Poffin ingredient. Bury it in soft soil to grow a Razz Plant.","e":"Used for creating PokéBlocks and Poffins.","l":["Route 205","Route 208|bm","Route 208","Route 210"]},"Bluk Berry":{"k":"Poffin ingredient","d":"A Poffin ingredient. Bury it in soft soil to grow a Bluk Plant.","e":"Used for creating PokéBlocks and Poffins.","l":["Route 205","Route 208|bm","Route 208","Route 215","Route 224"]},"Nanab Berry":{"k":"Poffin ingredient","d":"A Poffin ingredient. Bury it in soft soil to grow a Nanab Plant.","e":"Used for creating PokéBlocks and Poffins.","l":["Route 208|bm","Route 224","Solaceon Town","Pastoria City"]},"Wepear Berry":{"k":"Poffin ingredient","d":"A Poffin ingredient. Bury it in soft soil to grow a Wepear Plant.","e":"Used for creating PokéBlocks and Poffins.","l":["Route 208|bm","Route 224","Fuego Ironworks"]},"Pinap Berry":{"k":"Poffin ingredient","d":"A Poffin ingredient. Bury it in soft soil to grow a Pinap Plant.","e":"Used for creating PokéBlocks and Poffins.","l":["Route 208|bm","Route 208","Route 210","Route 212","Route 218"]},"Pomeg Berry":{"k":"Lowers EVs","d":"A Poffin ingredient. Using it on a Pokémon makes it more friendly, but it also lowers its base HP.","e":"Drops HP Effort Values by 10 and raises happiness.","l":["Route 208|bm","Route 214","Route 226"]},"Kelpsy Berry":{"k":"Lowers EVs","d":"A Poffin ingredient. Using it on a Pokémon makes it more friendly, but it also lowers its base Attack stat.","e":"Drops Attack Effort Values by 10 and raises happiness.","l":["Route 208|bm","Route 225","Route 230","Fuego Ironworks"]},"Qualot Berry":{"k":"Lowers EVs","d":"A Poffin ingredient. Using it on a Pokémon makes it more friendly, but it also lowers its base Defense stat.","e":"Drops Defense Effort Values by 10 and raises happiness.","l":["Route 208|bm","Route 222","Route 226","Route 229","Resort Area"]},"Hondew Berry":{"k":"Lowers EVs","d":"A Poffin ingredient. Using it on a Pokémon makes it more friendly, but it also lowers its base Sp. Atk stat.","e":"Drops Special Attack Effort Values by 10 and raises happiness.","l":["Route 208|bm","Route 221","Route 228","Fight Area"]},"Grepa Berry":{"k":"Lowers EVs","d":"A Poffin ingredient. Using it on a Pokémon makes it more friendly, but it also lowers its base Sp. Def stat.","e":"Drops Special Defense Effort Values by 10 and raises happiness.","l":["Route 208|bm","Route 211","Route 229","Route 230","Resort Area"]},"Tamato Berry":{"k":"Lowers EVs","d":"A Poffin ingredient. Using it on a Pokémon makes it more friendly, but it also lowers its base Speed stat.","e":"Drops Speed Effort Values by 10 and raises happiness.","l":["Route 208|bm","Route 212","Route 225","Route 228"]},"Cornn Berry":{"k":"Poffin ingredient","d":"A Poffin ingredient. Bury it in soft soil to grow a Cornn Plant.","e":"Used for creating PokéBlocks and Poffins.","l":["Route 208|bm"]},"Magost Berry":{"k":"Poffin ingredient","d":"A Poffin ingredient. Bury it in soft soil to grow a Magost Plant.","e":"Used for creating PokéBlocks and Poffins.","l":["Route 208|bm"]},"Rabuta Berry":{"k":"Poffin ingredient","d":"A Poffin ingredient. Bury it in soft soil to grow a Rabuta Plant.","e":"Used for creating PokéBlocks and Poffins.","l":["Route 208|bm"]},"Nomel Berry":{"k":"Poffin ingredient","d":"A Poffin ingredient. Bury it in soft soil to grow a Nomel Plant.","e":"Used for creating PokéBlocks and Poffins.","l":["Route 208|bm"]},"Spelon Berry":{"k":"Poffin ingredient","d":"A Poffin ingredient. Bury it in soft soil to grow a Spelon Plant.","e":"Used for creating PokéBlocks and Poffins.","l":[]},"Pamtre Berry":{"k":"Poffin ingredient","d":"A Poffin ingredient. Bury it in soft soil to grow a Pamtre Plant.","e":"Used for creating PokéBlocks and Poffins.","l":[]},"Watmel Berry":{"k":"Poffin ingredient","d":"A Poffin ingredient. Bury it in soft soil to grow a Watmel Plant.","e":"Used for creating PokéBlocks and Poffins.","l":[]},"Durin Berry":{"k":"Poffin ingredient","d":"A Poffin ingredient. Bury it in soft soil to grow a Durin Plant.","e":"Used for creating PokéBlocks and Poffins.","l":[]},"Belue Berry":{"k":"Poffin ingredient","d":"A Poffin ingredient. Bury it in soft soil to grow a Belue Plant.","e":"Used for creating PokéBlocks and Poffins.","l":[]},"Occa Berry":{"k":"Halves a super-effective hit","d":"A Poffin ingredient. If held by a Pokémon, it weakens a foe’s supereffective Fire-type attack.","e":"Held: Consumed when struck by a super-effective Fire-type attack to halve the damage.","l":["Pastoria City"]},"Passho Berry":{"k":"Halves a super-effective hit","d":"A Poffin ingredient. If held by a Pokémon, it weakens a foe’s supereffective Water-type attack.","e":"Held: Consumed when struck by a super-effective Water-type attack to halve the damage.","l":["Pastoria City"]},"Wacan Berry":{"k":"Halves a super-effective hit","d":"A Poffin ingredient. If held by a Pokémon, it weakens a foe’s supereffective Electric-type attack.","e":"Held: Consumed when struck by a super-effective Electric-type attack to halve the damage.","l":["Pastoria City"]},"Rindo Berry":{"k":"Halves a super-effective hit","d":"A Poffin ingredient. If held by a Pokémon, it weakens a foe’s supereffective Grass-type attack.","e":"Held: Consumed when struck by a super-effective Grass-type attack to halve the damage.","l":["Pastoria City"]},"Yache Berry":{"k":"Halves a super-effective hit","d":"A Poffin ingredient. If held by a Pokémon, it weakens a foe’s supereffective Ice-type attack.","e":"Held: Consumed when struck by a super-effective Ice-type attack to halve the damage.","l":["Pastoria City"]},"Chople Berry":{"k":"Halves a super-effective hit","d":"A Poffin ingredient. If held by a Pokémon, it weakens a foe’s supereffective Fighting-type attack.","e":"Held: Consumed when struck by a super-effective Fighting-type attack to halve the damage.","l":["Pastoria City"]},"Kebia Berry":{"k":"Halves a super-effective hit","d":"A Poffin ingredient. If held by a Pokémon, it weakens a foe’s supereffective Poison-type attack.","e":"Held: Consumed when struck by a super-effective Poison-type attack to halve the damage.","l":["Pastoria City"]},"Shuca Berry":{"k":"Halves a super-effective hit","d":"A Poffin ingredient. If held by a Pokémon, it weakens a foe’s supereffective Ground-type attack.","e":"Held: Consumed when struck by a super-effective Ground-type attack to halve the damage.","l":["Pastoria City"]},"Coba Berry":{"k":"Halves a super-effective hit","d":"A Poffin ingredient. If held by a Pokémon, it weakens a foe’s supereffective Flying-type attack.","e":"Held: Consumed when struck by a super-effective Flying-type attack to halve the damage.","l":["Pastoria City"]},"Payapa Berry":{"k":"Halves a super-effective hit","d":"A Poffin ingredient. If held by a Pokémon, it weakens a foe’s supereffective Psychic-type attack.","e":"Held: Consumed when struck by a super-effective Psychic-type attack to halve the damage.","l":["Pastoria City"]},"Tanga Berry":{"k":"Halves a super-effective hit","d":"A Poffin ingredient. If held by a Pokémon, it weakens a foe’s supereffective Bug-type attack.","e":"Held: Consumed when struck by a super-effective Bug-type attack to halve the damage.","l":["Pastoria City"]},"Charti Berry":{"k":"Halves a super-effective hit","d":"A Poffin ingredient. If held by a Pokémon, it weakens a foe’s supereffective Rock-type attack.","e":"Held: Consumed when struck by a super-effective Rock-type attack to halve the damage.","l":["Pastoria City"]},"Kasib Berry":{"k":"Halves a super-effective hit","d":"A Poffin ingredient. If held by a Pokémon, it weakens a foe’s supereffective Ghost-type attack.","e":"Held: Consumed when struck by a super-effective Ghost-type attack to halve the damage.","l":["Pastoria City"]},"Haban Berry":{"k":"Halves a super-effective hit","d":"A Poffin ingredient. If held by a Pokémon, it weakens a foe’s supereffective Dragon-type attack.","e":"Held: Consumed when struck by a super-effective Dragon-type attack to halve the damage.","l":["Pastoria City"]},"Colbur Berry":{"k":"Halves a super-effective hit","d":"A Poffin ingredient. If held by a Pokémon, it weakens a foe’s supereffective Dark-type attack.","e":"Held: Consumed when struck by a super-effective Dark-type attack to halve the damage.","l":["Pastoria City"]},"Babiri Berry":{"k":"Halves a super-effective hit","d":"A Poffin ingredient. If held by a Pokémon, it weakens a foe’s supereffective Steel-type attack.","e":"Held: Consumed when struck by a super-effective Steel-type attack to halve the damage.","l":["Pastoria City"]},"Chilan Berry":{"k":"Halves a super-effective hit","d":"A Poffin ingredient. If held by a Pokémon, it weakens a foe’s Normal-type attack.","e":"Held: Consumed when struck by a Normal-type attack to halve the damage.","l":["Pastoria City"]},"Liechi Berry":{"k":"Pinch boost","d":"A Poffin ingredient. If held by a Pokémon, it raises its Attack stat in a pinch.","e":"Held: Consumed at 1/4 max HP to boost Attack.","l":[]},"Ganlon Berry":{"k":"Pinch boost","d":"A Poffin ingredient. If held by a Pokémon, it raises its Defense stat in a pinch.","e":"Held: Consumed at 1/4 max HP to boost Defense.","l":[]},"Salac Berry":{"k":"Pinch boost","d":"A Poffin ingredient. If held by a Pokémon, it raises its Speed stat in a pinch.","e":"Held: Consumed at 1/4 max HP to boost Speed.","l":[]},"Petaya Berry":{"k":"Pinch boost","d":"A Poffin ingredient. If held by a Pokémon, it raises its Sp. Atk stat in a pinch.","e":"Held: Consumed at 1/4 max HP to boost Special Attack.","l":[]},"Apicot Berry":{"k":"Pinch boost","d":"A Poffin ingredient. If held by a Pokémon, it raises its Sp. Def stat in a pinch.","e":"Held: Consumed at 1/4 max HP to boost Special Defense.","l":[]},"Lansat Berry":{"k":"Pinch boost","d":"A Poffin ingredient. If held by a Pokémon, it raises its critical-hit ratio in a pinch.","e":"Held: Consumed at 1/4 max HP to boost critical hit ratio by two stages.","l":[]},"Starf Berry":{"k":"Pinch boost","d":"A Poffin ingredient. If held by a Pokémon, it sharply raises one of its stats in a pinch.","e":"Held: Consumed at 1/4 max HP to boost a random stat by two stages.","l":[]},"Enigma Berry":{"k":"Other","d":"A Poffin ingredient. If held by a Pokémon, it restores its HP if it is hit by a foe’s supereffective attack.","e":"Held: Consumed when struck by a super-effective attack to restore 1/4 max HP.","l":[]},"Micle Berry":{"k":"Pinch boost","d":"A Poffin ingredient. If held by a Pokémon, it raises the accuracy of a move just once in a pinch.","e":"Held: Consumed at 1/4 max HP to boost accuracy of next move by 20%. (Gen IV: Perfect accuracy)","l":[]},"Custap Berry":{"k":"Pinch boost","d":"A Poffin ingredient. If held by a Pokémon, it gets to move first just once in a pinch.","e":"Held: Consumed at 1/4 max HP when using a move to go first.","l":[]},"Jaboca Berry":{"k":"Other","d":"A Poffin ingredient. If held by a Pokémon, and if a foe’s physical attack lands, the foe also takes damage.","e":"Held: Consumed to deal 1/8 attacker’s max HP when holder is struck by a physical attack.","l":[]},"Rowap Berry":{"k":"Other","d":"A Poffin ingredient. If held by a Pokémon, and if a foe’s special attack lands, the foe also takes damage.","e":"Held: Consumed to deal 1/8 attacker’s max HP when holder is struck by a special attack.","l":[]}};
 const ICAT = { 'held-items': 'Held items', 'type-enhancement': 'Held items', 'choice': 'Held items', 'bad-held-items': 'Held items', 'species-specific': 'Held items', 'training': 'Held items',
   'effort-training': 'Held items', 'plates': 'Plates', 'evolution': 'Evolution', 'all-machines': 'HMs', 'scarves': 'Contest & flutes', 'flutes': 'Contest & flutes',
   'plot-advancement': 'Key items', 'gameplay': 'Key items', 'event-items': 'Key items', 'spelunking': 'Key items' };
-const IGROUPS = ['Held items', 'Evolution', 'Plates', 'HMs', 'Key items', 'Contest & flutes'];
+const IGROUPS = ['Held items', 'Berries', 'Evolution', 'Plates', 'HMs', 'Key items', 'Contest & flutes'];
 const IALIAS = { 'Mysterious Invitation': ['Odd Invitation'] };
 const IEVO = (() => {   // item name -> [{from, to, m}] from the RP evolution trees
   const edges = new Map();
@@ -5235,6 +5478,21 @@ const ITEMS = (() => {
     return it;
   });
 })();
+// trainers holding each item (you can steal these with Thief or Covet)
+const IHELD = (() => {
+  const by = {};
+  ROUTES.forEach(L => L.subs.forEach(x => x.tr.forEach(t => t.team.forEach(p => { if (!p.item) return;
+    const a = by[p.item] = by[p.item] || [], k = t.name + '|' + x.n; if (!a.some(o => o.k === k)) a.push({ k, tr: t.name, area: L.n, sub: x.n, mon: p.n, sec: t.sec || '' }) }))));
+  return by;
+})();
+Object.entries(BERRYD).forEach(([n, b]) => {
+  const locs = b.l.map(x => { const [area, bm] = x.split('|');
+    return { area, w: bm ? 'Berry Master: one random Berry a day' : /^Route/.test(area) ? 'Berry tree' : 'Berry tree or a local who hands out Berries', h: '' } });
+  const it = { n, cat: '', kind: b.k, g: 'Berries', d: b.d, e: b.e, locs, evos: [], events: [], held: IHELD[n] || [] };
+  it.search = [n, b.k, it.d, it.e, ...locs.map(l => l.area), ...it.held.map(h => h.tr + ' ' + h.area)].join(' | ').toLowerCase();
+  ITEMS.push(it);
+});
+ITEMS.sort((a, b) => a.n.localeCompare(b.n));
 let icur = store.get('rp-item', 'Leftovers');
 document.getElementById('igrp').innerHTML += IGROUPS.map(g => `<option>${g}</option>`).join('');
 
@@ -5245,7 +5503,7 @@ function renderItemList() {
   let html = '';
   for (const grp of IGROUPS) {
     const rs = rows.filter(it => it.g === grp); if (!rs.length) continue;
-    html += `<div class="lgroup">${grp}</div>` + rs.map(it => `<button class="rrow" role="listitem" data-i="${esc(it.n)}" ${it.n === icur ? 'aria-current="true"' : ''}><span class="nm">${esc(it.n)}</span><span class="meta">${it.locs.length === 1 ? esc(it.locs[0].area) : it.locs.length + ' places'}</span></button>`).join('');
+    html += `<div class="lgroup">${grp}</div>` + rs.map(it => `<button class="rrow" role="listitem" data-i="${esc(it.n)}" ${it.n === icur ? 'aria-current="true"' : ''}><span class="nm">${esc(it.n)}</span><span class="meta">${it.locs.length === 1 ? esc(it.locs[0].area) : it.locs.length ? it.locs.length + ' places' : it.held && it.held.length ? 'trainers only' : 'not in Platinum'}</span></button>`).join('');
   }
   document.getElementById('ilist').innerHTML = html || '<p class="empty" style="padding:12px">No items match. Clear the search or filter.</p>';
 }
@@ -5267,15 +5525,19 @@ function renderItem() {
   const effect = it.g === 'Evolution' && it.evos.length ? '' : it.e;
   document.getElementById('idetail').innerHTML = `<button class="back" id="iback">← All items</button>
   <div class="rhero"><h2>${esc(it.n)}</h2>
-    <div class="types"><span class="chip">${esc(it.g)}</span>${label && label !== it.g ? `<span class="chip">${esc(label)}</span>` : ''}</div>
+    <div class="types"><span class="chip">${esc(it.g)}</span>${label && label !== it.g ? `<span class="chip">${esc(label)}</span>` : ''}${it.kind ? `<span class="chip">${esc(it.kind)}</span>` : ''}</div>
     ${it.d ? `<p class="mdesc">${esc(it.d)}</p>` : ''}
   </div>
   ${effect ? `<section class="card full"><h3>Effect</h3><p class="idesc">${esc(effect)}</p></section>` : ''}
   ${it.evos.length ? `<section class="card full"><h3>Evolves (${it.evos.length})</h3><div class="ievos">${it.evos.map(e => `<div class="ievo">${pkBtn(e.from)}<span class="iarrow${e.chg ? ' chg' : ''}">${esc(e.m)}</span>${pkBtn(e.to)}</div>`).join('')}</div></section>` : ''}
-  <section class="card full items"><h3>Where to find it (${it.locs.length})</h3><div class="tablewrap"><table><thead><tr><th>Area</th><th>Where</th><th>How</th></tr></thead><tbody>
-    ${it.locs.map(l => `<tr><td><button class="an iarea" data-r="${esc(l.area)}">${esc(l.area)}</button></td><td>${esc(l.w)}</td><td>${esc(l.h || '—')}</td></tr>`).join('')}</tbody></table></div></section>
+  ${it.locs.length ? `<section class="card full items"><h3>Where to find it (${it.locs.length})</h3><div class="tablewrap"><table><thead><tr><th>Area</th><th>Where</th>${it.g === 'Berries' ? '' : '<th>How</th>'}</tr></thead><tbody>
+    ${it.locs.map(l => `<tr><td><button class="an iarea" data-r="${esc(l.area)}">${esc(l.area)}</button></td><td>${esc(l.w)}</td>${it.g === 'Berries' ? '' : `<td>${esc(l.h || '—')}</td>`}</tr>`).join('')}</tbody></table></div></section>`
+    : it.g === 'Berries' ? `<section class="card full"><h3>Where to find it</h3><p class="idesc">No Berry tree or Berry-giving local in Platinum has this one.${it.held.length ? ' The trainers below hold it, so you can steal it with Thief or Covet.' : ''}</p></section>` : ''}
+  ${it.held && it.held.length ? `<section class="card full items"><h3>Trainers holding it (${it.held.length})</h3><p class="sp" style="margin:0 0 8px">Steal it with Thief or Covet. In Gen 4 you keep items stolen from trainers, as long as the thief isn't holding anything.</p><div class="tablewrap"><table><thead><tr><th>Trainer</th><th>Area</th><th>On</th></tr></thead><tbody>
+    ${it.held.map(h => `<tr><td>${esc(h.tr)}${h.sec ? ` <small class="sp">${esc(h.sec)}</small>` : ''}</td><td><button class="an iarea" data-r="${esc(h.area)}">${esc(h.sub)}</button></td><td>${pkBtn(h.mon)}</td></tr>`).join('')}</tbody></table></div></section>` : ''}
   ${it.events.length ? `<section class="card full"><h3>Needed for</h3><div class="lgrid">${it.events.map(e => pkBtn(e.num, `<span class="pl">${esc(e.loc)}</span>`)).join('')}</div></section>` : ''}
-  <div class="foot">Description is Pokémon Platinum's in-game text and Effect is from PokeAPI. Evolutions use Renegade Platinum's methods. Only items that RP adds or moves are listed; standard pickups (Potions, Poké Balls, etc.) are as in vanilla Platinum.</div>`;
+  <div class="foot">${it.g === 'Berries' ? "Description is Pokémon Platinum's in-game text and Effect is from PokeAPI. Locations are vanilla Platinum's (from Serebii's item dex); Renegade Platinum's notes don't list Berry changes. Trainer-held Berries are from Renegade Platinum's trainer teams."
+    : "Description is Pokémon Platinum's in-game text and Effect is from PokeAPI. Evolutions use Renegade Platinum's methods. Only items that RP adds or moves are listed; standard pickups (Potions, Poké Balls, etc.) are as in vanilla Platinum."}</div>`;
   document.getElementById('iback').onclick = () => document.getElementById('app').classList.remove('ishowing');
 }
 document.getElementById('idetail').addEventListener('click', e => {
