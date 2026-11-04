@@ -589,6 +589,16 @@ details.gch .gpick, details.gch .gboss { background: var(--bg) }
 .gareas .garea { border: 1px solid var(--line); border-radius: 999px; padding: 3px 10px; background: var(--bg); font-size: .8rem }
 .gareas .garea.used { color: var(--muted) }
 .gareas .gmark { color: var(--accent); font-weight: 700 }
+ol.gwalk { margin: 8px 0 0; padding-left: 1.6em; display: grid; gap: 6px }
+ol.gwalk li { line-height: 1.45 }
+#gdetail ol.gwalk label { display: inline; cursor: pointer; font-size: .9rem; text-transform: none; letter-spacing: 0; color: var(--ink) }
+ol.gwalk input { margin: 0 6px 0 0; vertical-align: -2px; width: 18px; height: 18px }
+#gdetail ol.gwalk li.done > label { color: var(--muted); text-decoration: line-through }
+ol.gwalk .an { border: 0; background: none; padding: 0; color: var(--accent); cursor: pointer; font: inherit; font-size: .8rem; white-space: nowrap }
+ol.gwalk .an:hover { text-decoration: underline }
+ol.gwalk .an::before { content: "→ " }
+.gwalkin { margin: 6px 0 4px }
+.gwalkin > summary { cursor: pointer; font-size: .85rem; color: var(--accent) }
 .gpop { position: fixed; z-index: 60; width: min(420px, calc(100vw - 16px)); box-sizing: border-box; background: var(--panel); color: var(--ink); border: 1px solid var(--line);
   border-radius: 12px; padding: 10px 12px; box-shadow: 0 8px 24px rgba(0, 0, 0, .18); font-size: .82rem; line-height: 1.4; pointer-events: none; overflow: hidden }
 .gpop[hidden] { display: none }
@@ -4443,6 +4453,103 @@ function gPopHtml(a, r) {
     return `<div class="sp">${esc(ev.tag)} · ${esc(ev.loc)}${ev.lv ? ' · ' + esc(ev.lv) : ''}${gUsed(e) ? ' · ' + esc(ST[e.st] || 'used') : ''}</div>` + grid(ev.opts) }).join(''));
   return `<div class="gphead">${esc(full)}</div>${parts.length ? parts.join('') : '<p class="sp">No wild Pokémon or gifts here.</p>'}${est ? '<div class="sp gpnote">* estimated from its IVs; log the stat on its card for the exact value.</div>' : ''}`;
 }
+// story steps from the previous boss to each boss (by boss index): [what to do, area to open]. Platinum's story order with
+// Renegade Platinum's changes: Cut, Strength (bar one boulder), Rock Smash, Defog and Flash are never needed; Wake gives Waterfall, Candice gives Rock Climb.
+const GWALK = {
+  0: [['Leave your house in Twinleaf Town and meet Barry. You start with the Bicycle in Renegade Platinum.', 'Twinleaf Town'],
+    ['Take Route 201 to Lake Verity. When wild Starly attack, pick your starter from Professor Rowan\'s briefcase.', 'Lake Verity'],
+    ['Go to Sandgem Town. Rowan gives you the Pokédex, and Dawn or Lucas shows you how to catch and gives you Poké Balls.', 'Sandgem Town'],
+    ['Head north on Route 202, your first real encounters.', 'Route 202'],
+    ['In Jubilife City, get the Pokétch (every app is unlocked in Renegade Platinum) and the baby Pokémon gift at the Trainers\' School.', 'Jubilife City'],
+    ['Go east onto Route 203. Barry stops you as you enter.', 'Route 203']],
+  1: [['Finish Route 203 and go through Oreburgh Gate. Its HM06 Rock Smash isn\'t needed: Rock Smash rocks are gone in Renegade Platinum.', 'Oreburgh Gate'],
+    ['In Oreburgh City, take a Hoenn starter at the Pokémon Center and the Beldum gift. The Move Deleter is here too.', 'Oreburgh City'],
+    ['Roark is out at first. Find him in the Oreburgh Mine and grab the Muscle Band while you\'re there.', 'Oreburgh Mine'],
+    ['Optional: the Expert Belt is on the Ravaged Path (Route 204 South), open without Rock Smash.', 'Ravaged Path'],
+    ['Challenge the Oreburgh Gym (Rock).', 'Oreburgh City']],
+  2: [['Back in Jubilife City, two Galactic grunts are bothering Professor Rowan. Beat them in a double battle with Dawn or Lucas. The Kanto starters gift is in Jubilife now too.', 'Jubilife City'],
+    ['Take Route 204 North to Floaroma Town. The Johto starters gift is at the Pokémon Center.', 'Floaroma Town'],
+    ['In Floaroma Meadow, beat the Galactic grunts bothering the honey seller. They drop the Works Key.', 'Floaroma Meadow'],
+    ['Go east along Route 205 South to Valley Windworks and open the door with the Works Key. Mars is inside.', 'Valley Windworks']],
+  3: [['Go north on Route 205 into Eterna Forest. Cheryl travels with you and heals your team after every battle.', 'Eterna Forest'],
+    ['Optional: the Old Chateau in Eterna Forest has Gastly and Rotom. No Cut tree blocks it in Renegade Platinum.', 'Old Chateau'],
+    ['Reach Eterna City. Pick up a fossil, the Dawn Stone (Bike Shop) and the Sun Stone. Cynthia\'s HM01 Cut isn\'t needed.', 'Eterna City'],
+    ['Challenge the Eterna Gym (Grass).', 'Eterna City']],
+  4: [['Enter the Galactic Eterna Building in Eterna City and climb to the top floor. Porygon is a gift inside. Jupiter waits at the top.', 'Eterna City']],
+  5: [['Go south from Eterna down Route 206. Wayward Cave underneath has Gible, open without Strength or Flash.', 'Route 206'],
+    ['Optional: Route 211 East of Eterna has Bagon and Natu.', 'Route 211'],
+    ['Take Route 207 through Mt. Coronet to Route 208.', 'Route 207'],
+    ['Reach Hearthome City. Barry challenges you by the Gym.', 'Hearthome City']],
+  6: [['Challenge the Hearthome Gym (Ghost). Answer the maths questions to open the doors.', 'Hearthome City']],
+  7: [['Go east on Route 209. The Good Rod is here, plus the Lost Tower and the Hallowed Tower (Spiritomb).', 'Route 209'],
+    ['Reach Solaceon Town. The Solaceon Ruins have a Choice Scarf; their HM05 Defog isn\'t needed.', 'Solaceon Town'],
+    ['Go north on Route 210 South (Scyther, Life Orb), then east along Route 215.', 'Route 215'],
+    ['Reach Veilstone City. Save Game Corner coins for Leftovers, then challenge the Veilstone Gym.', 'Veilstone City']],
+  8: [['Optional: HM02 Fly is on the floor of the Galactic Warehouse in Veilstone. Far more Pokémon can learn Fly in Renegade Platinum.', 'Veilstone City'],
+    ['Go south on Route 214 (Choice Band). Maniac Tunnel off the route has Hippopotas.', 'Route 214'],
+    ['Pass Valor Lakefront and go west along Route 213 to Pastoria City.', 'Valor Lakefront'],
+    ['Barry battles you in Pastoria City, by the Great Marsh.', 'Pastoria City']],
+  9: [['Take the Lapras gift in Pastoria, then challenge the Pastoria Gym (Water). Use the switches to raise and lower the water. Wake gives you HM07 Waterfall.', 'Pastoria City']],
+  10: [['Optional: Route 212 links Pastoria and Hearthome. The three Move Tutors share a house on its south part, and the Pokémon Mansion and Trophy Garden are there.', 'Route 212'],
+    ['Go back to Route 210 by Solaceon. Cynthia gives you the SecretPotion to clear the Psyduck blocking the north part.', 'Route 210'],
+    ['Go up Route 210 North (no fog in Renegade Platinum) to Celestic Town.', 'Celestic Town'],
+    ['A Galactic grunt is threatening the Celestic ruins. Beat it, then Cyrus. Afterwards Cynthia\'s grandmother gives you HM03 Surf.', 'Celestic Town']],
+  11: [['Teach Surf to someone. Optional: surf from Route 205 to the Fuego Ironworks (Magmar).', 'Fuego Ironworks'],
+    ['Surf west from Jubilife City along Route 218.', 'Route 218'],
+    ['Reach Canalave City. Barry stops you on the bridge to the Gym.', 'Canalave City']],
+  12: [['Optional: take the boat from Canalave to Iron Island (Lairon, Rhydon, Riley). His HM04 Strength isn\'t needed.', 'Iron Island'],
+    ['Challenge the Canalave Gym (Steel).', 'Canalave City']],
+  13: [['After the Gym, meet Professor Rowan at the Canalave Library. Team Galactic sets off a bomb at Lake Valor.', 'Canalave City'],
+    ['Go to Lake Verity (Route 201) and stop Mars.', 'Lake Verity']],
+  14: [['Go to Lake Valor from Valor Lakefront. The lake is drained, and Saturn is at the cavern.', 'Lake Valor']],
+  15: [['Go north out of Mt. Coronet onto Route 216 (Swinub, Sneasel, Snover).', 'Route 216'],
+    ['Push through the snowstorm on Route 217 to Acuity Lakefront.', 'Route 217'],
+    ['Reach Snowpoint City. It sells the evolution items.', 'Snowpoint City'],
+    ['Challenge the Snowpoint Gym (Ice). Candice gives you HM08 Rock Climb.', 'Snowpoint City']],
+  16: [['Visit Lake Acuity. Jupiter has already taken Uxie.', 'Lake Acuity'],
+    ['Fly to Veilstone City and get into Galactic HQ through the warehouse. Saturn is inside.', 'Galactic HQ']],
+  17: [['Go deeper into Galactic HQ. Cyrus waits in his office, and he gives you the Master Ball after the battle.', 'Galactic HQ'],
+    ['Free Uxie, Mesprit and Azelf in the HQ lab.', 'Galactic HQ']],
+  18: [['Climb Mt. Coronet to the summit. Bring Surf and Rock Climb.', 'Mt. Coronet'],
+    ['At Spear Pillar, Barry joins you for a double battle against Mars and Jupiter.', 'Spear Pillar']],
+  19: [['Giratina pulls you into the Distortion World. Follow Cynthia, solve the puzzle (the one Strength boulder left in the game is here) and reach Cyrus.', 'Distortion World'],
+    ['After Cyrus, you can catch Giratina. Check your rules on whether it counts as an encounter.', 'Distortion World']],
+  20: [['Route 222 from Valor Lakefront is open now. Head east (Luxio, Snorlax in the honey tree).', 'Route 222'],
+    ['Reach Sunyshore City and challenge the Sunyshore Gym (Electric). Rotate the gears to cross.', 'Sunyshore City']],
+  21: [['Optional: Routes 219 to 221 south of Sandgem by Surf (Focus Sash on Route 221).', 'Route 221'],
+    ['Surf north from Sunyshore along Route 223. It needs Waterfall.', 'Route 223'],
+    ['Go through Victory Road with Surf, Waterfall and Rock Climb.', 'Victory Road'],
+    ['Barry is waiting at the Pokémon League. Stock up at its Poké Mart first.', 'Pokémon League']],
+  22: [['Heal, save and enter. Once you go in you can\'t leave between the Elite Four and Cynthia, so bring healing items. Aaron is first.', 'Pokémon League']],
+  23: [['Bertha is second. Each Elite Four member uses one of four teams at random, so check which one you got.', 'Pokémon League']],
+  24: [['Flint is third.', 'Pokémon League']],
+  25: [['Lucian is the last Elite Four member.', 'Pokémon League']],
+  26: [['Champion Cynthia is last.', 'Pokémon League']],
+};
+// ticked steps, per run and boss (this browser only)
+const gWalkGet = r => (store.get('rp-gwalk', {})[r.id] || {});
+function gWalkTick(r, bi, i, on) {
+  const all = store.get('rp-gwalk', {}), m = all[r.id] || {}, cur = new Set(m[bi] || []);
+  on ? cur.add(i) : cur.delete(i); m[bi] = [...cur]; all[r.id] = m; store.set('rp-gwalk', all);
+}
+// the walkthrough to boss bi, as a checklist
+function gWalkHtml(bi, r) {
+  const steps = GWALK[bi] || [], done = new Set(gWalkGet(r)[bi] || []);
+  return `<ol class="gwalk">${steps.map(([t, a], i) => `<li class="${done.has(i) ? 'done' : ''}"><label><input type="checkbox" data-gwstep="${bi}|${i}" ${done.has(i) ? 'checked' : ''}><span>${esc(t)}</span></label>${a ? ` <button class="an" data-garea="${esc(a)}">${esc(a)}</button>` : ''}</li>`).join('')}</ol>`;
+}
+// the card at the top of the Guide: steps to your next boss, plus the encounters you haven't used on the way
+function gNextHtml(r) {
+  const bi = r.beat, b = NBOSS[bi];
+  if (!b) return `<details class="card full gch gnext" data-gnext ${store.get('rp-gnextopen', true) ? 'open' : ''}><summary><h3>Next steps</h3><span class="sp">every boss beaten</span></summary><p class="sp">You've beaten Cynthia. Congratulations!</p></details>`;
+  const steps = GWALK[bi] || [], n = (gWalkGet(r)[bi] || []).filter(i => i < steps.length).length;
+  const ch = GUIDE.find(c => c.b.includes(bi)), open = ch && ch.b[0] === bi ? ch.areas.filter(a => { const { wild, evs } = gAreaEnc(a), keys = wild.length ? wild.map(L => L.n) : evs.map(ev => ev.k);
+    return keys.length && !(wild.length ? keys.every(k => gUsed(r.enc[k])) : keys.some(k => gUsed(r.enc[k]))) }) : [];
+  return `<details class="card full gch gnext" data-gnext ${store.get('rp-gnextopen', true) ? 'open' : ''}><summary><h3>Next steps: ${esc(b.label)}</h3><span class="sp">${esc(b.area)} · level cap <b>${b.cap}</b> · ${n} of ${steps.length} done</span></summary>
+    ${gWalkHtml(bi, r)}
+    ${open.length ? `<h4 class="tph4">Encounters still open on the way</h4><div class="gareas">${open.map(a => gAreaChip(a, r)).join('')}</div>` : ''}
+    <div class="bcontrols"><button class="btn" data-gboss="${bi}">Plan it in Battle</button><button class="btn" data-gjumpto="${GUIDE.indexOf(ch)}">Open the chapter</button></div>
+    <p class="sp" style="margin:6px 0 0">Ticks are saved in this browser. When you mark the boss beaten in the Nuzlocke tab, this moves on to the next one.</p></details>`;
+}
 function renderGuide() {
   const d = document.getElementById('gdetail'); if (!d) return;
   const r = curRun(), next = r.beat, nextCh = GUIDE.findIndex(c => c.b.includes(next));
@@ -4456,7 +4563,8 @@ function renderGuide() {
           <div class="sp">${esc(p.item || 'no item')}</div>${th.length ? `<div class="gth">${th.map(esc).join(' · ')}</div>` : ''}</div></div>` }).join('')}</div>
         ${wk.length ? `<div class="gwk"><span class="sp">Hit by</span> ${wk.map(([ty, n]) => `<span class="mtype" style="background:${TC[ty]}">${ty}</span><small>${n}/${team.length}</small>`).join(' ')}</div>` : ''}</div>` }).join('');
     return `<div class="gboss ${bi < next ? 'done' : bi === next ? 'next' : ''}"><div class="gbh"><h4>${esc(b.label)}</h4><span class="sp">${esc(b.area)}${b.sub ? ' · ' + esc(b.sub) : ''} · level cap <b>${b.cap}</b>${bi < next ? ' · beaten ✓' : bi === next ? ' · your next fight' : ''}</span>
-        <button class="btn" data-gboss="${bi}">Plan it in Battle</button></div>${vHtml}
+        <button class="btn" data-gboss="${bi}">Plan it in Battle</button></div>
+      ${(GWALK[bi] || []).length ? `<details class="gwalkin"><summary>How to get there (${GWALK[bi].length} step${GWALK[bi].length > 1 ? 's' : ''})</summary>${gWalkHtml(bi, r)}</details>` : ''}${vHtml}
       ${(GBOSS[bi] || []).length ? `<ul class="gtips">${GBOSS[bi].map(t => `<li>${esc(t)}</li>`).join('')}</ul>` : ''}</div>` };
   const chHtml = (ch, ci) => {
     const picks = ch.picks.map(([n, why, more]) => { const w = gWhere(more ? Object.assign({}, ch, { areas: [...ch.areas, ...more] }) : ch, n), m = mons[n - 1]; if (!m) return '';
@@ -4477,6 +4585,7 @@ function renderGuide() {
   d.innerHTML = `<div class="rhero"><h2>Renegade Platinum Nuzlocke guide</h2>
       <p class="sp">One chapter per stretch of the game: what to catch, what to pick up and how to beat each boss. Locations, items, level caps and boss teams come from the Pokédex's v1.3.0 data. ${next < NBOSS.length ? `Your run “${esc(r.name)}” is up to <b>${esc(NBOSS[next].label)}</b>, so that chapter is open.` : ''}</p>
       <div class="bcontrols"><label>Jump to<select id="gjump">${GUIDE.map((c, i) => `<option value="${i}" ${i === nextCh ? 'selected' : ''}>${i + 1}. ${esc(c.title)}</option>`).join('')}</select></label></div></div>
+    ${gNextHtml(r)}
     <details class="card full gch" ${nextCh < 0 ? 'open' : ''}><summary><h3>Before you start</h3><span class="sp">rules, mechanics and early priorities</span></summary><ul class="gtips">
       <li>Use <b>Set</b> battle style. You don't get a free switch when you knock out their Pokémon, so plan who's in when their next one arrives.</li>
       <li>Level caps here are each boss's highest level. The Nuzlocke tab warns you when you go over.</li>
@@ -4521,8 +4630,12 @@ GD.addEventListener('click', ev => {
   if (ga && ga.dataset.gpop && gTouch && gPopFor !== ga) return gPopShow(ga);
   if (ga) { gPopHide(); return nOpenArea(ga.dataset.garea) }
   const gn = t.closest('[data-gn]'); if (gn) { setView('dex'); return select(+gn.dataset.gn) }
+  const gj = t.closest('[data-gjumpto]'); if (gj) { const el = document.getElementById('gch' + gj.dataset.gjumpto); if (el) { el.open = true; el.scrollIntoView({ behavior: 'smooth', block: 'start' }) } }
 });
-GD.addEventListener('change', ev => { if (ev.target.id === 'gjump') { const el = document.getElementById('gch' + ev.target.value); if (el) { el.open = true; el.scrollIntoView({ behavior: 'smooth', block: 'start' }) } } });
+GD.addEventListener('toggle', ev => { if (ev.target.hasAttribute && ev.target.hasAttribute('data-gnext')) store.set('rp-gnextopen', ev.target.open) }, true);
+GD.addEventListener('change', ev => { const st = ev.target.dataset && ev.target.dataset.gwstep;
+  if (st) { const [bi, i] = st.split('|').map(Number), y = window.scrollY; gWalkTick(curRun(), bi, i, ev.target.checked); renderGuide(); window.scrollTo(0, y); return }
+  if (ev.target.id === 'gjump') { const el = document.getElementById('gch' + ev.target.value); if (el) { el.open = true; el.scrollIntoView({ behavior: 'smooth', block: 'start' }) } } });
 const BD = document.getElementById('batdetail');
 BD.addEventListener('toggle', ev => { const k = ev.target.dataset && ev.target.dataset.bopen; if (k) ev.target.open ? batOpen.add(k) : batOpen.delete(k);
   if (ev.target.hasAttribute && ev.target.hasAttribute('data-pjbox')) store.set('rp-pjopen', ev.target.open) }, true);
