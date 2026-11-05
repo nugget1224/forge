@@ -700,6 +700,9 @@ ol.gwalk .an::before { content: "→ " }
 .evvit { padding: 3px 8px; font-size: .74rem }
 .evlog { margin-top: 8px; font-size: .82rem } .evlog ul { margin: 4px 0 0; padding-left: 18px; max-height: 200px; overflow: auto }
 .evlog li.evlv { list-style: none; margin-left: -18px; padding: 2px 0; color: var(--accent); font-weight: 600 }
+.evlog ul { max-height: 320px } .evlog li { padding: 2px 0 }
+.evlog .evwhen { color: var(--muted); font-size: .76rem; font-weight: 400; margin-right: 4px; white-space: nowrap }
+.evlog .evrev { font-size: .72rem; padding: 1px 6px; margin-left: 6px; vertical-align: 1px }
 .pevs { font-size: .76rem; color: var(--muted); margin-top: 2px } .pevs:empty { margin: 0 }
 .tppick { margin: 10px 0; font-size: .85rem } .tppick > summary { cursor: pointer; font-weight: 600 }
 .tppick .chk { display: inline-flex; align-items: center; gap: 4px; margin: 6px 0 }
@@ -5421,17 +5424,20 @@ function evAreaHtml(lk, e) {
       <div class="evpicks">${t.team.map(p => pick(p.n, 'Lv. ' + p.lv)).join('')}</div></div>`).join('')}</div>` : ''}
     ${!wild.size && !trs.length ? '<p class="empty">No wild Pokémon or trainers listed here.</p>' : ''}`;
 }
+const evWhen = t => new Date(t).toLocaleString([], { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' });
+let evLogOpen = false;   // keep the EV log open across re-renders (e.g. after a revert)
 // the EV log (newest first) with the logged levels slotted in: by when the level was logged, else by the EVs it had then
 function evLogRows(e) {
   const log = e.evlog || [], hist = (e.hist || []).filter(h => +h.lv).sort((a, b) => a.lv - b.lv);
   let cur = evTotal(e.evs); const after = log.map(x => { const a = cur; cur -= evTotal(x.got); return a });
   const pos = h => { const i = h.t ? log.findIndex(x => x.t <= h.t) : h.ev ? after.findIndex(a => a <= evTotal(h.ev)) : -1; return i < 0 ? log.length : i };
   const lvs = hist.map((h, i) => ({ h, at: pos(h), first: !i, evo: i && h.n && hist[i - 1].n && h.n !== hist[i - 1].n }));
-  const lvRow = x => `<li class="evlv">${x.first ? `Logged at Lv. ${x.h.lv}` : x.evo ? `Evolved into ${esc(monName(x.h.n))} · Lv. ${x.h.lv}` : `Level up: Lv. ${x.h.lv}`}</li>`;
+  const when = t => t ? `<span class="evwhen">${esc(evWhen(t))}</span>` : '';
+  const lvRow = x => `<li class="evlv">${when(x.h.t)}${x.first ? `Logged at Lv. ${x.h.lv}` : x.evo ? `Evolved into ${esc(monName(x.h.n))} · Lv. ${x.h.lv}` : `Level up: Lv. ${x.h.lv}`}</li>`;
   const out = [];
   for (let i = 0; i <= log.length; i++) {
     lvs.filter(x => x.at === i).reverse().forEach(x => out.push(lvRow(x)));
-    if (log[i]) out.push(`<li>${esc(log[i].why)}: +${esc(evText(log[i].got))}</li>`);
+    if (log[i]) out.push(`<li>${when(log[i].t)}${esc(log[i].why)}: +${esc(evText(log[i].got))}${i ? `<button class="btn evrev" data-evrevert="${i}" title="Undo the ${i} newer entr${i > 1 ? 'ies' : 'y'} above this one">Revert to here</button>` : ''}</li>`);
   }
   return out.join('');
 }
@@ -5452,7 +5458,7 @@ function ivEvHtml(e) {
       <button class="btn primary" id="evgo">Add EVs</button></div>
     ${recent.length ? `<div class="evrecent"><span class="sp">Again:</span> ${recent.map(n => `<button class="btn" data-evagain="${n}" title="Beat another ${esc(monName(n))}: ${esc(evText(evForDefeat(e, n, 1, e.pkrs)))}"><img src="${nimg(n)}" alt="">${esc(monName(n))}</button>`).join('')}</div>` : ''}
     <div class="evrows">${bars}</div>
-    ${(e.evlog || []).length ? `<details class="evlog"><summary>EV log · ${e.evlog.length}</summary><ul>${evLogRows(e)}</ul></details>
+    ${(e.evlog || []).length ? `<details class="evlog" ${evLogOpen ? 'open' : ''}><summary>EV log · ${e.evlog.length}</summary><ul>${evLogRows(e)}</ul></details>
       <div class="tbtns" style="margin-top:6px"><button class="btn" id="evundo">Undo last</button><button class="btn danger" id="evreset">Reset EVs</button></div>` : ''}</section>`;
 }
 function renderIvResults() {
@@ -5542,6 +5548,7 @@ IVD.addEventListener('change', ev => {
   if (t.id === 'evarea') { lk.run.evArea = t.value; lk.run.updated = Date.now(); saveRuns(); return renderIv() }
   if (t.id === 'evpkrs') { lk.e.pkrs = t.checked; lk.run.updated = Date.now(); saveRuns(); return renderIv() }
 });
+IVD.addEventListener('toggle', ev => { if (ev.target.classList && ev.target.classList.contains('evlog')) evLogOpen = ev.target.open }, true);
 IVD.addEventListener('toggle', ev => { const d = ev.target, rw = d.closest && d.classList.contains('ivev') && d.closest('.ivrow'); if (!rw) return;
   d.open ? ivEvOpen.add(+rw.dataset.r) : ivEvOpen.delete(+rw.dataset.r) }, true);
 IVD.addEventListener('click', ev => {
@@ -5567,6 +5574,17 @@ IVD.addEventListener('click', ev => {
     const n = Math.max(1, Math.min(99, +document.getElementById('evcount').value || 1));
     return evLog([[m.num, n]], `Beat ${m.name}${n > 1 ? ' ×' + n : ''}`) }
   if (lk && t.dataset.evvit) { const k = t.dataset.evvit, room = Math.max(0, 100 - (+(lk.e.evs || {})[k] || 0)); return evDone(evAdd(lk.e, { [k]: Math.min(10, room) }, EVVIT[k])) }
+  const rev = lk && t.closest('[data-evrevert]');
+  if (rev) {   // drop every entry newer than the chosen one, taking back its EVs (and the same battle's EVs from the party members that shared it)
+    const i = +rev.dataset.evrevert, log = lk.e.evlog || [], keep = log[i], gone = log.slice(0, i); if (!keep || !gone.length) return;
+    const sum = {}; gone.forEach(x => IVSTATS.forEach(k => { if (x.got[k]) sum[k] = (sum[k] || 0) + x.got[k] }));
+    const gs = new Set(gone.map(x => x.g).filter(Boolean)), shared = Object.values(lk.run.enc).filter(o => o && o !== lk.e && (o.evlog || []).some(y => gs.has(y.g)));
+    if (!confirm(`Revert ${lk.e.nick || monName(lk.e.n)}'s EV log to this entry?\n\n${evWhen(keep.t)} · ${keep.why}\n\nThis removes the ${gone.length} newer entr${gone.length > 1 ? 'ies' : 'y'} (${gone.length > 1 ? 'from ' + evWhen(gone[gone.length - 1].t) + ' to ' + evWhen(gone[0].t) : evWhen(gone[0].t)}) and takes back −${evText(sum)}.`
+      + (shared.length ? `\n\nThe same battles are also undone for ${shared.map(o => o.nick || monName(o.n)).join(', ')}.` : '') + '\n\nLogged levels are kept.')) return;
+    const back = (o, y) => IVSTATS.forEach(k => { if (y.got[k]) o.evs[k] = Math.max(0, (+o.evs[k] || 0) - y.got[k]) });
+    gone.forEach(x => back(lk.e, x)); lk.e.evlog = log.slice(i);
+    shared.forEach(o => { o.evlog = o.evlog.filter(y => { if (!gs.has(y.g)) return true; back(o, y); return false }) });
+    lk.run.updated = Date.now(); saveRuns(); return renderIv() }
   if (lk && t.id === 'evundo') { const x = (lk.e.evlog || []).shift(), back = (o, y) => IVSTATS.forEach(k => { if (y.got[k]) o.evs[k] = Math.max(0, (+o.evs[k] || 0) - y.got[k]) });
     if (x) { back(lk.e, x); if (x.g) Object.values(lk.run.enc).forEach(o => { if (o && o !== lk.e && o.evlog && o.evlog[0] && o.evlog[0].g === x.g) back(o, o.evlog.shift()) }) } lk.run.updated = Date.now(); saveRuns(); return renderIv() }
   if (lk && t.id === 'evreset') { if (!confirm('Reset this Pokémon\'s EVs to 0? The log is cleared too.')) return; lk.e.evs = {}; lk.e.evlog = []; lk.run.updated = Date.now(); saveRuns(); return renderIv() }

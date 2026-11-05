@@ -1,4 +1,4 @@
-const CACHE = 'forge-v166';
+const CACHE = 'forge-v167';
 const SHELL = [
   '/',
   '/calories.html',
