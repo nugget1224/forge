@@ -513,6 +513,24 @@ button.gbtn:hover { border-color: var(--accent) }
 .bslot .bact, .bslot .bsmv { grid-column: 1 / -1 }
 .bslot .bsmv { font-size: .72rem; overflow-wrap: anywhere }
 .bslot input[type=number], .bslot select { box-sizing: border-box; width: 100%; max-width: 100% }
+/* Battle tab cards open to full details and minimize back */
+.bslots { container-type: inline-size }
+.bslots > .bfull { grid-column: 1 / -1 }
+.bslots:has(> .bfull) > :not(.bfull) { align-self: start }
+@container (min-width: 640px) { .bslots > .bfull { grid-column: span 2 } }
+.bslot .bshd .bexpb, .pmon .shead .bexpb { flex: 0 0 auto; align-self: start; width: auto; padding: 3px 8px; font-size: .72rem; white-space: nowrap }
+.pmon.bfull { box-sizing: border-box }
+.pmon.bfull.act { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent) }
+.pmon.bfull.ko { opacity: .5 }
+.pmon .shead .bexpb { cursor: pointer }
+#batdetail .pmon label:not(.bact) { display: block; font-size: .68rem; margin: 10px 0 3px }
+.bstrip { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 4px 8px; margin-top: 8px; padding: 8px; border: 1px dashed var(--line); border-radius: 8px }
+.bstrip .bact { grid-column: 1 / -1 }
+#batdetail .bstrip label:not(.bact) { margin: 0 }
+.pmon .bstrip .bact input { width: auto }
+.bslot .bdet { grid-column: 1 / -1; min-width: 0 }
+.bslot .bdet .bmon { border: 0; padding: 0 }
+.bslot .bdet .bhd { display: none }
 .bfold { margin-top: 10px; border-top: 1px dashed var(--line); padding-top: 8px }
 .bfold > summary { cursor: pointer; font-size: .84rem; color: var(--ink) }
 .bfold > summary b { font-weight: 700 }
@@ -550,6 +568,12 @@ button.gbtn:hover { border-color: var(--accent) }
 .bfrow { display: grid; grid-template-columns: 3.2em minmax(0, 12em) 1fr; gap: 8px; align-items: center; font-size: .86rem }
 .bpct { font: 700 1rem var(--font-data); text-align: right }
 .bko { color: var(--chg); font-weight: 600 }
+.fxm { background: var(--accent-soft); color: var(--ink); border: 1px solid var(--accent); border-radius: 4px; padding: 0 4px; font-size: .7rem; font-weight: 600; white-space: nowrap }
+.fxv { color: var(--accent); font-weight: 700 }
+.fx0 { color: var(--muted); font-weight: 400 }
+.bstl { grid-column: 1 / -1; display: flex; flex-wrap: wrap; gap: 2px 10px; font: .72rem var(--font-data); color: var(--muted) }
+.bstl .on { color: var(--ink) }
+.bstlfx { flex-basis: 100%; display: flex; flex-wrap: wrap; gap: 4px }
 .bopts { display: flex; flex-direction: column; gap: 8px; margin-top: 8px }
 .borow { border: 1px solid var(--line); border-radius: 10px; padding: 8px 10px; background: var(--panel) }
 .borow.best { border-color: var(--new); box-shadow: 0 0 0 1px var(--new) }
@@ -589,6 +613,10 @@ details.gch .gpick, details.gch .gboss { background: var(--bg) }
 .gareas .garea { border: 1px solid var(--line); border-radius: 999px; padding: 3px 10px; background: var(--bg); font-size: .8rem }
 .gareas .garea.used { color: var(--muted) }
 .gareas .gmark { color: var(--accent); font-weight: 700 }
+.ivlk { font-size: .75rem }
+.ivwarn-s { font-size: .72rem; color: var(--chg) }
+.ivlocknote { margin: 0 0 8px }
+.ivunl { padding: 2px 10px; font-size: .78rem; margin-left: 6px }
 .tplv { margin: 10px 0 12px; padding: 10px 12px; border: 1px solid var(--line); border-radius: 10px; background: var(--bg) }
 .tplvhd { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 14px }
 #batdetail .tplvhd label.chk { display: inline-flex; flex-direction: row; align-items: center; gap: 5px; text-transform: none; letter-spacing: 0; font-size: .85rem; color: var(--ink) }
@@ -698,7 +726,7 @@ ol.gwalk .an::before { content: "→ " }
 .evpick img { width: 32px; height: 32px; image-rendering: pixelated }
 .evpick span { display: flex; flex-direction: column; line-height: 1.15; font-size: .8rem } .evpick small { color: var(--muted); font-size: .7rem }
 .evtr { border: 1px solid var(--line); border-radius: 8px; padding: 6px 8px; margin-bottom: 6px }
-.evtrhd { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin-bottom: 4px; font-size: .85rem } .evtrhd .btn { margin-left: auto; padding: 2px 8px; font-size: .75rem }
+.evtrhd { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin-bottom: 4px; font-size: .85rem } .evtrhd .btn { margin-left: auto; padding: 2px 8px; font-size: .75rem } .evtrhd .btn + .btn { margin-left: 0 }
 .evrecent { display: flex; flex-wrap: wrap; gap: 4px; align-items: center; margin-bottom: 8px }
 .evrecent .btn { display: inline-flex; align-items: center; gap: 4px; padding: 2px 8px }
 .evrecent img { width: 28px; height: 28px; image-rendering: pixelated }
@@ -746,6 +774,15 @@ ol.gwalk .an::before { content: "→ " }
 .trrow { border: 1px solid var(--line); border-radius: 10px; padding: 8px 10px; margin-bottom: 8px; background: var(--panel) }
 .trrow.lv3 { border-left: 4px solid var(--chg) } .trrow.lv2 { border-left: 4px solid #d7a91a }
 .trhd { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin-bottom: 6px } .trhd .btag { margin-left: auto }
+.trhd .trbeat, .trdone .trbeat { padding: 3px 10px; font-size: .78rem }
+/* beaten trainers: one muted line, opens to show the team */
+.trrow.trdone { padding: 5px 10px; opacity: .7 }
+.trrow.trdone[open] { opacity: 1 }
+.trdone > summary { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; cursor: pointer; font-size: .85rem }
+.trrow.trdone > summary .trbeat { margin-left: auto }
+.trrow.trdone[open] > summary { margin-bottom: 6px }
+.evtr.trdone { opacity: .7 } .evtr.trdone[open] { opacity: 1 }
+.evtr.trdone > summary { margin-bottom: 0 } .evtr.trdone[open] > summary { margin-bottom: 4px }
 .trteam { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 6px }
 .trmon { display: flex; gap: 6px; align-items: flex-start; font-size: .82rem; padding: 4px; border-radius: 8px; min-width: 0 }
 .trmon.bad { background: var(--chg-soft) } .trmon.warn { background: color-mix(in srgb, #d7a91a 14%, transparent) }
@@ -2006,10 +2043,11 @@ function monEditor(row, e, r, ctx) {
     <div class="pevs" title="Effort values tracked in the IV tab">${e.evTrack ? `EVs ${evTotal(e.evs)}/510${evTotal(e.evs) ? ' · ' + esc(evText(e.evs)) : ''}` : ''}</div>${nCharField(row, e)}${nIvBlock(row, e, sol)}
     <label>Moves</label><div class="mvs">${mvs}</div>`;
   const movesLine = (e.moves || []).filter(Boolean).join(' · ');
-  return `<div class="tslot pmon ${ctx.over(e) ? 'over' : ''}" data-k="${k}">
-    <div class="shead" draggable="true" title="Drag between party and box"><img src="${nimg(e.n)}" alt="" class="goto" title="Open ${esc(m.name)} in the Pokédex">
+  return `<div class="tslot pmon ${ctx.over(e) ? 'over' : ''} ${ctx.cls || ''}" data-k="${k}">
+    <div class="shead" ${ctx.extra ? '' : 'draggable="true" title="Drag between party and box"'}><img src="${nimg(e.n)}" alt="" class="goto" title="Open ${esc(m.name)} in the Pokédex">
       <div><div class="sname">${esc(e.nick || m.name)}${gBtn(e)}${lv ? ` <span class="sp">Lv. ${lv}</span>` : ''}</div><div class="sp">${e.nick ? esc(m.name) + ' · ' : ''}${e.caught ? 'caught as ' + esc(monName(e.caught)) + ' · ' : ''}${esc(row.label)}</div>
-      <div class="stypes">${v.types.map(typeBadge).join('')}</div></div><span class="grip" aria-hidden="true">⠿</span></div>
+      <div class="stypes">${v.types.map(typeBadge).join('')}</div></div>${ctx.headBtn || '<span class="grip" aria-hidden="true">⠿</span>'}</div>
+    ${ctx.extra || ''}
     <div class="pacts">${acts}<button data-to="dead">Died</button>${nEvoSelect(e)}</div>
     ${e.st === 'box' ? `<details class="pmore" ${nOpen.has(row.k) ? 'open' : ''}><summary>${movesLine ? esc(movesLine) : 'Stats, ability & moves'}</summary>${body}</details>` : body}</div>`;
 }
@@ -2245,12 +2283,13 @@ function nsPower(S, A, D, mv, ctx) {
 const nsWBType = S => ({ sun: 'Fire', rain: 'Water', sand: 'Rock', hail: 'Ice' })[nsWx(S)];
 
 // damage rolls through the calculator's nDamage, with the live battle state
-function nsRolls(S, A, D, mv, crit, ctx) {
+function nsRolls(S, A, D, mv, crit, ctx, strip) {
   const d = MV[mv]; if (!d || d.c === 'St') return null;
   const phys = d.c === 'P', dsd = S.sd[D.side], wx = nsWx(S);
   const o = { crit, wx: wx === 'hail' ? '' : wx, scr: (phys ? dsd.ref : dsd.ls) > 0, brn: A.st === 'brn', pinch: A.hp * 3 <= A.max, as: phys ? A.stg.atk : A.stg.spa, ds: phys ? D.stg.def : D.stg.spd,
     pw: nsPower(S, A, D, mv, ctx) || '', t: mv === 'Weather Ball' ? nsWBType(S) : '', st: !!A.st, dst: !!D.st, ff: A.ff };
   const AV = nsView(A), DV = Object.assign(nsView(D), { stats: Object.assign({}, D.m.stats, { hp: D.hp }) });
+  if (strip) { if (strip.aab) AV.ab = ''; if (strip.ait) AV.item = ''; if (strip.dab) DV.ab = ''; if (strip.dit) DV.item = '' }
   const x = nDamage(AV, DV, mv, o);
   return x.rolls ? x : null;
 }
@@ -3143,7 +3182,46 @@ function batHit(S, A, D, mv) {
   const x = nsRolls(S, A, D, mv, false, null), xc = nsRolls(S, A, D, mv, true, null); if (!x) return null;
   const hits = NHITS2.has(mv) ? 2 : NHITS25.has(mv) ? (A.ab === 'Skill Link' ? 5 : 3) : 1, cp = D.ab === 'Battle Armor' || D.ab === 'Shell Armor' ? 0 : nsCritStage(A, mv);
   const acc = !d.a ? 1 : Math.min(1, d.a / 100), ko = r => r.filter(v => v * hits >= D.hp).length / 16;
-  return { min: x.rolls[0] * hits, max: x.rolls[15] * hits, crit: xc ? xc.rolls[15] * hits : 0, hp: D.hp, max0: D.max, ko: acc * ((1 - cp) * ko(x.rolls) + cp * (xc ? ko(xc.rolls) : 0)), hits, mult: x.mult };
+  const h = { min: x.rolls[0] * hits, max: x.rolls[15] * hits, crit: xc ? xc.rolls[15] * hits : 0, hp: D.hp, max0: D.max, ko: acc * ((1 - cp) * ko(x.rolls) + cp * (xc ? ko(xc.rolls) : 0)), hits, mult: x.mult };
+  const srcs = [['aab', A.ab, A, 'ability'], ['ait', A.item, A, 'item'], ['dab', D.ab, D, 'ability'], ['dit', D.item, D, 'item']].filter(z => z[1]);
+  if (srcs.length) {
+    const hits0 = hits === 5 && A.ab === 'Skill Link' ? 3 : hits, all = Object.fromEntries(srcs.map(z => [z[0], 1])), x0 = nsRolls(S, A, D, mv, false, null, all);
+    if (x0 && (x0.rolls[0] * hits0 !== h.min || x0.rolls[15] * hits0 !== h.max || (x0.mult === 0) !== (x.mult === 0))) {
+      const fx = srcs.filter(([k, , who]) => { const y = nsRolls(S, A, D, mv, false, null, { [k]: 1 }), hy = k === 'aab' ? hits0 : hits; return y && (y.rolls[15] * hy !== h.max || y.rolls[0] * hy !== h.min || y.mult !== x.mult) })
+        .map(([, name, who, kind]) => ({ name, who: who.name, kind }));
+      h.o = { min: x0.rolls[0] * hits0, max: x0.rolls[15] * hits0, mult: x0.mult, fx: fx.length ? fx : srcs.map(([, name, who, kind]) => ({ name, who: who.name, kind })) };
+    }
+  }
+  return h;
+}
+// a highlighted ability or item that changes a number
+const fxMark = z => `<mark class="fxm" title="${esc(z.who + "'s " + z.kind)}">${esc(z.name)}</mark>`;
+const fxNum = (v, v0, fx) => v === v0 ? String(v) : `<b class="fxv">${v}</b> <span class="fx0" title="Without ${esc(fx.map(z => z.name).join(' and '))}">(${v0})</span>`;
+// a Pokémon's in-battle stats with its ability and held item applied (stat stages aren't included): { stat: { v, v0, fx } }
+function batStatFx(c, wx) {
+  const ab = c.ab, it = c.item, n = c.m.n, mods = {};
+  const add = (k, x, name, kind) => (mods[k] = mods[k] || []).push({ x, name, kind, who: c.name });
+  if (ab === 'Huge Power' || ab === 'Pure Power') add('atk', 2, ab, 'ability');
+  if (ab === 'Hustle') add('atk', 1.5, ab, 'ability');
+  if (ab === 'Guts' && c.st) add('atk', 1.5, ab, 'ability');
+  if (ab === 'Marvel Scale' && c.st) add('def', 1.5, ab, 'ability');
+  if (it === 'Choice Band') add('atk', 1.5, it, 'item');
+  if (it === 'Choice Specs') add('spa', 1.5, it, 'item');
+  if (it === 'Light Ball' && n === 25) { add('atk', 2, it, 'item'); add('spa', 2, it, 'item') }
+  if (it === 'Thick Club' && (n === 104 || n === 105)) add('atk', 2, it, 'item');
+  if (it === 'Deep Sea Tooth' && n === 366) add('spa', 2, it, 'item');
+  if (it === 'Deep Sea Scale' && n === 366) add('spd', 2, it, 'item');
+  if (it === 'Soul Dew' && (n === 380 || n === 381)) { add('spa', 1.5, it, 'item'); add('spd', 1.5, it, 'item') }
+  if (it === 'Choice Scarf') add('spe', 1.5, it, 'item');
+  if ((ab === 'Swift Swim' && wx === 'rain') || (ab === 'Chlorophyll' && wx === 'sun') || (ab === 'Unburden' && c.usedItem && !it)) add('spe', 2, ab, 'ability');
+  if (it === 'Iron Ball' || it === 'Macho Brace') add('spe', .5, it, 'item');
+  const out = {};
+  Object.keys(SL).forEach(k => { const v0 = c.m.stats[k]; let v = v0; (mods[k] || []).forEach(m => { v = Math.floor(v * m.x) }); out[k] = { v, v0, fx: mods[k] || [] } });
+  return out;
+}
+function batStatsHtml(c, wx) {
+  const fx = batStatFx(c, wx), src = [...new Map(Object.values(fx).flatMap(x => x.fx).map(z => [z.name, z])).values()];
+  return `<div class="bstl">${Object.entries(SL).map(([k, lab]) => `<span class="${fx[k].fx.length ? 'on' : ''}">${lab} ${fxNum(fx[k].v, fx[k].v0, fx[k].fx)}</span>`).join('')}${src.length ? `<span class="bstlfx">${src.map(fxMark).join(' ')}</span>` : ''}</div>`;
 }
 
 // ---- Log a turn: pick what both sides did, replay it through the engine, update the board and list the effects ----
@@ -3400,24 +3478,33 @@ function renderBattle() {
   const sts = cur => opt('', 'Healthy', cur) + [['par', 'Paralyzed'], ['brn', 'Burned'], ['psn', 'Poisoned'], ['tox', 'Badly poisoned'], ['slp', 'Asleep'], ['frz', 'Frozen']].map(([v, l]) => opt(v, l, cur)).join('');
   const stg = (who, obj) => `<div class="bstg">${[['atk', 'Atk'], ['def', 'Def'], ['spa', 'SpA'], ['spd', 'SpD'], ['spe', 'Spe'], ['acc', 'Acc'], ['eva', 'Eva']].map(([k, l]) =>
     `<label>${l}<select data-bf="stg" data-who="${who}" data-k="${k}">${[6, 5, 4, 3, 2, 1, 0, -1, -2, -3, -4, -5, -6].map(v => opt(v, (v > 0 ? '+' : '') + v, obj[k] || 0)).join('')}</select></label>`).join('')}</div>`;
-  const bcard = (p, i) => { const s = BS.b[i], c = B[i], act = i === ba, out = c.hp <= 0;
-    return `<div class="bslot ${act ? 'act' : ''} ${out ? 'ko' : ''}"><div class="bshd"><img src="${nimg(p.n)}" alt="">
-      <div class="bsn"><div class="bsnm"><b>${esc(monName(p.n))}</b> <span class="sp">Lv. ${esc(p.lv)}</span></div><div class="stypes">${c.types.map(typeBadge).join('')}</div></div></div>
+  // each card opens to the full details (the Nuzlocke tab's card for yours, the boss team view for theirs) and minimizes back
+  const expBtn = (key, open) => `<button class="btn bexpb" data-bexp="${esc(key)}" aria-expanded="${open}" title="${open ? 'Back to the compact card' : 'Show the full card'}">${open ? 'Minimize ▴' : 'Details ▾'}</button>`;
+  const bcard = (p, i) => { const s = BS.b[i], c = B[i], act = i === ba, out = c.hp <= 0, open = batExp.has('#b' + i);
+    return `<div class="bslot ${act ? 'act' : ''} ${out ? 'ko' : ''} ${open ? 'bfull' : ''}"><div class="bshd"><img src="${nimg(p.n)}" alt="">
+      <div class="bsn"><div class="bsnm"><b>${esc(monName(p.n))}</b> <span class="sp">Lv. ${esc(p.lv)}</span></div><div class="stypes">${c.types.map(typeBadge).join('')}</div></div>${expBtn('#b' + i, open)}</div>
       <label class="bact"><input type="radio" name="batb" data-bf="ba" data-i="${i}" ${act ? 'checked' : ''} ${out ? 'disabled' : ''}> In battle</label>
       <label>HP %<input type="number" min="0" max="100" data-bf="bhp" data-i="${i}" value="${esc(s.hp)}"></label>
       <label>Status<select data-bf="bst" data-i="${i}">${sts(s.st)}</select></label>
       ${act && !out ? `<label class="bact" title="Loses 1/8 of its max HP each turn, which heals your Pokémon in battle. Ends when it switches out."><input type="checkbox" data-bf="bseed" data-i="${i}" ${s.seed ? 'checked' : ''}> Leech Seeded</label>` : ''}
       ${s.st === 'tox' ? `<label title="Its next end-of-turn hit is (turns + 1)/16 of its max HP. Switching out starts it over.">Turns badly poisoned<input type="number" min="0" max="15" data-bf="btn" data-i="${esc(i)}" value="${esc(s.tn || 0)}"></label>` : ''}
       ${p.item ? `<label class="bact"><input type="checkbox" data-bf="bitem" data-i="${i}" ${s.item !== false ? 'checked' : ''}> Holding ${esc(p.item)}</label>` : ''}
-      <div class="sp bsmv">${(p.mv || []).filter(Boolean).map(esc).join(' · ')}</div></div>` };
-  const pcard = (x, i) => { const s = BS.p[x.row.k] || {}, c = P[i], act = i === pa, out = c.hp <= 0;
-    return `<div class="bslot ${act ? 'act' : ''} ${out ? 'ko' : ''}"><div class="bshd"><img src="${nimg(x.e.n)}" alt="">
-      <div class="bsn"><div class="bsnm"><b>${esc(x.e.nick || monName(x.e.n))}</b> <span class="sp">Lv. ${esc(x.e.lv)}</span></div><div class="stypes">${c.types.map(typeBadge).join('')}</div></div></div>
-      <label class="bact"><input type="radio" name="batp" data-bf="pa" data-k="${esc(x.row.k)}" ${act ? 'checked' : ''} ${out ? 'disabled' : ''}> In battle</label>
+      ${batStatsHtml(c, BS.wx)}
+      ${open ? `<div class="bdet">${bossMonHtml(p, party.map(x => x.e))}</div>` : `<div class="sp bsmv">${(p.mv || []).filter(Boolean).map(esc).join(' · ')}</div>`}</div>` };
+  const next = NBOSS[r.beat], fullParty = partyOf(r);
+  const ectx = { over: e => r.rules.caps && next && (+e.lv || 0) > next.cap, party: fullParty, partyFull: fullParty.length >= 6, boss: team.filter(p => mons[p.n - 1]), bossName: batB(BS.boss).label };
+  const pctl = (x, s, c, act, out) => `<label class="bact"><input type="radio" name="batp" data-bf="pa" data-k="${esc(x.row.k)}" ${act ? 'checked' : ''} ${out ? 'disabled' : ''}> In battle</label>
       <label>HP <small>of ${c.max}</small><input type="number" min="0" max="${c.max}" data-bf="php" data-k="${esc(x.row.k)}" value="${esc(s.hp ?? '')}" placeholder="${c.max}"></label>
       <label>Status<select data-bf="pst" data-k="${esc(x.row.k)}">${sts(s.st)}</select></label>
       ${act && !out ? `<label class="bact" title="Loses 1/8 of its max HP each turn, which heals their Pokémon in battle. Ends when it switches out."><input type="checkbox" data-bf="pseed" data-k="${esc(x.row.k)}" ${s.seed ? 'checked' : ''}> Leech Seeded</label>` : ''}
-      ${s.st === 'tox' ? `<label title="Its next end-of-turn hit is (turns + 1)/16 of its max HP. Switching out starts it over.">Turns badly poisoned<input type="number" min="0" max="15" data-bf="ptn" data-k="${esc(x.row.k)}" value="${esc(s.tn || 0)}"></label>` : ''}
+      ${s.st === 'tox' ? `<label title="Its next end-of-turn hit is (turns + 1)/16 of its max HP. Switching out starts it over.">Turns badly poisoned<input type="number" min="0" max="15" data-bf="ptn" data-k="${esc(x.row.k)}" value="${esc(s.tn || 0)}"></label>` : ''}`;
+  const pcard = (x, i) => { const s = BS.p[x.row.k] || {}, c = P[i], act = i === pa, out = c.hp <= 0;
+    if (batExp.has(x.row.k)) return monEditor(x.row, x.e, r, Object.assign({}, ectx, { cls: `bfull ${act ? 'act' : ''} ${out ? 'ko' : ''}`,
+      headBtn: expBtn(x.row.k, true), extra: `<div class="bstrip">${pctl(x, s, c, act, out)}</div>${batStatsHtml(c, BS.wx)}` }));
+    return `<div class="bslot ${act ? 'act' : ''} ${out ? 'ko' : ''}"><div class="bshd"><img src="${nimg(x.e.n)}" alt="">
+      <div class="bsn"><div class="bsnm"><b>${esc(x.e.nick || monName(x.e.n))}</b> <span class="sp">Lv. ${esc(x.e.lv)}</span></div><div class="stypes">${c.types.map(typeBadge).join('')}</div></div>${expBtn(x.row.k, false)}</div>
+      ${pctl(x, s, c, act, out)}
+      ${batStatsHtml(c, BS.wx)}
       <div class="sp bsmv">${(x.e.moves || []).filter(Boolean).map(esc).join(' · ') || 'No moves picked'}${x.e.item ? ' · ' + esc(x.e.item) : ''}</div></div>` };
   const sdOpts = (i, k, n, lab) => `<label>${lab}<select data-bf="sd" data-i="${i}" data-k="${k}">${[...Array(n + 1).keys()].map(v => opt(v, v === 0 ? 'None' : k === 'sr' ? 'Up' : String(v), BS.sd[i][k])).join('')}</select></label>`;
   const sideHtml = (i, lab) => `<div class="bfside"><h4>${lab}</h4><div class="bfgrid">${sdOpts(i, 'sr', 1, 'Stealth Rock')}${sdOpts(i, 'spk', 3, 'Spikes')}${sdOpts(i, 'tsp', 2, 'Toxic Spikes')}
@@ -3461,6 +3548,7 @@ function renderBattle() {
 }
 function batQueue() { clearTimeout(batTimer); batTimer = setTimeout(batAnalyze, 120) }
 const batOpen = new Set();   // folded sections the player has opened
+const batExp = new Set(store.get('rp-bexp', []));   // Battle tab cards opened to full details (your row keys, '#b' + index for theirs)
 // Simulate the whole fight from turn 1: full HP, items unused. Send-in order is either "best matchup" (your "In battle" Pokémon leads,
 // and after a faint whoever matches up best comes in) or your own order (first leads, then the next one still standing).
 // Same engine and play style as "Your best move", run many times; the other order runs alongside for comparison.
@@ -3576,13 +3664,17 @@ function batAnalyze() {
   setTimeout(step, 0);
 }
 function batHtml(S, me, foe, fc, options, acc, done, P, B) {
-  const pct = (v, of) => Math.round(v / of * 100), rng = h => `${h.min}–${h.max} <small>(${pct(h.min, h.max0)}–${pct(h.max, h.max0)}%)</small>`;
+  const pct = (v, of) => Math.round(v / of * 100), pctTxt = h => `${pct(h.min, h.max0)}–${pct(h.max, h.max0)}%`;
+  // with an ability or item in play: the real range, the plain range in parentheses, then what changed it
+  const rng = h => !h.o ? `${h.min}–${h.max} <small>(${pctTxt(h)})</small>`
+    : `<b class="fxv">${h.min}–${h.max}</b> <span class="fx0" title="Without ${esc(h.o.fx.map(z => z.name).join(' and '))}">(${h.o.mult === 0 ? 'no effect' : h.o.min + '–' + h.o.max})</span> <small>· ${pctTxt(h)}</small> ${h.o.fx.map(fxMark).join(' ')}`;
+  const noEff = h => h.o ? `No effect <span class="fx0">(${h.o.min}–${h.o.max})</span> ${h.o.fx.map(fxMark).join(' ')}` : 'No effect';
   const koTxt = h => h.ko >= .995 ? '<span class="bko">Knocks out</span>' : h.ko > 0 ? `<span class="bko">${Math.round(h.ko * 100)}% to knock out</span>` : '';
   // boss forecast
   const fmv = Object.entries(fc.mv).sort((a, b) => b[1] - a[1]), fsw = Object.entries(fc.sw).sort((a, b) => b[1] - a[1]);
   const frows = fmv.map(([mv, c]) => { const h = batHit(S, foe, me, mv), d = MV[mv] || {};
     return `<div class="bfrow"><span class="bpct">${Math.round(c / fc.n * 100)}%</span><span class="bmvn">${esc(mv)} ${d.t ? `<span class="mtype" style="background:${TC[d.t]}">${d.t}</span>` : ''}</span>
-      <span class="sp">${h ? (h.mult === 0 ? 'No effect' : rng(h) + ' ' + koTxt(h)) : esc(d.c === 'St' ? 'Status move' : '')}</span></div>` }).join('')
+      <span class="sp">${h ? (h.mult === 0 ? noEff(h) : rng(h) + ' ' + koTxt(h)) : esc(d.c === 'St' ? 'Status move' : '')}</span></div>` }).join('')
     + fsw.map(([i, c]) => `<div class="bfrow"><span class="bpct">${Math.round(c / fc.n * 100)}%</span><span class="bmvn">Switches to ${esc(B[+i].name)}</span><span></span></div>`).join('');
   // your options, best first
   const rows = options.map((o, i) => ({ o, a: acc[i] })).filter(x => x.a.n);
@@ -3597,16 +3689,19 @@ function batHtml(S, me, foe, fc, options, acc, done, P, B) {
   const likely = fmv.length ? fmv[0][0] : null;
   const orow = (x, k) => { const o = x.o, a = x.a, w = a.win / a.n, h = o.mv ? batHit(S, me, foe, o.mv) : null, d = o.mv ? MV[o.mv] || {} : {};
     const inc = o.sw !== undefined ? P[o.sw] : null, take = inc && likely ? batHit(S, foe, inc, likely) : null;
-    const now = o.mv ? (d.c === 'St' ? 'Status move' : h ? (h.mult === 0 ? 'No effect' : `Hits for ${rng(h)} ${koTxt(h)}`) : '') : take && take.mult !== 0 ? `Takes ${rng(take)} from ${esc(likely)} coming in` : likely ? `Comes in safely against ${esc(likely)}` : '';
+    const now = o.mv ? (d.c === 'St' ? 'Status move' : h ? (h.mult === 0 ? noEff(h) : `Hits for ${rng(h)} ${koTxt(h)}`) : '') : take && take.mult !== 0 ? `Takes ${rng(take)} from ${esc(likely)} coming in` : likely ? `Comes in safely against ${esc(likely)}` : '';
     const tags = (x === best ? '<span class="btag good" title="Highest win chance, or within the noise of it with fewer of your Pokémon lost">Best</span>' : '') + (safest && x === safest && x !== best ? '<span class="btag">Safest</span>' : '');
     const die = Math.round(a.meDie1 / a.n * 100), lose = a.dead / a.n;
     return `<div class="borow ${x === best ? 'best' : ''}"><div class="bohd"><b>${esc(o.label)}</b>${d.t ? ` <span class="mtype" style="background:${TC[d.t]}">${d.t}</span>` : ''}${tags}
         <span class="bowin" title="Chance to win the fight">${Math.round(w * 100)}%</span></div>
       <div class="bobar"><i style="width:${w * 100}%"></i></div>
       <div class="sp">${now}${now ? ' · ' : ''}lose ${lose < .05 ? 'nobody' : lose.toFixed(1) + ' Pokémon'} on average${die ? ` · <span class="bko">${esc(me.name)} faints this turn ${die}%</span>` : ''}</div></div>` };
+  const spd = c => { const v = nsSpeed(S, c), c0 = Object.assign({}, c, { ab: '', item: '' }), v0 = nsSpeed(S, c0); if (v === v0) return String(v);
+    const fx = [c.ab, c.item].filter(Boolean).filter(nm => nsSpeed(S, Object.assign({}, c, nm === c.ab ? { ab: '' } : { item: '' })) !== v).map(name => ({ name, who: c.name, kind: name === c.ab ? 'ability' : 'item' }));
+    return fxNum(v, v0, fx) + ' ' + fx.map(fxMark).join(' ') };
   const faster = nsSpeed(S, me) > nsSpeed(S, foe) ? 'You move first' : nsSpeed(S, me) < nsSpeed(S, foe) ? `${esc(foe.name)} moves first` : 'Speed tie';
   const TOP = 4, shown = rows.slice(0, TOP), more = rows.slice(TOP);
-  return `<div class="badvice"><section class="card"><h3>What ${esc(foe.name)} will do</h3><p class="sp">${esc(foe.name)} ${Math.round(foe.hp / foe.max * 100)}% HP vs ${esc(me.name)} ${me.hp}/${me.max} HP · ${faster} (Speed ${nsSpeed(S, me)} vs ${nsSpeed(S, foe)})</p>
+  return `<div class="badvice"><section class="card"><h3>What ${esc(foe.name)} will do</h3><p class="sp">${esc(foe.name)} ${Math.round(foe.hp / foe.max * 100)}% HP vs ${esc(me.name)} ${me.hp}/${me.max} HP · ${faster} (Speed ${spd(me)} vs ${spd(foe)})</p>
       <div class="bfc">${frows || '<p class="empty">No moves listed.</p>'}</div></section>
     <section class="card"><h3>Your best move${done ? '' : ' <small class="sp">working…</small>'}</h3>
       <p class="sp">Chance to win the fight if you do this now, then keep battling sensibly. Differences of 3% or less are noise.</p>
@@ -4679,12 +4774,19 @@ GD.addEventListener('change', ev => { const st = ev.target.dataset && ev.target.
   if (st) { const [bi, i] = st.split('|').map(Number), y = window.scrollY; gWalkTick(curRun(), bi, i, ev.target.checked); renderGuide(); window.scrollTo(0, y); return }
   if (ev.target.id === 'gjump') { const el = document.getElementById('gch' + ev.target.value); if (el) { el.open = true; el.scrollIntoView({ behavior: 'smooth', block: 'start' }) } } });
 const BD = document.getElementById('batdetail');
+// full cards: same edits as the Nuzlocke tab, then the battle view redraws (keeping focus and scroll)
+const batRefresh = () => nRefreshKeep(BD, renderBattle);
+const batCommit = () => { saveRuns(); renderRunList(); batRefresh() };
+BD.addEventListener('toggle', ev => { const d = ev.target;
+  if (d.classList && d.classList.contains('phist')) { d.open ? nOpenLog.add(d.dataset.hk) : nOpenLog.delete(d.dataset.hk); return }
+  if (d.classList && d.classList.contains('pmore') && d.closest('.pmon')) { const k = d.closest('.pmon').dataset.k; d.open ? nOpen.add(k) : nOpen.delete(k); return } }, true);
 BD.addEventListener('toggle', ev => { const k = ev.target.dataset && ev.target.dataset.bopen; if (k) ev.target.open ? batOpen.add(k) : batOpen.delete(k);
   if (ev.target.hasAttribute && ev.target.hasAttribute('data-pjbox')) store.set('rp-pjopen', ev.target.open) }, true);
 BD.addEventListener('input', ev => { if (!ev.target.hasAttribute('data-tplvr')) return; const w = ev.target.closest('.tplv');
   w.querySelector('.tplvout').textContent = tpLvTxt(+ev.target.value, +w.dataset.lo, +w.dataset.cap);
   w.querySelectorAll('[data-tplv]').forEach(x => { x.checked = +x.dataset.tplv === +ev.target.value }) });
 BD.addEventListener('change', ev => { if (ev.target.dataset.bf) return batChange(ev.target);
+  if (pmonChange(ev.target, curRun(), batRefresh, batCommit)) return;
   const lvw = ev.target.closest && ev.target.closest('.tplv');
   if (lvw && (ev.target.dataset.tplv || ev.target.hasAttribute('data-tplvr'))) return tpSetLv(+(ev.target.dataset.tplv || ev.target.value), +lvw.dataset.lo, +lvw.dataset.cap);
   if (ev.target.dataset.simmode) { BS.simMode = ev.target.dataset.simmode; batSave(); return renderSim() }
@@ -4698,7 +4800,13 @@ BD.addEventListener('change', ev => { if (ev.target.dataset.bf) return batChange
   const tl = btForm(); tl[k] = ev.target.type === 'checkbox' ? ev.target.checked : ev.target.value;
   if (k === 'p') { tl.pOut = 'hit'; tl.pSec = false } if (k === 'b') { tl.bOut = 'hit'; tl.bSec = false }
   batSave(); if (k !== 'php' && k !== 'bhp') renderTurnLog() });
-BD.addEventListener('click', ev => { const mv = ev.target.closest('[data-simmv]');
+BD.addEventListener('click', ev => {
+  const ex = ev.target.closest('[data-bexp]');
+  if (ex) { const k = ex.dataset.bexp; batExp.has(k) ? batExp.delete(k) : batExp.add(k); store.set('rp-bexp', [...batExp]);
+    return nRefreshKeep(BD, () => { renderBattle(); const b = BD.querySelector(`[data-bexp="${CSS.escape(k)}"]`); if (b) b.focus({ preventScroll: true }) }) }
+  const pk = ev.target.closest('.pk'); if (pk) { setView('dex'); return select(+pk.dataset.n) }
+  if (ev.target.closest('.pmon') && pmonClick(ev.target, curRun(), batRefresh, batCommit, BD)) return;
+  const mv = ev.target.closest('[data-simmv]');
   if (mv) { const r = curRun(), [k, d] = [mv.dataset.simmv.slice(0, mv.dataset.simmv.lastIndexOf(':')), +mv.dataset.simmv.slice(mv.dataset.simmv.lastIndexOf(':') + 1)];
     const ord = simOrder(r).map(x => x.row.k), i = ord.indexOf(k), j = i + d; if (i < 0 || j < 0 || j >= ord.length) return;
     [ord[i], ord[j]] = [ord[j], ord[i]]; BS.simOrd = ord; batSave(); return renderSim() }
@@ -4747,32 +4855,48 @@ function nLevelBack(e) {
 }
 // a new level starts a fresh set of stats; the old level's stats stay in the log
 function nSetLevel(e, lv) { if (String(lv) !== String(e.lv || '')) { nLog(e); e.stats = {} } e.lv = lv }
-// IVs consistent with every logged level (exact, no EVs); if battles' EVs make that impossible, a looser range
-const EVSLOP = [0, 4, 8, 16, 32];   // how far off a tracked EV log may be before IVs give up
-function nSolveIVs(e) {
-  const H = e.hist || [], ev = H.some(x => x.ev && Object.keys(x.ev).length);
-  let out = null;
-  for (const slop of ev ? EVSLOP : [0]) {
-    out = nSolveIVsAt(e, slop); if (!out) return out;
-    if (IVSTATS.every(k => !out.s[k] || out.s[k].c.length)) { out.slop = slop; return out }
-  }
-  return nSolveIVsAt(e, 0);
-}
-function nSolveIVsAt(e, slop) {
-  const m = mons[e.n - 1], H = e.hist || []; if (!m || !H.length) return null;
-  const b = m.v[ver].stats, bs = x => (mons[(x.n || e.n) - 1] || m).v[ver].stats, s = {}; let evs = false;
-  IVSTATS.forEach(k => {
-    const ent = H.filter(x => +x.st[k]).slice().sort((a, b) => a.lv - b.lv); if (!ent.length) { s[k] = null; return }
-    const c = [...Array(32).keys()].filter(iv => ivFits(k, iv, ent, bs, e.nat, slop));
-    // * = no IV explains every level without EVs, so its battles' EVs are part of the picture
-    const low = c.filter(iv => ent.every(x => ivStat(k, bs(x)[k], x.lv, iv, 0, e.nat) === +x.st[k]));   // fits with no EVs at all
-    const loose = c.length > 0 && !low.length;
-    if (loose) evs = true;
-    // nothing fits: which single entry, if it were left out, would let the rest fit? (likely typos)
-    const bad = !c.length && ent.length > 1 ? ent.filter((x, i) => [...Array(32).keys()].some(iv => ivFits(k, iv, ent.filter((_, j) => j !== i), bs, e.nat, slop))) : [];
-    s[k] = { c, loose, low, bad };
+// IV locks: each stat's narrowest range so far, saved on the Pokémon (o.ivLock = { nat, s: { stat: [ivs] } }). A new solve is
+// intersected with it, so logging more levels or EVs can only narrow a range, never widen it. If new stats don't fit the
+// lock at all, the lock wins and the stat is flagged (a typo or a wrong nature); "Unlock" starts over from the log.
+// A different nature starts over too, since the old ranges assumed the old nature. Locks only update from finished entries.
+let ivTyping = false;   // an IVs-tab field is mid-edit: show the lock, but don't save half-typed numbers into it
+let ivLockTimer = null;
+const ivLockGet = (o, nat) => o && o.ivLock && o.ivLock.v === 2 && o.ivLock.nat === (nat || '') ? o.ivLock.s : {};
+const ivLockOk = (sol, L) => IVSTATS.every(k => { const x = sol[k]; if (!x || x.used === false) return true; return x.c.length > 0 && (!L[k] || x.c.some(iv => L[k].includes(iv))) });
+// intersect sol (stat -> { c, used? }) with o's lock; save narrower ranges (save = null when the stats don't add up). Returns the clashing stats.
+function ivLockUse(sol, o, nat, save) {
+  const L = ivLockGet(o, nat), next = Object.assign({}, L), clash = []; let changed = false;
+  IVSTATS.forEach(k => { const x = sol[k];
+    if (!x || x.used === false) { if (L[k]) sol[k] = Object.assign(x || { loose: false, low: [], bad: [] }, { c: L[k].slice(), used: true, locked: true }); return }
+    if (L[k]) { const both = x.c.filter(iv => L[k].includes(iv));
+      if (!both.length) { clash.push(k); x.c = L[k].slice(); x.locked = true; return }
+      x.c = both; x.locked = true; if (x.low) x.low = x.low.filter(iv => both.includes(iv)) }
+    if (x.c.length && x.c.length < 32 && (!L[k] || x.c.length < L[k].length)) { next[k] = x.c.slice(); changed = true; if (save && !ivTyping) x.locked = true }
   });
-  if (e.ch) {
+  if ((changed || o && o.ivLock && o.ivLock.v !== 2) && !ivTyping && o && save) { o.ivLock = { v: 2, nat: nat || '', s: next }; save() }
+  return clash;
+}
+const ivLockSaveRun = () => { clearTimeout(ivLockTimer); ivLockTimer = setTimeout(saveRuns, 300) };
+// IVs consistent with every logged level (exact, no EVs); if battles' EVs make that impossible, a looser range
+const EVSLOP = [0, 4, 8, 16, 32];   // how far off a tracked EV log may be, step by step
+const EVFREE = 1020;   // slop that ignores the logged EVs: they only have to never go down from one level to the next
+// What's trusted, most first: the nature (always used), the Hidden Power type (always used when set), the characteristic,
+// the logged stats, and last the EV log (often off from logging the same battle on phone and desktop). When the IVs can't
+// satisfy all of them, the least trusted gives way first:
+//  1. EVs: the fewest stats get the smallest extra EV allowance that makes it fit, up to ignoring their logged EVs;
+//  2. a logged level: the first one whose removal lets the rest fit (a likely typo) is left out;
+//  3. the characteristic is left out (probably misread). The nature and the Hidden Power type are never dropped.
+const IVTIERS = [null, true, ...EVSLOP, EVFREE];   // per stat: step by step, whole log, then one fixed slop for the stat
+function ivTier(e, k, t) {
+  const ent = (e.hist || []).filter(x => +x.st[k]).sort((a, b) => a.lv - b.lv); if (!ent.length) return null;
+  const bs = x => (mons[(x.n || e.n) - 1] || mons[e.n - 1]).v[ver].stats, pr = ivProg(k, ent, bs, e.nat, IVTIERS[t]);
+  const low = pr.c.filter(iv => ent.every(x => ivStat(k, bs(x)[k], x.lv, iv, 0, e.nat) === +x.st[k]));   // fits with no EVs at all
+  return { c: pr.c, low, loose: pr.c.length > 0 && !low.length, bad: pr.bad, slop: pr.slop };
+}
+// the characteristic and Hidden Power type applied to one pick of per-stat answers (copied, so picks can be reused)
+function ivJoin(e, pick, useCh) {
+  const s = {}; IVSTATS.forEach(k => s[k] = pick[k] ? Object.assign({}, pick[k], { c: pick[k].c.slice(), low: pick[k].low.slice(), bad: pick[k].bad.slice() }) : null);
+  if (useCh && e.ch) {   // the characteristic's stat holds the highest IV, and that IV mod 5 is known
     const [ck, mod] = e.ch.split(':'), others = IVSTATS.filter(k => k !== ck && s[k]);
     if (s[ck]) {
       s[ck].c = s[ck].c.filter(iv => iv % 5 === +mod);
@@ -4786,7 +4910,56 @@ function nSolveIVsAt(e, slop) {
   }
   const hpBad = e.hpt ? !ivHpNarrow(s, e.hpt) : false;
   IVSTATS.forEach(k => { if (s[k]) s[k].low = s[k].low.filter(iv => s[k].c.includes(iv)) });
-  return { s, evs: evs || slop > 0, levels: H.length, hpBad, slop: 0 };
+  return { s, hpBad, fits: !hpBad && IVSTATS.every(k => !s[k] || s[k].c.length), relaxed: [] };
+}
+const ivSubsets = (a, n) => n === 0 ? [[]] : a.flatMap((x, i) => ivSubsets(a.slice(i + 1), n - 1).map(r => [x, ...r]));
+// the least EV loosening that fits: each tier in turn, and within a tier the fewest stats
+function ivRelax(e, useCh) {
+  const ks = IVSTATS.filter(k => (e.hist || []).some(x => +x.st[k])), T = {}, at = (k, t) => (T[k] = T[k] || [])[t] || (T[k][t] = ivTier(e, k, t));
+  const base = {}; ks.forEach(k => base[k] = at(k, 0));
+  const j = ivJoin(e, base, useCh); if (j.fits || !(e.hpt || useCh && e.ch)) return j;
+  for (let t = 1; t < IVTIERS.length; t++) for (let n = 1; n <= ks.length; n++) for (const sub of ivSubsets(ks, n)) {
+    const p = Object.assign({}, base); sub.forEach(k => p[k] = at(k, t));
+    const r = ivJoin(e, p, useCh); if (r.fits) return Object.assign(r, { relaxed: sub });
+  }
+  return j;   // nothing fits
+}
+const IVSOLVED = new Map();
+const ivCopy = o => Object.assign({}, o, { s: Object.fromEntries(IVSTATS.map(k => [k, o.s[k] && Object.assign({}, o.s[k], { c: o.s[k].c.slice(), low: o.s[k].low.slice() })])) });
+// e: { n, nat, ch, hpt, hist } (a Nuzlocke card, or the IVs tab's rows in the same shape)
+function ivSolveCore(e) {
+  const H = e.hist || []; if (!mons[e.n - 1] || !H.length) return null;
+  const key = JSON.stringify([e.n, e.nat || '', e.ch || '', e.hpt || '', ver, H]); if (IVSOLVED.has(key)) return ivCopy(IVSOLVED.get(key));
+  let r = ivRelax(e, true);
+  if (!r.fits && (e.hpt || e.ch)) {
+    // a logged level is probably wrong: the first whose removal lets the rest fit (checked with every EV log ignored)
+    const fitsWithout = x => { const y = Object.assign({}, e, { hist: H.filter(z => z !== x) }), p = {}; IVSTATS.forEach(k => p[k] = ivTier(y, k, IVTIERS.length - 1)); return ivJoin(y, p, true).fits };
+    const drop = H.length > 1 && H.find(fitsWithout);
+    if (drop) { const r2 = ivRelax(Object.assign({}, e, { hist: H.filter(z => z !== drop) }), true); if (r2.fits) { r = r2; r.dropped = drop } }
+    if (!r.fits && e.ch) { const r3 = ivRelax(e, false); if (r3.fits) { r = r3; r.chOff = e.ch } }
+  }
+  const ev = H.some(x => x.ev && Object.values(x.ev).some(v => +v > 0));
+  const out = { s: r.s, hpBad: r.hpBad, fits: r.fits, relaxed: r.relaxed, dropped: r.dropped || null, chOff: r.chOff || '', levels: H.length,
+    evs: IVSTATS.some(k => r.s[k] && (r.s[k].loose || r.s[k].slop > 0)),
+    slop: ev ? Math.max(0, ...IVSTATS.map(k => r.s[k] && r.s[k].slop < EVFREE ? r.s[k].slop : 0)) : 0,
+    evFree: IVSTATS.filter(k => r.s[k] && r.s[k].slop >= EVFREE) };
+  if (IVSOLVED.size > 500) IVSOLVED.clear();
+  IVSOLVED.set(key, out); return ivCopy(out);
+}
+// only a clean answer is saved as a lock (no level left out, nothing ignored, every stat with an answer)
+const ivLockable = o => o.fits && !o.dropped && !o.chOff && IVSTATS.every(k => !o.s[k] || o.s[k].c.length && !o.s[k].bad.length);
+function nSolveIVs(e) {
+  const out = ivSolveCore(e); if (!out) return out;
+  out.clash = ivLockUse(out.s, e, e.nat, ivLockable(out) ? ivLockSaveRun : null); return out;
+}
+// what gave way, in words, for the card and the IVs tab
+function ivGaveWay(o, e) {
+  const L = [], what = [e.hpt ? 'Hidden Power ' + e.hpt : '', e.ch && !o.chOff ? 'the characteristic' : ''].filter(Boolean).join(' and ');
+  if (o.relaxed && o.relaxed.length) { const free = o.relaxed.filter(k => o.s[k] && o.s[k].slop >= EVFREE), off = o.relaxed.filter(k => !free.includes(k));
+    if (free.length) L.push(`To fit ${what}, the logged EVs for ${free.map(k => SL[k]).join(', ')} are ignored (EVs are the least trusted). Only that they never go down between levels is used.`);
+    if (off.length) L.push(`To fit ${what}, the logged EVs for ${off.map(k => SL[k]).join(', ')} are allowed to be off by up to ${Math.max(...off.map(k => o.s[k].slop))}.`) }
+  if (o.dropped) L.push(`Lv. ${o.dropped.lv}${o.dropped.n && o.dropped.n !== e.n ? ' (as ' + monName(o.dropped.n) + ')' : ''} doesn't fit the nature${e.hpt ? ', Hidden Power ' + e.hpt : ''}${e.ch && !o.chOff ? ' and characteristic' : ''} even ignoring EVs, so that level is left out. Check its stats for a typo.`);
+  return L;
 }
 const nOpenLog = new Set();
 // Highest IV, from the Characteristic on its summary screen; shown as a one-line summary once picked
@@ -4804,7 +4977,7 @@ function nIvBlock(row, e, sol) {
     if (!x) return `<div class="piv none" title="${SL[k]}: not logged yet">—</div>`;
     if (!x.c.length) return `<div class="piv g1" title="${SL[k]}: no IV fits. ${x.bad.length ? 'Check ' + x.bad.map(b => 'Lv. ' + b.lv + ' (' + b.st[k] + ')').join(' or ') + ' for a typo.' : 'Check the log for a typo.'}">?</div>`;
     const lo = x.c[0], hi = x.c[x.c.length - 1], j = ivJudge(lo) === ivJudge(hi) ? ivJudge(lo) : ivJudge(lo) + ' – ' + ivJudge(hi);
-    return `<div class="piv ${ivTone(Math.round((lo + hi) / 2))}" title="${SL[k]} IV ${ivList(x.c)} · ${j}${x.loose ? ' · approximate, its stats include EVs' : ''}">${lo === hi ? lo : hi - lo + 1 === x.c.length ? lo + '–' + hi : x.c.length <= 3 ? x.c.join('/') : lo + '–' + hi + '…'}${x.loose ? '*' : ''}</div>` }).join('');
+    return `<div class="piv ${ivTone(Math.round((lo + hi) / 2))}" title="${SL[k]} IV ${ivList(x.c)} · ${j}${x.loose ? ' · approximate, its stats include EVs' : ''}${x.locked ? ' · locked: can only narrow from here' : ''}">${lo === hi ? lo : hi - lo + 1 === x.c.length ? lo + '–' + hi : x.c.length <= 3 ? x.c.join('/') : lo + '–' + hi + '…'}${x.loose ? '*' : ''}</div>` }).join('');
   let grade = '';
   if (IVSTATS.every(k => sol.s[k] && sol.s[k].c.length)) {
     const t0 = IVSTATS.reduce((a, k) => a + sol.s[k].c[0], 0), t1 = IVSTATS.reduce((a, k) => a + sol.s[k].c[sol.s[k].c.length - 1], 0), pct = (t0 + t1) / 2 / 186 * 100;
@@ -4812,10 +4985,14 @@ function nIvBlock(row, e, sol) {
   }
   const sh = { hp: 'HP', atk: 'Atk', def: 'Def', spa: 'SpA', spd: 'SpD', spe: 'Spe' };
   const badMap = new Map(); IVSTATS.forEach(k => sol.s[k] && sol.s[k].bad.forEach(b => badMap.set(b, [...(badMap.get(b) || []), k])));
-  const typo = IVSTATS.filter(k => sol.s[k] && !sol.s[k].c.length && sol.s[k].bad.length).map(k => SL[k] + ' at ' + sol.s[k].bad.map(b => 'Lv. ' + b.lv).join(' or '));
+  const typo = IVSTATS.filter(k => sol.s[k] && sol.s[k].bad.length).map(k => SL[k] + ' at ' + sol.s[k].bad.map(b => 'Lv. ' + b.lv).join(' or '));
   const lowShown = IVSTATS.some(k => sol.s[k] && sol.s[k].low.length && sol.s[k].low.length < sol.s[k].c.length);
-  const notes = (typo.length ? `<div class="pivnote bad">Possible typo: ${esc(typo.join('; '))}. It's highlighted in the stat log.</div>` : '')
-    + (sol.slop ? `<div class="pivnote" title="The logged stats don't fit the EV log exactly, usually from a battle missed or logged twice, or EVs logged after the level-up. IVs allow for that.">EV log looks off by a few points, so these IVs allow ±${sol.slop} EVs.</div>` : '');
+  const hpGot = sol.hpBad && IVSTATS.every(k => sol.s[k] && sol.s[k].c.length) ? ivHiddenPower(sol.s) : null;
+  const notes = (sol.chOff ? `<div class="pivnote bad">${esc(ivChHint(sol.s, sol.chOff))}</div>` : '')
+    // EV adjustments aren't noted on the card (the IVs tab explains them); a level left out is
+    + ivGaveWay(Object.assign({}, sol, { relaxed: [] }), e).map(t => `<div class="pivnote bad">${esc(t)}</div>`).join('')
+    + (sol.hpBad ? `<div class="pivnote bad">No IVs give Hidden Power ${esc(e.hpt)} with these stats and this nature, even ignoring the EV log.${hpGot && hpGot.types.length <= 2 ? ` Without it these IVs give ${esc(hpGot.types.join(' or '))}.` : ''} A stat is probably logged wrong, or check the type with the Hidden Power teller.</div>` : '') + (typo.length ? `<div class="pivnote bad">Possible typo: ${esc(typo.join('; '))} doesn't fit the earlier levels, so it's left out. It's highlighted in the stat log.</div>` : '')
+    + ((sol.clash || []).length ? `<div class="pivnote bad">The latest stats don't fit the locked IVs for ${sol.clash.map(k => SL[k]).join(', ')}, so the locked values are kept. Check the newest level for a typo. <button class="an" data-ivunlock="${esc(row.k)}">Unlock and recalculate</button></div>` : '');
   const likely = lowShown ? `<div class="pivnote" title="Assumes its battles haven't added enough EVs to change any stat yet. True early on; less so as it levels.">If its EVs are still near 0: ${IVSTATS.map(k => sol.s[k] && sol.s[k].low.length ? SL[k] + ' ' + ivList(sol.s[k].low) : null).filter(Boolean).join(' · ')}</div>` : '';
   return `<label class="pivlab">IVs <small>from ${H.length} logged level${H.length === 1 ? '' : 's'}${grade}${sol.evs ? ' · <span title="Later stats include EVs from battles, so those IVs are a range rather than exact">* has battle EVs</span>' : ''}</small></label><div class="pivwrap"><div class="pivs">${cells}</div>${notes}</div>
     <details class="phist" data-hk="${esc(row.k)}" ${nOpenLog.has(row.k) ? 'open' : ''}><summary>Stat log · ${H.length} level${H.length === 1 ? '' : 's'}${H.some(x => x.fresh) ? ' · ' + H.filter(x => x.fresh).length + ' before battles' : ''}</summary>${likely}
@@ -4901,10 +5078,10 @@ function nEvoNode(n) {
   let hit = null; const walk = (x, p) => { if (!x || hit) return; if (x.num === n) hit = { node: x, parent: p }; (x.k || []).forEach(c => walk(c, x)) };
   walk(mons[n - 1] && mons[n - 1].evo, null); return hit;
 }
-function nEvoSelect(e) {
+function nEvoSelect(e, attrs = 'class="pevo" data-f="evo"') {
   const h = nEvoNode(e.n); if (!h) return '';
   const kids = (h.node.k || []).filter(c => mons[c.num - 1]); if (!kids.length && !h.parent) return '';
-  return `<select class="pevo" data-f="evo" aria-label="Evolve" title="Record an evolution"><option value="">${kids.length ? 'Evolve…' : 'Evolved'}</option>${kids.map(c => `<option value="${c.num}">→ ${esc(c.n)}${c.m ? ' (' + esc(c.m) + ')' : ''}</option>`).join('')}${h.parent ? `<option value="${h.parent.num}">↩ Back to ${esc(h.parent.n)}</option>` : ''}</select>`;
+  return `<select ${attrs} aria-label="Evolve" title="Record an evolution"><option value="">${kids.length ? 'Evolve…' : 'Evolved'}</option>${kids.map(c => `<option value="${c.num}">→ ${esc(c.n)}${c.m ? ' (' + esc(c.m) + ')' : ''}</option>`).join('')}${h.parent ? `<option value="${h.parent.num}">↩ Back to ${esc(h.parent.n)}</option>` : ''}</select>`;
 }
 // moves for a card: its own list, then anything its earlier stages could learn, then a saved move that's in neither
 function nMoveOptions(m, e, sel) {
@@ -4987,12 +5164,16 @@ function trOrder(L, x) {
   const base = NORDER.indexOf(L.n), sub = !x.n ? 0 : L.n === 'Route 212' ? { North: 1, South: 2 }[x.n] || 3 : L.n === 'Route 210' ? { South: 1, North: 2 }[x.n] || 3 : TRSUBORD[x.n] || 3;
   return [base < 0 ? 9999 : base, sub];
 }
+// trainers you've marked beaten, per run (r.trBeat: key -> when), keyed 'tr:' + area + '|' + sub-area + '|' + index like Plan in Battle
+const trKey = (L, x, t) => 'tr:' + L.n + '|' + x.n + '|' + x.tr.indexOf(t);
+const trBeaten = (r, key) => !!(r.trBeat && r.trBeat[key]);
+function trSetBeaten(r, key, on) { r.trBeat = r.trBeat || {}; if (on) r.trBeat[key] = Date.now(); else delete r.trBeat[key]; r.updated = Date.now(); saveRuns() }
 function nTrainersHtml(r) {
   const mine = partyOf(r).filter(x => +x.e.lv && (x.e.moves || []).filter(m => MV[m]).length).map((x, i) => nsMake(nMineMon(x.e), (x.e.moves || []).filter(Boolean), 0, i, x.row.k));
   const chNext = Math.max(0, GUIDE.findIndex(c => c.b.includes(r.beat)));
   if (nTrCh === null || !GUIDE[nTrCh]) nTrCh = chNext < 0 ? 0 : chNext;
   const ch = GUIDE[nTrCh], st = r.enc.starter && STYPE[fam(r.enc.starter.n)];
-  const key = JSON.stringify([r.id, nTrCh, nTrAll, nCalc.biv, ver, chNext, st, r.hero || '', mine.map(c => [c.m.n, c.m.lv, c.moves, c.ab, c.item, c.m.stats])]);
+  const key = JSON.stringify([r.id, nTrCh, nTrAll, nCalc.biv, ver, chNext, st, r.hero || '', r.trBeat || {}, mine.map(c => [c.m.n, c.m.lv, c.moves, c.ab, c.item, c.m.stats])]);
   if (key === nTrKey) return nTrOut;
   const head = `<div class="trctl"><label>Chapter<select id="ntrch">${GUIDE.map((c, i) => `<option value="${i}" ${i === nTrCh ? 'selected' : ''}>${i + 1}. ${esc(c.title)}${i === chNext ? ' (you are here)' : ''}</option>`).join('')}</select></label>
     <label class="chk"><input type="checkbox" id="ntrall" ${nTrAll ? 'checked' : ''}> Show every trainer</label>
@@ -5004,21 +5185,26 @@ function nTrainersHtml(r) {
     const trs = x.tr.filter(t => t.sec !== 'Rematches' && t.sec !== 'Master Trainer' && !/After (Champion|Stark)/.test(t.when || '') && Math.max(...t.team.map(p => parseInt(p.lv) || 0)) <= cap + 10
       && trApplies(r, t));
     if (!trs.length) return;
-    const rows = trs.map(t => ({ t, th: trThreat(r, t, mine), key: 'tr:' + L.n + '|' + x.n + '|' + x.tr.indexOf(t) })).filter(o => nTrAll || o.th.lvl >= 2);
+    const rows = trs.map(t => ({ t, th: trThreat(r, t, mine), key: trKey(L, x, t) })).filter(o => nTrAll || o.th.lvl >= 2);
     blocks.push({ ord: trOrder(L, x), area: L.n + (x.n ? ' · ' + x.n : ''), total: trs.length, rows: rows.sort((a, b) => b.th.lvl - a.th.lvl) });
   }));
   const tag = l => l >= 3 ? '<span class="btag bad">Danger</span>' : l === 2 ? '<span class="btag">Watch</span>' : l === 1 ? '<span class="btag">Minor</span>' : '<span class="btag good">Fine</span>';
-  const trHtml = ({ t, th, key }) => `<div class="trrow lv${th.lvl}"><div class="trhd"><b>${esc(t.name)}</b>${t.re ? ' <span class="chip">Rematch</span>' : ''}${t.full ? ' <span class="chip">full set known</span>' : ''} ${tag(th.lvl)}<button class="btn trbat" data-trbat="${esc(key)}" title="Simulate this fight and get turn-by-turn advice in the Battle tab">Plan in Battle</button></div>
-    <div class="trteam">${th.mons.map(x => `<div class="trmon ${x.lvl >= 3 ? 'bad' : x.lvl === 2 ? 'warn' : ''}"><img src="${nimg(x.p.n)}" alt=""><div><b>${esc(monName(x.p.n))}</b> <span class="sp">Lv. ${esc(x.p.lv)}${x.p.item ? ' · ' + esc(x.p.item) : ''}</span>
-      <div class="sp trmv">${x.moves.map(m => TRBOOM.has(m) ? `<b class="bko">${esc(m)}</b>` : esc(m)).join(' · ') || 'no moves known'}</div>${x.notes.length ? `<ul>${x.notes.map(n => `<li>${n}</li>`).join('')}</ul>` : ''}</div></div>`).join('')}</div></div>`;
+  const team = th => `<div class="trteam">${th.mons.map(x => `<div class="trmon ${x.lvl >= 3 ? 'bad' : x.lvl === 2 ? 'warn' : ''}"><img src="${nimg(x.p.n)}" alt=""><div><b>${esc(monName(x.p.n))}</b> <span class="sp">Lv. ${esc(x.p.lv)}${x.p.item ? ' · ' + esc(x.p.item) : ''}</span>
+      <div class="sp trmv">${x.moves.map(m => TRBOOM.has(m) ? `<b class="bko">${esc(m)}</b>` : esc(m)).join(' · ') || 'no moves known'}</div>${x.notes.length ? `<ul>${x.notes.map(n => `<li>${n}</li>`).join('')}</ul>` : ''}</div></div>`).join('')}</div>`;
+  // beaten trainers fold down to one line (open it to see the team again); "Not beaten" brings the full row back
+  const trHtml = ({ t, th, key }) => trBeaten(r, key)
+    ? `<details class="trrow trdone"><summary><b>${esc(t.name)}</b> <span class="btag good">Beaten ✓</span><button class="btn trbeat" data-trbeat="${esc(key)}" title="Show this trainer in full again">Not beaten</button></summary>${team(th)}</details>`
+    : `<div class="trrow lv${th.lvl}"><div class="trhd"><b>${esc(t.name)}</b>${t.re ? ' <span class="chip">Rematch</span>' : ''}${t.full ? ' <span class="chip">full set known</span>' : ''} ${tag(th.lvl)}<button class="btn trbat" data-trbat="${esc(key)}" title="Simulate this fight and get turn-by-turn advice in the Battle tab">Plan in Battle</button><button class="btn trbeat" data-trbeat="${esc(key)}" title="Mark as beaten: it folds down here and on the IVs tab">Beaten ✓</button></div>
+    ${team(th)}</div>`;
   blocks.sort((a, b) => a.ord[0] - b.ord[0] || a.ord[1] - b.ord[1]);   // the order you reach them
   const shown = blocks.reduce((a, b) => a + b.rows.length, 0), total = blocks.reduce((a, b) => a + b.total, 0);
   nTrKey = key;
   return nTrOut = `<section class="card full" data-sec="trainers"><h3>Trainers ahead</h3>${head}
     <p class="sp" style="margin:6px 0 8px">${nTrAll ? `All ${total} trainers` : `${shown} of ${total} trainers are flagged for your party`} in ${esc(ch.title)}. Checked against your ${mine.length} party Pokémon as they are now (levels, moves, abilities), with trainer IVs at the Battle tab's Boss IVs setting (${nCalc.biv}).</p>
-    ${blocks.filter(b => b.rows.length).map(b => { const dn = b.rows.filter(o => o.th.lvl >= 3).length, wn = b.rows.filter(o => o.th.lvl === 2).length;
+    ${blocks.filter(b => b.rows.length).map(b => { const left = b.rows.filter(o => !trBeaten(r, o.key)), dn = left.filter(o => o.th.lvl >= 3).length, wn = left.filter(o => o.th.lvl === 2).length, bt = b.rows.length - left.length;
+      b.rows.sort((x, y) => trBeaten(r, x.key) - trBeaten(r, y.key));   // beaten ones drop below the ones still ahead
       return `<details class="trarea" data-area="${esc(b.area)}"><summary><span class="trname">${esc(b.area)}</span>
-        ${dn ? `<span class="btag bad">${dn} danger</span>` : ''}${wn ? `<span class="btag">${wn} watch</span>` : ''}<span class="sp">${b.rows.length}${nTrAll ? '' : ' of ' + b.total} trainer${(nTrAll ? b.rows.length : b.total) === 1 ? '' : 's'}</span></summary>
+        ${dn ? `<span class="btag bad">${dn} danger</span>` : ''}${wn ? `<span class="btag">${wn} watch</span>` : ''}${bt ? `<span class="btag good">${bt === b.rows.length ? 'all beaten' : bt + ' beaten'}</span>` : ''}<span class="sp">${b.rows.length}${nTrAll ? '' : ' of ' + b.total} trainer${(nTrAll ? b.rows.length : b.total) === 1 ? '' : 's'}</span></summary>
         <div class="trbody">${b.rows.map(trHtml).join('')}</div></details>` }).join('') || '<p class="empty">No trainer here threatens your party. Show every trainer to see them all.</p>'}
     <details class="simhow"><summary>How this is worked out</summary><p>Important trainers (gym leaders, rivals, Galactic bosses) use their real sets from Renegade Platinum's notes. Other trainers' notes list only species and levels, so their moves are the last four each Pokémon learns by level-up at that level, which is what Gen 4 gives a trainer Pokémon without a custom set. Each Pokémon is checked against each of yours with its highest damage roll. <b>Danger</b> means Explosion or Self-Destruct can knock one of yours out, it knocks one of yours out on any damage roll while moving first, or it can knock out three or more of yours. <b>Watch</b> means a one-hit KO only on a high roll, Explosion/Self-Destruct that can't KO, super-effective coverage on nearly all your party, or being faster than most of your party while taking half their HP a hit.</p></details></section>`;
 }
@@ -5105,14 +5291,61 @@ function toTeam(r) {
   TS.cur = t.id; saveTeams(); setView('team'); document.getElementById('app').classList.add('tshowing');
 }
 // re-render the party/box after the browser has moved focus (Tab), then put focus back on the same field
-function nRefreshTop() {
+function nRefreshKeep(root, render) {
   setTimeout(() => {
     const a = document.activeElement, card = a && a.closest && a.closest('.pmon');
     const key = card && a.dataset.f ? `.pmon[data-k="${CSS.escape(card.dataset.k)}"] [data-f="${a.dataset.f}"]${a.dataset.s ? `[data-s="${a.dataset.s}"]` : ''}${a.dataset.i ? `[data-i="${a.dataset.i}"]` : ''}` : null;
-    const sc = ND.scrollTop, wy = window.scrollY;
-    renderRunTop(); ND.scrollTop = sc; window.scrollTo(0, wy);
-    const el = key && ND.querySelector(key); if (el) el.focus({ preventScroll: true });
+    const sc = root.scrollTop, wy = window.scrollY;
+    render(); root.scrollTop = sc; window.scrollTo(0, wy);
+    const el = key && root.querySelector(key); if (el) el.focus({ preventScroll: true });
   }, 0);
+}
+const nRefreshTop = () => nRefreshKeep(ND, renderRunTop);
+// a field on a full Pokémon card (.pmon, on the Nuzlocke or Battle tab) changed. refresh: keep the layout; commit: the party itself changed
+function pmonChange(t, r, refresh, commit) {
+  const pm = t.closest('.pmon'); if (!pm || !t.dataset.f) return false;
+  const k = pm.dataset.k, e = r.enc[k], fld = t.dataset.f; if (!e) return true;
+  if (fld === 'swap') { const o = r.enc[t.value]; if (o) { nTakeSlot(r, t.value, k); o.st = 'box'; e.st = 'party' } commit(); return true }
+  if (fld === 'lv') nSetLevel(e, t.value);
+  else if (fld === 'nick') e.nick = t.value.trim();
+  else if (fld === 'ab') e.ab = t.value;
+  else if (fld === 'nat') e.nat = t.value;
+  else if (fld === 'item') { e.item = t.value.trim(); nItemUsed(e.item) }
+  else if (fld === 'hpt') e.hpt = t.value;
+  else if (fld === 'ch') { e.ch = t.value; nChEdit.delete(k) }
+  else if (fld === 'evo') { if (+t.value) { nEvolve(e, +t.value); commit() } return true }
+  else if (fld === 'hfresh') { const x = (e.hist || [])[+t.dataset.i]; if (x) x.fresh = t.checked }
+  else if (fld === 'stat') { e.stats = e.stats || {}; if (t.value) e.stats[t.dataset.s] = +t.value; else delete e.stats[t.dataset.s]; nLog(e) }
+  else if (fld === 'move') { e.moves = [0, 1, 2, 3].map(i => (e.moves || [])[i] || ''); e.moves[+t.dataset.i] = t.value }
+  saveRuns(); renderRunList();
+  const er = ND.querySelector(`.enc[data-k="${CSS.escape(k)}"]`);
+  if (er && fld === 'lv') er.querySelector('.lv').value = e.lv || '';
+  if (er && fld === 'nick') er.querySelector('.nick').value = e.nick || '';
+  refresh(); return true;
+}
+// a click on a full Pokémon card's buttons; true when handled
+function pmonClick(t, r, refresh, commit, root) {
+  const iu = t.closest('[data-ivunlock]');
+  if (iu) { const e = r.enc[iu.dataset.ivunlock]; if (e) { delete e.ivLock; r.updated = Date.now(); saveRuns(); refresh() } return true }
+  const hd = t.closest('button[data-hdel]');
+  if (hd) { const e = r.enc[hd.closest('.pmon').dataset.k]; if (!e) return true; const x = (e.hist || [])[+hd.dataset.hdel]; if (!x) return true;
+    e.hist = e.hist.filter(y => y !== x); if (+e.lv === +x.lv && (x.n || e.n) === e.n) nLevelBack(e); r.updated = Date.now(); saveRuns(); refresh(); return true }
+  const ce = t.closest('button[data-chedit]');
+  if (ce) { const k = ce.closest('.pmon').dataset.k; nChEdit.add(k); refresh();
+    setTimeout(() => { const s = root.querySelector(`.pmon[data-k="${CSS.escape(k)}"] [data-f="ch"]`); if (s) s.focus() }, 30); return true }
+  const ig = t.closest('button[data-ivgo]');
+  if (ig) { const e = r.enc[ig.closest('.pmon').dataset.k]; if (e) { ivLoad(e); setView('ivs') } return true }
+  const pmv = t.closest('button[data-mv]');
+  if (pmv && pmv.closest('.pmon')) { const k = pmv.closest('.pmon').dataset.k, i = partyOf(r).findIndex(x => x.row.k === k); nPlace(r, k, i + +pmv.dataset.mv); commit(); return true }
+  const gb = t.closest('button.gbtn');
+  if (gb) { const e = r.enc[gb.closest('[data-k]').dataset.k]; if (e) { e.g = e.g === 'M' ? 'F' : e.g === 'F' ? '' : 'M'; commit() } return true }
+  const pm = t.closest('.pmon'), e = pm && r.enc[pm.dataset.k];
+  if (!e || !(t.dataset.to || t.classList.contains('goto'))) return false;
+  if (t.dataset.to) {
+    if (t.dataset.to === 'dead') { const c = prompt(`What happened to ${e.nick || monName(e.n)}? (optional)`, ''); if (c === null) return true; e.cause = c.trim() }
+    e.st = t.dataset.to; commit(); return true;
+  }
+  setView('dex'); select(e.n); return true;
 }
 ND.addEventListener('toggle', ev => { const d = ev.target;
   if (d.classList && d.classList.contains('trarea')) { d.open ? nTrClosed.delete(d.dataset.area) : nTrClosed.add(d.dataset.area); store.set('rp-trclosed', [...nTrClosed]); return } if (d.classList && d.classList.contains('phist')) { d.open ? nOpenLog.add(d.dataset.hk) : nOpenLog.delete(d.dataset.hk); return }
@@ -5159,27 +5392,7 @@ ND.addEventListener('change', ev => {
   if (t.dataset.rule) { r.rules[t.dataset.rule] = t.checked; return ncommit(true) }
   if (t.id === 'nhero') { r.hero = t.value; return ncommit(true) }
   if (t.dataset.b !== undefined) { const i = +t.dataset.b; r.beat = t.checked ? i + 1 : i; return ncommit(true) }
-  const pm = t.closest('.pmon');
-  if (pm && t.dataset.f) {
-    const k = pm.dataset.k, e = r.enc[k], fld = t.dataset.f; if (!e) return;
-    if (fld === 'swap') { const o = r.enc[t.value]; if (o) { nTakeSlot(r, t.value, k); o.st = 'box'; e.st = 'party' } return ncommit(true) }
-    if (fld === 'lv') nSetLevel(e, t.value);
-    else if (fld === 'nick') e.nick = t.value.trim();
-    else if (fld === 'ab') e.ab = t.value;
-    else if (fld === 'nat') e.nat = t.value;
-    else if (fld === 'item') { e.item = t.value.trim(); nItemUsed(e.item) }
-    else if (fld === 'hpt') e.hpt = t.value;
-    else if (fld === 'ch') { e.ch = t.value; nChEdit.delete(k) }
-    else if (fld === 'evo') { if (+t.value) { nEvolve(e, +t.value); return ncommit(true) } return }
-    else if (fld === 'hfresh') { const x = (e.hist || [])[+t.dataset.i]; if (x) x.fresh = t.checked }
-    else if (fld === 'stat') { e.stats = e.stats || {}; if (t.value) e.stats[t.dataset.s] = +t.value; else delete e.stats[t.dataset.s]; nLog(e) }
-    else if (fld === 'move') { e.moves = [0, 1, 2, 3].map(i => (e.moves || [])[i] || ''); e.moves[+t.dataset.i] = t.value }
-    saveRuns(); renderRunList();
-    const er = ND.querySelector(`.enc[data-k="${CSS.escape(k)}"]`);
-    if (er && fld === 'lv') er.querySelector('.lv').value = e.lv || '';
-    if (er && fld === 'nick') er.querySelector('.nick').value = e.nick || '';
-    return nRefreshTop();
-  }
+  if (pmonChange(t, r, nRefreshTop, () => ncommit(true))) return;
   const rowEl = t.closest('.enc'); if (!rowEl) return;
   const k = rowEl.dataset.k, e = r.enc[k] || (r.enc[k] = {}), cls = t.classList[0];
   const placeNew = () => { if (e.n && !e.st) e.st = partyCount(r) < 6 ? 'party' : 'box' };
@@ -5202,6 +5415,8 @@ ND.addEventListener('change', ev => {
 });
 ND.addEventListener('click', ev => {
   const t = ev.target, r = curRun(), app = document.getElementById('app');
+  const trd = t.closest && t.closest('[data-trbeat]');
+  if (trd) { ev.preventDefault(); const k = trd.dataset.trbeat; trSetBeaten(r, k, !trBeaten(r, k)); renderRunList(); return nRefreshTop() }
   const trb = t.closest && t.closest('[data-trbat]');
   if (trb) { BS = batFresh(r, trb.dataset.trbat, 0); batSave(); tpRes = null; lvRes = null; return setView('battle') }
   const trAreas = t.closest && t.closest('[data-trareas]');
@@ -5220,18 +5435,7 @@ ND.addEventListener('click', ev => {
   if (t.id === 'ndel') { if (NZ.runs.length < 2 || !confirm(`Delete “${r.name}”? This can't be undone.`)) return; NZ.runs = NZ.runs.filter(x => x !== r); NZ.deleted = [...(NZ.deleted || []), r.id]; NZ.cur = NZ.runs[0].id; return ncommit(true) }
   const hb = t.closest('button.nhide');
   if (hb) { const id = hb.dataset.hide; nHidden.has(id) ? nHidden.delete(id) : nHidden.add(id); store.set('rp-nhide', [...nHidden]); return nDecorate() }
-  const hd = t.closest('button[data-hdel]');
-  if (hd) { const e = r.enc[hd.closest('.pmon').dataset.k]; if (!e) return; const x = (e.hist || [])[+hd.dataset.hdel]; if (!x) return;
-    e.hist = e.hist.filter(y => y !== x); if (+e.lv === +x.lv && (x.n || e.n) === e.n) nLevelBack(e); r.updated = Date.now(); saveRuns(); return nRefreshTop() }
-  const ce = t.closest('button[data-chedit]');
-  if (ce) { const k = ce.closest('.pmon').dataset.k; nChEdit.add(k); nRefreshTop();
-    setTimeout(() => { const s = ND.querySelector(`.pmon[data-k="${CSS.escape(k)}"] [data-f="ch"]`); if (s) s.focus() }, 30); return }
-  const ig = t.closest('button[data-ivgo]');
-  if (ig) { const e = r.enc[ig.closest('.pmon').dataset.k]; if (e) { ivLoad(e); setView('ivs') } return }
-  const pmv = t.closest('button[data-mv]');
-  if (pmv) { const k = pmv.closest('.pmon').dataset.k, i = partyOf(r).findIndex(x => x.row.k === k); nPlace(r, k, i + +pmv.dataset.mv); return ncommit(true) }
-  const gb = t.closest('button.gbtn');
-  if (gb) { const e = r.enc[gb.closest('[data-k]').dataset.k]; if (!e) return; e.g = e.g === 'M' ? 'F' : e.g === 'F' ? '' : 'M'; return ncommit(true) }
+  if (pmonClick(t, r, nRefreshTop, () => ncommit(true), ND)) return;
   const an = t.closest('button.an'); if (an) return nOpenArea(an.dataset.area);
   if (t.closest('.enc .x')) { const k = t.closest('.enc').dataset.k; r.custom = r.custom.filter(c => c.k !== k); delete r.enc[k]; return ncommit(true) }
   const k = (t.closest('[data-k]') || {}).dataset?.k, e = k && r.enc[k];
@@ -5319,7 +5523,7 @@ function ivFits(k, iv, ent, baseOf, nat, slop = 0) {
     const x = ent[i], s = +x.st[k], b = baseOf(x)[k], lv = +x.lv, known = x.ev && x.ev[k] !== undefined && x.ev[k] !== '' ? +x.ev[k] : null;
     if (i <= last) { if (ivStat(k, b, lv, iv, 0, nat) !== s) return false; continue }
     if (known !== null) {
-      let qq = Math.max(q, Math.floor(Math.max(0, known - slop) / 4)); const hi = Math.floor((known + slop) / 4);
+      let qq = Math.max(q, Math.floor(Math.max(0, known - slop) / 4)); const hi = Math.min(63, Math.floor((known + slop) / 4));
       while (qq < hi && ivStat(k, b, lv, iv, qq * 4, nat) < s) qq++;
       if (ivStat(k, b, lv, iv, qq * 4, nat) !== s) return false; q = qq; continue }
     let qq = q; while (qq < 63 && ivStat(k, b, lv, iv, qq * 4, nat) < s) qq++;
@@ -5328,39 +5532,50 @@ function ivFits(k, iv, ent, baseOf, nat, slop = 0) {
   return true;
 }
 
+// One stat's IVs, worked up the log from the earliest level: each level keeps only the IVs that fit every level so far, with
+// the least EV slop that level needs (slop never goes back down). A stat narrowed to one IV early stays there, and one
+// stat's off-by-a-few EV log doesn't loosen the others. A level nothing fits even at the most slop is set aside as a likely
+// typo (bad) instead of reopening the range.
+// An IV one higher with 4 fewer EVs gives the same stat, so an EV log that runs a few short can steer the early levels to the
+// wrong IV. That shows up as needing more slop than the whole log needs at once (all = that whole-log answer); then, or when
+// asked (full, e.g. the characteristic rules the step-by-step answer out), the whole-log answer is used instead.
+const IVPROG = new Map();
+function ivProg(k, ent, baseOf, nat, full) {
+  const key = k + '|' + nat + '|' + (full ?? '') + '|' + JSON.stringify(ent.map(x => [x.lv, x.n, x.st[k], x.fresh, x.ev])); if (IVPROG.has(key)) { const o = IVPROG.get(key); return { c: o.c.slice(), slop: o.slop, bad: o.bad.slice() } }
+  const all = [...Array(32).keys()]; let C = all, slop = 0; const use = [], bad = [];
+  if (typeof full === 'number') { C = all.filter(iv => ivFits(k, iv, ent, baseOf, nat, full)); IVPROG.set(key, { c: C, slop: full, bad }); return { c: C.slice(), slop: full, bad: [] } }   // one fixed slop for every stat (the old way)
+  for (const x of ent) {
+    const pre = [...use, x]; let next = null;
+    for (const sl of EVSLOP) { if (sl < slop) continue; const c = C.filter(iv => ivFits(k, iv, pre, baseOf, nat, sl)); if (c.length) { next = c; slop = sl; break } }
+    if (next) { C = next; use.push(x) } else bad.push(x);
+  }
+  if (!bad.length) { let F = null, fs = 0; for (const sl of EVSLOP) { const c = all.filter(iv => ivFits(k, iv, ent, baseOf, nat, sl)); if (c.length) { F = c; fs = sl; break } }
+    if (F) { const both = C.filter(iv => F.includes(iv)); if (full || slop > fs || !both.length) { C = F; slop = fs } else C = both } }
+  if (IVPROG.size > 3000) IVPROG.clear();
+  IVPROG.set(key, { c: C, slop, bad }); return { c: C.slice(), slop, bad: bad.slice() };
+}
+
 let ivHpBad = false;   // the Hidden Power type you entered can't come from these IVs
 let ivSlop = 0;   // how far off the entered EVs had to be allowed for every stat to fit
-function ivSolve() {
-  const ev = IVS.rows.some(r => +r.lv && r.ev && Object.values(r.ev).some(x => x !== '' && x !== undefined));
-  for (const slop of ev ? EVSLOP : [0]) {
-    const out = ivSolveAt(slop); if (!out) return out;
-    if (IVSTATS.every(k => !out[k].used || out[k].c.length)) { ivSlop = slop; return out }
-  }
-  ivSlop = 0; return ivSolveAt(0);
+let ivClash = [];   // stats whose new entries don't fit their locked IVs
+let ivChOff = '';   // the characteristic entered, when no IVs fit it and it's being ignored
+// what a set of IVs says about an ignored characteristic: the one these IVs would give, when there's a single highest stat
+function ivChHint(sol, ch) {
+  const [ck] = ch.split(':'), hi = k => sol[k] && sol[k].c.length ? sol[k].c[sol[k].c.length - 1] : -1, lo = k => sol[k] && sol[k].c.length ? sol[k].c[0] : -1;
+  const top = IVSTATS.filter(k => IVSTATS.every(j => j === k || lo(k) > hi(j)));
+  const got = top.length === 1 && sol[top[0]].c.length === 1 ? IVCHAR[top[0]][sol[top[0]].c[0] % 5] : '';
+  return `The characteristic “${IVCHAR[ck][+ch.split(':')[1]]}” doesn't fit any IVs these stats allow, so it's left out.${got ? ` These stats point to “${got}”.` : ''} Check it on the summary screen, or a stat that might be logged wrong.`;
 }
-function ivSolveAt(slop) {
-  const m = mons[IVS.n - 1]; if (!m) return null;
-  const v = m.v[ver], rows = IVS.rows.filter(r => +r.lv), out = {};
-  IVSTATS.forEach(k => {
-    let c = [...Array(32).keys()], used = false;
-    const ent = rows.filter(r => +(r.st || {})[k]).sort((a, b) => +a.lv - +b.lv); used = ent.length > 0;
-    const baseOf = r => (r.n && mons[r.n - 1] ? mons[r.n - 1].v[ver] : v).stats;
-    c = c.filter(iv => ivFits(k, iv, ent, baseOf, IVS.nat, slop));
-    const loose = c.length > 0 && ent.length > 1 && !c.some(iv => ent.every(r => ivStat(k, baseOf(r)[k], +r.lv, iv, +((r.ev || {})[k]) || 0, IVS.nat) === +r.st[k]));
-    out[k] = { c, used, loose };
-  });
-  if (IVS.ch) {   // the characteristic's stat holds the highest IV, and that IV mod 5 is known
-    const [ck, mod] = IVS.ch.split(':'), others = IVSTATS.filter(k => k !== ck);
-    out[ck].c = out[ck].c.filter(iv => iv % 5 === +mod);
-    for (let pass = 0; pass < 3; pass++) {
-      const top = out[ck].c.length ? Math.max(...out[ck].c) : -1;
-      others.forEach(k => out[k].c = out[k].c.filter(iv => iv <= top));
-      const floor = Math.max(0, ...others.map(k => out[k].c.length ? Math.min(...out[k].c) : 0));
-      out[ck].c = out[ck].c.filter(iv => iv >= floor);
-    }
-  }
-  ivHpBad = IVS.hpt ? !ivHpNarrow(out, IVS.hpt) : false;
-  return out;
+let ivRes = null;   // the IVs tab's last full answer (what gave way, for its notes)
+function ivSolve() {
+  const lk = ivLinked(), o = lk ? lk.e : IVS, save = lk ? () => { lk.run.updated = Date.now(); ivLockSaveRun() } : ivSave;
+  if (!mons[IVS.n - 1]) return null;
+  const e = { n: IVS.n, nat: IVS.nat || '', ch: IVS.ch || '', hpt: IVS.hpt || '',
+    hist: IVS.rows.filter(r => +r.lv).map(r => ({ lv: +r.lv, n: r.n || IVS.n, st: Object.fromEntries(Object.entries(r.st || {}).filter(([, v]) => +v)), ev: r.ev, fresh: !!r.fresh })) };
+  const res = ivSolveCore(e), out = {}; ivRes = res;
+  IVSTATS.forEach(k => { const x = res && res.s[k]; out[k] = x ? Object.assign(x, { used: true }) : { c: [...Array(32).keys()], used: false, loose: false, slop: 0, bad: [], low: [] } });
+  ivHpBad = !!(res && res.hpBad); ivSlop = res ? res.slop : 0; ivChOff = res ? res.chOff : '';
+  ivClash = ivLockUse(out, o, IVS.nat, res && ivLockable(res) ? save : null); return out;
 }
 // the first level above the latest entry where this stat's candidate IVs would give different stats
 function ivNarrowAt(k, c) {
@@ -5420,6 +5635,7 @@ function renderIv() {
       <div class="ivtop">
         ${nz.length ? `<label>Nuzlocke Pokémon<select id="ivload"><option value="">— scratchpad (not saved to a run) —</option>${nz.map(x => `<option value="${esc(x.row.k)}" ${lk && lk.run.id === r.id && IVS.link.k === x.row.k ? 'selected' : ''}>${esc(x.e.nick || monName(x.e.n))}${x.e.lv ? ' · Lv. ' + esc(x.e.lv) : ''}${x.e.st === 'box' ? ' (box)' : ''}</option>`).join('')}</select></label>` : ''}
         <label>Pokémon<input id="ivmon" list="monlist" value="${m ? esc(m.name) : ''}" placeholder="Name or #" autocomplete="off" ${lk ? 'disabled title="Set by the linked Nuzlocke Pokémon"' : ''}></label>
+        ${m && nEvoSelect({ n: IVS.n }, 'id="ivevo"') ? `<label title="Record an evolution: earlier levels stay in the log as ${esc(m.name)}, and a new row opens for its stats as the new species">Evolve${nEvoSelect({ n: IVS.n }, 'id="ivevo"')}</label>` : ''}
         <label>Nature<select id="ivnat"><option value="">— pick —</option>${NATURES.map(n => `<option value="${n}" ${n === IVS.nat ? 'selected' : ''}>${n} (${natDesc(n)})</option>`).join('')}</select></label>
         <label>Characteristic (optional)<select id="ivch"><option value="">—</option>${chOpts}</select></label>
         <label title="Hidden Power's type, from its summary screen or a move tutor/TM check. Each IV's odd/even bit sets it, so it narrows every stat.">Hidden Power type (optional)<select id="ivhpt"><option value="">—</option>${HPTYPES.map(t => `<option value="${t}" ${t === IVS.hpt ? 'selected' : ''}>${t}</option>`).join('')}</select></label>
@@ -5465,8 +5681,11 @@ function evAreaHtml(lk, e) {
   return `<div class="evarea"><label>Area<select id="evarea">${evAreas().map(a => `<option value="${esc(a.n)}" ${a === A ? 'selected' : ''}>${esc(a.n)}${a === latest ? ' (latest encounter)' : ''}</option>`).join('')}</select></label>
       ${A !== latest && latest ? `<button class="an" data-evlatest>Back to ${esc(latest.n)}</button>` : ''}<span class="sp">Click a Pokémon to log one win against it.</span></div>
     ${wild.size ? `<div class="evgroup"><h4>Wild</h4><div class="evpicks">${[...wild].map(([n, how]) => pick(n, how.join(', '))).join('')}</div></div>` : ''}
-    ${trs.length ? `<div class="evgroup"><h4>Trainers</h4>${trs.map(({ t, x }) => `<div class="evtr"><div class="evtrhd"><b>${esc(t.name)}</b>${x.n ? ` <span class="sp">${esc(x.n)}</span>` : ''}<button class="btn" data-evteam="${li}|${A.L.subs.indexOf(x)}|${x.tr.indexOf(t)}" title="Log a win over the whole team">Beat whole team</button></div>
-      <div class="evpicks">${t.team.map(p => pick(p.n, 'Lv. ' + p.lv)).join('')}</div></div>`).join('')}</div>` : ''}
+    ${trs.length ? `<div class="evgroup"><h4>Trainers</h4>${trs.map(({ t, x }) => ({ t, x, done: trBeaten(r, trKey(A.L, x, t)) })).sort((a, b) => a.done - b.done).map(({ t, x, done }) => {
+      const hd = `<b>${esc(t.name)}</b>${x.n ? ` <span class="sp">${esc(x.n)}</span>` : ''}${done ? ' <span class="btag good">Beaten ✓</span>' : ''}<button class="btn" data-evbeat="${esc(trKey(A.L, x, t))}" title="${done ? 'Show this trainer in full again' : 'Mark as beaten without logging EVs: it folds down here and on the Nuzlocke tab'}">${done ? 'Not beaten' : 'Beaten ✓'}</button><button class="btn" data-evteam="${li}|${A.L.subs.indexOf(x)}|${x.tr.indexOf(t)}" title="Log a win over the whole team">Beat whole team</button>`,
+        picks = `<div class="evpicks">${t.team.map(p => pick(p.n, 'Lv. ' + p.lv)).join('')}</div>`;
+      // marked beaten on the Nuzlocke tab: folded to one line, open it to log EVs anyway
+      return done ? `<details class="evtr trdone"><summary class="evtrhd">${hd}</summary>${picks}</details>` : `<div class="evtr"><div class="evtrhd">${hd}</div>${picks}</div>` }).join('')}</div>` : ''}
     ${!wild.size && !trs.length ? '<p class="empty">No wild Pokémon or trainers listed here.</p>' : ''}`;
 }
 const evWhen = t => new Date(t).toLocaleString([], { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' });
@@ -5512,12 +5731,12 @@ function renderIvResults() {
   if (!IVS.rows.some(r => +r.lv)) { el.innerHTML = '<p class="empty" style="margin-top:12px">Enter its level and at least one stat.</p>'; return }
   const base = m.v[ver].stats;
   const rows = IVSTATS.map(k => {
-    const { c, used, loose } = sol[k];
+    const { c, used, loose, locked, bad } = sol[k];
     if (!used) return `<tr><th>${SL[k]}</th><td class="b">${base[k]}</td><td colspan="3" class="sp">Enter this stat</td></tr>`;
     if (!c.length) return `<tr class="bad"><th>${SL[k]}</th><td class="b">${base[k]}</td><td colspan="3">No IV fits. Check the level, nature, EVs and stat.</td></tr>`;
     const lo = c[0], hi = c[c.length - 1], at = c.length > 1 ? ivNarrowAt(k, c) : 0;
     const judge = ivJudge(lo) === ivJudge(hi) ? ivJudge(lo) : ivJudge(lo) + ' – ' + ivJudge(hi);
-    return `<tr><th>${SL[k]}</th><td class="b">${base[k]}</td><td class="iv">${ivList(c)}${loose ? '<div class="sp" title="Later stats only fit with EVs from battles, so this is a range rather than exact">approx. (EVs)</div>' : ''}</td>
+    return `<tr><th>${SL[k]}</th><td class="b">${base[k]}</td><td class="iv">${ivList(c)}${locked ? ' <span class="ivlk" title="Locked: later stats and EVs can only narrow this, never widen it">🔒</span>' : ''}${ivClash.includes(k) ? '<div class="ivwarn-s">Your latest stats don\'t fit this</div>' : ''}${(bad || []).length ? `<div class="ivwarn-s">Lv. ${bad.map(x => esc(x.lv)).join(', ')} doesn't fit the earlier levels (typo?), so it's left out</div>` : ''}${loose ? '<div class="sp" title="Later stats only fit with EVs from battles, so this is a range rather than exact">approx. (EVs)</div>' : ''}</td>
       <td class="bar"><div class="ivbar"><i class="${ivTone(Math.round((lo + hi) / 2))}" style="left:${lo / 32 * 100}%;width:${(hi - lo + 1) / 32 * 100}%"></i></div></td>
       <td><span class="ivj ${ivTone(Math.round((lo + hi) / 2))}">${judge}</span>${at ? `<div class="sp">Recheck at Lv. ${at} to narrow</div>` : ''}</td></tr>`;
   }).join('');
@@ -5532,13 +5751,17 @@ function renderIvResults() {
         <div class="sp">IV total ${tmin === tmax ? tmin : tmin + '–' + tmax} of 186 (${Math.round(pct)}%)${best.length ? ' · 30+ in ' + best.join(', ') : ''}</div>
         ${hp && hp.types.length > 4 ? `<div class="sp">Hidden Power: could be any of ${hp.types.length} types. Narrow the IVs to pin it down.</div>` : ''}${hp && hp.types.length <= 4 ? `<div class="sp">Hidden Power: ${hp.types.map(t => `<span class="mtype" style="background:${TC[t]}">${t}</span>`).join(' ')} ${hp.pmin === hp.pmax ? hp.pmin : hp.pmin + '–' + hp.pmax} power</div>` : ''}</div></div>`;
   }
-  const hpNote = !IVS.hpt ? '' : ivHpBad ? `<p class="ivwarn">No IVs that fit these stats give Hidden Power ${esc(IVS.hpt)}, so it isn't used. Check the type, nature or stats.</p>`
+  const hpNote = !IVS.hpt ? '' : ivHpBad ? `<p class="ivwarn">No IVs give Hidden Power ${esc(IVS.hpt)} with these stats and this nature, even ignoring the EV log. A stat is probably logged wrong, or check the type with the Hidden Power teller.</p>`
     : (() => {
       const par = IVSTATS.map(k => { const c = sol[k] ? sol[k].c : []; const p = new Set(c.map(iv => iv & 1)); return p.size === 1 ? `${SL[k]} ${p.has(1) ? 'odd' : 'even'}` : '' }).filter(Boolean);
       return `<p class="sp" style="margin:0 0 8px">Hidden Power ${esc(IVS.hpt)} only comes from certain odd/even IV mixes, so IVs that don't fit are ruled out. ${par.length ? `Known so far: ${par.join(', ')}${par.length < 6 ? '. The other stats could still be either.' : '.'}` : 'It doesn\'t rule anything out yet. Add more levels to narrow it further.'}</p>`;
     })();
   const slopNote = ivSlop ? `<p class="sp" style="margin:0 0 8px">The stats don't fit the entered EVs exactly, so these IVs allow the EVs to be off by up to ${ivSlop}. This usually means a battle was missed or logged twice, or EVs were logged after the level-up.</p>` : '';
-  el.innerHTML = `<section class="card full"><h3>Results</h3>${slopNote}${hpNote}${total}
+  const lkO = ivLinked() ? ivLinked().e : IVS, anyLock = Object.keys(ivLockGet(lkO, IVS.nat)).length > 0;
+  const lockNote = ivClash.length ? `<p class="ivwarn">The stats you've entered don't fit the locked IVs for ${ivClash.map(k => SL[k]).join(', ')}, so the locked values are kept. Check the latest level for a typo. If an earlier entry or the nature was wrong, unlock and the IVs are worked out again from the log. <button class="btn" data-ivunlock>Unlock and recalculate</button></p>`
+    : anyLock ? `<p class="sp ivlocknote">🔒 Ranges are locked as they narrow, so logging more levels or EVs can't widen them again. <button class="btn ivunl" data-ivunlock>Unlock and recalculate</button></p>` : '';
+  const gave = ivRes ? ivGaveWay(ivRes, { n: IVS.n, hpt: IVS.hpt, ch: IVS.ch }) : [];
+  el.innerHTML = `<section class="card full"><h3>Results</h3>${gave.map(t => `<p class="ivwarn">${esc(t)}</p>`).join('')}${ivChOff ? `<p class="ivwarn">${esc(ivChHint(sol, ivChOff))}</p>` : ''}${lockNote}${slopNote}${hpNote}${total}
     <div class="tablewrap"><table class="ivtable"><thead><tr><th>Stat</th><th>Base</th><th>Possible IVs</th><th class="bar">0 ··· 31</th><th>Judge</th></tr></thead><tbody>${rows}</tbody></table></div>
     <div class="legend"><span>Judge wording follows the in-game IV judge: Best 31 · Fantastic 30 · Very good 26–29 · Pretty good 16–25 · Decent 1–15 · No good 0.</span></div></section>`;
 }
@@ -5572,16 +5795,30 @@ function ivLoad(e) {
   const r = NZ.runs.find(x => Object.values(x.enc).includes(e)) || curRun(), k = Object.keys(r.enc).find(k => r.enc[k] === e);
   IVS = { link: { run: r.id, k }, n: e.n, nat: '', ch: '', rows: [] }; evAlso = {}; ivEvOpen.clear(); ivPull(e); ivSave();
 }
+// evolve from the IVs tab: the levels so far stay logged as the old species (IVs carry over), and a row opens at the
+// current level for the new species' stats. A linked Pokémon evolves on its Nuzlocke card too.
+function ivEvolve(to) {
+  const lk = ivLinked(), old = IVS.n;
+  if (lk) { ivPush(); nEvolve(lk.e, to); lk.run.updated = Date.now(); ivPull(lk.e); saveRuns(); renderRunList() }
+  else { IVS.rows.forEach(r => { if (!r.n) r.n = old }); IVS.n = to }
+  const last = IVS.rows.filter(r => +r.lv).sort((a, b) => b.lv - a.lv)[0], lv = lk ? lk.e.lv || (last && last.lv) || '' : (last && last.lv) || '';
+  if (!IVS.rows.some(r => (r.n || IVS.n) === to && String(r.lv) === String(lv)))
+    IVS.rows.push({ lv: String(lv), n: to, st: {}, ev: lk && lk.e.evTrack ? evSnap(lk.e) : Object.assign({}, last ? last.ev : {}) });
+  ivSave(); renderIv();
+  const rows = IVD.querySelectorAll('.ivrow'), s = rows.length && rows[rows.length - 1].querySelector('[data-iv="st"]'); if (s) s.focus();
+}
 const IVD = document.getElementById('ivdetail');
 IVD.addEventListener('input', ev => {
   const t = ev.target, rw = t.closest('.ivrow'); if (!rw || !t.dataset.iv) return;
   const r = IVS.rows[+rw.dataset.r], f = t.dataset.iv;
   if (f === 'fresh') r.fresh = t.checked; else if (f === 'lv') r.lv = t.value; else { r[f] = r[f] || {}; if (t.value) r[f][t.dataset.s] = +t.value; else delete r[f][t.dataset.s] }
-  ivSave(); if (IVS.link) ivPush(); renderIvResults();
+  ivTyping = f !== 'fresh'; ivSave(); if (IVS.link) ivPush(); renderIvResults();
 });
 IVD.addEventListener('change', ev => {
   const t = ev.target;
-  if (t.id === 'ivmon') { const m = monByName(t.value); if (!m) { t.setCustomValidity('Pick a Pokémon from the list'); t.reportValidity(); return } t.setCustomValidity(''); IVS.n = m.num; ivSave(); return renderIv() }
+  if (t.dataset.iv && t.closest('.ivrow')) { ivTyping = false; return renderIvResults() }
+  if (t.id === 'ivmon') { const m = monByName(t.value); if (!m) { t.setCustomValidity('Pick a Pokémon from the list'); t.reportValidity(); return } t.setCustomValidity(''); if (IVS.n !== m.num) delete IVS.ivLock; IVS.n = m.num; ivSave(); return renderIv() }
+  if (t.id === 'ivevo') { const to = +t.value; if (!mons[to - 1] || to === IVS.n) return; return ivEvolve(to) }
   if (t.id === 'ivnat') { IVS.nat = t.value; ivSave(); if (IVS.link) ivPush(); return renderIv() }
   if (t.id === 'ivch') { IVS.ch = t.value; ivSave(); if (IVS.link) ivPush(); return renderIvResults() }
   if (t.id === 'ivhpt') { IVS.hpt = t.value; ivSave(); if (IVS.link) ivPush(); return renderIvResults() }
@@ -5609,8 +5846,11 @@ IVD.addEventListener('click', ev => {
     return evDone(got) };
   const one = lk && (t.closest('[data-evagain]') || t.closest('[data-evpick]'));
   if (one) { const m = mons[+(one.dataset.evagain || one.dataset.evpick) - 1]; return m && evLog([[m.num, 1]], 'Beat ' + m.name) }
+  const eb = lk && t.closest('[data-evbeat]');   // mark beaten (or not) without logging EVs, same as the Nuzlocke tab's button
+  if (eb) { ev.preventDefault(); const k = eb.dataset.evbeat; trSetBeaten(lk.run, k, !trBeaten(lk.run, k)); return renderIv() }
   const team = lk && t.closest('[data-evteam]');
   if (team) { const [li, si, ti] = team.dataset.evteam.split('|').map(Number), tr = ROUTES[li] && ROUTES[li].subs[si] && ROUTES[li].subs[si].tr[ti]; if (!tr) return;
+    trSetBeaten(lk.run, trKey(ROUTES[li], ROUTES[li].subs[si], tr), true);   // beating the whole team marks the trainer beaten (Nuzlocke tab too)
     return evLog(tr.team.map(p => [p.n, 1]), `Beat ${tr.name}'s team (${tr.team.map(p => monName(p.n)).join(', ')})`) }
   if (lk && t.closest('[data-evlatest]')) { delete lk.run.evArea; lk.run.updated = Date.now(); saveRuns(); return renderIv() }
   if (lk && t.id === 'evgo') {
@@ -5635,7 +5875,8 @@ IVD.addEventListener('click', ev => {
   if (lk && t.id === 'evreset') { if (!confirm('Reset this Pokémon\'s EVs to 0? The log is cleared too.')) return; lk.e.evs = {}; lk.e.evlog = []; lk.run.updated = Date.now(); saveRuns(); return renderIv() }
   if (t.id === 'ivadd') { const last = IVS.rows[IVS.rows.length - 1]; IVS.rows.push({ lv: last && +last.lv ? String(+last.lv + 1) : '', n: lk ? lk.e.n : undefined, st: {}, ev: lk && lk.e.evTrack ? evSnap(lk.e) : Object.assign({}, last ? last.ev : {}) }); ivSave(); if (lk) ivPush(); renderIv();
     const ins = IVD.querySelectorAll('.ivrow'); const s = ins[ins.length - 1].querySelector('[data-iv="st"]'); if (s) s.focus(); return }
-  if (t.id === 'ivclear') { IVS.rows = [{ lv: '', st: {}, ev: {} }]; IVS.ch = ''; IVS.hpt = ''; ivSave(); return renderIv() }
+  if (t.id === 'ivclear') { IVS.rows = [{ lv: '', st: {}, ev: {} }]; IVS.ch = ''; IVS.hpt = ''; delete IVS.ivLock; ivSave(); return renderIv() }
+  if (t.closest('[data-ivunlock]')) { if (lk) { delete lk.e.ivLock; lk.run.updated = Date.now(); saveRuns() } else { delete IVS.ivLock; ivSave() } ivTyping = false; return renderIv() }
   if (t.closest('[data-ivfold]')) { ivAllRows = !ivAllRows; return renderIv() }
   if (t.dataset.ivdel !== undefined) { IVS.rows.splice(+t.dataset.ivdel, 1); ivSave(); if (lk) ivPush(); return renderIv() }
 });
