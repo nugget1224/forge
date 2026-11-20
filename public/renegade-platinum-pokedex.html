@@ -568,6 +568,70 @@ button.gbtn:hover { border-color: var(--accent) }
 .bfrow { display: grid; grid-template-columns: 3.2em minmax(0, 12em) 1fr; gap: 8px; align-items: center; font-size: .86rem }
 .bpct { font: 700 1rem var(--font-data); text-align: right }
 .bko { color: var(--chg); font-weight: 600 }
+.pcl { list-style: none; margin: 4px 0 12px; padding: 0; display: grid; gap: 10px }
+.pcl li { display: grid; grid-template-columns: 22px minmax(0, 1fr); gap: 8px; align-items: start; font-size: .9rem }
+.pcl li .sp { display: block; margin-top: 2px; font-size: .8rem }
+.pcico { width: 20px; height: 20px; box-sizing: border-box; border-radius: 50%; display: inline-grid; place-items: center; font: 700 .75rem var(--font-body); border: 1.5px solid var(--line) }
+.pcico.ok { background: var(--new); border-color: var(--new); color: var(--bg) }
+.pcico.bad { background: var(--chg); border-color: var(--chg); color: var(--bg) }
+#batdetail label.pctick { display: inline-flex; margin-top: 4px; font-size: .82rem }
+#batdetail .pnote textarea { width: 100%; box-sizing: border-box; min-height: 64px; font: .9rem var(--font-body); text-transform: none; letter-spacing: 0; color: var(--ink); background: var(--bg); border: 1px solid var(--line); border-radius: 8px; padding: 6px 8px }
+.prep > .sp { margin: 10px 0 0 }
+.pthr { border: 1px solid var(--line); border-left: 3px solid var(--line); border-radius: 8px; padding: 8px 10px; margin-bottom: 8px }
+.pthr.lv3 { border-left-color: var(--chg) } .pthr.lv2 { border-left-color: var(--accent) }
+.pthrhd { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 8px } .pthrhd img { width: 32px; height: 32px; image-rendering: pixelated }
+.pans { display: grid; grid-template-columns: max-content minmax(0, 1fr); gap: 4px 10px; margin-top: 6px; font-size: .84rem }
+.pans > span { color: var(--muted); font-size: .74rem; padding-top: 2px }
+.prole, .ptb { margin: 6px 0; padding-left: 18px; display: grid; gap: 5px; font-size: .86rem }
+.prole { list-style: none; padding: 0 }
+.bivnow { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 12px; font: .82rem var(--font-data); margin: 4px 0 8px }
+.bivnow .on b { color: var(--new) }
+.bivh { margin: 12px 0 6px; font-size: .86rem }
+.bivrow { display: flex; flex-wrap: wrap; gap: 6px; align-items: end }
+#batdetail .bivrow label { width: 64px } #batdetail .bivrow label.up { color: var(--chg) } #batdetail .bivrow label.dn { color: var(--accent) }
+.bivrow input { width: 100%; box-sizing: border-box }
+.bivevs { display: flex; flex-wrap: wrap; gap: 6px; align-items: center }
+.bativ > .sp { margin: 6px 0 0 }
+#batdetail section.ncoll { padding-bottom: 12px }
+.flowbox > .sp { margin: 0 0 8px }
+.flow, .flow ul { list-style: none; margin: 0; padding: 0 }
+.flow ul { padding-left: 26px }
+.flow li { position: relative; padding-top: 10px }
+.flow ul > li::before { content: ''; position: absolute; left: -16px; top: 0; bottom: 0; border-left: 2px solid var(--line) }
+.flow ul > li:last-child::before { bottom: auto; height: 30px }
+.flow ul > li::after { content: ''; position: absolute; left: -16px; top: 30px; width: 14px; border-top: 2px solid var(--line) }
+.fcard { position: relative; border: 1px solid var(--line); border-left: 4px solid var(--accent); border-radius: 10px; padding: 8px 10px; background: var(--panel); display: grid; gap: 6px; min-width: 0 }
+.fnode.wins > .fcard { border-left-color: var(--new) } .fnode.faints > .fcard { border-left-color: var(--chg) } .fnode.other > .fcard { border-left-color: var(--muted) }
+.fcond { display: flex; align-items: center; gap: 6px; padding-right: 64px; min-width: 0 }
+.fk { flex: 0 0 auto; width: 20px; height: 20px; border-radius: 50%; display: inline-grid; place-items: center; font: 700 .72rem var(--font-body); background: var(--accent); color: var(--bg) }
+.wins > .fcard .fk { background: var(--new) } .faints > .fcard .fk { background: var(--chg) } .other > .fcard .fk { background: var(--muted) }
+#batdetail .fcond input { flex: 1; min-width: 0; font: 600 .86rem var(--font-body); border: 0; border-bottom: 1px dashed var(--line); background: none; color: var(--ink); padding: 2px 0 }
+.fvs { display: flex; flex-wrap: wrap; align-items: center; gap: 6px }
+.fvs img { width: 36px; height: 36px; image-rendering: pixelated }
+.fvs select { font: 500 .85rem var(--font-body); padding: 4px 6px; border-radius: 7px; border: 1px solid var(--line); background: var(--bg); color: var(--ink); max-width: 100% }
+#batdetail .fnote { width: 100%; box-sizing: border-box; font: .86rem var(--font-body); padding: 6px 8px; border-radius: 7px; border: 1px solid var(--line); background: var(--bg); color: var(--ink) }
+.fbtns { display: flex; flex-wrap: wrap; gap: 6px } .fbtns .btn { padding: 3px 9px; font-size: .78rem }
+.fdel { position: absolute; top: 8px; right: 10px; font-size: .75rem }
+.fend { font-weight: 700; font-size: .9rem } .fend.won { color: var(--new) } .fend.lost { color: var(--chg) }
+.pcols { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 340px), 1fr)); gap: 12px; align-items: start }
+.pcols h4 { margin: 0 0 8px; font-size: .9rem }
+.pcard { border: 1px solid var(--line); border-left: 3px solid var(--line); border-radius: 10px; margin-bottom: 8px; background: var(--panel); min-width: 0 }
+.pcard.lv3 { border-left-color: var(--chg) } .pcard.lv2 { border-left-color: var(--accent) }
+.pcard > summary { display: flex; align-items: center; gap: 8px; padding: 6px 10px; cursor: pointer; list-style: none }
+.pcard > summary::-webkit-details-marker { display: none }
+.pcard > summary::after { content: '▾'; margin-left: auto; color: var(--muted) } .pcard:not([open]) > summary::after { content: '▸' }
+.pcard > summary img { width: 40px; height: 40px; flex: 0 0 40px; image-rendering: pixelated }
+.pcsum { display: flex; flex-direction: column; gap: 2px; min-width: 0 } .pcsum > span { overflow-wrap: anywhere }
+.pcard[open] > summary { border-bottom: 1px solid var(--line) }
+.pcard > .bstl, .pcard > .bmon { margin: 8px 10px }
+.pcard > .pmon.pcfull { border: 0; border-radius: 0 0 10px 10px; background: none }
+.bativ > summary { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 10px; cursor: pointer; list-style: none }
+.bativ > summary::-webkit-details-marker { display: none }
+.bativ > summary h3 { margin: 0 } .bativ > summary h3::before { content: '▸ '; color: var(--muted) } .bativ[open] > summary h3::before { content: '▾ ' }
+.bativ > summary .sp { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; flex: 1 }
+.bativ[open] > summary { margin-bottom: 8px } .bativ[open] > summary .sp { display: none }
+.bativ .nhead { justify-content: flex-end }
+.bivmsg { margin: 8px 0 0; padding: 6px 10px; border-left: 3px solid var(--new); border-radius: 4px; font-size: .85rem }
 .fxm { background: var(--accent-soft); color: var(--ink); border: 1px solid var(--accent); border-radius: 4px; padding: 0 4px; font-size: .7rem; font-weight: 600; white-space: nowrap }
 .fxv { color: var(--accent); font-weight: 700 }
 .fx0 { color: var(--muted); font-weight: 400 }
@@ -586,6 +650,21 @@ button.gbtn:hover { border-color: var(--accent) }
 @media (max-width: 520px) { .bfrow { grid-template-columns: 3em 1fr } .bfrow > :last-child { grid-column: 2 } }
 .tpsum { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 12px; margin: 4px 0 12px }
 .tpsum .bowin { margin-left: 0 }
+.recl { display: grid; gap: 0 }
+.recrow { display: flex; align-items: center; gap: 10px; padding: 6px 0; border-bottom: 1px solid var(--line); font-size: .88rem }
+.recrow img { width: 40px; height: 40px; image-rendering: pixelated; flex: 0 0 40px }
+.recrow > div:not(.recgain) { flex: 1; min-width: 0 }
+.recrow .btag { margin-right: 2px }
+.recgain { display: flex; flex-direction: column; align-items: flex-end; flex: 0 0 auto; text-align: right }
+.recgain b { font: 700 1.05rem var(--font-data) }
+.recgain b.good { color: var(--new) }
+.recrow.small { font-size: .8rem; padding: 3px 0 }
+.reccombo { border-top: 2px solid var(--line) }
+.recmore { margin-top: 8px }
+.recmore > summary { cursor: pointer }
+.recbar { display: block; width: 100%; max-width: 320px; height: 6px; border-radius: 3px; background: var(--bg); border: 1px solid var(--line); overflow: hidden; margin-top: 6px }
+.recbar i { display: block; height: 100%; background: var(--new) }
+#batdetail .recbox label.chk { display: inline-flex; flex-direction: row; align-items: center; gap: 6px; text-transform: none; letter-spacing: 0; font-size: .84rem; color: var(--ink) }
 .tpsum .btn { margin-left: auto }
 .tpgrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr)); gap: 10px }
 .tpm { box-sizing: border-box; min-width: 0; border: 1px solid var(--line); border-radius: 10px; padding: 10px; background: var(--panel) }
@@ -1041,7 +1120,8 @@ section.ncoll h3 { margin-bottom: 0 !important }
       <button id="view-team" aria-pressed="false">Team</button>
       <button id="view-nuz" aria-pressed="false">Nuzlocke</button>
       <button id="view-iv" aria-pressed="false">IVs</button>
-      <button id="view-bat" aria-pressed="false">Battle</button>
+      <button id="view-plan" aria-pressed="false">Planner</button>
+      <button id="view-bat" aria-pressed="false">Tracker</button>
       <button id="view-guide" aria-pressed="false">Guide</button>
     </div>
     <div class="ver" role="group" aria-label="Patch version">
@@ -1184,7 +1264,7 @@ function setVer(v) {
   if (typeof renderMove === 'function' && view === 'moves') { renderMoveList(); renderMove() }
   if (typeof renderTypes === 'function' && view === 'types') renderTypes();
   if (typeof renderIv === 'function' && view === 'ivs') renderIv();
-  if (typeof renderBattle === 'function' && view === 'battle') renderBattle();
+  if (typeof renderBattle === 'function' && (view === 'battle' || view === 'plan')) renderBattle();
   if (typeof renderGuide === 'function' && view === 'guide') renderGuide();
   if (typeof renderRun === 'function' && view === 'nuzlocke') renderRun();
 }
@@ -1390,13 +1470,14 @@ function setView(v) {
   document.getElementById('nuzMain').hidden = v !== 'nuzlocke';
   document.getElementById('view-iv').setAttribute('aria-pressed', v === 'ivs');
   document.getElementById('ivMain').hidden = v !== 'ivs';
+  document.getElementById('view-plan').setAttribute('aria-pressed', v === 'plan');
   document.getElementById('view-bat').setAttribute('aria-pressed', v === 'battle');
-  document.getElementById('batMain').hidden = v !== 'battle';
+  document.getElementById('batMain').hidden = v !== 'battle' && v !== 'plan';
   document.getElementById('view-guide').setAttribute('aria-pressed', v === 'guide');
   document.getElementById('guideMain').hidden = v !== 'guide';
   if (v === 'guide') renderGuide();
   if (v === 'ivs') renderIv();
-  if (v === 'battle') renderBattle();
+  if (v === 'battle' || v === 'plan') renderBattle();
   if (v === 'nuzlocke') { renderRunList(); renderRun() }
   if (v === 'routes') { renderRouteList(); renderRoute() }
   if (v === 'team') { renderTeamList(); renderTeam() }
@@ -1410,6 +1491,7 @@ document.getElementById('view-routes').onclick = () => setView('routes');
 document.getElementById('view-team').onclick = () => setView('team');
 document.getElementById('view-nuz').onclick = () => setView('nuzlocke');
 document.getElementById('view-iv').onclick = () => setView('ivs');
+document.getElementById('view-plan').onclick = () => setView('plan');
 document.getElementById('view-bat').onclick = () => setView('battle');
 document.getElementById('view-guide').onclick = () => setView('guide');
 document.getElementById('view-moves').onclick = () => setView('moves');
@@ -3474,6 +3556,7 @@ function batMapHtml(steps, title, note) {
 }
 function renderBattle() {
   const d = document.getElementById('batdetail'); if (!d) return;
+  const plan = view === 'plan';   // Planner tab; otherwise the Tracker
   const r = curRun(), opt = (v, lab, cur) => `<option value="${esc(v)}" ${String(v) === String(cur) ? 'selected' : ''}>${esc(lab)}</option>`;
   if (!NBOSS.length) { d.innerHTML = '<p class="empty">No boss data.</p>'; return }
   batState(r);
@@ -3523,18 +3606,22 @@ function renderBattle() {
   const fieldOn = [BS.wx ? wxName[BS.wx] + (BS.wxT >= 99 ? '' : ` (${BS.wxT} turns)`) : '',
     ...[0, 1].flatMap(i => { const x = BS.sd[i], who = i ? 'their side' : 'your side';
       return [x.sr ? 'Stealth Rock' : '', x.spk ? x.spk + '× Spikes' : '', x.tsp ? x.tsp + '× Toxic Spikes' : '', x.ref ? 'Reflect' : '', x.ls ? 'Light Screen' : '', x.tw ? 'Tailwind' : ''].filter(Boolean).map(t => t + ' on ' + who) })].filter(Boolean);
-  d.innerHTML = `<div class="rhero"><h2>Battle assistant</h2>
-      <p class="sp">Pick the boss (or a trainer you've added from the Nuzlocke tab's Trainers ahead list), then either simulate the whole fight with your current party, or enter where a fight stands to get advice for this turn.</p>
+  d.innerHTML = `<div class="rhero"><h2>${plan ? 'Battle planner' : 'Battle tracker'}</h2>
+      <p class="sp">${plan ? 'Pick the boss (or a trainer you\'ve added from the Nuzlocke tab\'s Trainers ahead list) and get ready: check their threats against your answers, build and level the team, and simulate the fight. When the battle starts, switch to the Tracker.'
+        : 'Follow the fight as it happens: enter where it stands for advice on this turn, log each turn, and log stats and EVs as your Pokémon level up. Plan the fight beforehand in the Planner.'}</p>
       <div class="bcontrols"><label>Opponent<select data-bf="boss"><optgroup label="Bosses">${NBOSS.map((b, i) => opt(i, b.label + ' · ' + b.area + (i === r.beat ? ' (next)' : ''), BS.boss)).join('')}</optgroup>
           ${(trs => trs.length ? `<optgroup label="Trainers you've added">${trs.map(([k, b]) => opt(k, b.label + ' · ' + b.area + (b.sub ? ' ' + b.sub : ''), BS.boss)).join('')}</optgroup>` : '')(store.get(BTRKEY, []).map(k => [k, batTr(k)]).filter(x => x[1]))}</select></label>
         ${teams.length > 1 ? `<label>Team<select data-bf="v">${teams.map((t, i) => opt(i, t.var || 'Team ' + (i + 1), BS.v)).join('')}</select></label>` : ''}
         <label title="Renegade Platinum bosses usually have perfect IVs">Boss IVs<select data-bf="biv">${[31, 20, 10, 0].map(v => opt(v, v, nCalc.biv)).join('')}</select></label>
-        <button class="btn" data-bact="reset" title="Full HP, no status, back to turn 1">Start over</button></div>
+        ${plan ? '' : '<button class="btn" data-bact="reset" title="Full HP, no status, back to turn 1">Start over</button>'}</div>
       <p class="sp" style="margin-top:6px">Using run “${esc(r.name)}”</p></div>
+    ${!party.length ? '<p class="empty">Add Pokémon with levels to your Nuzlocke party first.</p>' : plan ? `<div id="batprep"></div>
+    <div id="batflow"></div>
+    <div id="batpcards"></div>
     <div id="batsim"></div>
+    <div id="batrec"></div>
     <div id="batteam"></div>
-    <div id="batlvl"></div>
-    ${!party.length ? '<p class="empty">Add Pokémon with levels to your Nuzlocke party first.</p>' : `
+    <div id="batlvl"></div>` : `
     <h3 class="bsect">The fight now</h3>
     <section class="card full"><h3>${esc(bl)}'s team</h3><div class="bslots">${team.map(bcard).join('')}</div>
       ${bAct ? stgBox('b', bAct, BS.bstg, BS.bfresh) : ''}</section>
@@ -3544,11 +3631,270 @@ function renderBattle() {
       ${BS.wx ? `<label>Turns left<select data-bf="wxT">${[1, 2, 3, 4, 5, 6, 7, 8].map(v => opt(v, v, BS.wxT)).concat(opt(99, 'Permanent (ability)', BS.wxT)).join('')}</select></label>` : ''}</div>
       <div class="bfsides">${sideHtml(0, 'Your side')}${sideHtml(1, 'Their side')}</div>`)}</section>
     <div id="batres"></div>
+    <div id="bativ"></div>
     <div id="batlog"></div>
     <div id="batmap"></div>`}`;
-  renderSim();
-  renderTeamPick(); renderLevelPlan(); renderTurnLog();
-  batQueue();
+  renderPrep(); renderFlow(); renderSim(); renderRec();
+  renderTeamPick(); renderLevelPlan(); renderTurnLog(); renderIvLog();
+  if (!plan) batQueue();
+}
+// ---- Planner: a pre-fight checklist and a team-building check, after NuzPoke's battle-prep checklist
+// (nuzpoke.com/en/resources/nuzlocke-battle-preparation) and Nuzlocke University's 5 team-building principles.
+// Worked out at your party's current levels, full HP, no weather or screens, against the boss's real sets.
+// Ticks and the written plan are saved on the run (r.prep), per opponent and team.
+const prepKey = () => String(BS.boss) + '|' + (BS.v || 0);
+const prepGet = r => Object.assign({ chk: {}, note: '' }, (r.prep || {})[prepKey()]);
+function prepSet(r, o) { r.prep = r.prep || {}; r.prep[prepKey()] = o; r.updated = Date.now(); saveRuns() }
+const PREP_STATUS = new Set(['sleep', 'para', 'tox', 'psn', 'brn', 'conf', 'yawn', 'swagger', 'flatter', 'attract']);
+const PREP_SUPPORT = new Set(['sleep', 'para', 'tox', 'psn', 'brn', 'conf', 'yawn', 'swagger', 'sr', 'spikes', 'tspikes', 'reflect', 'lscreen', 'atkDown', 'defDown', 'spaDown', 'spdDown',
+  'speDown', 'accDown', 'leech', 'taunt', 'tailwind', 'force']);
+const PREP_CURE = { 'Lum Berry': 'any status', 'Chesto Berry': 'sleep', 'Cheri Berry': 'paralysis', 'Pecha Berry': 'poison', 'Rawst Berry': 'burns', 'Aspear Berry': 'freezing',
+  'Persim Berry': 'confusion', 'Mental Herb': 'Attract and Taunt' };
+const PREP_IMMUNE = { 'Insomnia': 'sleep', 'Vital Spirit': 'sleep', 'Limber': 'paralysis', 'Immunity': 'poison', 'Water Veil': 'burns', 'Own Tempo': 'confusion', 'Magma Armor': 'freezing',
+  'Natural Cure': 'status, cured by switching out', 'Shed Skin': 'status, often cures itself', 'Oblivious': 'Attract' };
+function prepAnalyze(r) {
+  const party = batParty(r), team = batTeam(r), b0 = batB(BS.boss);
+  const P = party.map((x, i) => nsMake(nMineMon(x.e), (x.e.moves || []).filter(Boolean), 0, i, x.row.k));
+  const B = team.map((p, i) => nsMake(nBossMon(p, +nCalc.biv), (p.mv || []).filter(Boolean), 1, i, 'b' + i));
+  const S = { sd: [Object.assign({ team: P, a: 0, sg: 0 }, batSide()), Object.assign({ team: B, a: 0, sg: 0 }, batSide())], wx: '', wxT: 0 };
+  // A's strongest hit on D (by average damage, accuracy counted): { mv, min, max } in HP, multi-hit moves as 2 or 3 hits
+  const best = (A, D) => { let o = null;
+    A.moves.forEach(mv => { const d = MV[mv]; if (!d || d.c === 'St' || NSELFKO.has(mv)) return; const x = nsRolls(S, A, D, mv, false, null); if (!x || !x.mult) return;
+      const h = NHITS2.has(mv) ? 2 : NHITS25.has(mv) ? (A.ab === 'Skill Link' ? 5 : 3) : 1, v = { mv, min: x.rolls[0] * h, max: x.rolls[15] * h, avg: x.rolls.reduce((a, b) => a + b, 0) / 16 * h * (d.a ? d.a / 100 : 1) };
+      if (!o || v.avg > o.avg) o = v });
+    return o };
+  const foes = B.map((b, bi) => {
+    const vs = P.map((c, ci) => { const hit = best(b, c), mine = best(c, b), faster = nsSpeed(S, c) > nsSpeed(S, b);
+      const theyNeed = hit && hit.max > 0 ? Math.ceil(c.max / hit.max) : 99, iNeed = mine && mine.min > 0 ? Math.ceil(b.max / mine.min) : 99;
+      const immune = b.moves.filter(mv => isAttack(mv) && (nsRolls(S, b, c, mv, false, null) || {}).mult === 0);
+      // beats it: knocks it out in one or two hits before it knocks this one out (a speed tie counts as slower)
+      // takes its hits: its strongest hit does under half, so this one survives two
+      return { c, ci, x: party[ci], hit, mine, theyNeed, iNeed, faster, immune, off: iNeed <= 2 && (faster ? iNeed <= theyNeed : iNeed < theyNeed), def: !hit || hit.max * 2 < c.max } });
+    const ohko = vs.filter(v => v.theyNeed <= 1), two = vs.filter(v => v.theyNeed === 2);
+    const st = b.moves.filter(mv => NSTAT[mv] && PREP_STATUS.has(NSTAT[mv].k)), setup = b.moves.filter(mv => NSTAT[mv] && NSTAT[mv].self && Object.values(NSTAT[mv].self).some(v => v > 0));
+    const crit = b.moves.filter(mv => NHICRIT.has(mv)).concat(b.ab === 'Super Luck' ? ['Super Luck'] : [], /^(Scope Lens|Razor Claw)$/.test(b.item) ? [b.item] : []);
+    // its most dangerous move: the one that knocks out the most of your party, then does the most damage
+    const sc = {}; vs.forEach(v => { if (v.hit) sc[v.hit.mv] = (sc[v.hit.mv] || 0) + (v.theyNeed <= 1 ? 100 : v.theyNeed === 2 ? 10 : 0) + v.hit.max / v.c.max });
+    const top = Object.entries(sc).sort((a, z) => z[1] - a[1])[0];
+    const lvl = ohko.length || (setup.length && two.length) ? 3 : two.length || st.some(m => NSTAT[m].k === 'sleep') ? 2 : 1;
+    return { b, p: team[bi], vs, ohko, two, st, setup, crit, top: top ? top[0] : '', lvl, outspeedsAll: vs.length > 0 && vs.every(v => !v.faster), notes: gThreats(team[bi]) };
+  });
+  return { party, team, P, B, foes, cap: b0 ? b0.cap : 100 };
+}
+// what each of your Pokémon does in this fight (Nuzlocke University's roles): Sweeper beats a third of their team or more,
+// Tank takes the hits of half or more, Support has status, hazards, screens, stat drops or Intimidate
+function prepRoles(A) {
+  const n = A.B.length || 1;
+  return A.P.map((c, ci) => { const offN = A.foes.filter(f => f.vs[ci].off).length, defN = A.foes.filter(f => f.vs[ci].def).length;
+    const sup = c.moves.filter(mv => NSTAT[mv] && PREP_SUPPORT.has(NSTAT[mv].k)).concat(c.ab === 'Intimidate' ? ['Intimidate'] : []), roles = [];
+    if (offN >= Math.max(1, Math.ceil(n / 3))) roles.push('Sweeper'); if (defN >= Math.ceil(n / 2)) roles.push('Tank'); if (sup.length) roles.push('Support');
+    return { c, x: A.party[ci], roles, offN, defN, sup } });
+}
+function renderPrep() {
+  const el = document.getElementById('batprep'); if (!el) return;
+  const r = curRun(); if (!batParty(r).length || !batTeam(r).length) { el.innerHTML = ''; return }
+  const A = prepAnalyze(r), pr = prepGet(r), nmE = e => esc(e.nick || monName(e.n)), nm = v => nmE(v.x.e), fnm = f => esc(f.b.name);
+  const threats = A.foes.filter(f => f.lvl >= 2), noOff = f => !f.vs.some(v => v.off), noDef = f => !f.vs.some(v => v.def);
+  const gaps = threats.filter(f => noOff(f) || noDef(f)), fast = A.foes.filter(f => f.outspeedsAll);
+  const over = r.rules.caps ? A.party.filter(x => +x.e.lv > A.cap) : [], noItem = A.party.filter(x => !x.e.item);
+  const stMoves = A.foes.flatMap(f => f.st.map(mv => f.b.name + "'s " + mv)), critMoves = A.foes.flatMap(f => f.crit.map(mv => f.b.name + "'s " + mv));
+  const cures = A.party.flatMap(x => { const ab = abName(nAb(x.e)), n = x.e.nick || monName(x.e.n);
+    return [PREP_CURE[x.e.item] ? `${n} (${x.e.item}: ${PREP_CURE[x.e.item]})` : '', PREP_IMMUNE[ab] ? `${n} (${ab}: ${PREP_IMMUNE[ab]})` : ''].filter(Boolean) });
+  const lvs = A.party.map(x => +x.e.lv), lo = Math.min(...lvs), hi = Math.max(...lvs), teams = batTeams(r, BS.boss);
+  const tick = (k, lab) => `<label class="bact pctick"><input type="checkbox" data-prepchk="${k}" ${pr.chk[k] ? 'checked' : ''}> ${lab}</label>`;
+  const items = [
+    ['ok', 'Their team is confirmed for this game', `From Drayano's Renegade Platinum v1.3.0 notes${teams.length > 1 ? `, using ${esc((teams[BS.v] || teams[0]).var || 'team ' + ((+BS.v || 0) + 1))}. Pick the right one at the top if it depends on your starter.` : '.'}`],
+    ['ok', 'Threats noted with their most dangerous move', threats.length ? `${threats.length} of their ${A.foes.length} can knock out or badly hurt one of yours. They're listed below.` : 'None of their Pokémon can knock one of yours out in two hits.'],
+    [gaps.length ? 'bad' : 'ok', 'An answer that beats each threat, and one that takes its hits', gaps.length ? gaps.map(f => `Nothing ${noOff(f) && noDef(f) ? 'beats or walls' : noOff(f) ? 'beats' : 'takes the hits of'} ${fnm(f)}`).join('. ') + '. See the ideas under the threat list.' : 'Every threat has both.'],
+    [fast.length ? 'bad' : 'ok', 'Speeds compared', fast.length ? `${fast.map(fnm).join(', ')} ${fast.length > 1 ? 'outspeed' : 'outspeeds'} your whole party, so assume ${fast.length > 1 ? 'they move' : 'it moves'} first. Paralysis, Speed drops or priority moves can change that.` : 'Each of theirs is slower than at least one of yours. Speed ties count as slower.'],
+    [pr.chk.status ? 'ok' : '', 'A plan for status and critical hits', `${stMoves.length ? 'Their status moves: ' + esc(stMoves.join(', ')) + '. ' : 'Their team has no status moves. '}${critMoves.length ? 'High critical-hit odds: ' + esc(critMoves.join(', ')) + '. ' : ''}${cures.length ? 'Your cover: ' + esc(cures.join(', ')) + '. ' : stMoves.length ? 'None of yours holds a cure berry or has an ability that blocks it. ' : ''}${tick('status', 'I know what to do if one of mine is put to sleep, paralysed or crit (write it in your plan below)')}`],
+    [over.length ? 'bad' : noItem.length ? '' : 'ok', 'Levels within the cap and held items reviewed', `${over.length ? `Over the cap of Lv. ${A.cap}: ${over.map(x => nmE(x.e) + ' (Lv. ' + x.e.lv + ')').join(', ')}. ` : `Everyone is at or under the cap of Lv. ${A.cap}. `}${hi - lo >= 5 ? `Levels run from ${lo} to ${hi}, so level up the low ones you plan to use. ` : ''}${noItem.length ? 'No held item: ' + noItem.map(x => nmE(x.e)).join(', ') + '.' : 'Everyone holds an item.'}`],
+    [pr.chk.heal ? 'ok' : '', 'Team healed and game saved before going in', tick('heal', 'Healed and saved, with no plan to reset')],
+  ];
+  const icon = s => `<span class="pcico ${s}" aria-label="${s === 'ok' ? 'Done' : s === 'bad' ? 'Needs work' : 'To do'}">${s === 'ok' ? '✓' : s === 'bad' ? '!' : ''}</span>`, done = items.filter(x => x[0] === 'ok').length;
+  const list = (vs, f) => vs.length ? vs.map(f).join(', ') : '<span class="bko">nobody</span>';
+  const thr = A.foes.slice().sort((a, z) => z.lvl - a.lvl).map(f => {
+    const off = f.vs.filter(v => v.off).sort((a, z) => a.iNeed - z.iNeed || z.faster - a.faster), def = f.vs.filter(v => v.def).sort((a, z) => (a.hit ? a.hit.max / a.c.max : 0) - (z.hit ? z.hit.max / z.c.max : 0)), piv = f.vs.filter(v => v.immune.length);
+    const tag = f.lvl >= 3 ? '<span class="btag bad">Threat</span>' : f.lvl === 2 ? '<span class="btag">Watch</span>' : '<span class="btag good">Manageable</span>';
+    const kos = [f.ohko.length ? 'one hit on ' + f.ohko.map(nm).join(', ') : '', f.two.length ? 'two hits on ' + f.two.map(nm).join(', ') : ''].filter(Boolean).join(' · ');
+    return `<div class="pthr lv${f.lvl}"><div class="pthrhd"><img src="${nimg(f.b.m.n)}" alt=""><b>${fnm(f)}</b><span class="sp">Lv. ${f.b.m.lv}</span>${tag}${f.top ? `<span class="sp">most dangerous: <b>${esc(f.top)}</b></span>` : ''}</div>
+      ${kos ? `<div class="sp">Knocks out in ${kos}</div>` : ''}${f.notes.length ? `<div class="sp">Watch for: ${esc(f.notes.join(' · '))}</div>` : ''}
+      <div class="pans"><span>Beats it</span><div>${list(off, v => `${nm(v)} <small class="sp">${esc(v.mine.mv)}, ${v.iNeed === 1 ? 'one hit' : 'two hits'}${v.faster ? ', faster' : ''}</small>`)}</div>
+        <span>Takes its hits</span><div>${list(def.slice(0, 4), v => `${nm(v)} <small class="sp">${v.hit ? 'up to ' + Math.round(v.hit.max / v.c.max * 100) + '%' : 'it can\'t hurt this one'}</small>`)}</div>
+        ${piv.length ? `<span>Free switch-in</span><div>${piv.map(v => `${nm(v)} <small class="sp">immune to ${esc(v.immune.join(', '))}</small>`).join(', ')}</div>` : ''}</div></div>`;
+  }).join('');
+  const R = prepRoles(A), cnt = k => R.filter(x => x.roles.includes(k)).length, multi = R.filter(x => x.roles.length > 1);
+  const syn = TYPES.map(t => { const m = A.P.map(c => defMult(c.types, c.ab, t)); return { t, weak: m.filter(v => v > 1).length, res: m.filter(v => v < 1).length, theirs: A.B.some(b => b.moves.some(mv => isAttack(mv) && MV[mv].t === t)) } })
+    .filter(o => o.weak >= 2 && o.weak > o.res).sort((a, z) => z.theirs - a.theirs || z.weak - a.weak);
+  const lone = threats.map(f => ({ f, off: f.vs.filter(v => v.off) })).filter(o => o.off.length === 1), thin = ['Sweeper', 'Tank', 'Support'].filter(k => cnt(k) <= 1);
+  const tb = [
+    syn.length ? `<b>Shared weaknesses:</b> ${syn.map(o => `<span class="mtype" style="background:${TC[o.t]}">${o.t}</span> ${o.weak} weak, ${o.res} resist${o.theirs ? ' <span class="bko">(they have it)</span>' : ''}`).join(' · ')}. A type that covers these would round out the team.` : '<b>Type synergy:</b> no type hits more of your party than resists it.',
+    `<b>Roles:</b> ${cnt('Sweeper')} sweeper${cnt('Sweeper') === 1 ? '' : 's'}, ${cnt('Tank')} tank${cnt('Tank') === 1 ? '' : 's'}, ${cnt('Support')} support. A common shape is 3 sweepers, 2 tanks and 1 support, or 4, 1 and 1.`,
+    thin.length || lone.length ? `<b>Redundancy:</b> ${[thin.length ? `only ${thin.map(k => (cnt(k) ? 'one ' : 'no ') + k.toLowerCase()).join(', ')}` : '', ...lone.map(o => `if ${nm(o.off[0])} falls, nothing else beats ${fnm(o.f)}`)].filter(Boolean).join('; ')}.` : '<b>Redundancy:</b> every role and every threat has a backup.',
+    multi.length ? `<b>Doing double duty:</b> ${multi.map(x => `${nm(x)} (${x.roles.join(' and ').toLowerCase()})`).join(', ')}. One slot covering two roles is what makes backups possible.` : '',
+  ].filter(Boolean);
+  // detailed cards, most important first. Theirs: threat level, then how many of yours it knocks out in one hit.
+  // Yours: the only answer to a threat first, then how many of theirs it beats and walls. Important ones start open;
+  // opening or closing one is remembered in this browser (rp-pcard).
+  const pOpen = store.get('rp-pcard', {}), isOpen = (k, def) => k in pOpen ? pOpen[k] : def;
+  const solo = new Map(); lone.forEach(o => { const k = o.off[0].x.row.k; solo.set(k, [...(solo.get(k) || []), o.f.b.name]) });
+  const tcards = A.foes.map((f, i) => ({ f, i })).sort((a, z) => z.f.lvl - a.f.lvl || z.f.ohko.length - a.f.ohko.length || a.i - z.i).map(({ f, i }) => {
+    const k = 'b' + i + ':' + f.p.n, tag = f.lvl >= 3 ? '<span class="btag bad">Threat</span>' : f.lvl === 2 ? '<span class="btag">Watch</span>' : '<span class="btag good">Manageable</span>';
+    const why = [f.top ? 'most dangerous: ' + f.top : '', f.ohko.length ? 'one-hit KOs ' + f.ohko.map(v => v.x.e.nick || monName(v.x.e.n)).join(', ') : ''].filter(Boolean).join(' · ');
+    return `<details class="pcard lv${f.lvl}" data-pcard="${esc(k)}" ${isOpen(k, f.lvl >= 3) ? 'open' : ''}><summary><img src="${nimg(f.p.n)}" alt=""><span class="pcsum"><span><b>${fnm(f)}</b> <span class="sp">Lv. ${esc(f.p.lv)}</span> ${tag}</span><span class="sp">${esc(why || 'no one-hit knockouts on your party')}</span></span></summary>
+      ${batStatsHtml(f.b, '')}${bossMonHtml(f.p, A.party.map(x => x.e))}</details>`;
+  }).join('');
+  const ectx = { over: e => r.rules.caps && (+e.lv || 0) > A.cap, party: partyOf(r), partyFull: partyOf(r).length >= 6, boss: A.team, bossName: batB(BS.boss).label };
+  const ycards = R.map((x, i) => ({ x, i, key: solo.has(x.x.row.k), sc: x.offN * 2 + x.defN + x.roles.length })).sort((a, z) => z.key - a.key || z.sc - a.sc || a.i - z.i).map(({ x, key }, rank) => {
+    const k = x.x.row.k, e = x.x.e;
+    const tags = (key ? '<span class="btag bad" title="The only one of yours that beats a threat">Key</span> ' : '') + (x.roles.length ? x.roles.map(t => `<span class="btag ${x.roles.length > 1 ? 'good' : ''}">${t}</span>`).join(' ') : '<span class="btag">Bench</span>');
+    const why = (key ? 'only answer to ' + solo.get(k).join(', ') + ' · ' : '') + `beats ${x.offN}, takes the hits of ${x.defN} of their ${A.B.length}`;
+    return `<details class="pcard" data-pcard="${esc(k)}" ${isOpen(k, key || rank < 2) ? 'open' : ''}><summary><img src="${nimg(e.n)}" alt=""><span class="pcsum"><span><b>${nmE(e)}</b> <span class="sp">Lv. ${esc(e.lv)}</span> ${tags}</span><span class="sp">${esc(why)}</span></span></summary>
+      ${monEditor(x.x.row, e, r, Object.assign({}, ectx, { cls: 'pcfull', headBtn: ' ', extra: batStatsHtml(x.c, '') }))}</details>`;
+  }).join('');
+  const cards = `<section class="card full prep" data-sec="pcards"><div class="nhead"><h3>Both teams, most important first</h3><span class="sp">Click a card to open or close it</span></div>
+    <div class="pcols"><div><h4>${esc(batB(BS.boss).label)}'s team</h4>${tcards}</div><div><h4>Your party</h4>${ycards}</div></div>
+    <p class="sp">Their stats assume ${+nCalc.biv} IVs (set at the top). Changes on your cards save to the run, like on the Nuzlocke tab.</p></section>`;
+  el.innerHTML = `<h3 class="bsect">Get ready</h3>
+    <section class="card full prep" data-sec="pcheck"><div class="nhead"><h3>Before the fight</h3><span class="sp">${done} of ${items.length} done</span></div>
+      <ol class="pcl">${items.map(([s, t, d]) => `<li>${icon(s)}<div><b>${t}</b><span class="sp">${d}</span></div></li>`).join('')}</ol>
+      <label class="pnote">Your plan<textarea data-prepnote rows="3" placeholder="Who leads, who answers each threat, and plan B for a crit, status or a surprise switch">${esc(pr.note)}</textarea></label>
+      <p class="sp">Checked at your current levels, full HP, no weather or screens. Ticks and your plan are saved with the run for this opponent. Based on <a href="https://nuzpoke.com/en/resources/nuzlocke-battle-preparation/#checklist" target="_blank" rel="noopener">NuzPoke's battle checklist</a> and <a href="https://nuzlockeuniversity.ca/2025/04/02/5-principles-for-nuzlocke-team-building/" target="_blank" rel="noopener">Nuzlocke University's team-building principles</a>.</p></section>
+    <section class="card full prep" data-sec="pthreats"><h3>Threats and answers</h3>${thr}
+      ${gaps.length ? `<p class="sp">No answer for a threat? Paralyse it or put it to sleep and finish it with another Pokémon, set up on it with one that resists its moves, wear it down with hits from several, or check your box and the catches still open for a better fit under the cap.</p>` : ''}</section>
+    <section class="card full prep" data-sec="pbuild"><h3>Team building</h3><ul class="prole">${R.map(x => `<li><b>${nm(x)}</b> ${x.roles.length ? x.roles.map(k => `<span class="btag ${x.roles.length > 1 ? 'good' : ''}">${k}</span>`).join(' ') : '<span class="sp">no clear role in this fight</span>'} <small class="sp">beats ${x.offN} and takes the hits of ${x.defN} of their ${A.B.length}${x.sup.length ? ' · ' + esc(x.sup.join(', ')) : ''}</small></li>`).join('')}</ul>
+      <ul class="ptb">${tb.map(t => `<li>${t}</li>`).join('')}</ul></section>`;
+  const pc = document.getElementById('batpcards'); if (pc) pc.innerHTML = cards;   // the cards go below the battle flow
+}
+
+// ---- Tracker: log stats and EVs for the Pokémon in battle (or any party member) without leaving the fight ----
+let batIvK = '', batIvPa = null, batIvMsg = '';
+function batIvWho(r) {
+  const party = batParty(r); if (batIvPa !== BS.pa) { batIvPa = BS.pa; batIvK = ''; batIvMsg = '' }
+  return party.find(p => p.row.k === batIvK) || party.find(p => p.row.k === BS.pa) || party[0];
+}
+// the stat each IV range gives at level lv with the EVs logged so far, as a hint in the empty boxes
+function batIvPh(e, lv) {
+  const sol = nSolveIVs(e), v = mons[e.n - 1].v[ver];
+  return Object.fromEntries(IVSTATS.map(k => { if (!(lv >= 1)) return [k, '']; const c = sol && sol.s[k] && sol.s[k].c.length ? sol.s[k].c : [0, 31], ev = +(e.evs || {})[k] || 0, a = ivStat(k, v.stats[k], lv, c[0], ev, e.nat), b = ivStat(k, v.stats[k], lv, c[c.length - 1], ev, e.nat); return [k, a === b ? String(a) : a + '–' + b] }));
+}
+function renderIvLog() {
+  const el = document.getElementById('bativ'); if (!el) return;
+  const r = curRun(), party = batParty(r), x = party.length && batIvWho(r); if (!x) { el.innerHTML = ''; return }
+  const e = x.e, sol = nSolveIVs(e), lv = +e.lv || '', ph = batIvPh(e, lv), team = batTeam(r), nm = esc(e.nick || monName(e.n));
+  const ivs = IVSTATS.map(k => { const s = sol && sol.s[k]; return `<span class="${s && s.c.length === 1 ? 'on' : ''}">${SL[k]} <b>${s && s.c.length ? ivList(s.c) : '?'}</b>${s && s.locked ? ' 🔒' : ''}</span>` }).join('');
+  const logged = [...new Set((e.hist || []).filter(h => (h.n || e.n) === e.n).map(h => h.lv))].sort((a, b) => a - b), share = partyOf(r).filter(y => y.e !== e && y.e.item === 'Exp. Share');
+  el.innerHTML = `<details class="card full bativ" ${store.get('rp-bivopen', true) ? 'open' : ''}><summary><h3>Log stats and EVs</h3><span class="sp">${nm}${batIvMsg ? ' · ' + batIvMsg.replace(/<[^>]*>/g, '') : ''}</span></summary><div class="nhead"><label class="bivwho">Pokémon<select data-ivk>${party.map(p => `<option value="${esc(p.row.k)}" ${p === x ? 'selected' : ''}>${esc(p.e.nick || monName(p.e.n))}${p.row.k === BS.pa ? ' (in battle)' : ''}</option>`).join('')}</select></label></div>
+    <div class="bivnow"><span class="sp">${nm}'s IVs</span>${ivs}<span class="sp">${logged.length ? 'Levels logged: ' + logged.join(', ') : 'No levels logged yet'} · EVs ${evTotal(e.evs)}/510${evTotal(e.evs) ? ' (' + esc(evText(e.evs)) + ')' : ''}</span></div>
+    <h4 class="bivh">1. EVs: who did ${nm} beat?</h4>
+    <div class="bivevs">${team.map(p => `<button class="btn evpick" data-bivev="${p.n}" title="Log one win over ${esc(monName(p.n))} for ${nm}"><img src="${nimg(p.n)}" alt=""><span>${esc(monName(p.n))}<small>+${esc(evText(evForDefeat(e, p.n, 1, e.pkrs)) || '0')}</small></span></button>`).join('')}
+      <button class="btn" data-bivevall title="Log a win over each of their Pokémon">Whole team</button></div>
+    <p class="sp">Every Pokémon that fought one of theirs gets its EVs, so pick each one above in turn.${share.length ? ` ${share.map(y => esc(y.e.nick || monName(y.e.n))).join(', ')} ${share.length > 1 ? 'hold' : 'holds'} an Exp. Share and ${share.length > 1 ? 'get' : 'gets'} the same EVs.` : ''} Undo from the EV log on the IVs tab.</p>
+    <h4 class="bivh">2. Stats: after a level-up, copy them from its summary screen</h4>
+    <div class="bivrow"><label>Level<input type="number" min="1" max="100" data-bivlv value="${lv}"></label>${IVSTATS.map(k => { const md = natMod(e.nat, k); return `<label class="${md > 1 ? 'up' : md < 1 ? 'dn' : ''}">${SL[k]}<input type="number" min="1" max="999" data-bivst="${k}" placeholder="${ph[k]}"></label>` }).join('')}
+      <button class="btn primary" data-bivlog>Log</button></div>
+    <p class="sp">The hints are what its IVs and the EVs logged so far give at that level, so a big difference points to a typo or missed EVs. Log the EVs first, then the new level, as the game adds them in that order. Each level goes into the same stat log as the IVs tab and its Nuzlocke card.</p>
+    ${batIvMsg ? `<p class="bivmsg" role="status">${batIvMsg}</p>` : ''}</details>`;
+}
+function batIvLogNow(r) {
+  const x = batIvWho(r), box = BD.querySelector('.bativ'); if (!x || !box) return; const e = x.e, nm = e.nick || monName(e.n);
+  const lvI = box.querySelector('[data-bivlv]'), lv = Math.round(+lvI.value);
+  if (!(lv >= 1 && lv <= 100)) { lvI.setCustomValidity('Enter its level'); return lvI.reportValidity() }
+  const st = {}; box.querySelectorAll('[data-bivst]').forEach(i => { if (+i.value > 0) st[i.dataset.bivst] = Math.round(+i.value) });
+  if (!Object.keys(st).length) { const i = box.querySelector('[data-bivst]'); i.setCustomValidity('Enter its stats'); return i.reportValidity() }
+  if (lv === +e.lv) { e.stats = Object.assign({}, e.stats, st); nLog(e) }
+  else if (lv > (+e.lv || 0)) { nSetLevel(e, String(lv)); e.stats = st; nLog(e) }
+  else {   // an earlier level you missed: into the log only, without today's EVs (they'd be too high for it)
+    const keep = { lv: e.lv, stats: e.stats }; e.lv = String(lv); e.stats = st; nLog(e); Object.assign(e, keep);
+    const h = (e.hist || []).find(y => +y.lv === lv && (y.n || e.n) === e.n); if (h) delete h.ev }
+  r.updated = Date.now(); saveRuns(); renderRunList();
+  batIvMsg = `Logged Lv. ${lv} for ${esc(nm)}: ${esc(IVSTATS.filter(k => st[k]).map(k => SL[k] + ' ' + st[k]).join(' · '))}.`;
+  nRefreshKeep(BD, renderBattle);
+}
+function batIvEv(r, list, why) {
+  const x = batIvWho(r); if (!x) return; const g = 'g' + Date.now(), nm = y => y.nick || monName(y.n);
+  const give = y => { const add = {}; list.forEach(([n, c]) => { const a = evForDefeat(y, n, c, y.pkrs); IVSTATS.forEach(k => { if (a[k]) add[k] = (add[k] || 0) + a[k] }) });
+    const got = evAdd(y, add, why); if (Object.keys(got).length) Object.assign(y.evlog[0], { n: list.length === 1 ? list[0][0] : undefined, g }); return got };
+  const got = give(x.e), sh = partyOf(r).filter(y => y.e !== x.e && y.e.item === 'Exp. Share').map(y => [y.e, give(y.e)]).filter(([, a]) => Object.keys(a).length);
+  r.updated = Date.now(); saveRuns();
+  batIvMsg = (Object.keys(got).length ? `${esc(nm(x.e))} +${esc(evText(got))} (${esc(why)})` : `${esc(nm(x.e))} is at the EV cap for those stats.`)
+    + (sh.length ? ` · Exp. Share: ${sh.map(([y, a]) => esc(nm(y)) + ' +' + esc(evText(a))).join(', ')}` : '');
+  renderIvLog();
+}
+// ---- Planner: every box folds to its title (state per browser, rp-phide). Boxes are found after each render, since the
+// simulation and the other sections redraw themselves; ones that already fold (a <details> inside) are left alone.
+const pHide = new Set(store.get('rp-phide', []));
+function batDecorate() {
+  if (view !== 'plan') return;
+  BD.querySelectorAll('section.card').forEach(s => {
+    if (s.firstElementChild && s.firstElementChild.tagName === 'DETAILS') return;
+    const id = s.dataset.sec || (s.parentElement && s.parentElement.id !== 'batdetail' ? s.parentElement.id : ''); if (!id) return;
+    const h3 = s.querySelector(':scope > h3, :scope > .nhead > h3'); if (!h3) return;
+    const hid = pHide.has(id), want = hid ? 'Show' : 'Hide'; s.classList.toggle('ncoll', hid);
+    let b = h3.querySelector('button[data-phide]');
+    if (!b) { b = document.createElement('button'); b.className = 'nhide'; b.dataset.phide = id; h3.appendChild(b) }
+    if (b.textContent !== want) b.textContent = want;   // only when it changes: the observer below watches for new nodes
+    if (b.getAttribute('aria-expanded') !== String(!hid)) b.setAttribute('aria-expanded', String(!hid));
+  });
+}
+
+// ---- Planner: the battle flow. A tree of steps: your Pokémon out against one of theirs, with a note on what to do.
+// Each result of a step ("Dynamo wins", "Dynamo faints", or one you write) leads to the next step. Saved with the run per
+// opponent (r.prep[..].flow); the starting step isn't saved until you change something.
+const flowId = () => 'f' + Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
+const flowRoot = r => prepGet(r).flow || null;
+function flowNew(r) { const p = batParty(r), lead = p.find(x => x.row.k === BS.pa) || p[0]; return { id: 'root', kind: 'start', me: lead ? lead.row.k : '', foe: 0, note: '', kids: [] } }
+function flowSave(r, root) { const o = prepGet(r); o.flow = root; prepSet(r, o) }
+function flowFind(n, id, up = null) { if (!n) return null; if (n.id === id) return { n, up }; for (const k of n.kids || []) { const x = flowFind(k, id, n); if (x) return x } return null }
+// yours that fainted and theirs that were beaten on the way to the last step of path
+function flowDown(path) {
+  const mine = new Set(), theirs = new Set();
+  for (let i = 1; i < path.length; i++) { const p = path[i - 1], c = path[i]; if (c.kind === 'wins') theirs.add(p.foe); if (c.kind === 'faints') mine.add(p.me) }
+  return { mine, theirs };
+}
+function flowPath(root, id) { let out = []; const walk = (n, acc) => { if (n.id === id) { out = [...acc, n]; return true } return (n.kids || []).some(k => walk(k, [...acc, n])) }; if (root) walk(root, []); return out }
+function flowAdd(r, id, kind) {
+  const party = batParty(r), team = batTeam(r), root = flowRoot(r) || flowNew(r), hit = flowFind(root, id); if (!hit) return;
+  const n = hit.n, { mine, theirs } = flowDown(flowPath(root, id)), nm = k => { const x = party.find(y => y.row.k === k); return x ? x.e.nick || monName(x.e.n) : 'it' };
+  if (kind === 'wins') theirs.add(n.foe); if (kind === 'faints') mine.add(n.me);
+  // after a win, their next one in order (change it if the AI is likely to pick another); after a faint, your next one standing
+  const up = team.findIndex((p, i) => i > n.foe && !theirs.has(i)), foe = kind === 'wins' ? (up >= 0 ? up : team.findIndex((p, i) => !theirs.has(i))) : n.foe;
+  const nx = party.find(x => !mine.has(x.row.k) && x.row.k !== n.me), me = kind === 'faints' ? (nx ? nx.row.k : '') : n.me;
+  const cond = kind === 'wins' ? `${nm(n.me)} knocks out ${team[n.foe] ? monName(team[n.foe].n) : 'it'}` : kind === 'faints' ? `${nm(n.me)} faints` : 'Something else happens';
+  n.kids = [...(n.kids || []), { id: flowId(), kind, cond, me, foe, note: '', kids: [] }];
+  flowSave(r, root); renderFlow();
+}
+function renderFlow() {
+  const el = document.getElementById('batflow'); if (!el) return;
+  const r = curRun(), party = batParty(r), team = batTeam(r); if (!party.length || !team.length) { el.innerHTML = ''; return }
+  const saved = flowRoot(r), root = saved || flowNew(r), A = prepAnalyze(r), pk = new Map(party.map((x, i) => [x.row.k, i]));
+  const meName = k => pk.has(k) ? party[pk.get(k)].e.nick || monName(party[pk.get(k)].e.n) : 'it';
+  const pc = (a, b) => Math.round(a / b * 100);
+  // how the step looks from full HP, from the same numbers as Threats and answers
+  const hint = n => { const ci = pk.get(n.me), f = A.foes[n.foe]; if (ci === undefined || !f) return ''; const v = f.vs[ci];
+    return [v.faster ? 'Faster' : 'Slower', v.mine ? `${esc(v.mine.mv)} does ${pc(v.mine.min, f.b.max)}–${pc(v.mine.max, f.b.max)}%` : 'can\'t hurt it',
+      v.hit ? `their ${esc(v.hit.mv)} does up to ${pc(v.hit.max, v.c.max)}%` : 'it can\'t hurt yours'].join(' · ')
+      + (v.off ? ' · <b class="bgood">wins this from full HP</b>' : v.theyNeed <= v.iNeed ? ' · <b class="bko">loses this from full HP</b>' : '') };
+  const node = (n, path) => {
+    const p2 = [...path, n], down = flowDown(p2), end = !n.me ? 'lost' : n.foe < 0 ? 'won' : '';
+    const meSel = `<select data-fl="me" data-id="${n.id}" aria-label="Your Pokémon">${party.map(x => `<option value="${esc(x.row.k)}" ${x.row.k === n.me ? 'selected' : ''}>${esc(x.e.nick || monName(x.e.n))}${down.mine.has(x.row.k) ? ' (fainted)' : ''}</option>`).join('')}<option value="" ${!n.me ? 'selected' : ''}>None left</option></select>`;
+    const foeSel = `<select data-fl="foe" data-id="${n.id}" aria-label="Their Pokémon">${team.map((p, i) => `<option value="${i}" ${i === n.foe ? 'selected' : ''}>${esc(monName(p.n))}${down.theirs.has(i) ? ' (beaten)' : ''}</option>`).join('')}<option value="-1" ${n.foe < 0 ? 'selected' : ''}>All beaten</option></select>`;
+    const meImg = pk.has(n.me) ? `<img src="${nimg(party[pk.get(n.me)].e.n)}" alt="">` : '', foeImg = team[n.foe] ? `<img src="${nimg(team[n.foe].n)}" alt="">` : '';
+    const warn = (pk.has(n.me) && down.mine.has(n.me) ? `${esc(meName(n.me))} has already fainted on this path. ` : '') + (down.theirs.has(n.foe) ? `${esc(monName(team[n.foe].n))} is already beaten on this path.` : '');
+    const head = n.kind === 'start' ? '<div class="fcond"><span class="fk">▶</span><b>Start</b></div>'
+      : `<div class="fcond"><span class="fk" aria-hidden="true">${n.kind === 'wins' ? '✓' : n.kind === 'faints' ? '✗' : '?'}</span><input data-fl="cond" data-id="${n.id}" value="${esc(n.cond || '')}" aria-label="What happened"></div>`;
+    return `<li class="fnode ${n.kind}"><div class="fcard">${head}
+      <div class="fvs">${meImg}${meSel}<span class="sp">vs</span>${foeImg}${foeSel}</div>
+      ${warn ? `<div class="sp bko">${warn}</div>` : ''}
+      ${end ? `<div class="fend ${end}">${end === 'won' ? '🏆 Fight won' : 'Run over: no Pokémon left'}</div>` : `<div class="sp fhint">${hint(n)}</div>
+      <input class="fnote" data-fl="note" data-id="${n.id}" value="${esc(n.note || '')}" placeholder="Plan: the move to use, or who to switch to and when">
+      <div class="fbtns"><button class="btn" data-fadd="wins" data-id="${n.id}">+ If ${esc(meName(n.me))} wins</button><button class="btn" data-fadd="faints" data-id="${n.id}">+ If ${esc(meName(n.me))} faints</button><button class="btn" data-fadd="other" data-id="${n.id}">+ Other result</button></div>`}
+      ${n.kind !== 'start' ? `<button class="an fdel" data-fdel="${n.id}" title="Remove this step and everything after it">Remove</button>` : ''}
+    </div>${(n.kids || []).length ? `<ul>${n.kids.map(k => node(k, p2)).join('')}</ul>` : ''}</li>`;
+  };
+  el.innerHTML = `<section class="card full flowbox" data-sec="pflow"><div class="nhead"><h3>Battle flow</h3>${saved ? '<button class="an" data-freset>Start over</button>' : ''}</div>
+    <p class="sp">Plan the fight as decisions. Start with your lead against theirs and note what to do, then add a step for each result: who comes out next and what to do then. After a win their next Pokémon is filled in from their order, so change it if the AI is likely to send another. The hints are from full HP.</p>
+    <ul class="flow">${node(root, [])}</ul></section>`;
 }
 function batQueue() { clearTimeout(batTimer); batTimer = setTimeout(batAnalyze, 120) }
 const batOpen = new Set();   // folded sections the player has opened
@@ -3632,6 +3978,188 @@ function renderSim() {
       <div><h4 class="tph4">Their biggest threats</h4>${foes.map(f => `<div class="smon"><img src="${nimg(f.n)}" alt=""><div><b>${esc(f.name)}</b><div class="sp">${f.kills / Math.max(1, x.n) >= .05 ? `knocks out ${(f.kills / Math.max(1, x.n)).toFixed(1)} of yours per fight` : 'rarely knocks anything out'}</div></div></div>`).join('')}</div></div>
     <p class="sp" style="margin-top:8px">${x.n} simulated fights from turn 1 with full HP and unused items. ${how}. You play sensibly (status and set-up when it helps, otherwise your strongest move); the boss follows Platinum's trainer AI. It doesn't use healing items, and Set style means no free switch after a knock-out.</p></section>`;
 }
+
+// ---- Ways to raise the win chance: one change at a time (held item, move, evolution) on your current party, each played out on the
+// same seeded fights as the party as it is, so the difference is the change and not luck. Same send-in order and play as "Simulate the fight".
+let recRes = null, recTok = 0;
+const RECN1 = 80, RECN2 = 400, RECTOP = 10;
+const RECGC = new Set(['Leftovers', 'Life Orb', 'Focus Sash', 'Expert Belt', 'Choice Band', 'Choice Specs', 'Choice Scarf']);   // Veilstone Game Corner prizes
+const recRng = seed => { let a = seed >>> 0 || 1; return () => { a = a + 0x6D2B79F5 | 0; let t = Math.imul(a ^ a >>> 15, 1 | a); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296 } };
+const RECTM = {"TM01":"Oreburgh Gate","TM02":"Mt. Coronet","TM03":"Route 218","TM04":"Solaceon Ruins","TM05":"Route 213","TM06":"Route 212","TM07":"Route 217","TM08":"Route 205","TM09":"Route 204","TM10":"Jubilife City","TM11":"Route 212","TM12":"Route 211","TM13":"Route 216","TM14":"Lake Acuity","TM15":"Sunyshore City","TM16":"Eterna City","TM17":"Great Marsh","TM18":"Route 223","TM19":"Route 209","TM20":"Route 212","TM21":"Galactic HQ","TM22":"Route 210","TM23":"Iron Island","TM24":"Valley Windworks","TM25":"Lake Valor","TM26":"Veilstone City","TM27":"Eterna Forest","TM28":"Eterna City","TM29":"Solaceon Town","TM30":["Hearthome City",1],"TM31":"Oreburgh Gate","TM32":"Wayward Cave","TM33":"Eterna City","TM34":"Valley Windworks","TM35":"Fuego Ironworks","TM36":"Great Marsh","TM37":"Pokémon League","TM38":"Lake Verity","TM39":"Ravaged Path","TM40":"Floaroma Town","TM41":"Route 213","TM42":"Jubilife City","TM43":"Hearthome City","TM44":"Hearthome City","TM45":"Hearthome City","TM46":"Eterna City","TM47":"Route 209","TM48":"Canalave City","TM49":"Veilstone City","TM50":"Sunyshore City","TM51":"Route 210","TM52":["Route 217",1],"TM53":"Valor Lakefront","TM54":"Eterna City","TM55":"Hearthome City","TM56":"Route 222","TM57":["Sunyshore City",1],"TM58":"Route 203","TM59":"Maniac Tunnel","TM60":["Veilstone City",1],"TM61":"Lost Tower","TM62":"Route 212","TM63":"Veilstone City","TM64":"Veilstone City","TM65":"Old Chateau","TM66":"Route 215","TM67":"Eterna City","TM68":"Victory Road","TM69":"Mt. Coronet","TM70":"Oreburgh Gate","TM71":"Ravaged Path","TM72":["Snowpoint City",1],"TM73":"Eterna City","TM74":"Route 206","TM75":"Route 208","TM76":["Oreburgh City",1],"TM77":"Route 211","TM78":"Eterna Forest","TM79":"Veilstone City","TM80":"Eterna City","TM81":"Route 208","TM82":"Eterna Forest","TM83":"Route 215","TM84":"Route 212","TM85":"Wayward Cave","TM86":["Eterna City",1],"TM87":"Route 212","TM88":"Route 210","TM89":"Canalave City","TM90":"Old Chateau","TM91":["Canalave City",1],"TM92":"Route 213","HM01":"Eterna City","HM02":"Veilstone City","HM03":"Celestic Town","HM04":"Iron Island","HM05":"Solaceon Ruins","HM06":"Oreburgh Gate","HM07":["Pastoria City",1],"HM08":["Snowpoint City",1]};   // where each TM/HM is found (RP v1.3.0 notes); [area, 1] = a gym leader gift, so only after that boss
+const recAllItems = () => store.get('rp-recall', false);
+const recChOf = area => GUIDE.findIndex(c => c.areas.some(a => gArea(a).n === area));   // -1 when the guide doesn't go there
+// can you have this TM/HM by chapter ch? Gym leader gifts need that chapter's boss beaten.
+const recTmOk = (tm, ch) => { const l = RECTM[tm]; if (!l) return false; const c = recChOf(Array.isArray(l) ? l[0] : l); return c >= 0 && (Array.isArray(l) ? c < ch : c <= ch) };
+function recSetup(r) {
+  const party = batParty(r), team = batTeam(r), mode = simMode(), lead = Math.max(0, party.findIndex(x => x.row.k === BS.pa));
+  const list = (mode === 'order' ? simOrder(r) : [party[lead], ...party.filter((_, i) => i !== lead)]).filter(Boolean);
+  const b = batB(BS.boss), chOf = bi => { const i = GUIDE.findIndex(c => c.b.includes(bi)); return i < 0 ? GUIDE.length - 1 : i };
+  const ch = Math.max(0, Math.min(b && b.tr ? b.ch : chOf(BS.boss), chOf(r.beat)));
+  return { party, team, list, ch, repl: mode === 'order' ? 'order' : 'best', noSwitch: mode === 'order' && !!BS.simNoSw, sig: simSig(r) + '|' + recAllItems() + '|' + r.beat };
+}
+// where you'd get an item by this boss: '' when it isn't found on the way
+function recWhere(item, r, ch, self) {
+  const has = placed(r).find(x => x.e.item === item && x.e !== self && (x.e.st === 'party' || x.e.st === 'box'));
+  if (has) return `${has.e.nick || monName(has.e.n)} holds one`;
+  const on = pjItemWhere(item, ch); if (on) return 'found on ' + on;
+  const upto = new Set(GUIDE.slice(0, ch + 1).flatMap(c => c.areas.map(a => gArea(a).n)));
+  if (RECGC.has(item) && upto.has('Veilstone City')) return 'Veilstone Game Corner';
+  const bd = BERRYD[item]; if (bd && bd.l) { const a = bd.l.map(x => x.split('|')[0]).find(x => upto.has(x)); if (a) return 'berry on ' + a }
+  return '';
+}
+// the single changes worth testing for each of your Pokémon
+function recCands(r, su) {
+  const foes = su.team.map(p => nBossMon(p, +nCalc.biv)), out = [], all = recAllItems();
+  su.list.forEach(x => {
+    const e = x.e, m = mons[e.n - 1], v = m.v[ver], P = nMineMon(e), hpt = (e.moves || []).includes('Hidden Power') ? nHP(e).t : '';
+    const name = e.nick || monName(e.n), ab = abName(nAb(e)), base = { k: x.row.k, sp: e.n, name };
+    const slots = [0, 1, 2, 3].map(j => (e.moves || [])[j] || ''), known = slots.filter(mv => MV[mv]);
+    const atk = known.filter(isAttack), tOf = mv => mv === 'Hidden Power' ? hpt : MV[mv].t;
+    const phys = atk.filter(mv => MV[mv].c === 'P').length, spec = atk.length - phys;
+    // held items the engine plays out
+    const items = ['Leftovers', 'Sitrus Berry', 'Lum Berry', 'Focus Sash', 'Life Orb', 'Expert Belt', 'Choice Scarf', 'Scope Lens'];
+    if (atk.length) items.push(phys >= spec ? 'Choice Band' : 'Choice Specs', phys >= spec ? 'Muscle Band' : 'Wise Glasses', phys >= spec ? 'Liechi Berry' : 'Petaya Berry', 'Salac Berry');
+    if (v.types.includes('Poison')) items.push('Black Sludge');
+    [...new Set(atk.map(tOf).filter(Boolean))].forEach(t => { const its = Object.keys(NTYPEITEM).filter(i => NTYPEITEM[i] === t);
+      items.push(its.find(i => recWhere(i, r, su.ch, e)) || its[0]) });
+    const threats = new Set(su.team.flatMap(p => (p.mv || []).filter(mv => isAttack(mv) && defMult(v.types, ab, MV[mv].t) >= 2).map(mv => MV[mv].t)));
+    threats.forEach(t => { const b = Object.keys(NBERRY).find(i => NBERRY[i] === t); if (b) items.push(b) });
+    if (known.some(mv => mv === 'Reflect' || mv === 'Light Screen')) items.push('Light Clay');
+    if (known.some(mv => NCHARGE.has(mv))) items.push('Power Herb');
+    if (known.some(mv => NDRAIN.has(mv))) items.push('Big Root');
+    [...new Set(items)].filter(i => i && i !== e.item).forEach(item => { const where = recWhere(item, r, su.ch, e);
+      if (!where && !all) return;
+      out.push(Object.assign({ kind: 'item', item, label: `Hold ${item}`, sub: (e.item ? `instead of ${e.item} · ` : '') + (where || 'not found on the way here'), far: !where, e2: Object.assign({}, e, { item }) }, base)) });
+    // moves it can learn now: the Move Relearner (level-up moves up to its level; Pastoria City) and TMs/HMs you can have by now
+    const L = learnable(m), lv = +e.lv || 0, have = new Set(known), pc = recChOf('Pastoria City'), relearn = pc >= 0 && pc <= su.ch;
+    const pool = [...L.lu.filter(([, how]) => +how.slice(4) <= lv && (relearn || all)).map(([mv, how]) => [mv, 'Move Relearner in Pastoria (' + how + ')' + (relearn ? '' : ' · not reached yet'), !relearn]),
+      ...L.tm.map(([mv, how]) => { const ok = recTmOk(how, su.ch), l = RECTM[how]; return [mv, how + (l ? ' · ' + (Array.isArray(l) ? l[0] + ' Gym' : l) : '') + (ok ? '' : ' · not found on the way here'), !ok] }).filter(x => !x[2] || all)]
+      .filter(([mv]) => MV[mv] && !have.has(mv) && !NSELFKO.has(mv));
+    const vals = new Map(known.map(mv => [mv, pjMoveVals(mv, P, foes, hpt)])), best = foes.map((_, j) => Math.max(0, ...known.map(mv => (vals.get(mv) || [])[j] || 0)));
+    const gainOf = mv => { const vv = pjMoveVals(mv, P, foes, hpt); return vv ? vv.reduce((a, y, j) => a + Math.max(0, y - best[j]), 0) + .05 * vv.reduce((a, y) => a + y, 0) : 0 };
+    // the slot to give up: an empty one, else the one whose loss costs least (useful status moves are kept)
+    const slotLoss = j => { const mv = slots[j]; if (!MV[mv]) return -1; if (PJKEEP.has(mv)) return 1e9; const vv = vals.get(mv); if (!vv) return 0;
+      return foes.reduce((a, _, f) => a + best[f] - Math.max(0, ...known.filter((o, i) => o !== mv).map(o => (vals.get(o) || [])[f] || 0)), 0) + .05 * vv.reduce((a, y) => a + y, 0) };
+    const drop = [0, 1, 2, 3].reduce((b, j) => slotLoss(j) < slotLoss(b) ? j : b, 0);
+    const atkC = pool.map(([mv, how, far]) => ({ mv, how, far, g: gainOf(mv) })).filter(o => o.g > 0).sort((a, b) => b.g - a.g).slice(0, 5);
+    const stC = pool.filter(([mv]) => PJKEEP.has(mv)).slice(0, 2).map(([mv, how, far]) => ({ mv, how, far }));
+    if (slotLoss(drop) < 1e9) [...atkC, ...stC].forEach(({ mv, how, far }) => { const ms = slots.slice(); ms[drop] = mv;
+      out.push(Object.assign({ kind: 'move', mv, slot: drop, far, label: `Teach ${mv}`, sub: `${slots[drop] ? 'replacing ' + slots[drop] : 'in its empty slot'} · ${how}`, e2: Object.assign({}, e, { moves: ms }) }, base)) });
+    // evolutions it could take now: a level it's already past (it was held back), or an item you can get by this boss
+    const h = nEvoNode(e.n);
+    ((h && h.node.k) || []).filter(c => mons[c.num - 1]).forEach(c => { const how = pjHow(c); if (!how) return;
+      let where = '', far = false;
+      if (how.lv) { if (lv < how.lv) return; where = `it's past Lv. ${how.lv}; let it evolve` }
+      else if (how.item === 'friendship') where = 'level it up with high friendship';
+      else { const w = recWhere(how.item, r, su.ch, e); if (!w && !all) return; far = !w; where = `${how.hold ? 'level up holding' : 'use'} ${how.item} · ${w || 'not found on the way here'}` }
+      const abs0 = v.abilities, abs = mons[c.num - 1].v[ver].abilities, sl = Math.max(0, abs0.indexOf(nAb(e)));
+      out.push(Object.assign({ kind: 'evo', to: c.num, far, label: `Evolve into ${mons[c.num - 1].name}`, sub: where, e2: Object.assign({}, e, { n: c.num, stats: {}, ab: abs[sl] || abs[0] }) }, base)) });
+  });
+  out.forEach(c => { c.mon = nMineMon(c.e2); c.moves = (c.e2.moves || []).filter(Boolean) });
+  return out;
+}
+function recRun() {
+  const r = curRun(); batState(r); const su = recSetup(r);
+  if (!su.list.length || !su.team.length) return;
+  const tok = ++recTok, theirs = su.team.map(p => nBossMon(p, +nCalc.biv));
+  const base = new Map(su.list.map(x => [x.row.k, { mon: nMineMon(x.e), moves: (x.e.moves || []).filter(Boolean) }]));
+  const cands = recCands(r, su);
+  const play = (ov, seed) => {
+    const P = su.list.map((x, i) => { const o = ov && ov.get(x.row.k) || base.get(x.row.k); return nsMake(o.mon, o.moves, 0, i, x.row.k) });
+    const B = theirs.map((m, i) => nsMake(m, (su.team[i].mv || []).filter(Boolean), 1, i, 'b' + i));
+    const rnd = Math.random; Math.random = recRng(Math.imul(seed + 1, 2654435761));
+    try { return nsBattle(P, B, { flags: flagsOf(), repl: su.repl, noSwitch: su.noSwitch }) } finally { Math.random = rnd }
+  };
+  const res = recRes = { sig: su.sig, boss: BS.boss, n: 0, bw: [], bd: [], cands, phase: 'base', done: 0, total: RECN2 + cands.length * RECN1 + RECTOP * (RECN2 - RECN1) + RECN2 };
+  const acc = c => { c.n = 0; c.win = 0; c.dead = 0; c.up = 0; c.down = 0; c.dd = 0 };
+  cands.forEach(acc);
+  const one = (c, ov) => { const s = c.n, o = play(ov, s), d = new Set(o.deaths).size; c.n++; res.done++;
+    if (o.win) c.win++; c.dead += d; c.dd += d - res.bd[s]; if (o.win && !res.bw[s]) c.up++; if (!o.win && res.bw[s]) c.down++ };
+  const ovOf = c => new Map([[c.k, c]]);
+  let queue = [], qi = 0;
+  const step = () => {
+    if (tok !== recTok) return;
+    const t0 = performance.now();
+    while (performance.now() - t0 < 40) {
+      if (res.phase === 'base') { if (res.n >= RECN2) { res.phase = 'screen'; queue = cands.map(c => [c, RECN1]); qi = 0; continue }
+        const o = play(null, res.n), d = new Set(o.deaths).size; res.bw.push(o.win); res.bd.push(d); res.n++; res.done++; continue }
+      if (qi < queue.length) { const [c, N] = queue[qi]; if (c.n >= N) { qi++; continue } one(c, c.ov || ovOf(c)); continue }
+      if (res.phase === 'screen') {
+        // the most promising get the full count, so their numbers are solid
+        res.phase = 'refine'; const top = cands.slice().sort((a, b) => recScore(b) - recScore(a)).slice(0, RECTOP);
+        top.forEach(c => c.top = true); queue = top.map(c => [c, RECN2]); qi = 0; continue }
+      if (res.phase === 'refine') {
+        // the best clear gain of each kind for each Pokémon, all at once
+        res.phase = 'combo'; const picks = recPicks(res), per = new Map();
+        picks.forEach(c => { const o = per.get(c.k) || {}; if (!o[c.kind]) o[c.kind] = c; per.set(c.k, o) });
+        const chosen = [...per.values()].flatMap(o => ['evo', 'item', 'move'].map(k => o[k]).filter(Boolean));
+        if (chosen.length >= 2) {
+          const combo = res.combo = { kind: 'combo', parts: chosen }; acc(combo);
+          combo.ov = new Map([...per.entries()].map(([k, o]) => { let e = su.list.find(x => x.row.k === k).e;
+            if (o.evo) e = Object.assign({}, e, { n: o.evo.e2.n, stats: {}, ab: o.evo.e2.ab });
+            if (o.item) e = Object.assign({}, e, { item: o.item.item });
+            if (o.move) { const ms = [0, 1, 2, 3].map(j => (e.moves || [])[j] || ''); ms[o.move.slot] = o.move.mv; e = Object.assign({}, e, { moves: ms }) }
+            return [k, { mon: nMineMon(e), moves: (e.moves || []).filter(Boolean) }] }));
+          queue = [[combo, RECN2]]; qi = 0; continue }
+        res.total = res.done; }
+      res.phase = 'done'; break;
+    }
+    renderRec(); if (res.phase !== 'done') setTimeout(step, 0);
+  };
+  renderRec(); setTimeout(step, 0);
+}
+// win gain over the party as it is (same fights), and how sure that is
+const recGain = c => (c.up - c.down) / Math.max(1, c.n);
+const recSe = c => Math.sqrt(c.up + c.down) / Math.max(1, c.n);
+const recScore = c => recGain(c) - .03 * c.dd / Math.max(1, c.n);
+const recClear = c => c.n >= RECN2 && (recGain(c) > 2 * recSe(c) + .005 || (Math.abs(recGain(c)) <= 2 * recSe(c) && c.dd / c.n < -.15));
+const recPicks = res => res.cands.filter(c => c.top && recClear(c)).sort((a, b) => recScore(b) - recScore(a));
+function renderRec() {
+  const el = document.getElementById('batrec'); if (!el) return;
+  const r = curRun(); if (!batParty(r).length || !batTeam(r).length) { el.innerHTML = ''; return }
+  const su = recSetup(r), x = recRes && recRes.boss === BS.boss ? recRes : null, busy = x && x.phase !== 'done' && recTok;
+  const pct = v => Math.round(v * 100) + '%', sgn = v => (v >= 0 ? '+' : '−') + Math.abs(Math.round(v * 100)) + '%';
+  const kindTag = { item: 'Item', move: 'Move', evo: 'Evolve' };
+  let body = '';
+  if (busy) body = `<p class="sp" style="margin:8px 0 0">${x.phase === 'base' ? 'Simulating your party as it is…' : x.phase === 'screen' ? `Trying ${x.cands.length} changes…` : x.phase === 'refine' ? 'Double-checking the best ones…' : 'Trying the best ones together…'} ${Math.min(99, Math.round(x.done / x.total * 100))}%</p>
+      <span class="sbar recbar"><i style="width:${Math.min(100, Math.round(x.done / x.total * 100))}%"></i></span>`;
+  else if (x) {
+    const bw = x.bw.filter(Boolean).length / x.n, bd = x.bd.reduce((a, c) => a + c, 0) / x.n, picks = recPicks(x);
+    const lose = c => { const v = (x.bd.reduce((a, d) => a + d, 0) + c.dd) / x.n; return v < .05 ? 'nobody' : v.toFixed(1) };
+    const row = (c, i) => { const g = recGain(c), d = c.dd / c.n, applied = c.applied;
+      return `<div class="recrow"><img src="${nimg(c.kind === 'evo' ? c.to : c.sp)}" alt=""><div><div><span class="btag">${kindTag[c.kind]}</span> <b>${esc(c.name)}</b>: ${esc(c.label)}${c.far ? ' <span class="btag" title="Not available yet at this point in the run">later</span>' : ''}</div>
+        <div class="sp">${esc(c.sub)} · ${pct(c.win / c.n)} win, lose ${lose(c)} on average</div></div>
+        <div class="recgain"><b class="${g > 0 ? 'good' : ''}">${sgn(g)}</b><small class="sp">${d <= -.05 ? Math.abs(d).toFixed(1) + ' fewer lost' : d >= .05 ? d.toFixed(1) + ' more lost' : 'win chance'}</small></div>
+        ${applied ? '<span class="sp">Applied ✓</span>' : `<button class="btn" data-recapply="${x.cands.indexOf(c)}" title="Make this change on its card">Apply</button>`}</div>` };
+    const c = x.combo, comboHtml = c && c.n >= RECN2 ? `<div class="recrow reccombo"><div><b>All of the above together</b> <span class="sp">(the best of each kind per Pokémon)</span>
+        <div class="sp">${c.parts.map(p => esc(p.name + ': ' + p.label)).join(' · ')}</div></div><div class="recgain"><b class="${recGain(c) > 0 ? 'good' : ''}">${sgn(recGain(c))}</b><small class="sp">${pct(c.win / c.n)} win</small></div>${c.parts.every(p => p.applied) ? '<span class="sp">Applied ✓</span>' : '<button class="btn" data-recapply="combo" title="Make all of these changes on their cards">Apply all</button>'}</div>` : '';
+    const rest = x.cands.filter(o => !picks.includes(o)).sort((a, b) => recScore(b) - recScore(a));
+    body = `<div class="tpsum" style="margin-top:8px"><span class="bowin">${pct(bw)}</span><span class="sp">win chance as your party is now · lose ${bd < .05 ? 'nobody' : bd.toFixed(1) + ' Pokémon'} on average · ${x.cands.length} changes tried</span></div>
+      ${x.sig !== su.sig ? '<p class="ivwarn">Your party, send-in order or the boss settings changed since this ran. Run it again to update.</p>' : ''}
+      ${picks.length ? `<div class="recl">${picks.map(row).join('')}${comboHtml}</div>`
+        : `<p class="sp">No single held item, move or evolution clearly helps here${bw >= .97 ? ': you already win nearly every fight' : ''}. Try the Leveling plan or the Team picker above.</p>`}
+      ${rest.length ? `<details class="recmore"><summary class="sp">Everything else tried (${rest.length}): no clear gain</summary><div class="recl">${rest.map(o => `<div class="recrow small"><div><span class="btag">${kindTag[o.kind]}</span> ${esc(o.name)}: ${esc(o.label)} <span class="sp">· ${esc(o.sub)}</span></div>
+          <div class="recgain"><b>${o.n >= RECN2 ? sgn(recGain(o)) : '~' + sgn(recGain(o))}</b></div></div>`).join('')}</div></details>` : ''}
+      <p class="sp" style="margin-top:8px">Each change is played on its own, in the same ${x.n} fights as your party as it is (same luck), so the difference comes from the change. Only differences bigger than the noise are listed. A gain may need you to change something it doesn't mention: an item another Pokémon holds can only go to one of them, and only what you can get up to your next boss (${esc(NBOSS[Math.min(r.beat, NBOSS.length - 1)].label)}) counts unless you tick the box. Evolved forms use estimated stats.</p>`;
+  } else body = `<p class="sp" style="margin:8px 0 0">Tries held items, moves your party can learn now (TMs and HMs you can have by this point, plus the Move Relearner once you've reached Pastoria City) and evolutions, one at a time, and shows the ones that raise your win chance in “Simulate the fight” (${esc(simMode() === 'order' ? 'your order' : 'best matchup')} send-in). Takes about half a minute.</p>`;
+  el.innerHTML = `<section class="card full"><details class="pjbox recbox" data-recbox ${store.get('rp-recopen', true) ? 'open' : ''}><summary><h3>Ways to raise your win chance</h3> <span class="sp">held items, moves, evolutions</span></summary>
+    <div class="tbtns" style="margin-top:8px"><button class="btn ${x && !busy ? '' : 'primary'}" data-bact="rec" ${busy ? 'disabled' : ''}>${x && !busy ? 'Run again' : 'Find improvements'}</button>
+      ${busy ? '<button class="btn" data-bact="recstop">Stop</button>' : ''}<label class="chk"><input type="checkbox" data-recall ${recAllItems() ? 'checked' : ''}> Include items, TMs and evolutions you can't get yet</label></div>
+    ${body}</details></section>`;
+}
+function recApply(i) {
+  if (!recRes) return;
+  const r = curRun(), list = (i === 'combo' ? (recRes.combo || {}).parts || [] : [recRes.cands[+i]]).filter(c => c && !c.applied && r.enc[c.k]);
+  if (!list.length) return;
+  // evolve first: the item and move changes then land on the evolved Pokémon
+  list.slice().sort((a, b) => (b.kind === 'evo') - (a.kind === 'evo')).forEach(c => { const e = r.enc[c.k];
+    if (c.kind === 'item') { e.item = c.item; nItemUsed(c.item) }
+    else if (c.kind === 'move') { const ms = [0, 1, 2, 3].map(j => (e.moves || [])[j] || ''); ms[c.slot] = c.mv; e.moves = ms }
+    else if (c.kind === 'evo') nEvolve(e, c.to);
+    c.applied = true });
+  r.updated = Date.now(); saveRuns(); renderRunList(); batRefresh();
+}
+
 
 // forecast + rank every option, a few hundred full playouts each, in small slices so the page stays responsive
 function batAnalyze() {
@@ -4688,7 +5216,7 @@ function gNextHtml(r) {
   return `<details class="card full gch gnext" data-gnext ${store.get('rp-gnextopen', true) ? 'open' : ''}><summary><h3>Next steps: ${esc(b.label)}</h3><span class="sp">${esc(b.area)} · level cap <b>${b.cap}</b> · ${n} of ${steps.length} done</span></summary>
     ${gWalkHtml(bi, r)}
     ${open.length ? `<h4 class="tph4">Encounters still open on the way</h4><div class="gareas">${open.map(a => gAreaChip(a, r)).join('')}</div>` : ''}
-    <div class="bcontrols"><button class="btn" data-gboss="${bi}">Plan it in Battle</button><button class="btn" data-gjumpto="${GUIDE.indexOf(ch)}">Open the chapter</button></div>
+    <div class="bcontrols"><button class="btn" data-gboss="${bi}">Plan it in the Planner</button><button class="btn" data-gjumpto="${GUIDE.indexOf(ch)}">Open the chapter</button></div>
     <p class="sp" style="margin:6px 0 0">Ticks are saved in this browser. When you mark the boss beaten in the Nuzlocke tab, this moves on to the next one.</p></details>`;
 }
 function renderGuide() {
@@ -4704,7 +5232,7 @@ function renderGuide() {
           <div class="sp">${esc(p.item || 'no item')}</div>${th.length ? `<div class="gth">${th.map(esc).join(' · ')}</div>` : ''}</div></div>` }).join('')}</div>
         ${wk.length ? `<div class="gwk"><span class="sp">Hit by</span> ${wk.map(([ty, n]) => `<span class="mtype" style="background:${TC[ty]}">${ty}</span><small>${n}/${team.length}</small>`).join(' ')}</div>` : ''}</div>` }).join('');
     return `<div class="gboss ${bi < next ? 'done' : bi === next ? 'next' : ''}"><div class="gbh"><h4>${esc(b.label)}</h4><span class="sp">${esc(b.area)}${b.sub ? ' · ' + esc(b.sub) : ''} · level cap <b>${b.cap}</b>${bi < next ? ' · beaten ✓' : bi === next ? ' · your next fight' : ''}</span>
-        <button class="btn" data-gboss="${bi}">Plan it in Battle</button></div>
+        <button class="btn" data-gboss="${bi}">Plan it in the Planner</button></div>
       ${(GWALK[bi] || []).length ? `<details class="gwalkin"><summary>How to get there (${GWALK[bi].length} step${GWALK[bi].length > 1 ? 's' : ''})</summary>${gWalkHtml(bi, r)}</details>` : ''}${vHtml}
       ${(GBOSS[bi] || []).length ? `<ul class="gtips">${GBOSS[bi].map(t => `<li>${esc(t)}</li>`).join('')}</ul>` : ''}</div>` };
   const chHtml = (ch, ci) => {
@@ -4766,7 +5294,7 @@ let gPopY = 0;   // a real scroll closes the card; small layout nudges don't
 window.addEventListener('scroll', () => { if (gPopFor && Math.abs(window.scrollY - gPopY) > 30) gPopHide() }, { passive: true });
 GD.addEventListener('click', ev => {
   const t = ev.target;
-  const gb = t.closest('[data-gboss]'); if (gb) { const r = curRun(); BS = batFresh(r, +gb.dataset.gboss, 0); batSave(); tpRes = null; return setView('battle') }
+  const gb = t.closest('[data-gboss]'); if (gb) { const r = curRun(); BS = batFresh(r, +gb.dataset.gboss, 0); batSave(); tpRes = null; return setView('plan') }
   const ga = t.closest('[data-garea]');
   if (ga && ga.dataset.gpop && gTouch && gPopFor !== ga) return gPopShow(ga);
   if (ga) { gPopHide(); return nOpenArea(ga.dataset.garea) }
@@ -4785,7 +5313,50 @@ BD.addEventListener('toggle', ev => { const d = ev.target;
   if (d.classList && d.classList.contains('phist')) { d.open ? nOpenLog.add(d.dataset.hk) : nOpenLog.delete(d.dataset.hk); return }
   if (d.classList && d.classList.contains('pmore') && d.closest('.pmon')) { const k = d.closest('.pmon').dataset.k; d.open ? nOpen.add(k) : nOpen.delete(k); return } }, true);
 BD.addEventListener('toggle', ev => { const k = ev.target.dataset && ev.target.dataset.bopen; if (k) ev.target.open ? batOpen.add(k) : batOpen.delete(k);
-  if (ev.target.hasAttribute && ev.target.hasAttribute('data-pjbox')) store.set('rp-pjopen', ev.target.open) }, true);
+  if (ev.target.hasAttribute && ev.target.hasAttribute('data-pjbox')) store.set('rp-pjopen', ev.target.open);
+  if (ev.target.hasAttribute && ev.target.hasAttribute('data-recbox')) store.set('rp-recopen', ev.target.open) }, true);
+// Planner: fold buttons and the battle flow
+new MutationObserver(batDecorate).observe(BD, { childList: true, subtree: true });
+BD.addEventListener('click', ev => {
+  const t = ev.target; if (!t.closest) return;
+  const ph = t.closest('button[data-phide]');
+  if (ph) { ev.preventDefault(); const id = ph.dataset.phide; pHide.has(id) ? pHide.delete(id) : pHide.add(id); store.set('rp-phide', [...pHide]); return batDecorate() }
+  const r = curRun(), add = t.closest('[data-fadd]'); if (add) return flowAdd(r, add.dataset.id, add.dataset.fadd);
+  const del = t.closest('[data-fdel]');
+  if (del) { const root = flowRoot(r), hit = flowFind(root, del.dataset.fdel); if (!hit || !hit.up) return;
+    if ((hit.n.kids || []).length && !confirm('Remove this step and every step after it?')) return;
+    hit.up.kids = hit.up.kids.filter(k => k !== hit.n); flowSave(r, root); return renderFlow() }
+  if (t.closest('[data-freset]')) { if (!confirm('Clear this battle flow and start over?')) return; const o = prepGet(r); delete o.flow; prepSet(r, o); return renderFlow() }
+});
+BD.addEventListener('change', ev => {
+  const t = ev.target, f = t.dataset && t.dataset.fl; if (!f) return;
+  const r = curRun(), root = flowRoot(r) || flowNew(r), hit = flowFind(root, t.dataset.id); if (!hit) return;
+  if (f === 'me') hit.n.me = t.value; else if (f === 'foe') hit.n.foe = +t.value; else if (f === 'note') hit.n.note = t.value; else if (f === 'cond') hit.n.cond = t.value;
+  flowSave(r, root); if (f === 'me' || f === 'foe') renderFlow();
+});
+// Planner checklist ticks and written plan; Tracker stat and EV logging
+BD.addEventListener('change', ev => {
+  const t = ev.target, r = curRun();
+  if (t.dataset.prepchk) { const o = prepGet(r); o.chk = Object.assign({}, o.chk, { [t.dataset.prepchk]: t.checked }); prepSet(r, o); return renderPrep() }
+  if (t.hasAttribute('data-prepnote')) { const o = prepGet(r); o.note = t.value; return prepSet(r, o) }
+  if (t.hasAttribute('data-ivk')) { batIvK = t.value; batIvMsg = ''; return renderIvLog() }
+});
+BD.addEventListener('input', ev => {
+  const t = ev.target; if (!t.closest || !t.closest('.bativ')) return; t.setCustomValidity('');
+  if (t.hasAttribute('data-bivlv')) { const x = batIvWho(curRun()); if (!x) return; const ph = batIvPh(x.e, +t.value);
+    BD.querySelectorAll('.bativ [data-bivst]').forEach(i => { i.placeholder = ph[i.dataset.bivst] }) }
+});
+// only a click on a card's title counts (toggle also fires for cards that start open, which would freeze the defaults)
+BD.addEventListener('click', ev => { const sm = ev.target.closest && ev.target.closest('.pcard > summary'); if (!sm) return; const d = sm.parentElement; store.set('rp-pcard', Object.assign(store.get('rp-pcard', {}), { [d.dataset.pcard]: !d.open })) });
+BD.addEventListener('toggle', ev => { if (ev.target.classList && ev.target.classList.contains('bativ')) store.set('rp-bivopen', ev.target.open) }, true);   // toggle doesn't bubble
+BD.addEventListener('keydown', ev => { if (ev.key === 'Enter' && ev.target.closest && ev.target.closest('.bivrow')) { ev.preventDefault(); batIvLogNow(curRun()) } });
+BD.addEventListener('click', ev => {
+  const t = ev.target, r = curRun();
+  if (t.closest('[data-bivlog]')) return batIvLogNow(r);
+  const one = t.closest('[data-bivev]'); if (one) return batIvEv(r, [[+one.dataset.bivev, 1]], 'Beat ' + monName(+one.dataset.bivev));
+  if (t.closest('[data-bivevall]')) { const tm = batTeam(r), b = batB(BS.boss); if (typeof BS.boss === 'string') trSetBeaten(r, BS.boss, true);   // a trainer's whole team: marked beaten too
+    return batIvEv(r, tm.map(p => [p.n, 1]), `Beat ${b.label}'s team (${tm.map(p => monName(p.n)).join(', ')})`) }
+});
 BD.addEventListener('input', ev => { if (!ev.target.hasAttribute('data-tplvr')) return; const w = ev.target.closest('.tplv');
   w.querySelector('.tplvout').textContent = tpLvTxt(+ev.target.value, +w.dataset.lo, +w.dataset.cap);
   w.querySelectorAll('[data-tplv]').forEach(x => { x.checked = +x.dataset.tplv === +ev.target.value }) });
@@ -4794,6 +5365,7 @@ BD.addEventListener('change', ev => { if (ev.target.dataset.bf) return batChange
   const lvw = ev.target.closest && ev.target.closest('.tplv');
   if (lvw && (ev.target.dataset.tplv || ev.target.hasAttribute('data-tplvr'))) return tpSetLv(+(ev.target.dataset.tplv || ev.target.value), +lvw.dataset.lo, +lvw.dataset.cap);
   if (ev.target.dataset.simmode) { BS.simMode = ev.target.dataset.simmode; batSave(); return renderSim() }
+  if (ev.target.hasAttribute('data-recall')) { store.set('rp-recall', ev.target.checked); return renderRec() }
   if (ev.target.hasAttribute('data-simnosw')) { BS.simNoSw = ev.target.checked; batSave(); return renderSim() }
   if (ev.target.dataset.evoplan) { const r = curRun(), e = r.enc[ev.target.dataset.evoplan]; if (!e) return;
     if (ev.target.value) e.evoPlan = +ev.target.value; else delete e.evoPlan; r.updated = Date.now(); saveRuns(); if (lvRes) tpRun('lv'); else renderLevelPlan(); return tpRes ? tpRun() : renderTeamPick() }
@@ -4816,7 +5388,10 @@ BD.addEventListener('click', ev => {
     [ord[i], ord[j]] = [ord[j], ord[i]]; BS.simOrd = ord; batSave(); return renderSim() }
   const pa = ev.target.closest('[data-tppickall]');
   if (pa) { BS.pick = pa.dataset.tppickall === '1' ? null : []; batSave(); return renderTeamPick() }
+  const ra = ev.target.closest('[data-recapply]'); if (ra) return recApply(ra.dataset.recapply);
   const b = ev.target.closest('[data-bact]'); if (!b) return;
+  if (b.dataset.bact === 'rec') return recRun();
+  if (b.dataset.bact === 'recstop') { recTok++; recRes = null; return renderRec() }
   if (b.dataset.bact === 'team') return tpRun();
   if (b.dataset.bact === 'lvteam') return tpRun('lv');
   if (b.dataset.bact === 'lvuse') return tpUse(lvRes);
@@ -5198,7 +5773,7 @@ function nTrainersHtml(r) {
   // beaten trainers fold down to one line (open it to see the team again); "Not beaten" brings the full row back
   const trHtml = ({ t, th, key }) => trBeaten(r, key)
     ? `<details class="trrow trdone"><summary><b>${esc(t.name)}</b> <span class="btag good">Beaten ✓</span><button class="btn trbeat" data-trbeat="${esc(key)}" title="Show this trainer in full again">Not beaten</button></summary>${team(th)}</details>`
-    : `<div class="trrow lv${th.lvl}"><div class="trhd"><b>${esc(t.name)}</b>${t.re ? ' <span class="chip">Rematch</span>' : ''}${t.full ? ' <span class="chip">full set known</span>' : ''} ${tag(th.lvl)}<button class="btn trbat" data-trbat="${esc(key)}" title="Simulate this fight and get turn-by-turn advice in the Battle tab">Plan in Battle</button><button class="btn trbeat" data-trbeat="${esc(key)}" title="Mark as beaten: it folds down here and on the IVs tab">Beaten ✓</button></div>
+    : `<div class="trrow lv${th.lvl}"><div class="trhd"><b>${esc(t.name)}</b>${t.re ? ' <span class="chip">Rematch</span>' : ''}${t.full ? ' <span class="chip">full set known</span>' : ''} ${tag(th.lvl)}<button class="btn trbat" data-trbat="${esc(key)}" title="Open this fight in the Planner (then the Tracker for turn-by-turn advice)">Plan this fight</button><button class="btn trbeat" data-trbeat="${esc(key)}" title="Mark as beaten: it folds down here and on the IVs tab">Beaten ✓</button></div>
     ${team(th)}</div>`;
   blocks.sort((a, b) => a.ord[0] - b.ord[0] || a.ord[1] - b.ord[1]);   // the order you reach them
   const shown = blocks.reduce((a, b) => a + b.rows.length, 0), total = blocks.reduce((a, b) => a + b.total, 0);
@@ -5422,7 +5997,7 @@ ND.addEventListener('click', ev => {
   const trd = t.closest && t.closest('[data-trbeat]');
   if (trd) { ev.preventDefault(); const k = trd.dataset.trbeat; trSetBeaten(r, k, !trBeaten(r, k)); renderRunList(); return nRefreshTop() }
   const trb = t.closest && t.closest('[data-trbat]');
-  if (trb) { BS = batFresh(r, trb.dataset.trbat, 0); batSave(); tpRes = null; lvRes = null; return setView('battle') }
+  if (trb) { BS = batFresh(r, trb.dataset.trbat, 0); batSave(); tpRes = null; lvRes = null; return setView('plan') }
   const trAreas = t.closest && t.closest('[data-trareas]');
   if (trAreas) { const open = trAreas.dataset.trareas === 'open';
     ND.querySelectorAll('details.trarea').forEach(d => { open ? nTrClosed.delete(d.dataset.area) : nTrClosed.add(d.dataset.area); d.open = open });
