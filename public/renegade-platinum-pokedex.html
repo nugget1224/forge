@@ -591,6 +591,8 @@ button.gbtn:hover { border-color: var(--accent) }
 #batdetail .bivrow label { width: 64px } #batdetail .bivrow label.up { color: var(--chg) } #batdetail .bivrow label.dn { color: var(--accent) }
 .bivrow input { width: 100%; box-sizing: border-box }
 .bivevs { display: flex; flex-wrap: wrap; gap: 6px; align-items: center }
+.bivf { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 14px; margin: 0 0 8px }
+#batdetail .bivf label.chk { display: inline-flex; flex-direction: row; align-items: center; gap: 5px; text-transform: none; letter-spacing: 0; font-size: .86rem; color: var(--ink) }
 .bativ > .sp { margin: 6px 0 0 }
 #batdetail section.ncoll { padding-bottom: 12px }
 .flowbox > .sp { margin: 0 0 8px }
@@ -923,6 +925,8 @@ section.card[data-sec] > h3, section.card[data-sec] .nhead > h3 { display: flex;
 .nhide:hover { border-color: var(--accent); color: var(--ink) }
 section.ncoll > :not(h3):not(.nhead), section.ncoll .nhead > :not(h3) { display: none }
 section.ncoll h3 { margin-bottom: 0 !important }
+#batdetail section.card > h3:has(> [data-phide]), #batdetail section.card > .nhead:has([data-phide]) { cursor: pointer }
+.pjbox > summary .nhide { margin-left: 8px }
 .ivgo { float: right; font: 600 .66rem var(--font-body); text-transform: none; letter-spacing: 0; border: 1px solid var(--line); background: var(--panel); color: var(--ink); border-radius: 999px; padding: 1px 8px; cursor: pointer }
 .ivgo:hover { border-color: var(--accent) }
 .pivs { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 4px }
@@ -1776,7 +1780,7 @@ const NKEY = 'rp-nuzlocke';
 // Areas in rough story order; areas not listed here are appended at the end
 const NORDER = ['Twinleaf Town', 'Route 201', 'Lake Verity', 'Sandgem Town', 'Route 202', 'Jubilife City', 'Route 204 South', 'Ravaged Path', 'Route 203', 'Oreburgh Gate', 'Oreburgh City', 'Oreburgh Mine', 'Route 204 North',
   'Floaroma Town', 'Floaroma Meadow', 'Valley Windworks', 'Route 205 South', 'Eterna Forest', 'Route 205 North', 'Old Chateau', 'Eterna City', 'Route 211', 'Route 206', 'Wayward Cave', 'Route 207', 'Mt. Coronet', 'Route 208',
-  'Hearthome City', 'Route 209', 'Lost Tower', 'Solaceon Town', 'Solaceon Ruins', 'Route 210', 'Route 215', 'Veilstone City', 'Route 214', 'Maniac Tunnel', 'Valor Lakefront', 'Route 213', 'Pastoria City',
+  'Hearthome City', 'Route 209', 'Route 212 North', 'Lost Tower', 'Solaceon Town', 'Solaceon Ruins', 'Route 210', 'Route 215', 'Veilstone City', 'Route 214', 'Maniac Tunnel', 'Valor Lakefront', 'Route 213', 'Pastoria City',
   'Great Marsh', 'Route 212', 'Trophy Garden', 'Celestic Town', 'Fuego Ironworks', 'Route 218', 'Canalave City', 'Iron Island', 'Lake Valor', 'Lake Acuity', 'Route 216', 'Route 217', 'Acuity Lakefront',
   'Snowpoint City', 'Snowpoint Temple', 'Galactic HQ', 'Spear Pillar', 'Distortion World', 'Route 222', 'Sunyshore City', 'Route 219', 'Route 220', 'Route 221', 'Route 223', 'Victory Road', 'Pokémon League',
   'Fight Area', 'Route 225', 'Survival Area', 'Route 226', 'Route 227', 'Stark Mountain', 'Route 228', 'Route 229', 'Route 230', 'Resort Area', 'Route 224', 'Seven Stars Restaurant', 'Sendoff Spring',
@@ -1845,8 +1849,8 @@ function areaMons(L) {
 // Story bosses in order; the cap is the highest level on their team (from the Routes trainer data)
 const NBOSS = [
   ['Rival Barry', 'Route 203', '', 'PKMN Trainer Barry'], ['Leader Roark', 'Oreburgh City', 'Gym', 'Leader Roark'], ['Commander Mars', 'Valley Windworks', '', 'Commander Mars'],
-  ['Leader Gardenia', 'Eterna City', 'Gym', 'Leader Gardenia'], ['Commander Jupiter', 'Eterna City', 'Galactic Building', 'Commander Jupiter'], ['Rival Barry', 'Hearthome City', 'Gym', 'PKMN Trainer Barry'],
-  ['Leader Fantina', 'Hearthome City', 'Gym', 'Leader Fantina'], ['Leader Maylene', 'Veilstone City', 'Gym', 'Leader Maylene'], ['Rival Barry', 'Pastoria City', '', 'PKMN Trainer Barry'],
+  ['Leader Gardenia', 'Eterna City', 'Gym', 'Leader Gardenia'], ['Commander Jupiter', 'Eterna City', 'Galactic Building', 'Commander Jupiter'], ['Leader Fantina', 'Hearthome City', 'Gym', 'Leader Fantina'],
+  ['Leader Maylene', 'Veilstone City', 'Gym', 'Leader Maylene'], ['Rival Barry', 'Pastoria City', '', 'PKMN Trainer Barry'],
   ['Leader Wake', 'Pastoria City', 'Gym', 'Leader Wake'], ['Boss Cyrus', 'Celestic Town', '', 'Galactic Boss Cyrus'], ['Rival Barry', 'Canalave City', '', 'PKMN Trainer Barry'],
   ['Leader Byron', 'Canalave City', 'Gym', 'Leader Byron'], ['Commander Mars', 'Lake Verity', '', 'Commander Mars'], ['Commander Saturn', 'Lake Valor', '', 'Commander Saturn'],
   ['Leader Candice', 'Snowpoint City', 'Gym', 'Leader Candice'], ['Commander Saturn', 'Galactic HQ', '', 'Commander Saturn'], ['Boss Cyrus', 'Galactic HQ', '', 'Galactic Boss Cyrus'],
@@ -1896,6 +1900,12 @@ let nFresh = null;
 if (!NZ.runs.length) { NZ.runs.push(Object.assign(newRun('Run 1'), { created: 0, placeholder: true })); NZ.cur = nFresh = NZ.runs[0].id }
 const curRun = () => NZ.runs.find(r => r.id === NZ.cur) || NZ.runs[0];
 function nMigrate() {
+  NZ.runs.forEach(r => { if (r.bord) return; r.bord = 1;
+    if (r.prep) r.prep = Object.fromEntries(Object.entries(r.prep).map(([k, v]) => [k.replace(/^([56])\|/, (m, i) => (i === '5' ? '6' : '5') + '|'), v])) });
+  NZ.runs.forEach(r => { if (r.bord2) return; r.bord2 = 1;
+    const H = ROUTES.find(l => l.n === 'Hearthome City'), G = H && H.subs.find(x => x.n === 'Gym');
+    if ((+r.beat || 0) >= 7) { r.beat -= 1; if (G) { r.trBeat = r.trBeat || {}; G.tr.forEach((t, i) => { if (t.name === 'PKMN Trainer Barry') r.trBeat['tr:Hearthome City|Gym|' + i] = r.trBeat['tr:Hearthome City|Gym|' + i] || Date.now() }) } }
+    if (r.prep) r.prep = Object.fromEntries(Object.entries(r.prep).map(([k, v]) => { const m = /^(\d+)\|(.*)$/.exec(k); if (!m) return [k, v]; const i = +m[1]; return [i === 6 ? 'old6|' + m[2] : (i > 6 ? i - 1 : i) + '|' + m[2], v] })) });
   NZ.runs.forEach(r => Object.values(r.enc).forEach(e => (e.hist || []).forEach(x => { if (!x.n) x.n = e.caught || e.n })));
   NZ.runs.forEach(r => Object.entries(NSPLIT).forEach(([n, parts]) => { const e = r.enc[n], to = n + ' ' + parts[0]; if (!e) return;
     if (!r.enc[to]) r.enc[to] = e; delete r.enc[n]; if (r.porder) r.porder = r.porder.map(k => k === n ? to : k) }));
@@ -3194,13 +3204,17 @@ function nsBattle(P, B, opt) {
 // ---- Battle assistant tab: set up the current turn, see what the boss will do and which of your options wins most ----
 const BKEY = 'rp-bat';
 let BS = store.get(BKEY, null), batTok = 0, batTimer = null, batRes = null;
+if (!store.get('rp-bord', false)) { const sw = i => i === 5 ? 6 : i === 6 ? 5 : i;
+  if (BS && typeof BS.boss === 'number') { BS.boss = sw(BS.boss); store.set(BKEY, BS) } if (typeof nCalc.bi === 'number') { nCalc.bi = sw(nCalc.bi); store.set('rp-ncalc', nCalc) } store.set('rp-bord', true) }
+if (!store.get('rp-bord2', false)) { const sw = i => i > 6 ? i - 1 : i;   // Barry's Hearthome fight left the boss list
+  if (BS && typeof BS.boss === 'number') { BS.boss = sw(BS.boss); store.set(BKEY, BS) } if (typeof nCalc.bi === 'number') { nCalc.bi = sw(nCalc.bi); store.set('rp-ncalc', nCalc) } store.set('rp-bord2', true) }
 const batSide = () => ({ sr: 0, spk: 0, tsp: 0, ref: 0, ls: 0, tw: 0 });
 // a regular trainer as a battle opponent, keyed "tr:Area|Sub|i" (i = its place in that sub-area's trainer list). Trainers
 // without a custom set get the last four level-up moves, as in Trainers ahead. The level cap is the chapter's first boss's.
 function batTr(k) {
   const [a, sub, i] = k.slice(3).split('|'), L = ROUTES.find(x => x.n === a), x = L && L.subs.find(y => y.n === sub), t = x && x.tr[+i]; if (!t) return null;
   const team = t.team.filter(p => mons[p.n - 1]).map(p => Object.assign({}, p, { mv: trMoves(p), ab: p.ab || mons[p.n - 1].v[ver].abilities[0] || '' }));
-  const ch = GUIDE.find(c => gInCh(c, L, x)), b0 = ch && NBOSS[ch.b[0]];
+  const ch = GUIDE.find(c => trInCh(c, L, x, t)), b0 = ch && NBOSS[ch.b[0]];
   return { label: t.name.replace(/ R\d$/, ''), area: L.n, sub, cap: b0 ? b0.cap : Math.max(...team.map(p => parseInt(p.lv) || 0)), team, trs: [Object.assign({}, t, { team, var: '' })], tr: true, ch: ch ? GUIDE.indexOf(ch) : -1 };
 }
 const batB = bi => typeof bi === 'string' ? batTr(bi) : NBOSS[bi];
@@ -3617,11 +3631,11 @@ function renderBattle() {
       <p class="sp" style="margin-top:6px">Using run “${esc(r.name)}”</p></div>
     ${!party.length ? '<p class="empty">Add Pokémon with levels to your Nuzlocke party first.</p>' : plan ? `<div id="batprep"></div>
     <div id="batflow"></div>
+    <div id="batteam"></div>
+    <div id="batlvl"></div>
     <div id="batpcards"></div>
     <div id="batsim"></div>
-    <div id="batrec"></div>
-    <div id="batteam"></div>
-    <div id="batlvl"></div>` : `
+    <div id="batrec"></div>` : `
     <h3 class="bsect">The fight now</h3>
     <section class="card full"><h3>${esc(bl)}'s team</h3><div class="bslots">${team.map(bcard).join('')}</div>
       ${bAct ? stgBox('b', bAct, BS.bstg, BS.bfresh) : ''}</section>
@@ -3768,9 +3782,16 @@ function renderPrep() {
 }
 
 // ---- Tracker: log stats and EVs for the Pokémon in battle (or any party member) without leaving the fight ----
-let batIvK = '', batIvPa = null, batIvMsg = '';
+let batIvK = '', batIvPa = null, batIvMsg = '', batIvF = null;   // batIvF: keys ticked under "Who fought it" (null: just the chosen one)
+// the tracker remembers which of yours were out against each of theirs (BS.fought[their index] = your keys)
+function batIvFoughtRec() {
+  const b = BS.b && BS.b[BS.ba]; if (!BS.pa || !b || !(b.hp > 0)) return;
+  const f = BS.fought = BS.fought || {}, l = f[BS.ba] = f[BS.ba] || [];
+  if (!l.includes(BS.pa)) { l.push(BS.pa); batSave() }
+}
+function batIvTicks(r, x) { const ks = new Set(batParty(r).map(p => p.row.k)); const t = (batIvF || [x.row.k]).filter(k => ks.has(k)); return t.length ? t : [x.row.k] }
 function batIvWho(r) {
-  const party = batParty(r); if (batIvPa !== BS.pa) { batIvPa = BS.pa; batIvK = ''; batIvMsg = '' }
+  const party = batParty(r); if (batIvPa !== BS.pa) { batIvPa = BS.pa; batIvK = ''; batIvMsg = ''; batIvF = null }
   return party.find(p => p.row.k === batIvK) || party.find(p => p.row.k === BS.pa) || party[0];
 }
 // the stat each IV range gives at level lv with the EVs logged so far, as a hint in the empty boxes
@@ -3781,15 +3802,18 @@ function batIvPh(e, lv) {
 function renderIvLog() {
   const el = document.getElementById('bativ'); if (!el) return;
   const r = curRun(), party = batParty(r), x = party.length && batIvWho(r); if (!x) { el.innerHTML = ''; return }
+  batIvFoughtRec();
+  const ticks = batIvTicks(r, x), pn = k => { const y = party.find(p => p.row.k === k); return y ? y.e.nick || monName(y.e.n) : '' }, fought = BS.fought || {};
   const e = x.e, sol = nSolveIVs(e), lv = +e.lv || '', ph = batIvPh(e, lv), team = batTeam(r), nm = esc(e.nick || monName(e.n));
   const ivs = IVSTATS.map(k => { const s = sol && sol.s[k]; return `<span class="${s && s.c.length === 1 ? 'on' : ''}">${SL[k]} <b>${s && s.c.length ? ivList(s.c) : '?'}</b>${s && s.locked ? ' 🔒' : ''}</span>` }).join('');
   const logged = [...new Set((e.hist || []).filter(h => (h.n || e.n) === e.n).map(h => h.lv))].sort((a, b) => a - b), share = partyOf(r).filter(y => y.e !== e && y.e.item === 'Exp. Share');
-  el.innerHTML = `<details class="card full bativ" ${store.get('rp-bivopen', true) ? 'open' : ''}><summary><h3>Log stats and EVs</h3><span class="sp">${nm}${batIvMsg ? ' · ' + batIvMsg.replace(/<[^>]*>/g, '') : ''}</span></summary><div class="nhead"><label class="bivwho">Pokémon<select data-ivk>${party.map(p => `<option value="${esc(p.row.k)}" ${p === x ? 'selected' : ''}>${esc(p.e.nick || monName(p.e.n))}${p.row.k === BS.pa ? ' (in battle)' : ''}</option>`).join('')}</select></label></div>
+  el.innerHTML = `<details class="card full bativ" ${store.get('rp-bivopen', true) ? 'open' : ''}><summary><h3>Log stats and EVs</h3><span class="sp">${nm}${batIvMsg ? ' · ' + batIvMsg.replace(/<[^>]*>/g, '') : ''}</span></summary><div class="nhead"><label class="bivwho">Pokémon<select data-ivk>${party.map(p => `<option value="${esc(p.row.k)}" ${p.row.k === x.row.k ? 'selected' : ''}>${esc(p.e.nick || monName(p.e.n))}${p.row.k === BS.pa ? ' (in battle)' : ''}</option>`).join('')}</select></label></div>
     <div class="bivnow"><span class="sp">${nm}'s IVs</span>${ivs}<span class="sp">${logged.length ? 'Levels logged: ' + logged.join(', ') : 'No levels logged yet'} · EVs ${evTotal(e.evs)}/510${evTotal(e.evs) ? ' (' + esc(evText(e.evs)) + ')' : ''}</span></div>
-    <h4 class="bivh">1. EVs: who did ${nm} beat?</h4>
-    <div class="bivevs">${team.map(p => `<button class="btn evpick" data-bivev="${p.n}" title="Log one win over ${esc(monName(p.n))} for ${nm}"><img src="${nimg(p.n)}" alt=""><span>${esc(monName(p.n))}<small>+${esc(evText(evForDefeat(e, p.n, 1, e.pkrs)) || '0')}</small></span></button>`).join('')}
-      <button class="btn" data-bivevall title="Log a win over each of their Pokémon">Whole team</button></div>
-    <p class="sp">Every Pokémon that fought one of theirs gets its EVs, so pick each one above in turn.${share.length ? ` ${share.map(y => esc(y.e.nick || monName(y.e.n))).join(', ')} ${share.length > 1 ? 'hold' : 'holds'} an Exp. Share and ${share.length > 1 ? 'get' : 'gets'} the same EVs.` : ''} Undo from the EV log on the IVs tab.</p>
+    <h4 class="bivh">1. EVs: tick who fought it, then click the one of theirs that went down</h4>
+    <div class="bivf"><span class="sp">Who fought it</span>${party.map(p => `<label class="chk"><input type="checkbox" data-bivf="${esc(p.row.k)}" ${ticks.includes(p.row.k) ? 'checked' : ''}> ${esc(p.e.nick || monName(p.e.n))}</label>`).join('')}</div>
+    <div class="bivevs">${team.map((p, i) => { const fo = (fought[i] || []).map(pn).filter(Boolean); return `<button class="btn evpick" data-bivev="${p.n}" title="Log one win over ${esc(monName(p.n))} for each one ticked"><img src="${nimg(p.n)}" alt=""><span>${esc(monName(p.n))}<small>+${esc(evText(evForDefeat(e, p.n, 1, e.pkrs)) || '0')}${fo.length ? ' · fought: ' + esc(fo.join(', ')) : ''}</small></span></button>` }).join('')}
+      <button class="btn" data-bivevall title="Log a win over each of their Pokémon: for the ones the tracker saw fight it, or the ones ticked">Whole team</button></div>
+    <p class="sp">Every Pokémon that was out against one of theirs gets the full EVs for it. "fought:" shows who the tracker saw out against it (tick any it missed, like a switch you didn't log). Whole team uses those for each of theirs, or the ticked ones where there's no record.${share.length ? ` ${share.map(y => esc(y.e.nick || monName(y.e.n))).join(', ')} ${share.length > 1 ? 'hold' : 'holds'} an Exp. Share and ${share.length > 1 ? 'get' : 'gets'} the same EVs.` : ''} Undo from the EV log on the IVs tab.</p>
     <h4 class="bivh">2. Stats: after a level-up, copy them from its summary screen</h4>
     <div class="bivrow"><label>Level<input type="number" min="1" max="100" data-bivlv value="${lv}"></label>${IVSTATS.map(k => { const md = natMod(e.nat, k); return `<label class="${md > 1 ? 'up' : md < 1 ? 'dn' : ''}">${SL[k]}<input type="number" min="1" max="999" data-bivst="${k}" placeholder="${ph[k]}"></label>` }).join('')}
       <button class="btn primary" data-bivlog>Log</button></div>
@@ -3811,14 +3835,16 @@ function batIvLogNow(r) {
   batIvMsg = `Logged Lv. ${lv} for ${esc(nm)}: ${esc(IVSTATS.filter(k => st[k]).map(k => SL[k] + ' ' + st[k]).join(' · '))}.`;
   nRefreshKeep(BD, renderBattle);
 }
+// list: [[their dex no., count, your keys that fought it]]. Exp. Share holders get the EVs of every one of theirs too.
 function batIvEv(r, list, why) {
-  const x = batIvWho(r); if (!x) return; const g = 'g' + Date.now(), nm = y => y.nick || monName(y.n);
-  const give = y => { const add = {}; list.forEach(([n, c]) => { const a = evForDefeat(y, n, c, y.pkrs); IVSTATS.forEach(k => { if (a[k]) add[k] = (add[k] || 0) + a[k] }) });
-    const got = evAdd(y, add, why); if (Object.keys(got).length) Object.assign(y.evlog[0], { n: list.length === 1 ? list[0][0] : undefined, g }); return got };
-  const got = give(x.e), sh = partyOf(r).filter(y => y.e !== x.e && y.e.item === 'Exp. Share').map(y => [y.e, give(y.e)]).filter(([, a]) => Object.keys(a).length);
+  const x = batIvWho(r); if (!x) return; const g = 'g' + Date.now(), nm = y => y.nick || monName(y.n), party = partyOf(r);
+  const share = new Set(party.filter(y => y.e.item === 'Exp. Share').map(y => y.row.k)), sum = new Map();
+  list.forEach(([n, c, ks]) => new Set([...ks, ...share]).forEach(k => { const y = party.find(p => p.row.k === k); if (!y) return;
+    const a = evForDefeat(y.e, n, c, y.e.pkrs), o = sum.get(k) || { y, add: {}, n: [] }; IVSTATS.forEach(st => { if (a[st]) o.add[st] = (o.add[st] || 0) + a[st] }); o.n.push(n); sum.set(k, o) }));
+  const out = [...sum.values()].map(({ y, add, n }) => { const got = evAdd(y.e, add, why); if (Object.keys(got).length) Object.assign(y.e.evlog[0], { n: n.length === 1 ? n[0] : undefined, g }); return [y.e, got, share.has(y.row.k) && !list.some(l => l[2].includes(y.row.k))] });
   r.updated = Date.now(); saveRuns();
-  batIvMsg = (Object.keys(got).length ? `${esc(nm(x.e))} +${esc(evText(got))} (${esc(why)})` : `${esc(nm(x.e))} is at the EV cap for those stats.`)
-    + (sh.length ? ` · Exp. Share: ${sh.map(([y, a]) => esc(nm(y)) + ' +' + esc(evText(a))).join(', ')}` : '');
+  const txt = ([y, a]) => esc(nm(y)) + (Object.keys(a).length ? ' +' + esc(evText(a)) : ' (at the EV cap)'), fo = out.filter(o => !o[2]), sh = out.filter(o => o[2]);
+  batIvMsg = `${fo.map(txt).join(', ') || 'No one'} (${esc(why)})` + (sh.length ? ` · Exp. Share: ${sh.map(txt).join(', ')}` : '');
   renderIvLog();
 }
 // ---- Planner: every box folds to its title (state per browser, rp-phide). Boxes are found after each render, since the
@@ -3827,7 +3853,10 @@ const pHide = new Set(store.get('rp-phide', []));
 function batDecorate() {
   if (view !== 'plan') return;
   BD.querySelectorAll('section.card').forEach(s => {
-    if (s.firstElementChild && s.firstElementChild.tagName === 'DETAILS') return;
+    const dt = s.firstElementChild && s.firstElementChild.tagName === 'DETAILS' ? s.firstElementChild : null;
+    if (dt) { const h = dt.querySelector(':scope > summary h3'); if (!h) return; let l = h.querySelector('.nhide');
+      if (!l) { l = document.createElement('span'); l.className = 'nhide'; l.setAttribute('aria-hidden', 'true'); h.appendChild(l) }
+      const w = dt.open ? 'Hide' : 'Show'; if (l.textContent !== w) l.textContent = w; return }
     const id = s.dataset.sec || (s.parentElement && s.parentElement.id !== 'batdetail' ? s.parentElement.id : ''); if (!id) return;
     const h3 = s.querySelector(':scope > h3, :scope > .nhead > h3'); if (!h3) return;
     const hid = pHide.has(id), want = hid ? 'Show' : 'Hide'; s.classList.toggle('ncoll', hid);
@@ -3987,7 +4016,9 @@ const RECGC = new Set(['Leftovers', 'Life Orb', 'Focus Sash', 'Expert Belt', 'Ch
 const recRng = seed => { let a = seed >>> 0 || 1; return () => { a = a + 0x6D2B79F5 | 0; let t = Math.imul(a ^ a >>> 15, 1 | a); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296 } };
 const RECTM = {"TM01":"Oreburgh Gate","TM02":"Mt. Coronet","TM03":"Route 218","TM04":"Solaceon Ruins","TM05":"Route 213","TM06":"Route 212","TM07":"Route 217","TM08":"Route 205","TM09":"Route 204","TM10":"Jubilife City","TM11":"Route 212","TM12":"Route 211","TM13":"Route 216","TM14":"Lake Acuity","TM15":"Sunyshore City","TM16":"Eterna City","TM17":"Great Marsh","TM18":"Route 223","TM19":"Route 209","TM20":"Route 212","TM21":"Galactic HQ","TM22":"Route 210","TM23":"Iron Island","TM24":"Valley Windworks","TM25":"Lake Valor","TM26":"Veilstone City","TM27":"Eterna Forest","TM28":"Eterna City","TM29":"Solaceon Town","TM30":["Hearthome City",1],"TM31":"Oreburgh Gate","TM32":"Wayward Cave","TM33":"Eterna City","TM34":"Valley Windworks","TM35":"Fuego Ironworks","TM36":"Great Marsh","TM37":"Pokémon League","TM38":"Lake Verity","TM39":"Ravaged Path","TM40":"Floaroma Town","TM41":"Route 213","TM42":"Jubilife City","TM43":"Hearthome City","TM44":"Hearthome City","TM45":"Hearthome City","TM46":"Eterna City","TM47":"Route 209","TM48":"Canalave City","TM49":"Veilstone City","TM50":"Sunyshore City","TM51":"Route 210","TM52":["Route 217",1],"TM53":"Valor Lakefront","TM54":"Eterna City","TM55":"Hearthome City","TM56":"Route 222","TM57":["Sunyshore City",1],"TM58":"Route 203","TM59":"Maniac Tunnel","TM60":["Veilstone City",1],"TM61":"Lost Tower","TM62":"Route 212","TM63":"Veilstone City","TM64":"Veilstone City","TM65":"Old Chateau","TM66":"Route 215","TM67":"Eterna City","TM68":"Victory Road","TM69":"Mt. Coronet","TM70":"Oreburgh Gate","TM71":"Ravaged Path","TM72":["Snowpoint City",1],"TM73":"Eterna City","TM74":"Route 206","TM75":"Route 208","TM76":["Oreburgh City",1],"TM77":"Route 211","TM78":"Eterna Forest","TM79":"Veilstone City","TM80":"Eterna City","TM81":"Route 208","TM82":"Eterna Forest","TM83":"Route 215","TM84":"Route 212","TM85":"Wayward Cave","TM86":["Eterna City",1],"TM87":"Route 212","TM88":"Route 210","TM89":"Canalave City","TM90":"Old Chateau","TM91":["Canalave City",1],"TM92":"Route 213","HM01":"Eterna City","HM02":"Veilstone City","HM03":"Celestic Town","HM04":"Iron Island","HM05":"Solaceon Ruins","HM06":"Oreburgh Gate","HM07":["Pastoria City",1],"HM08":["Snowpoint City",1]};   // where each TM/HM is found (RP v1.3.0 notes); [area, 1] = a gym leader gift, so only after that boss
 const recAllItems = () => store.get('rp-recall', false);
-const recChOf = area => GUIDE.findIndex(c => c.areas.some(a => gArea(a).n === area));   // -1 when the guide doesn't go there
+const GITEMSKIP = new Set(['Route 212|North']);   // chapter entries that don't reach the area's items
+const gItemAreas = c => c.areas.filter(a => !GITEMSKIP.has(a));
+const recChOf = area => GUIDE.findIndex(c => gItemAreas(c).some(a => gArea(a).n === area));   // -1 when the guide doesn't go there
 // can you have this TM/HM by chapter ch? Gym leader gifts need that chapter's boss beaten.
 const recTmOk = (tm, ch) => { const l = RECTM[tm]; if (!l) return false; const c = recChOf(Array.isArray(l) ? l[0] : l); return c >= 0 && (Array.isArray(l) ? c < ch : c <= ch) };
 function recSetup(r) {
@@ -4002,7 +4033,7 @@ function recWhere(item, r, ch, self) {
   const has = placed(r).find(x => x.e.item === item && x.e !== self && (x.e.st === 'party' || x.e.st === 'box'));
   if (has) return `${has.e.nick || monName(has.e.n)} holds one`;
   const on = pjItemWhere(item, ch); if (on) return 'found on ' + on;
-  const upto = new Set(GUIDE.slice(0, ch + 1).flatMap(c => c.areas.map(a => gArea(a).n)));
+  const upto = new Set(GUIDE.slice(0, ch + 1).flatMap(c => gItemAreas(c).map(a => gArea(a).n)));
   if (RECGC.has(item) && upto.has('Veilstone City')) return 'Veilstone Game Corner';
   const bd = BERRYD[item]; if (bd && bd.l) { const a = bd.l.map(x => x.split('|')[0]).find(x => upto.has(x)); if (a) return 'berry on ' + a }
   return '';
@@ -4294,7 +4325,7 @@ function pjHow(c) {
 function pjItemWhere(item, upto) {
   if (item === 'friendship') return 'friendship';
   for (let i = 0; i <= upto && i < GUIDE.length; i++) for (const L of ROUTES) {
-    if (!GUIDE[i].areas.some(a => gArea(a).n === L.n)) continue;
+    if (!gItemAreas(GUIDE[i]).some(a => gArea(a).n === L.n)) continue;
     if ((L.items || []).some(it => it.i === item)) return L.n;
   }
   return '';
@@ -4773,7 +4804,7 @@ function renderTeamPick() {
       <h4 class="tph4">Why each Pokémon</h4><div class="tpgrid">${cards}</div>
       ${left.length || su.out.length ? `<details class="tpout"><summary>Left out (${left.length + su.out.length})</summary><ul>${left.map(o => `<li><b>${nm(o.x)}</b>: ${tpLeftOut(res, o.i)}</li>`).join('')}${su.out.map(o => `<li><b>${nm(o.x)}</b>: ${esc(o.why)}</li>`).join('')}</ul></details>` : ''}`;
   } else body = `<p class="sp">${tpRes ? 'Your Pokémon or the boss changed since the last suggestion. ' : ''}Builds a plan for each of ${esc(b ? b.label : '')}'s Pokémon from your ${su.cands.length} available party and box Pokémon${r.rules.caps && b ? ` at or under the level cap (${b.cap})` : ''}, with a backup for each where you have one.</p>`;
-  el.innerHTML = `<section class="card full"><div class="nhead"><h3>Team for ${esc(b ? b.label : '')}</h3><button class="btn ${tpRes && tpRes.sig === su.sig ? '' : 'primary'}" data-bact="team" ${tpBusy || !su.cands.length ? 'disabled' : ''}>${tpRes && tpRes.sig === su.sig ? 'Suggest again' : 'Suggest a team'}</button></div>${tpLvUi(su)}${body}
+  el.innerHTML = `<section class="card full"><div class="nhead"><h3>Best team for ${esc(b ? b.label : '')}</h3><button class="btn ${tpRes && tpRes.sig === su.sig ? '' : 'primary'}" data-bact="team" ${tpBusy || !su.cands.length ? 'disabled' : ''}>${tpRes && tpRes.sig === su.sig ? 'Suggest again' : 'Suggest a team'}</button></div>${tpLvUi(su)}${body}
     ${tpStealUi(r, su)}
     ${tpPickUi(r, su)}
     <details class="simhow"><summary>How the team is picked</summary>
@@ -4882,7 +4913,7 @@ const GUIDE = [
       [418, 'Buizel. A fast Water type with Swift Swim.'],
       [214, 'Honey tree on Route 205 South. Heracross hits very hard.']],
     tips: ['Grab the Dawn Stone (Bike Shop) and Sun Stone in Eterna.'] },
-  { b: [5, 6], title: 'Route 211 to Hearthome', areas: ['Route 211', 'Mt. Coronet', 'Route 206', 'Wayward Cave', 'Route 207', 'Route 208', 'Hearthome City'],
+  { b: [5], title: 'Route 211 to Hearthome', areas: ['Route 211', 'Mt. Coronet', 'Route 206', 'Wayward Cave', 'Route 207', 'Route 208', 'Hearthome City'],
     picks: [[443, 'Gible in Wayward Cave (20%). Garchomp is the strongest pick in the game. Get it.'],
       [66, 'Machop on Route 207 (30%). Machamp covers Fantina\'s Normal-weak Pokémon, Byron and Candice.'],
       [246, 'Larvitar on Route 207. Tyranitar is slow to evolve but huge.'],
@@ -4891,14 +4922,14 @@ const GUIDE = [
       [207, 'Gligar on Route 206. Gliscor (Razor Fang at night) is immune to Electric for Volkner.'],
       [177, 'Natu on Route 211 East. Xatu with Psychic and Flying STAB is great against Maylene.']],
     tips: ['Fantina\'s Pokémon are all Ghosts. Normal types are immune to Shadow Ball and Shadow Claw, and Dark types hit them hard.'] },
-  { b: [7], title: 'Solaceon to Veilstone', areas: ['Route 209', 'Lost Tower', 'Solaceon Town', 'Solaceon Ruins', 'Route 210|South', 'Route 215', 'Veilstone City'],
+  { b: [6], title: 'Solaceon to Veilstone', areas: ['Route 209', 'Route 212|North', 'Lost Tower', 'Solaceon Town', 'Solaceon Ruins', 'Route 210|South', 'Route 215', 'Veilstone City'],
     picks: [[349, 'Feebas, 100% with any rod in Mt. Coronet B1F (the Good Rod is on Route 209). Milotic (use the Prism Scale from Mt. Coronet) carries many runs.', ['Mt. Coronet']],
       [123, 'Scyther on Route 210 South. Scizor (Metal Coat) has priority Bullet Punch.'],
       [113, 'Chansey on Route 209. Blissey (friendship) is a huge special wall.'],
       [442, 'Spiritomb at the Route 209 Hallowed Tower. Its only weakness is Fairy.'],
       [64, 'Kadabra on Route 215. Psychic for Maylene.']],
-    tips: ['Veilstone Game Corner prizes include Leftovers, Life Orb, Focus Sash, Expert Belt and Choice items. Saving coins for Leftovers pays off all game.', 'There\'s a Choice Scarf in the Solaceon Ruins and a Life Orb on Route 210 South.'] },
-  { b: [8, 9], title: 'Route 214 to Pastoria', areas: ['Route 214', 'Maniac Tunnel', 'Valor Lakefront', 'Route 213', 'Pastoria City', 'Great Marsh'],
+    tips: ['Barry stops you in the gate from Hearthome to Route 209 (he\'s in Trainers ahead). On his team, Flying and Psychic hit two each. Staravia\'s Reckless Facade is strong. Heracross has Guts. Snorlax uses Yawn, so switch out or attack before you fall asleep.', 'Veilstone Game Corner prizes include Leftovers, Life Orb, Focus Sash, Expert Belt and Choice items. Saving coins for Leftovers pays off all game.', 'There\'s a Choice Scarf in the Solaceon Ruins and a Life Orb on Route 210 South.'] },
+  { b: [7, 8], title: 'Route 214 to Pastoria', areas: ['Route 214', 'Maniac Tunnel', 'Valor Lakefront', 'Route 213', 'Pastoria City', 'Great Marsh'],
     picks: [[131, 'Lapras gift in Pastoria. Bulky, with Water and Ice. It does well against Wake\'s Ludicolo, Candice\'s team (Water resists Ice) and Cynthia\'s Garchomp.'],
       [449, 'Hippopotas in Maniac Tunnel. Hippowdon blanks Volkner and sets sand.'],
       [228, 'Houndour on Route 214. Fire/Dark for Byron, Lucian and Candice.'],
@@ -4906,19 +4937,19 @@ const GUIDE = [
       [451, 'Skorupi in the Great Marsh. Drapion has only one weakness (Ground).'],
       [115, 'Kangaskhan in the Great Marsh. Scrappy hits Ghosts with Normal moves.']],
     tips: ['There\'s a Choice Band on Route 214.'] },
-  { b: [10], title: 'Route 212 and Celestic', areas: ['Route 212', 'Trophy Garden', 'Celestic Town'],
+  { b: [9], title: 'Route 212 and Celestic', areas: ['Route 212|South', 'Trophy Garden', 'Celestic Town'],
     picks: [[88, 'Grimer on Route 212 South. Muk is bulky.']],
     tips: ['An NPC in Celestic Town gives a Choice Specs in the morning.'] },
-  { b: [11, 12], title: 'Fuego, Canalave and Iron Island', areas: ['Fuego Ironworks', 'Route 218', 'Canalave City', 'Iron Island'],
+  { b: [10, 11], title: 'Fuego, Canalave and Iron Island', areas: ['Fuego Ironworks', 'Route 218', 'Canalave City', 'Iron Island'],
     picks: [[126, 'Magmar in the Fuego Ironworks. Magmortar (Magmarizer) is the best Fire type for Byron.'], [125, 'Electabuzz on Route 218.'], [305, 'Lairon on Iron Island.'], [112, 'Rhydon on Iron Island. Rhyperior (Protector) is huge for Volkner.']],
     tips: ['Byron\'s Steel types hate Fire, Fighting and Ground. His Magnezone has Magnet Pull and traps your Steel types.'] },
-  { b: [13, 14], title: 'The lakes', areas: ['Lake Valor'], picks: [], tips: [] },
-  { b: [15, 16, 17], title: 'Snowpoint and Galactic HQ', areas: ['Route 216', 'Route 217', 'Acuity Lakefront', 'Snowpoint City', 'Snowpoint Temple', 'Galactic HQ'],
+  { b: [12, 13], title: 'The lakes', areas: ['Lake Valor'], picks: [], tips: [] },
+  { b: [14, 15, 16], title: 'Snowpoint and Galactic HQ', areas: ['Route 216', 'Route 217', 'Acuity Lakefront', 'Snowpoint City', 'Snowpoint Temple', 'Galactic HQ'],
     picks: [[220, 'Swinub on Route 216 (25%). Mamoswine (learn Ancient Power and level up) covers Volkner, Cynthia and Bertha.'], [215, 'Sneasel on Route 216. Weavile (Razor Claw at night) is fast and hits very hard.'], [459, 'Snover on Route 216.']],
     tips: ['Snowpoint sells evolution items: Razor Claw, Razor Fang, Electirizer, Magmarizer, Protector, Reaper Cloth, Dubious Disc and Up-Grade.'] },
-  { b: [18, 19], title: 'Spear Pillar and Distortion World', areas: ['Lake Acuity', 'Spear Pillar', 'Distortion World'], picks: [], tips: [] },
-  { b: [20], title: 'Sunyshore', areas: ['Route 222', 'Sunyshore City'], picks: [[404, 'Luxio on Route 222.'], [143, 'Snorlax from the Route 222 honey tree.']], tips: [] },
-  { b: [21, 22, 23, 24, 25, 26], title: 'Victory Road and the League', areas: ['Route 219', 'Route 220', 'Route 221', 'Route 223', 'Victory Road', 'Pokémon League'],
+  { b: [17, 18], title: 'Spear Pillar and Distortion World', areas: ['Lake Acuity', 'Spear Pillar', 'Distortion World'], picks: [], tips: [] },
+  { b: [19], title: 'Sunyshore', areas: ['Route 222', 'Sunyshore City'], picks: [[404, 'Luxio on Route 222.'], [143, 'Snorlax from the Route 222 honey tree.']], tips: [] },
+  { b: [20, 21, 22, 23, 24, 25], title: 'Victory Road and the League', areas: ['Route 219', 'Route 220', 'Route 221', 'Route 223', 'Victory Road', 'Pokémon League'],
     picks: [[297, 'Hariyama in Victory Road.'], [444, 'Gabite in Victory Road (10%).']],
     tips: ['Each Elite Four member and Cynthia picks one of four teams at random. Plan for all four.', 'There\'s a Focus Sash on Route 221.'] },
 ];
@@ -4934,41 +4965,40 @@ const GBOSS = {
     'Cherrim has a Focus Sash, sets Sunny Day and boosts Chlorophyll users\' speed. Multi-hit moves or priority get through the Sash, or KO it before the sun matters.',
     'Bellossom has Teeter Dance and Stun Spore, and Tangela has Stun Spore. A Poison or Steel type can\'t be poisoned, but paralysis still lands.'],
   4: ['Ice is the only type that hits two of these. Skuntank has Aftermath, so a contact KO hurts your Pokémon. Sableye opens with Fake Out and has Shadow Sneak.', 'Tangela has Sleep Powder.'],
-  5: ['Flying and Psychic hit two each. Staravia\'s Reckless Facade is strong. Heracross has Guts. Snorlax uses Yawn, so switch out or attack before you fall asleep.'],
-  6: ['Normal types are immune to their Ghost moves, and Dark types hit them hard. Will-O-Wisp is everywhere, so special attackers or Guts users are best.',
+  5: ['Normal types are immune to their Ghost moves, and Dark types hit them hard. Will-O-Wisp is everywhere, so special attackers or Guts users are best.',
     'Drifblim has Calm Mind and Baton Pass. Mismagius has Calm Mind. Stop the boosts early with a strong attack, or pass them along before they stack.',
     'Gengar and Mismagius have Levitate (Ground won\'t hit). Spiritomb is only weak to Fairy.'],
-  7: ['Flying hits five of six, and Psychic and Ghost are strong too. Ghosts are immune to Fighting moves.',
+  6: ['Flying hits five of six, and Psychic and Ghost are strong too. Ghosts are immune to Fighting moves.',
     'Medicham (Pure Power) and Infernape (Life Orb) both open with Fake Out or Mach Punch and hit extremely hard. Lucario has a Focus Sash and Agility.',
     'Toxicroak has Dry Skin, so Water moves heal it. Gallade sets Reflect and Light Screen (Light Clay). Machamp is Guts with a Toxic Orb.'],
-  8: ['Azumarill has Huge Power and Aqua Jet. Breloom has a Focus Sash and Spore. Staraptor hits hard with Close Combat. Electric, Flying and Psychic cover the most.'],
-  9: ['Electric and Grass hit four of six, but Quagsire and Poliwrath have Water Absorb. Grass is the better pick for those two.',
+  7: ['Azumarill has Huge Power and Aqua Jet. Breloom has a Focus Sash and Spore. Staraptor hits hard with Close Combat. Electric, Flying and Psychic cover the most.'],
+  8: ['Electric and Grass hit four of six, but Quagsire and Poliwrath have Water Absorb. Grass is the better pick for those two.',
     'Gyarados has Intimidate, Dragon Dance and a Wacan Berry (halves one Electric hit). Sharpedo has Speed Boost and a Focus Sash. Floatzel and Ludicolo have Swift Swim, which only matters in rain, so don\'t set rain yourself.'],
-  10: ['Crobat has Hypnosis. Honchkrow has Super Luck and Scope Lens, so expect crits. Magnezone\'s Magnet Pull traps Steel types, and it has Mirror Coat. Weavile has Ice Shard and Swords Dance.', 'Rock, Fire, Electric and Ice spread best.'],
-  11: ['Staraptor now has a Choice Band. Lead with something that takes Brave Bird or Close Combat. Breloom keeps the Focus Sash and Spore.'],
-  12: ['Fire, Fighting and Ground each hit four. Steelix and Forretress carry Explosion. Forretress sets Spikes and Toxic Spikes, and Bronzong sets screens with Light Clay.',
+  9: ['Crobat has Hypnosis. Honchkrow has Super Luck and Scope Lens, so expect crits. Magnezone\'s Magnet Pull traps Steel types, and it has Mirror Coat. Weavile has Ice Shard and Swords Dance.', 'Rock, Fire, Electric and Ice spread best.'],
+  10: ['Staraptor now has a Choice Band. Lead with something that takes Brave Bird or Close Combat. Breloom keeps the Focus Sash and Spore.'],
+  11: ['Fire, Fighting and Ground each hit four. Steelix and Forretress carry Explosion. Forretress sets Spikes and Toxic Spikes, and Bronzong sets screens with Light Clay.',
     'Aggron has a Focus Sash and Head Smash. Bastiodon has Metal Burst and Toxic. Magnezone traps your Steel types.'],
-  13: ['Crobat has Hypnosis and Bright Powder. Yanmega has Speed Boost. Bronzong has Stealth Rock and Explosion. Kangaskhan and Purugly both have Fake Out.'],
-  14: ['Alakazam can Calm Mind and Recover. Octillery\'s Expert Belt coverage hits almost anything. Toxicroak has Fake Out and Sucker Punch.'],
-  15: ['Snow Warning makes hail permanent, and Blizzard always hits in hail. Glaceon has Snow Cloak, Bright Powder and Double Team, so bring accurate or never-miss moves.',
+  12: ['Crobat has Hypnosis and Bright Powder. Yanmega has Speed Boost. Bronzong has Stealth Rock and Explosion. Kangaskhan and Purugly both have Fake Out.'],
+  13: ['Alakazam can Calm Mind and Recover. Octillery\'s Expert Belt coverage hits almost anything. Toxicroak has Fake Out and Sucker Punch.'],
+  14: ['Snow Warning makes hail permanent, and Blizzard always hits in hail. Glaceon has Snow Cloak, Bright Powder and Double Team, so bring accurate or never-miss moves.',
     'Weavile has a Focus Sash and Swords Dance. Mamoswine and Abomasnow have Ice Shard. Fighting, Rock, Steel and Fire hit five or more.'],
-  16: ['Rhyperior has a Choice Band and Magmortar has Choice Specs, so predict their locked moves. Bronzong sets Reflect and Light Screen. Toxicroak has a Focus Sash.'],
-  17: ['Crobat has a Choice Band. Honchkrow has Super Luck. Houndoom has Nasty Plot and a Life Orb. Rock and Fighting hit the most.'],
-  18: ['Double battle. Both commanders lead Crobat (community tip), so a fast Electric or Rock attacker shines.',
+  15: ['Rhyperior has a Choice Band and Magmortar has Choice Specs, so predict their locked moves. Bronzong sets Reflect and Light Screen. Toxicroak has a Focus Sash.'],
+  16: ['Crobat has a Choice Band. Honchkrow has Super Luck. Houndoom has Nasty Plot and a Life Orb. Rock and Fighting hit the most.'],
+  17: ['Double battle. Both commanders lead Crobat (community tip), so a fast Electric or Rock attacker shines.',
     'Kangaskhan and Purugly both have Fake Out. Electivire has Motor Drive, so don\'t use Electric moves on it. Bronzong sets Stealth Rock.'],
-  19: ['Dialga and Palkia are level 70 above the cap of 60, but have 0 IVs. Hit hard and fast. Fighting and Ground hit Dialga, and Dragon and Fairy hit Palkia.'],
-  20: ['Ground hits all four, but Electivire carries Earthquake and Ice Punch, which hurt Ground types like Garchomp. Luxray has a Choice Band with Ice Fang and Fire Fang.',
+  18: ['Dialga and Palkia are level 70 above the cap of 60, but have 0 IVs. Hit hard and fast. Fighting and Ground hit Dialga, and Dragon and Fairy hit Palkia.'],
+  19: ['Ground hits all four, but Electivire carries Earthquake and Ice Punch, which hurt Ground types like Garchomp. Luxray has a Choice Band with Ice Fang and Fire Fang.',
     'Jolteon has a Focus Sash. Raichu has Surf and Grass Knot for your Ground types.'],
-  21: ['Staraptor has a Choice Scarf. Azumarill has Huge Power Aqua Jet. Breloom has Spore. Snorlax uses Curse and Slack Off, so don\'t let it set up.'],
-  22: ['Fire, Flying and Rock hit most of his Bugs. Every team ends with Drapion, which is only weak to Ground. In team 1 it has Sniper and a Scope Lens.',
+  20: ['Staraptor has a Choice Scarf. Azumarill has Huge Power Aqua Jet. Breloom has Spore. Snorlax uses Curse and Slack Off, so don\'t let it set up.'],
+  21: ['Fire, Flying and Rock hit most of his Bugs. Every team ends with Drapion, which is only weak to Ground. In team 1 it has Sniper and a Scope Lens.',
     'Watch for Scizor\'s Technician Bullet Punch and Yanmega\'s Speed Boost in the teams that have them.'],
-  23: ['Water, Grass and Ice hit nearly everything. Sand Stream from Hippowdon or Tyranitar makes sand permanent. Every team ends with Rhyperior, which is 4× weak to Water and Grass.',
+  22: ['Water, Grass and Ice hit nearly everything. Sand Stream from Hippowdon or Tyranitar makes sand permanent. Every team ends with Rhyperior, which is 4× weak to Water and Grass.',
     'Some teams have Dugtrio with Arena Trap, which stops you switching out.'],
-  24: ['Water, Ground and Rock hit most of his team. Ninetales or Torkoal set permanent sun with Drought, which boosts Fire and weakens Water, so a Rain Dance user helps.',
+  23: ['Water, Ground and Rock hit most of his team. Ninetales or Torkoal set permanent sun with Drought, which boosts Fire and weakens Water, so a Rain Dance user helps.',
     'Every team ends with Magmortar. Some teams mix in Lopunny, Drifblim or Steelix, so check which team you\'re facing.'],
-  25: ['Ghost and Dark hit his Psychics. Some teams set Reflect and Light Screen (Mr. Mime, Bronzong), so knock out the screen setter first.',
+  24: ['Ghost and Dark hit his Psychics. Some teams set Reflect and Light Screen (Mr. Mime, Bronzong), so knock out the screen setter first.',
     'Every team ends with Gallade (Psychic/Fighting), which is weak to Flying, Ghost and Fairy.'],
-  26: ['Every team ends with Garchomp (Swords Dance and a Yache Berry in team 1, which halves one Ice hit), and most have Milotic and Lucario (Extreme Speed). Keep a fast, healthy answer for Garchomp.',
+  25: ['Every team ends with Garchomp (Swords Dance and a Yache Berry in team 1, which halves one Ice hit), and most have Milotic and Lucario (Extreme Speed). Keep a fast, healthy answer for Garchomp.',
     'Spiritomb, Togekiss (Serene Grace flinches) and Roserade appear in some teams. Ice and Fairy are the most useful attack types across all four.'],
 };
 // stand-out traits of a boss Pokémon, read straight from its set
@@ -4983,6 +5013,17 @@ function gThreats(p) {
   return out;
 }
 const gArea = s => { const [n, sub] = s.split('|'); return { n, sub } };
+// Pokémon Center trainers: one data area, their teams tiered by badges ('' under 3, then 3, 5, 8, after the Champion)
+const PCAREA = 'Pokémon Center', PCNAME = 'Pokémon Centers and gatehouses';
+const nBadges = beat => NBOSS.slice(0, beat).filter(b => /^Leader /.test(b.label)).length;
+function pcTier(beat) {
+  const champ = NBOSS.findIndex(b => /^Champion /.test(b.label)), n = nBadges(beat);
+  return champ >= 0 && beat > champ ? 'After Champion' : n >= 8 ? '8 badges' : n >= 5 ? '5 badges' : n >= 3 ? '3 badges' : '';
+}
+const pcTierText = beat => { const n = nBadges(beat), t = pcTier(beat); return t === 'After Champion' ? 'teams after the Champion' : `teams for ${n} badge${n === 1 ? '' : 's'}` + (t ? '' : ' (they level up at 3)') };
+const TRMOVED = [['Hearthome City', 'Gym', 'PKMN Trainer Barry', 6, 'Hearthome City · gate to Route 209']];
+const trMoved = (L, x, t) => TRMOVED.find(m => m[0] === L.n && m[1] === (x && x.n) && t.name === m[2]);
+const trInCh = (ch, L, x, t) => { const m = trMoved(L, x, t); return m ? ch.b.includes(m[3]) : gInCh(ch, L, x) };
 const gInCh = (ch, L, x) => ch.areas.some(a => { const g = gArea(a); return g.n === L.n && (!g.sub || (x && x.n || '').includes(g.sub)) });
 // where to get a species within a chapter's areas (wild by method, plus gifts and statics)
 function gWhere(ch, n) {
@@ -5080,7 +5121,7 @@ function gAheadHtml(ch, r) {
 function gSteal(ch) {
   const by = new Map(), cap = Math.max(...ch.b.map(bi => NBOSS[bi] ? NBOSS[bi].cap : 0));
   const run = curRun();
-  ROUTES.forEach(L => L.subs.forEach(x => { if (!gInCh(ch, L, x)) return; x.tr.forEach(t => { if (!t.full || t.sec === 'Master Trainer' || !trApplies(run, t) || Math.max(...t.team.map(p => parseInt(p.lv) || 0)) > cap + 10) return; t.team.forEach(p => {
+  ROUTES.forEach(L => L.subs.forEach(x => { x.tr.forEach(t => { if (!trInCh(ch, L, x, t) || !t.full || t.sec === 'Master Trainer' || !trApplies(run, t) || Math.max(...t.team.map(p => parseInt(p.lv) || 0)) > cap + 10) return; t.team.forEach(p => {
     const it = (p.item || '').trim(); if (!it || it === '?' || it === 'None') return;
     const o = by.get(it) || { i: it, who: new Set(), area: L.n }; o.who.add(t.name.replace(/ R\d$/, '') + "\u2019s " + monName(p.n)); by.set(it, o) }) }) }));
   return [...by.values()].sort((a, b) => a.i.localeCompare(b.i));
@@ -5148,52 +5189,53 @@ const GWALK = {
   5: [['Go south from Eterna down Route 206. Wayward Cave underneath has Gible, open without Strength or Flash.', 'Route 206'],
     ['Optional: Route 211 East of Eterna has Bagon and Natu.', 'Route 211'],
     ['Take Route 207 through Mt. Coronet to Route 208.', 'Route 207'],
-    ['Reach Hearthome City. Barry challenges you by the Gym.', 'Hearthome City']],
-  6: [['Challenge the Hearthome Gym (Ghost). Answer the maths questions to open the doors.', 'Hearthome City']],
-  7: [['Go east on Route 209. The Good Rod is here, plus the Lost Tower and the Hallowed Tower (Spiritomb).', 'Route 209'],
+    ['Reach Hearthome City, then challenge the Hearthome Gym (Ghost). Answer the maths questions to open the doors.', 'Hearthome City']],
+  6: [['With the Relic Badge, head for Route 209. Barry battles you in the gate on the way out of Hearthome.', 'Hearthome City'],
+    ['Go east on Route 209. The Good Rod is here, plus the Lost Tower and the Hallowed Tower (Spiritomb).', 'Route 209'],
+    ['Team Galactic holds Route 212 North, through Hearthome\'s south gate: a run of grunts, then Commander Saturn (Bronzong, Octillery, Toxicroak, up to Lv 34). They\'re in Trainers ahead.', 'Route 212'],
     ['Reach Solaceon Town. The Solaceon Ruins have a Choice Scarf; their HM05 Defog isn\'t needed.', 'Solaceon Town'],
     ['Go north on Route 210 South (Scyther, Life Orb), then east along Route 215.', 'Route 215'],
     ['Reach Veilstone City. Save Game Corner coins for Leftovers, then challenge the Veilstone Gym.', 'Veilstone City']],
-  8: [['Optional: HM02 Fly is on the floor of the Galactic Warehouse in Veilstone. Far more Pokémon can learn Fly in Renegade Platinum.', 'Veilstone City'],
+  7: [['Optional: HM02 Fly is on the floor of the Galactic Warehouse in Veilstone. Far more Pokémon can learn Fly in Renegade Platinum.', 'Veilstone City'],
     ['Go south on Route 214 (Choice Band). Maniac Tunnel off the route has Hippopotas.', 'Route 214'],
     ['Pass Valor Lakefront and go west along Route 213 to Pastoria City.', 'Valor Lakefront'],
     ['Barry battles you in Pastoria City, by the Great Marsh.', 'Pastoria City']],
-  9: [['Take the Lapras gift in Pastoria, then challenge the Pastoria Gym (Water). Use the switches to raise and lower the water. Wake gives you HM07 Waterfall.', 'Pastoria City']],
-  10: [['Optional: Route 212 links Pastoria and Hearthome. The three Move Tutors share a house on its south part, and the Pokémon Mansion and Trophy Garden are there.', 'Route 212'],
+  8: [['Take the Lapras gift in Pastoria, then challenge the Pastoria Gym (Water). Use the switches to raise and lower the water. Wake gives you HM07 Waterfall.', 'Pastoria City']],
+  9: [['Optional: Route 212 links Pastoria and Hearthome. The three Move Tutors share a house on its south part, and the Pokémon Mansion and Trophy Garden are there.', 'Route 212'],
     ['Go back to Route 210 by Solaceon. Cynthia gives you the SecretPotion to clear the Psyduck blocking the north part.', 'Route 210'],
     ['Go up Route 210 North (no fog in Renegade Platinum) to Celestic Town.', 'Celestic Town'],
     ['A Galactic grunt is threatening the Celestic ruins. Beat it, then Cyrus. Afterwards Cynthia\'s grandmother gives you HM03 Surf.', 'Celestic Town']],
-  11: [['Teach Surf to someone. Optional: surf from Route 205 to the Fuego Ironworks (Magmar).', 'Fuego Ironworks'],
+  10: [['Teach Surf to someone. Optional: surf from Route 205 to the Fuego Ironworks (Magmar).', 'Fuego Ironworks'],
     ['Surf west from Jubilife City along Route 218.', 'Route 218'],
     ['Reach Canalave City. Barry stops you on the bridge to the Gym.', 'Canalave City']],
-  12: [['Optional: take the boat from Canalave to Iron Island (Lairon, Rhydon, Riley). His HM04 Strength isn\'t needed.', 'Iron Island'],
+  11: [['Optional: take the boat from Canalave to Iron Island (Lairon, Rhydon, Riley). His HM04 Strength isn\'t needed.', 'Iron Island'],
     ['Challenge the Canalave Gym (Steel).', 'Canalave City']],
-  13: [['After the Gym, meet Professor Rowan at the Canalave Library. Team Galactic sets off a bomb at Lake Valor.', 'Canalave City'],
+  12: [['After the Gym, meet Professor Rowan at the Canalave Library. Team Galactic sets off a bomb at Lake Valor.', 'Canalave City'],
     ['Go to Lake Verity (Route 201) and stop Mars.', 'Lake Verity']],
-  14: [['Go to Lake Valor from Valor Lakefront. The lake is drained, and Saturn is at the cavern.', 'Lake Valor']],
-  15: [['Go north out of Mt. Coronet onto Route 216 (Swinub, Sneasel, Snover).', 'Route 216'],
+  13: [['Go to Lake Valor from Valor Lakefront. The lake is drained, and Saturn is at the cavern.', 'Lake Valor']],
+  14: [['Go north out of Mt. Coronet onto Route 216 (Swinub, Sneasel, Snover).', 'Route 216'],
     ['Push through the snowstorm on Route 217 to Acuity Lakefront.', 'Route 217'],
     ['Reach Snowpoint City. It sells the evolution items.', 'Snowpoint City'],
     ['Challenge the Snowpoint Gym (Ice). Candice gives you HM08 Rock Climb.', 'Snowpoint City']],
-  16: [['Visit Lake Acuity. Jupiter has already taken Uxie.', 'Lake Acuity'],
+  15: [['Visit Lake Acuity. Jupiter has already taken Uxie.', 'Lake Acuity'],
     ['Fly to Veilstone City and get into Galactic HQ through the warehouse. Saturn is inside.', 'Galactic HQ']],
-  17: [['Go deeper into Galactic HQ. Cyrus waits in his office, and he gives you the Master Ball after the battle.', 'Galactic HQ'],
+  16: [['Go deeper into Galactic HQ. Cyrus waits in his office, and he gives you the Master Ball after the battle.', 'Galactic HQ'],
     ['Free Uxie, Mesprit and Azelf in the HQ lab.', 'Galactic HQ']],
-  18: [['Climb Mt. Coronet to the summit. Bring Surf and Rock Climb.', 'Mt. Coronet'],
+  17: [['Climb Mt. Coronet to the summit. Bring Surf and Rock Climb.', 'Mt. Coronet'],
     ['At Spear Pillar, Barry joins you for a double battle against Mars and Jupiter.', 'Spear Pillar']],
-  19: [['Giratina pulls you into the Distortion World. Follow Cynthia, solve the puzzle (the one Strength boulder left in the game is here) and reach Cyrus.', 'Distortion World'],
+  18: [['Giratina pulls you into the Distortion World. Follow Cynthia, solve the puzzle (the one Strength boulder left in the game is here) and reach Cyrus.', 'Distortion World'],
     ['After Cyrus, you can catch Giratina. Check your rules on whether it counts as an encounter.', 'Distortion World']],
-  20: [['Route 222 from Valor Lakefront is open now. Head east (Luxio, Snorlax in the honey tree).', 'Route 222'],
+  19: [['Route 222 from Valor Lakefront is open now. Head east (Luxio, Snorlax in the honey tree).', 'Route 222'],
     ['Reach Sunyshore City and challenge the Sunyshore Gym (Electric). Rotate the gears to cross.', 'Sunyshore City']],
-  21: [['Optional: Routes 219 to 221 south of Sandgem by Surf (Focus Sash on Route 221).', 'Route 221'],
+  20: [['Optional: Routes 219 to 221 south of Sandgem by Surf (Focus Sash on Route 221).', 'Route 221'],
     ['Surf north from Sunyshore along Route 223. It needs Waterfall.', 'Route 223'],
     ['Go through Victory Road with Surf, Waterfall and Rock Climb.', 'Victory Road'],
     ['Barry is waiting at the Pokémon League. Stock up at its Poké Mart first.', 'Pokémon League']],
-  22: [['Heal, save and enter. Once you go in you can\'t leave between the Elite Four and Cynthia, so bring healing items. Aaron is first.', 'Pokémon League']],
-  23: [['Bertha is second. Each Elite Four member uses one of four teams at random, so check which one you got.', 'Pokémon League']],
-  24: [['Flint is third.', 'Pokémon League']],
-  25: [['Lucian is the last Elite Four member.', 'Pokémon League']],
-  26: [['Champion Cynthia is last.', 'Pokémon League']],
+  21: [['Heal, save and enter. Once you go in you can\'t leave between the Elite Four and Cynthia, so bring healing items. Aaron is first.', 'Pokémon League']],
+  22: [['Bertha is second. Each Elite Four member uses one of four teams at random, so check which one you got.', 'Pokémon League']],
+  23: [['Flint is third.', 'Pokémon League']],
+  24: [['Lucian is the last Elite Four member.', 'Pokémon League']],
+  25: [['Champion Cynthia is last.', 'Pokémon League']],
 };
 // ticked steps, per run and boss (this browser only)
 const gWalkGet = r => (store.get('rp-gwalk', {})[r.id] || {});
@@ -5313,13 +5355,16 @@ BD.addEventListener('toggle', ev => { const d = ev.target;
   if (d.classList && d.classList.contains('phist')) { d.open ? nOpenLog.add(d.dataset.hk) : nOpenLog.delete(d.dataset.hk); return }
   if (d.classList && d.classList.contains('pmore') && d.closest('.pmon')) { const k = d.closest('.pmon').dataset.k; d.open ? nOpen.add(k) : nOpen.delete(k); return } }, true);
 BD.addEventListener('toggle', ev => { const k = ev.target.dataset && ev.target.dataset.bopen; if (k) ev.target.open ? batOpen.add(k) : batOpen.delete(k);
-  if (ev.target.hasAttribute && ev.target.hasAttribute('data-pjbox')) store.set('rp-pjopen', ev.target.open);
+  if (ev.target.hasAttribute && ev.target.hasAttribute('data-pjbox')) { store.set('rp-pjopen', ev.target.open); batDecorate() }
   if (ev.target.hasAttribute && ev.target.hasAttribute('data-recbox')) store.set('rp-recopen', ev.target.open) }, true);
 // Planner: fold buttons and the battle flow
 new MutationObserver(batDecorate).observe(BD, { childList: true, subtree: true });
 BD.addEventListener('click', ev => {
   const t = ev.target; if (!t.closest) return;
   const ph = t.closest('button[data-phide]');
+  const bar = !ph && view === 'plan' && !t.closest('button, a, input, select, textarea, label') && t.closest('section.card > h3, section.card > .nhead');
+  const bb = bar && bar.querySelector('button[data-phide]');
+  if (bb) { const id = bb.dataset.phide; pHide.has(id) ? pHide.delete(id) : pHide.add(id); store.set('rp-phide', [...pHide]); return batDecorate() }
   if (ph) { ev.preventDefault(); const id = ph.dataset.phide; pHide.has(id) ? pHide.delete(id) : pHide.add(id); store.set('rp-phide', [...pHide]); return batDecorate() }
   const r = curRun(), add = t.closest('[data-fadd]'); if (add) return flowAdd(r, add.dataset.id, add.dataset.fadd);
   const del = t.closest('[data-fdel]');
@@ -5339,7 +5384,8 @@ BD.addEventListener('change', ev => {
   const t = ev.target, r = curRun();
   if (t.dataset.prepchk) { const o = prepGet(r); o.chk = Object.assign({}, o.chk, { [t.dataset.prepchk]: t.checked }); prepSet(r, o); return renderPrep() }
   if (t.hasAttribute('data-prepnote')) { const o = prepGet(r); o.note = t.value; return prepSet(r, o) }
-  if (t.hasAttribute('data-ivk')) { batIvK = t.value; batIvMsg = ''; return renderIvLog() }
+  if (t.hasAttribute('data-ivk')) { batIvK = t.value; batIvMsg = ''; batIvF = null; return renderIvLog() }
+  if (t.dataset.bivf !== undefined) { batIvF = [...BD.querySelectorAll('.bativ [data-bivf]')].filter(i => i.checked).map(i => i.dataset.bivf); return }
 });
 BD.addEventListener('input', ev => {
   const t = ev.target; if (!t.closest || !t.closest('.bativ')) return; t.setCustomValidity('');
@@ -5353,9 +5399,10 @@ BD.addEventListener('keydown', ev => { if (ev.key === 'Enter' && ev.target.close
 BD.addEventListener('click', ev => {
   const t = ev.target, r = curRun();
   if (t.closest('[data-bivlog]')) return batIvLogNow(r);
-  const one = t.closest('[data-bivev]'); if (one) return batIvEv(r, [[+one.dataset.bivev, 1]], 'Beat ' + monName(+one.dataset.bivev));
-  if (t.closest('[data-bivevall]')) { const tm = batTeam(r), b = batB(BS.boss); if (typeof BS.boss === 'string') trSetBeaten(r, BS.boss, true);   // a trainer's whole team: marked beaten too
-    return batIvEv(r, tm.map(p => [p.n, 1]), `Beat ${b.label}'s team (${tm.map(p => monName(p.n)).join(', ')})`) }
+  const x = t.closest('[data-bivev], [data-bivevall]') && batIvWho(r), ticks = x && batIvTicks(r, x);
+  const one = t.closest('[data-bivev]'); if (one) return batIvEv(r, [[+one.dataset.bivev, 1, ticks]], 'Beat ' + monName(+one.dataset.bivev));
+  if (t.closest('[data-bivevall]')) { const tm = batTeam(r), b = batB(BS.boss), fo = BS.fought || {}, ks = new Set(batParty(r).map(p => p.row.k)); if (typeof BS.boss === 'string') trSetBeaten(r, BS.boss, true);   // a trainer's whole team: marked beaten too
+    return batIvEv(r, tm.map((p, i) => { const f = (fo[i] || []).filter(k => ks.has(k)); return [p.n, 1, f.length ? f : ticks] }), `Beat ${b.label}'s team (${tm.map(p => monName(p.n)).join(', ')})`) }
 });
 BD.addEventListener('input', ev => { if (!ev.target.hasAttribute('data-tplvr')) return; const w = ev.target.closest('.tplv');
   w.querySelector('.tplvout').textContent = tpLvTxt(+ev.target.value, +w.dataset.lo, +w.dataset.cap);
@@ -5759,14 +5806,24 @@ function nTrainersHtml(r) {
     <span class="tbtns"><button class="btn" data-trareas="open">Expand all</button><button class="btn" data-trareas="close">Collapse all</button></span></div>`;
   if (!mine.length) return `<section class="card full" data-sec="trainers"><h3>Trainers ahead</h3>${head}<p class="empty">Give your party Pokémon a level and moves on their cards, and this shows which trainers threaten them.</p></section>`;
   const blocks = [], cap = Math.max(...ch.b.map(bi => NBOSS[bi] ? NBOSS[bi].cap : 0));
-  ROUTES.forEach(L => L.subs.forEach(x => { if (!gInCh(ch, L, x)) return;
+  ROUTES.forEach(L => L.subs.forEach(x => {
+    // moved trainers (Barry's Hearthome fight) get their own block, first in the chapter they're fought in
+    const mv = x.tr.filter(t => trMoved(L, x, t) && trInCh(ch, L, x, t) && trApplies(r, t));
+    if (mv.length) { const rows = mv.map(t => ({ t, th: trThreat(r, t, mine), key: trKey(L, x, t) })).filter(o => nTrAll || o.th.lvl >= 2);
+      blocks.push({ ord: [-1, 0], area: trMoved(L, x, mv[0])[4], total: mv.length, rows: rows.sort((a, b) => b.th.lvl - a.th.lvl) }) }
+    if (!gInCh(ch, L, x)) return;
     // skip post-game teams (far above this chapter's level cap) and starter variants that don't match your starter
-    const trs = x.tr.filter(t => t.sec !== 'Rematches' && t.sec !== 'Master Trainer' && !/After (Champion|Stark)/.test(t.when || '') && Math.max(...t.team.map(p => parseInt(p.lv) || 0)) <= cap + 10
+    const trs = x.tr.filter(t => !trMoved(L, x, t) && t.sec !== 'Rematches' && t.sec !== 'Master Trainer' && !/After (Champion|Stark)/.test(t.when || '') && Math.max(...t.team.map(p => parseInt(p.lv) || 0)) <= cap + 10
       && trApplies(r, t));
     if (!trs.length) return;
     const rows = trs.map(t => ({ t, th: trThreat(r, t, mine), key: trKey(L, x, t) })).filter(o => nTrAll || o.th.lvl >= 2);
     blocks.push({ ord: trOrder(L, x), area: L.n + (x.n ? ' · ' + x.n : ''), total: trs.length, rows: rows.sort((a, b) => b.th.lvl - a.th.lvl) });
   }));
+  const PCL = ROUTES.find(l => l.n === PCAREA);
+  if (PCL) { const at = nTrCh === chNext ? r.beat : (ch.b[0] || 0), want = pcTier(at);
+    PCL.subs.forEach(x => { const trs = x.tr.filter(t => (t.when || '') === want && trApplies(r, t)); if (!trs.length) return;
+      const rows = trs.map(t => ({ t, th: trThreat(r, t, mine), key: trKey(PCL, x, t) })).filter(o => nTrAll || o.th.lvl >= 2);
+      blocks.push({ ord: [99999, 0], area: PCNAME + ' (any town, ' + pcTierText(at) + ')', total: trs.length, rows: rows.sort((a, b) => b.th.lvl - a.th.lvl) }) }) }
   const tag = l => l >= 3 ? '<span class="btag bad">Danger</span>' : l === 2 ? '<span class="btag">Watch</span>' : l === 1 ? '<span class="btag">Minor</span>' : '<span class="btag good">Fine</span>';
   const team = th => `<div class="trteam">${th.mons.map(x => `<div class="trmon ${x.lvl >= 3 ? 'bad' : x.lvl === 2 ? 'warn' : ''}"><img src="${nimg(x.p.n)}" alt=""><div><b>${esc(monName(x.p.n))}</b> <span class="sp">Lv. ${esc(x.p.lv)}${x.p.item ? ' · ' + esc(x.p.item) : ''}</span>
       <div class="sp trmv">${x.moves.map(m => TRBOOM.has(m) ? `<b class="bko">${esc(m)}</b>` : esc(m)).join(' · ') || 'no moves known'}</div>${x.notes.length ? `<ul>${x.notes.map(n => `<li>${n}</li>`).join('')}</ul>` : ''}</div></div>`).join('')}</div>`;
@@ -6145,7 +6202,7 @@ function ivChHint(sol, ch) {
   const got = top.length === 1 && sol[top[0]].c.length === 1 ? IVCHAR[top[0]][sol[top[0]].c[0] % 5] : '';
   return `The characteristic “${IVCHAR[ck][+ch.split(':')[1]]}” doesn't fit any IVs these stats allow, so it's left out.${got ? ` These stats point to “${got}”.` : ''} Check it on the summary screen, or a stat that might be logged wrong.`;
 }
-let ivRes = null;   // the IVs tab's last full answer (what gave way, for its notes)
+let ivRes = null, ivUnlockMsg = '';   // ivUnlockMsg: what the last "Unlock and recalculate" found, until the next edit   // the IVs tab's last full answer (what gave way, for its notes)
 function ivSolve() {
   const lk = ivLinked(), o = lk ? lk.e : IVS, save = lk ? () => { lk.run.updated = Date.now(); ivLockSaveRun() } : ivSave;
   if (!mons[IVS.n - 1]) return null;
@@ -6240,7 +6297,7 @@ function evAreas() {
     const parts = NSPLIT[L.n], rest = parts ? L.subs.filter(x => !parts.includes(x.n)) : L.subs;
     const groups = [...(parts || []).map(p => ({ n: L.n + ' ' + p, subs: L.subs.filter(x => x.n === p) })), ...(rest.length ? [{ n: L.n, subs: rest }] : [])];
     groups.forEach(g => { if (!g.subs.some(x => x.wild.length || x.tr.length)) return;
-      out.push({ n: g.n, L, subs: g.subs, ord: Math.min(...g.subs.map(x => { const o = trOrder(L, x); return o[0] * 100 + o[1] })) }) });
+      out.push({ n: g.n, L, subs: g.subs, ord: L.n === PCAREA ? -1 : Math.min(...g.subs.map(x => { const o = trOrder(L, x); return o[0] * 100 + o[1] })) }) });
   });
   return EVAREAS = out.sort((a, b) => a.ord - b.ord);
 }
@@ -6256,11 +6313,11 @@ function evAreaHtml(lk, e) {
   const pick = (n, extra) => `<button class="btn evpick" data-evpick="${n}" title="Beat ${esc(monName(n))}${extra ? ' (' + esc(extra) + ')' : ''}: +${esc(evText(evForDefeat(e, n, 1, e.pkrs)) || '0')}"><img src="${nimg(n)}" alt=""><span>${esc(monName(n))}<small>${esc(evText(evForDefeat(e, n, 1, e.pkrs)) || '—')}</small></span></button>`;
   const wild = new Map();
   A.subs.forEach(x => x.wild.forEach(w => w.mons.forEach(([n]) => { const how = (x.n ? x.n + ' · ' : '') + w.m.replace(/^[^\p{L}\p{N}]+/u, ''); if (!wild.has(n)) wild.set(n, []); if (!wild.get(n).includes(how)) wild.get(n).push(how) })));
-  const trs = A.subs.flatMap(x => x.tr.map(t => ({ t, x })).filter(o => o.t.sec !== 'Rematches' && o.t.sec !== 'Master Trainer' && trApplies(r, o.t)));
-  return `<div class="evarea"><label>Area<select id="evarea">${evAreas().map(a => `<option value="${esc(a.n)}" ${a === A ? 'selected' : ''}>${esc(a.n)}${a === latest ? ' (latest encounter)' : ''}</option>`).join('')}</select></label>
+  const trs = A.subs.flatMap(x => x.tr.map(t => ({ t, x })).filter(o => o.t.sec !== 'Rematches' && o.t.sec !== 'Master Trainer' && trApplies(r, o.t) && (A.L.n !== PCAREA || (o.t.when || '') === pcTier(r.beat))));
+  return `<div class="evarea"><label>Area<select id="evarea">${evAreas().map(a => `<option value="${esc(a.n)}" ${a === A ? 'selected' : ''}>${esc(a.L.n === PCAREA ? PCNAME : a.n)}${a === latest ? ' (latest encounter)' : ''}</option>`).join('')}</select></label>
       ${A !== latest && latest ? `<button class="an" data-evlatest>Back to ${esc(latest.n)}</button>` : ''}<span class="sp">Click a Pokémon to log one win against it.</span></div>
     ${wild.size ? `<div class="evgroup"><h4>Wild</h4><div class="evpicks">${[...wild].map(([n, how]) => pick(n, how.join(', '))).join('')}</div></div>` : ''}
-    ${trs.length ? `<div class="evgroup"><h4>Trainers</h4>${trs.map(({ t, x }) => ({ t, x, done: trBeaten(r, trKey(A.L, x, t)) })).sort((a, b) => a.done - b.done).map(({ t, x, done }) => {
+    ${trs.length ? `<div class="evgroup"><h4>Trainers${A.L.n === PCAREA ? ` <span class="sp">in any Pokémon Center or gatehouse, ${pcTierText(r.beat)}</span>` : ''}</h4>${trs.map(({ t, x }) => ({ t, x, done: trBeaten(r, trKey(A.L, x, t)) })).sort((a, b) => a.done - b.done).map(({ t, x, done }) => {
       const hd = `<b>${esc(t.name)}</b>${x.n ? ` <span class="sp">${esc(x.n)}</span>` : ''}${done ? ' <span class="btag good">Beaten ✓</span>' : ''}<button class="btn" data-evbeat="${esc(trKey(A.L, x, t))}" title="${done ? 'Show this trainer in full again' : 'Mark as beaten without logging EVs: it folds down here and on the Nuzlocke tab'}">${done ? 'Not beaten' : 'Beaten ✓'}</button><button class="btn" data-evteam="${li}|${A.L.subs.indexOf(x)}|${x.tr.indexOf(t)}" title="Log a win over the whole team">Beat whole team</button>`,
         picks = `<div class="evpicks">${t.team.map(p => pick(p.n, 'Lv. ' + p.lv)).join('')}</div>`;
       // marked beaten on the Nuzlocke tab: folded to one line, open it to log EVs anyway
@@ -6340,7 +6397,7 @@ function renderIvResults() {
   const lockNote = ivClash.length ? `<p class="ivwarn">The stats you've entered don't fit the locked IVs for ${ivClash.map(k => SL[k]).join(', ')}, so the locked values are kept. Check the latest level for a typo. If an earlier entry or the nature was wrong, unlock and the IVs are worked out again from the log. <button class="btn" data-ivunlock>Unlock and recalculate</button></p>`
     : anyLock ? `<p class="sp ivlocknote">🔒 Ranges are locked as they narrow, so logging more levels or EVs can't widen them again. <button class="btn ivunl" data-ivunlock>Unlock and recalculate</button></p>` : '';
   const gave = ivRes ? ivGaveWay(ivRes, { n: IVS.n, hpt: IVS.hpt, ch: IVS.ch }) : [];
-  el.innerHTML = `<section class="card full"><h3>Results</h3>${gave.map(t => `<p class="ivwarn">${esc(t)}</p>`).join('')}${ivChOff ? `<p class="ivwarn">${esc(ivChHint(sol, ivChOff))}</p>` : ''}${lockNote}${slopNote}${hpNote}${total}
+  el.innerHTML = `<section class="card full"><h3>Results</h3>${gave.map(t => `<p class="ivwarn">${esc(t)}</p>`).join('')}${ivChOff ? `<p class="ivwarn">${esc(ivChHint(sol, ivChOff))}</p>` : ''}${ivUnlockMsg ? `<p class="bivmsg" role="status">${esc(ivUnlockMsg)}</p>` : ''}${lockNote}${slopNote}${hpNote}${total}
     <div class="tablewrap"><table class="ivtable"><thead><tr><th>Stat</th><th>Base</th><th>Possible IVs</th><th class="bar">0 ··· 31</th><th>Judge</th></tr></thead><tbody>${rows}</tbody></table></div>
     <div class="legend"><span>Judge wording follows the in-game IV judge: Best 31 · Fantastic 30 · Very good 26–29 · Pretty good 16–25 · Decent 1–15 · No good 0.</span></div></section>`;
 }
@@ -6387,13 +6444,13 @@ function ivEvolve(to) {
   const rows = IVD.querySelectorAll('.ivrow'), s = rows.length && rows[rows.length - 1].querySelector('[data-iv="st"]'); if (s) s.focus();
 }
 const IVD = document.getElementById('ivdetail');
-IVD.addEventListener('input', ev => {
+IVD.addEventListener('input', ev => { ivUnlockMsg = '';
   const t = ev.target, rw = t.closest('.ivrow'); if (!rw || !t.dataset.iv) return;
   const r = IVS.rows[+rw.dataset.r], f = t.dataset.iv;
   if (f === 'fresh') r.fresh = t.checked; else if (f === 'lv') r.lv = t.value; else { r[f] = r[f] || {}; if (t.value) r[f][t.dataset.s] = +t.value; else delete r[f][t.dataset.s] }
   ivTyping = f !== 'fresh'; ivSave(); if (IVS.link) ivPush(); renderIvResults();
 });
-IVD.addEventListener('change', ev => {
+IVD.addEventListener('change', ev => { ivUnlockMsg = '';
   const t = ev.target;
   if (t.dataset.iv && t.closest('.ivrow')) { ivTyping = false; return renderIvResults() }
   if (t.id === 'ivmon') { const m = monByName(t.value); if (!m) { t.setCustomValidity('Pick a Pokémon from the list'); t.reportValidity(); return } t.setCustomValidity(''); if (IVS.n !== m.num) delete IVS.ivLock; IVS.n = m.num; ivSave(); return renderIv() }
@@ -6455,7 +6512,14 @@ IVD.addEventListener('click', ev => {
   if (t.id === 'ivadd') { const last = IVS.rows[IVS.rows.length - 1]; IVS.rows.push({ lv: last && +last.lv ? String(+last.lv + 1) : '', n: lk ? lk.e.n : undefined, st: {}, ev: lk && lk.e.evTrack ? evSnap(lk.e) : Object.assign({}, last ? last.ev : {}) }); ivSave(); if (lk) ivPush(); renderIv();
     const ins = IVD.querySelectorAll('.ivrow'); const s = ins[ins.length - 1].querySelector('[data-iv="st"]'); if (s) s.focus(); return }
   if (t.id === 'ivclear') { IVS.rows = [{ lv: '', st: {}, ev: {} }]; IVS.ch = ''; IVS.hpt = ''; delete IVS.ivLock; ivSave(); return renderIv() }
-  if (t.closest('[data-ivunlock]')) { if (lk) { delete lk.e.ivLock; lk.run.updated = Date.now(); saveRuns() } else { delete IVS.ivLock; ivSave() } ivTyping = false; return renderIv() }
+  if (t.closest('[data-ivunlock]')) { const before = Object.assign({}, ivLockGet(lk ? lk.e : IVS, IVS.nat));
+    if (lk) { delete lk.e.ivLock; lk.run.updated = Date.now(); saveRuns() } else { delete IVS.ivLock; ivSave() } ivTyping = false; ivUnlockMsg = ''; renderIv();
+    const after = ivRes ? ivRes.s : {}, txt = c => c && c.length ? ivList(c) : '?', n = IVS.rows.filter(x => +x.lv).length;
+    const diff = IVSTATS.filter(k => before[k] && after[k] && txt(before[k]) !== txt(after[k].c)).map(k => `${SL[k]} ${txt(before[k])} → ${txt(after[k].c)}`);
+    const now = IVSTATS.filter(k => after[k] && after[k].c.length).map(k => `${SL[k]} ${txt(after[k].c)}`).join(', ');
+    ivUnlockMsg = `Unlocked and worked out again from ${n} logged level${n === 1 ? '' : 's'}. ` + (diff.length ? `Changed: ${diff.join(', ')}.`
+      : `The IVs came out the same (${now}): your logged stats already pin them down. If one looks wrong, check the levels you logged and the nature.`);
+    return renderIv() }
   if (t.closest('[data-ivfold]')) { ivAllRows = !ivAllRows; return renderIv() }
   if (t.dataset.ivdel !== undefined) { IVS.rows.splice(+t.dataset.ivdel, 1); ivSave(); if (lk) ivPush(); return renderIv() }
 });
