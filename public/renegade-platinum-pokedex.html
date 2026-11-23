@@ -685,6 +685,20 @@ button.gbtn:hover { border-color: var(--accent) }
 .tpph img { width: 36px; height: 36px; image-rendering: pixelated }
 .tpph .btag { margin-left: auto }
 .btag.bad { border-color: var(--chg); color: var(--chg) }
+.drow { display: grid; grid-template-columns: minmax(0, 11em) minmax(0, 1fr); gap: 8px; align-items: center; font-size: .86rem; padding: 2px 0 }
+.dfc, .dopt { border-top: 1px solid var(--line); padding: 8px 0 }
+.dfh { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; margin-bottom: 4px }
+.dfh img, .dlead img { width: 40px; height: 40px; image-rendering: pixelated }
+.dleads { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 8px }
+.dlead { display: flex; align-items: center; gap: 6px }
+.dscroll { overflow-x: auto; margin-top: 8px; max-width: 100% }
+.dtab { border-collapse: collapse; font-size: .78rem }
+.dtab th, .dtab td { border: 1px solid var(--line); padding: 3px 6px; text-align: center; vertical-align: middle }
+.dtab th img { width: 32px; height: 32px; image-rendering: pixelated; display: block; margin: 0 auto }
+.dtab th span, .dtab th small, .dtab td small { display: block; white-space: nowrap }
+.dtab td small { color: var(--muted); font-weight: 400 }
+.dtab td.dko { color: var(--new); font-weight: 700 }
+.dtab td.dhi { color: var(--accent); font-weight: 600 }
 .tpout summary { cursor: pointer; font-weight: 600 }
 #gdetail label { display: flex; flex-direction: column; gap: 3px; font-size: .66rem; text-transform: uppercase; letter-spacing: .07em; color: var(--muted) }
 #gdetail select { font: 500 .85rem var(--font-body); padding: 6px 8px; border-radius: 7px; border: 1px solid var(--line); background: var(--bg); color: var(--ink); max-width: min(100%, 360px); text-transform: none; letter-spacing: 0 }
@@ -862,6 +876,12 @@ ol.gwalk .an::before { content: "→ " }
 .trdone > summary { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; cursor: pointer; font-size: .85rem }
 .trrow.trdone > summary .trbeat { margin-left: auto }
 .trrow.trdone[open] > summary { margin-bottom: 6px }
+[data-ivsec] > h2, [data-ivsec] > h3, [data-ivsec] > h4 { display: flex; align-items: center; gap: 8px }
+.ivcoll > :not(h2):not(h3):not(h4):not(.ivmon):not(.ivlinked) { display: none }
+.ivcoll > h2, .ivcoll > h3, .ivcoll > h4 { margin-bottom: 0 !important }
+.evtrf > summary { cursor: pointer; list-style: none } .evtrf > summary::-webkit-details-marker { display: none }
+.evtrf > summary > b::before { content: '▾ '; color: var(--muted) } .evtrf:not([open]) > summary > b::before { content: '▸ ' }
+.evtrf:not([open]) > summary { margin-bottom: 0 }
 .evtr.trdone { opacity: .7 } .evtr.trdone[open] { opacity: 1 }
 .evtr.trdone > summary { margin-bottom: 0 } .evtr.trdone[open] > summary { margin-bottom: 4px }
 .trteam { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 6px }
@@ -877,6 +897,8 @@ ol.gwalk .an::before { content: "→ " }
 .btform h5 { margin: 0 0 4px; font-size: .85rem }
 .btform select, .btform input[type=number] { font: 500 .85rem var(--font-body); padding: 5px 7px; border-radius: 7px; border: 1px solid var(--line); background: var(--bg); color: var(--ink); max-width: 100% }
 .btform input[type=number] { width: 6em }
+.dtinl { display: flex !important; flex-direction: row !important; align-items: center; gap: 6px; text-transform: none !important; letter-spacing: normal !important; font-size: .82rem !important; margin-top: 6px }
+.dtinl input[type=checkbox] { width: auto; margin: 0 }
 .btform .chk { display: flex; align-items: center; gap: 5px; font-size: .8rem; margin-top: 4px }
 .btlog { margin: 0; padding-left: 20px; font-size: .85rem; display: flex; flex-direction: column; gap: 6px }
 .btlog ul { margin: 2px 0 0; padding-left: 16px }
@@ -1781,17 +1803,17 @@ const NKEY = 'rp-nuzlocke';
 const NORDER = ['Twinleaf Town', 'Route 201', 'Lake Verity', 'Sandgem Town', 'Route 202', 'Jubilife City', 'Route 204 South', 'Ravaged Path', 'Route 203', 'Oreburgh Gate', 'Oreburgh City', 'Oreburgh Mine', 'Route 204 North',
   'Floaroma Town', 'Floaroma Meadow', 'Valley Windworks', 'Route 205 South', 'Eterna Forest', 'Route 205 North', 'Old Chateau', 'Eterna City', 'Route 211', 'Route 206', 'Wayward Cave', 'Route 207', 'Mt. Coronet', 'Route 208',
   'Hearthome City', 'Route 209', 'Route 212 North', 'Lost Tower', 'Solaceon Town', 'Solaceon Ruins', 'Route 210', 'Route 215', 'Veilstone City', 'Route 214', 'Maniac Tunnel', 'Valor Lakefront', 'Route 213', 'Pastoria City',
-  'Great Marsh', 'Route 212', 'Trophy Garden', 'Celestic Town', 'Fuego Ironworks', 'Route 218', 'Canalave City', 'Iron Island', 'Lake Valor', 'Lake Acuity', 'Route 216', 'Route 217', 'Acuity Lakefront',
+  'Great Marsh', 'Route 212 South', 'Trophy Garden', 'Celestic Town', 'Fuego Ironworks', 'Route 218', 'Canalave City', 'Iron Island', 'Lake Valor', 'Lake Acuity', 'Route 216', 'Route 217', 'Acuity Lakefront',
   'Snowpoint City', 'Snowpoint Temple', 'Galactic HQ', 'Spear Pillar', 'Distortion World', 'Route 222', 'Sunyshore City', 'Route 219', 'Route 220', 'Route 221', 'Route 223', 'Victory Road', 'Pokémon League',
   'Fight Area', 'Route 225', 'Survival Area', 'Route 226', 'Route 227', 'Stark Mountain', 'Route 228', 'Route 229', 'Route 230', 'Resort Area', 'Route 224', 'Seven Stars Restaurant', 'Sendoff Spring',
   'Turnback Cave', 'Fullmoon Island'];
-const NSPLIT = { 'Route 204': ['South', 'North'], 'Route 205': ['South', 'North'] };
+const NSPLIT = { 'Route 204': ['South', 'North'], 'Route 205': ['South', 'North'], 'Route 212': ['North', 'South'] };   // first part gets an old combined encounter
 const NSKIP = new Set(['Battle Marathon Only', 'Pokémon Center', 'Pal Park']);
 const nkey = s => s.normalize('NFC');
 // gifts, eggs, special and legendary encounters from the Pokédex event data: one encounter row per event, filed under
 // its area. Pokémon that share an event (the Interviewer's starters, the Trainers' School egg, the fossils) share a row.
 // Trades and the Sinnoh starters (the Starter row) are left out.
-const NLOCMAP = { 'Eterna Galactic Building': 'Eterna City', 'Acuity Cavern': 'Lake Acuity', 'Verity Cavern': 'Lake Verity', 'Valor Cavern': 'Lake Valor', 'Pokémon Mansion': 'Route 212' };
+const NLOCMAP = { 'Eterna Galactic Building': 'Eterna City', 'Acuity Cavern': 'Lake Acuity', 'Verity Cavern': 'Lake Verity', 'Valor Cavern': 'Lake Valor', 'Pokémon Mansion': 'Route 212 South' };
 const NEVBY = {};
 (() => {
   const names = ROUTES.map(L => L.n).sort((a, b) => b.length - a.length), groups = new Map();
@@ -3010,6 +3032,14 @@ function nsStatusMove(S, A, D, mv, st, ctx, R) {
   }
   if (mv === 'Defense Curl') A.dc = true;
 }
+// hitting itself in confusion: a 40-power typeless physical hit on itself
+function nsConfDmg(c) {
+  const lv = c.m.lv, a = Math.floor(c.m.stats.atk * (c.stg.atk >= 0 ? (2 + c.stg.atk) / 2 : 2 / (2 - c.stg.atk))), df = Math.floor(c.m.stats.def * (c.stg.def >= 0 ? (2 + c.stg.def) / 2 : 2 / (2 - c.stg.def)));
+  return Math.floor(Math.floor(Math.floor(2 * lv / 5 + 2) * 40 * a / df) / 50) + 2;
+}
+// confusion lasts 1-4 turns and the turns left aren't shown, so a confused Pokémon snaps out this turn 1 time in 4;
+// otherwise it hits itself half the time: it gets its move off 5/8 of the time
+const CONF_HIT = 3 / 8, nsActP = c => c && c.conf > 0 ? 1 - CONF_HIT : 1;
 // can this battler act this turn?
 function nsCanAct(S, c, R) {
   if (c.recharge) { c.recharge = false; return false }
@@ -3019,8 +3049,7 @@ function nsCanAct(S, c, R) {
   if (c.conf > 0) {
     if (--c.conf === 0) { /* snapped out */ }
     else if (nsR(2) === 0) {
-      const lv = c.m.lv, a = Math.floor(c.m.stats.atk * (c.stg.atk >= 0 ? (2 + c.stg.atk) / 2 : 2 / (2 - c.stg.atk))), df = Math.floor(c.m.stats.def * (c.stg.def >= 0 ? (2 + c.stg.def) / 2 : 2 / (2 - c.stg.def)));
-      nsDamage(S, c, Math.floor(Math.floor(Math.floor(2 * lv / 5 + 2) * 40 * a / df) / 50) + 2, R); return false;
+      nsDamage(S, c, nsConfDmg(c), R); return false;
     }
   }
   if (c.st === 'par' && nsR(4) === 0) return false;
@@ -3225,37 +3254,121 @@ function batFresh(r, bi, vi) {
   if (typeof bi === 'string') batTrAdd(bi);
   const t = (batTeams(r, bi)[vi] || batTeams(r, bi)[0] || { team: [] }).team.filter(p => mons[p.n - 1]);
   const party = partyOf(r).slice(0, 6).filter(x => +x.e.lv);
-  return { run: r.id, boss: bi, v: vi, b: t.map(() => ({ hp: 100, st: '', item: true })), ba: 0, bstg: {}, bfresh: true,
-    p: {}, pa: party[0] ? party[0].row.k : '', pstg: {}, pfresh: true, plast: '', wx: '', wxT: 5, sd: [batSide(), batSide()] };
+  return batDblInit(r, Object.assign({ run: r.id, boss: bi, v: vi, b: t.map(() => ({ hp: 100, st: '', item: true })), ba: 0, bstg: {}, bfresh: true,
+    p: {}, pa: party[0] ? party[0].row.k : '', pstg: {}, pfresh: true, plast: '', wx: '', wxT: 5, sd: [batSide(), batSide()] }, batDblCfg(r, bi)));
 }
 function batState(r) {
   if (!BS || BS.run !== r.id || !batB(BS.boss)) BS = batFresh(r, Math.min(r.beat, NBOSS.length - 1), 0);
   const t = batTeam(r);
   while (BS.b.length < t.length) BS.b.push({ hp: 100, st: '', item: true });
   BS.b.length = t.length;
+  if (BS.dbl) { const al = batAlly(), keys = new Set(batParty(r).map(x => x.row.k)); BS.al = BS.al || [];
+    while (BS.al.length < al.length) BS.al.push({ hp: 100, st: '' }); BS.al.length = al.length; BS.dstg = BS.dstg || {};
+    BS.bas = (BS.bas || []).filter(i => i < t.length); BS.pas = (BS.pas || []).filter(k => /^al\d+$/.test(k) ? +k.slice(2) < al.length : keys.has(k)) }
   return BS;
 }
-const batTeam = r => ((batTeams(r, BS.boss)[BS.v] || batTeams(r, BS.boss)[0] || { team: [] }).team).filter(p => mons[p.n - 1]);
+const batTeam1 = (r, s) => ((batTeams(r, s.boss)[s.v] || batTeams(r, s.boss)[0] || { team: [] }).team).filter(p => mons[p.n - 1]);
+const batName1 = s => { const b = batB(s.boss); return b ? ((b.trs && b.trs[0] || {}).name || b.label).replace(/ R\d$/, '') : '' };
+// in a double battle against two trainers, the second one's Pokémon follow the first's, each marked with its trainer (trn)
+function batTeamOf(r, s) {
+  const t = batTeam1(r, s), b2 = s.dbl && s.foe2 ? batTr(s.foe2) : null; if (!b2) return t;
+  const n1 = batName1(s);
+  return [...t.map(p => Object.assign({}, p, { trn: n1 })), ...b2.team.filter(p => mons[p.n - 1]).map(p => Object.assign({}, p, { trn: b2.label, tr2: true }))];
+}
+const batTeam = r => batTeamOf(r, BS);
 const batParty = r => partyOf(r).slice(0, 6).filter(x => +x.e.lv);
 const batSave = () => store.set(BKEY, BS);
+// ---- Double battles (BS.dbl). Their side is one trainer sending out two at once, or two trainers (BS.foe2: the second one's
+// key) with one each; their team list (batTeam) then holds both teams, the first trainer's first, so the threat list, cards
+// and EV logging cover both. Your side is two of yours, or one of yours beside a partner trainer's (BS.ally) that the game
+// controls. Out now: BS.bas (two indexes into their list) and BS.pas (two keys: your row keys, 'al' + index for the
+// partner's). Stat stages per Pokémon out: BS.dstg[key]. The setup is kept per opponent in this browser (rp-bdbl).
+const DBLKEY = 'rp-bdbl';
+// Gen 4 moves that hit both foes, and ones that hit everyone else on the field, your partner too (3/4 damage when they hit more than one)
+const DSPREAD = new Set(['Hyper Voice', 'Rock Slide', 'Blizzard', 'Heat Wave', 'Icy Wind', 'Bubble', 'Razor Leaf', 'Powder Snow', 'Twister', 'Muddy Water', 'Air Cutter',
+  'Eruption', 'Water Spout', 'Swift', 'Razor Wind', 'Acid', 'Dazzling Gleam', 'Snarl', 'Electroweb', 'Struggle Bug', 'Glaciate', 'Disarming Voice', 'Incinerate', 'Breaking Swipe']);
+const DSPREADALL = new Set(['Earthquake', 'Magnitude', 'Surf', 'Discharge', 'Lava Plume', 'Explosion', 'Self-Destruct', 'Bulldoze', 'Sludge Wave', 'Boomburst', 'Searing Shot',
+  'Petal Blizzard', 'Parabolic Charge', 'Mind Blown']);
+const dSpread = mv => DSPREAD.has(mv) || DSPREADALL.has(mv);
+// moves that matter more with two on each side
+const DNOTE = { 'Fake Out': 'makes one target flinch on its first turn out', 'Teeter Dance': 'confuses everyone else on the field, its own partner too', 'Follow Me': 'draws single-target moves to itself',
+  'Helping Hand': 'powers up its partner\'s move', 'Protect': 'blocks everything for a turn', 'Detect': 'blocks everything for a turn', 'Sing': 'sleep', 'Hypnosis': 'sleep', 'Sleep Powder': 'sleep',
+  'Spore': 'sleep', 'Thunder Wave': 'paralysis', 'Trick Room': 'slower Pokémon move first for 5 turns', 'Tailwind': 'doubles its side\'s Speed', 'Icy Wind': 'lowers Speed', 'Electroweb': 'lowers Speed',
+  'Confuse Ray': 'confusion', 'Swagger': 'confusion and +2 Attack', 'Feint': 'breaks Protect' };
+const trKeyBy = (a, sub, name, ok) => { const L = ROUTES.find(x => x.n === a), x = L && L.subs.find(y => y.n === sub), i = x ? x.tr.findIndex(t => t.name === name && (!ok || ok(t))) : -1; return i >= 0 ? 'tr:' + a + '|' + sub + '|' + i : '' };
+const trRaw = k => { const [a, sub, i] = String(k).slice(3).split('|'), L = ROUTES.find(x => x.n === a), x = L && L.subs.find(y => y.n === sub); return x && x.tr[+i] };
+const trOptName = k => { const t = trRaw(k), sub = String(k).split('|')[1]; return t ? t.name.replace(/ R\d$/, '') + (t.var ? ' (' + t.var.replace(/^Your starter: /, 'if your starter is ') + ')' : '') + ' · Lv. ' + Math.max(...t.team.map(p => parseInt(p.lv) || 0)) + (sub ? ' · ' + sub : '') : String(k) };
+// the partners the game gives you for a tag battle
+// Barry's teams for your starter, lowest level first (his level-5 first team left out)
+function dBarrys(r) {
+  const st = r.enc.starter && STYPE[fam(r.enc.starter.n)], out = [];
+  ROUTES.forEach(L => L.subs.forEach(x => x.tr.forEach((t, i) => { const lv = Math.max(...t.team.map(p => parseInt(p.lv) || 0));
+    if (t.name === 'PKMN Trainer Barry' && t.sec !== 'Rematches' && lv > 5 && (!st || !t.var || t.var === 'Your starter: ' + st)) out.push(['tr:' + L.n + '|' + x.n + '|' + i, lv]) })));
+  return out.sort((a, z) => a[1] - z[1]).map(z => z[0]);
+}
+// a partner's name in the list: level and where that team is from
+const dPartName = k => { const t = trRaw(k), [a, sub] = String(k).slice(3).split('|'); return t ? t.name.replace(/ R\d$/, '').replace(/^PKMN Trainer /, '') + ' · Lv. ' + Math.max(...t.team.map(p => parseInt(p.lv) || 0)) + ' · ' + (a === 'Hearthome City' && t.name === 'PKMN Trainer Barry' ? 'his Hearthome team' : a + (sub ? ' ' + sub : '')) : String(k) };
+const DPARTNERS = [['Eterna Forest', '', 'PKMN Trainer Cheryl'], ['Wayward Cave', '', 'PKMN Trainer Mira'], ['Iron Island', '', 'PKMN Trainer Riley'], ['Victory Road', 'East', 'PKMN Trainer Marley'], ['Route 227', '', 'PKMN Trainer Buck']];
+function batDblCfg(r, bi) {
+  const saved = store.get(DBLKEY, {})[String(bi)]; if (saved) return { dbl: !!saved.dbl, foe2: saved.foe2 || '', ally: saved.ally || '' };
+  // the game's own double battles: Commander Saturn and Gentleman Backlot on Route 212 North, and Mars and Jupiter at Spear Pillar, both beside Barry
+  const sat = trKeyBy('Route 212', 'North', 'Commander Saturn');
+  if (sat && bi === sat) { const st = r.enc.starter && STYPE[fam(r.enc.starter.n)];
+    return { dbl: true, foe2: trKeyBy('Route 212', 'North', 'Gentleman Backlot'), ally: trKeyBy('Hearthome City', 'Gym', 'PKMN Trainer Barry', t => !st || t.var === 'Your starter: ' + st) } }
+  const b = typeof bi === 'number' && NBOSS[bi];
+  if (b && b.label === 'Mars & Jupiter') { const st = r.enc.starter && STYPE[fam(r.enc.starter.n)];
+    return { dbl: true, foe2: trKeyBy('Spear Pillar', '', 'Commander Jupiter'), ally: trKeyBy('Spear Pillar', '', 'PKMN Trainer Barry', t => !st || t.var === 'Your starter: ' + st) } }
+  return { dbl: false, foe2: '', ally: '' };
+}
+function batDblSave() { const m = store.get(DBLKEY, {}); m[String(BS.boss)] = { dbl: !!BS.dbl, foe2: BS.foe2 || '', ally: BS.ally || '' }; store.set(DBLKEY, m) }
+const batAllyOf = s => s.dbl && s.ally ? ((batTr(s.ally) || {}).team || []).filter(p => mons[p.n - 1]) : [];
+const batAlly = () => batAllyOf(BS);
+// a fresh battle: everyone at full HP; in a double, their first two (or each trainer's first) and your first two (or your first beside the partner's first) out
+function batDblInit(r, s) {
+  const t1 = batTeam1(r, s).length, team = batTeamOf(r, s), party = batParty(r), al = batAllyOf(s);
+  s.b = team.map(() => ({ hp: 100, st: '', item: true })); s.al = al.map(() => ({ hp: 100, st: '' })); s.fought = {}; s.dstg = {}; s.dfirst = true; s.dtl = {}; s.turn = 0; s.log = []; s.hist = [];
+  s.bas = s.dbl ? (s.foe2 && team.length > t1 ? [0, t1] : [0, 1]).filter(i => i < team.length) : [];
+  s.pas = s.dbl ? (al.length ? [party[0] ? party[0].row.k : '', 'al0'] : party.slice(0, 2).map(x => x.row.k)).filter(Boolean) : [];
+  if (s.dbl) { s.ba = s.bas[0] || 0; const m = s.pas.find(k => !/^al\d+$/.test(k)); if (m) s.pa = m }
+  return s;
+}
+// the Battle / Their side / Your side controls at the top of the Planner and Tracker
+function batDblCtl(r, opt) {
+  const b = batB(BS.boss); if (!b) return '';
+  const sel = `<label title="Two Pokémon out on each side">Battle<select data-bf="dbl">${opt('', 'Single', BS.dbl ? '1' : '')}${opt('1', 'Double', BS.dbl ? '1' : '')}</select></label>`;
+  if (!BS.dbl) return sel;
+  const L = ROUTES.find(x => x.n === b.area), here = [];
+  if (L) L.subs.forEach(x => x.tr.forEach((t, i) => { const k = 'tr:' + L.n + '|' + x.n + '|' + i;
+    if (k === BS.boss || t.sec === 'Rematches' || (typeof BS.boss === 'number' && x.n === b.sub && t.name === (b.trs[0] || {}).name)) return;
+    here.push([k, trOptName(k)]) }));
+  const partN = [...dBarrys(r), ...DPARTNERS.map(([a, s, n]) => trKeyBy(a, s, n)).filter(Boolean)].map(k => [k, dPartName(k)]);
+  const addN = store.get(BTRKEY, []).filter(k => k !== BS.boss && trRaw(k) && !here.some(z => z[0] === k)).map(k => [k, trOptName(k)]);
+  const og = (lab, list, cur) => list.length ? `<optgroup label="${esc(lab)}">${list.map(([k, n]) => opt(k, n, cur)).join('')}</optgroup>` : '';
+  const keep = (cur, lists) => cur && !lists.some(l => l.some(z => z[0] === cur)) ? opt(cur, trOptName(cur), cur) : '';
+  return sel + `<label>Their side<select data-bf="foe2">${opt('', batName1(BS) + ' sends out two', BS.foe2)}${keep(BS.foe2, [here, addN])}${og('Or with a second trainer here', here, BS.foe2)}${og('Trainers you\'ve added', addN, BS.foe2)}</select></label>
+    <label>Your side<select data-bf="ally">${opt('', 'Two of yours', BS.ally)}${keep(BS.ally, [partN, here])}${og('With a partner', partN, BS.ally)}${og('A trainer here as your partner', here, BS.ally)}</select></label>`;
+}
 
 // battle-engine teams and starting state from what's entered
 function batBuild(r) {
   const team = batTeam(r), party = batParty(r);
   const P = party.map((x, i) => { const c = nsMake(nMineMon(x.e), (x.e.moves || []).filter(Boolean), 0, i, x.row.k), s = BS.p[x.row.k] || {};
-    if (s.hp !== undefined && s.hp !== '') c.hp = Math.max(0, Math.min(c.max, +s.hp)); c.st = s.st || ''; c.toxN = c.st === 'tox' ? +s.tn || 0 : 0; c.seed = !!s.seed; return c });
+    if (s.hp !== undefined && s.hp !== '') c.hp = Math.max(0, Math.min(c.max, +s.hp)); c.st = s.st || ''; c.toxN = c.st === 'tox' ? +s.tn || 0 : 0; c.seed = !!s.seed; c.conf = s.cf ? 2 : 0; return c });
   const B = team.map((p, i) => { const c = nsMake(nBossMon(p, +nCalc.biv), (p.mv || []).filter(Boolean), 1, i, 'b' + i), s = BS.b[i] || {};
-    const pct = Math.max(0, Math.min(100, +(s.hp ?? 100))); c.hp = pct <= 0 ? 0 : Math.max(1, Math.round(c.max * pct / 100)); c.st = s.st || ''; c.toxN = c.st === 'tox' ? +s.tn || 0 : 0; c.seed = !!s.seed; if (s.item === false) { c.item = ''; c.usedItem = true } return c });
+    const pct = Math.max(0, Math.min(100, +(s.hp ?? 100))); c.hp = pct <= 0 ? 0 : Math.max(1, Math.round(c.max * pct / 100)); c.st = s.st || ''; c.toxN = c.st === 'tox' ? +s.tn || 0 : 0; c.seed = !!s.seed; if (s.item === false) { c.item = ''; c.usedItem = true } c.conf = s.cf ? 2 : 0; return c });
   let pa = party.findIndex(x => x.row.k === BS.pa); if (pa < 0 || !P[pa] || P[pa].hp <= 0) pa = P.findIndex(c => c.hp > 0);
   let ba = BS.ba; if (!B[ba] || B[ba].hp <= 0) ba = B.findIndex(c => c.hp > 0);
   P.forEach((c, i) => { if (i !== pa) c.seed = false }); B.forEach((c, i) => { if (i !== ba) c.seed = false });
-  return { P, B, party, team, pa, ba };
+  if (!BS.dbl) { P.forEach((c, i) => { if (i !== pa) c.conf = 0 }); B.forEach((c, i) => { if (i !== ba) c.conf = 0 }) }
+  const AL = batAlly().map((p, i) => { const c = nsMake(nBossMon(p, +nCalc.biv), (p.mv || []).filter(Boolean), 0, party.length + i, 'al' + i), s = (BS.al || [])[i] || {};
+    const pct = Math.max(0, Math.min(100, +(s.hp ?? 100))); c.hp = pct <= 0 ? 0 : Math.max(1, Math.round(c.max * pct / 100)); c.st = s.st || ''; c.conf = s.cf ? 2 : 0; return c });
+  return { P, B, party, team, pa, ba, AL };
 }
 function batPrep(P, B, pa, ba) {
   const p = P[pa], b = B[ba];
   if (p) { Object.assign(p.stg, BS.pstg); p.firstOut = !!BS.pfresh; if (BS.plast && MV[BS.plast]) { p.lastMv = BS.plast; p.lastCls = MV[BS.plast].c === 'St' ? null : MV[BS.plast].c } }
   if (b) { Object.assign(b.stg, BS.bstg); b.firstOut = !!BS.bfresh }
-  [...P, ...B].forEach(c => { if (c.st === 'slp') c.slp = 2 + nsR(3) });   // turns left asleep aren't shown in game
+  [...P, ...B].forEach(c => { if (c.st === 'slp') c.slp = 2 + nsR(3); if (c.conf > 0) c.conf = 1 + nsR(4) });   // turns left asleep aren't shown in game
 }
 const batStart = (pa, ba) => ({ a: [pa, ba], wx: BS.wx, wxT: BS.wx ? (+BS.wxT || 5) : 0, sd: BS.sd.map(s => Object.assign({}, s)) });
 // a live battle state for one-off calculations (forecast, damage ranges)
@@ -3281,7 +3394,7 @@ function batHit(S, A, D, mv) {
   const d = MV[mv]; if (!d || d.c === 'St') return null;
   const x = nsRolls(S, A, D, mv, false, null), xc = nsRolls(S, A, D, mv, true, null); if (!x) return null;
   const hits = NHITS2.has(mv) ? 2 : NHITS25.has(mv) ? (A.ab === 'Skill Link' ? 5 : 3) : 1, cp = D.ab === 'Battle Armor' || D.ab === 'Shell Armor' ? 0 : nsCritStage(A, mv);
-  const acc = !d.a ? 1 : Math.min(1, d.a / 100), ko = r => r.filter(v => v * hits >= D.hp).length / 16;
+  const acc = (!d.a ? 1 : Math.min(1, d.a / 100)) * nsActP(A), ko = r => r.filter(v => v * hits >= D.hp).length / 16;
   const h = { min: x.rolls[0] * hits, max: x.rolls[15] * hits, crit: xc ? xc.rolls[15] * hits : 0, hp: D.hp, max0: D.max, ko: acc * ((1 - cp) * ko(x.rolls) + cp * (xc ? ko(xc.rolls) : 0)), hits, mult: x.mult };
   const srcs = [['aab', A.ab, A, 'ability'], ['ait', A.item, A, 'item'], ['dab', D.ab, D, 'ability'], ['dit', D.item, D, 'item']].filter(z => z[1]);
   if (srcs.length) {
@@ -3292,8 +3405,11 @@ function batHit(S, A, D, mv) {
       h.o = { min: x0.rolls[0] * hits0, max: x0.rolls[15] * hits0, mult: x0.mult, fx: fx.length ? fx : srcs.map(([, name, who, kind]) => ({ name, who: who.name, kind })) };
     }
   }
+  h.act = nsActP(A);
   return h;
 }
+// what confusion means for a Pokémon this turn
+const confTxt = (c, pct) => { const d = Math.min(c.hp, nsConfDmg(c)); return c.conf > 0 ? `<span class="bko">${esc(c.name)} is confused</span>: about 3 turns in 8 it hits itself for ${pct ? Math.round(d / c.max * 100) + '%' : d + ' HP'} instead of moving${d >= c.hp ? ', which would knock it out' : ''}. The odds below count that.` : '' };
 // a highlighted ability or item that changes a number
 const fxMark = z => `<mark class="fxm" title="${esc(z.who + "'s " + z.kind)}">${esc(z.name)}</mark>`;
 const fxNum = (v, v0, fx) => v === v0 ? String(v) : `<b class="fxv">${v}</b> <span class="fx0" title="Without ${esc(fx.map(z => z.name).join(' and '))}">(${v0})</span>`;
@@ -3331,23 +3447,24 @@ const btForm = () => BS.tl = Object.assign({ p: '', pOut: 'hit', pSec: false, b:
 // moves with a chance-based added effect (100% effects always happen)
 const btHasChance = mv => { const x = NSEC[mv], y = NSELF[mv]; return !!((x && ((x[0] && x[0] < 100) || x[2])) || (y && y[0] < 100)) };
 function btSnap(S) {
-  return { m: S.sd.flatMap((sd, side) => sd.team.map((c, i) => ({ side, i, key: c.key, name: c.name, hp: c.hp, max: c.max, st: c.st, stg: Object.assign({}, c.stg), item: c.item, seed: !!c.seed }))),
+  return { m: S.sd.flatMap((sd, side) => sd.team.map((c, i) => ({ side, i, key: c.key, name: c.name, hp: c.hp, max: c.max, st: c.st, stg: Object.assign({}, c.stg), item: c.item, seed: !!c.seed, cf: c.conf > 0 }))),
     sd: S.sd.map(sd => ({ a: sd.a, sr: sd.sr, spk: sd.spk, tsp: sd.tsp, ref: sd.ref, ls: sd.ls, tw: sd.tw })), wx: S.wx, wxT: S.wxT };
 }
 // what changed between two snapshots, in words
 function btDiff(a, z, S) {
-  const out = [], who = m => (m.side === 0 ? 'Your ' : '') + m.name, sideName = i => i === 0 ? 'your side' : 'their side';
-  [0, 1].forEach(side => { if (a.sd[side].a !== z.sd[side].a) out.push(`${side === 0 ? 'You sent out' : 'They sent out'} ${S.sd[side].team[z.sd[side].a].name}.`) });
+  const out = [], who = m => (m.side === 0 ? (/^al\d+$/.test(m.key) ? dAllyN() + "'s " : 'Your ') : '') + m.name, sideName = i => i === 0 ? 'your side' : 'their side';
+  [0, 1].forEach(side => { if (!z.out && a.sd[side].a !== z.sd[side].a) out.push(`${side === 0 ? 'You sent out' : 'They sent out'} ${S.sd[side].team[z.sd[side].a].name}.`) });
   z.m.forEach((m, k) => { const o = a.m[k];
     if (m.hp !== o.hp) {
       const d = m.hp - o.hp;
-      if (m.side === 1) out.push(`${who(m)} ${d < 0 ? 'took about ' + Math.round(-d / m.max * 100) + '%' : 'recovered about ' + Math.round(d / m.max * 100) + '%'} (${Math.round(o.hp / m.max * 100)}% → ${Math.round(m.hp / m.max * 100)}%).`);
+      if (m.side === 1 || /^al\d+$/.test(m.key)) out.push(`${who(m)} ${d < 0 ? 'took about ' + Math.round(-d / m.max * 100) + '%' : 'recovered about ' + Math.round(d / m.max * 100) + '%'} (${Math.round(o.hp / m.max * 100)}% → ${Math.round(m.hp / m.max * 100)}%).`);
       else out.push(`${who(m)} ${d < 0 ? 'lost ' + -d : 'recovered ' + d} HP (${o.hp} → ${m.hp} of ${m.max}).`);
       if (o.hp > 0 && m.hp <= 0) out.push(`<b>${who(m)} fainted.</b>`);
     }
     if (m.seed && !o.seed && m.hp > 0) out.push(`${who(m)} was seeded.`);
+    if (m.cf !== o.cf && m.hp > 0) out.push(m.cf ? `${who(m)} became confused.` : `${who(m)} is no longer confused.`);
     if (m.st !== o.st) out.push(m.st ? `${who(m)} is now ${BT_STNAME[m.st]}.` : `${who(m)} is no longer ${BT_STNAME[o.st]}.`);
-    Object.keys(BT_STGNAME).forEach(st => { const d = m.stg[st] - o.stg[st]; if (d && m.hp > 0 && a.sd[m.side].a === m.i && z.sd[m.side].a === m.i)
+    Object.keys(BT_STGNAME).forEach(st => { const d = m.stg[st] - o.stg[st]; if (d && m.hp > 0 && (z.out ? a.out.includes(m.key) && z.out.includes(m.key) : a.sd[m.side].a === m.i && z.sd[m.side].a === m.i))
       out.push(`${who(m)}'s ${BT_STGNAME[st]} ${d > 0 ? 'rose' : 'fell'} ${Math.abs(d)} (now ${m.stg[st] > 0 ? '+' : ''}${m.stg[st]}).`) });
     if (o.item && !m.item) { const thief = z.m.find((x, j) => x.item === o.item && !a.m[j].item);
       out.push(thief ? `${who(thief)} stole ${who(m)}'s ${o.item}.` : /Berry$|Herb$/.test(o.item) ? `${who(m)} used its ${o.item}.` : `${who(m)} lost its ${o.item}.`) }
@@ -3375,7 +3492,7 @@ function btAdvance() {
   const stage = head => { const now = btSnap(S), fx = btDiff(snap, now, S); steps.push({ head, fx }); snap = now };
   // undo point: the board as it was
   BS.hist = [JSON.stringify(Object.assign({}, BS, { hist: undefined, log: undefined })), ...(BS.hist || [])].slice(0, 15);
-  const act = (side, v) => { if (v === 'none') return { none: true }; const [k, x] = v.split(':'); return k === 'sw' ? { sw: +x } : { mv: x } };
+  const act = (side, v) => { if (v === 'none') return { none: true }; if (v === 'conf') return { conf: true }; const [k, x] = v.split(':'); return k === 'sw' ? { sw: +x } : { mv: x } };
   const pA = act(0, tl.p), bA = act(1, tl.b), me0 = nsAct(S, 0), foe0 = nsAct(S, 1);
   // switches happen first, yours then theirs
   if (pA.sw !== undefined) { nsEnter(S, 0, pA.sw, R); stage(`You switched ${me0.name} out for ${P[pA.sw].name}.`) }
@@ -3395,6 +3512,7 @@ function btAdvance() {
     stage(`${a.side ? 'Their' : 'Your'} ${a.c.name} used ${a.mv}${a.out === 'miss' ? ', but it missed' : a.out === 'crit' ? ' (critical hit)' : ''}${a.sec ? ' (added effect)' : ''}.`);
   });
   if (pA.none) steps.push({ head: `Your ${me0.name} couldn't move.`, fx: [] });
+  [[pA, me0, 'Your'], [bA, foe0, 'Their']].forEach(([x, c, w]) => { if (x.conf && c.hp > 0) { nsDamage(S, c, nsConfDmg(c), R); stage(`${w} ${c.name} hurt itself in confusion.`) } });
   if (bA.none) steps.push({ head: `Their ${foe0.name} couldn't move.`, fx: [] });
   nsEndTurn(S, R);
   stage('End of turn');
@@ -3410,8 +3528,8 @@ function btAdvance() {
   if (next) effects.push(`They'll send out <b>${next}</b> next (the trainer AI's pick). Change it under their team if they chose differently.`);
   if (pNow.hp <= 0 && nsBench(S.sd[0]).length) effects.push('<b>Pick who you send in next</b> under Your party.');
   // write the new state back to the board
-  P.forEach(c => { const k = c.key, o = BS.p[k] = BS.p[k] || {}; o.hp = c.hp; o.st = c.st; o.tn = c.st === 'tox' ? c.toxN : 0; o.seed = !!c.seed });
-  B.forEach((c, i) => { BS.b[i].hp = c.hp <= 0 ? 0 : Math.max(1, Math.round(c.hp / c.max * 100)); BS.b[i].st = c.st; BS.b[i].tn = c.st === 'tox' ? c.toxN : 0; BS.b[i].seed = !!c.seed; if (c.usedItem && !c.item) BS.b[i].item = false });
+  P.forEach(c => { const k = c.key, o = BS.p[k] = BS.p[k] || {}; o.hp = c.hp; o.st = c.st; o.tn = c.st === 'tox' ? c.toxN : 0; o.seed = !!c.seed; o.cf = c.conf > 0 && c === P[S.sd[0].a] });
+  B.forEach((c, i) => { BS.b[i].hp = c.hp <= 0 ? 0 : Math.max(1, Math.round(c.hp / c.max * 100)); BS.b[i].st = c.st; BS.b[i].tn = c.st === 'tox' ? c.toxN : 0; BS.b[i].seed = !!c.seed; BS.b[i].cf = c.conf > 0 && i === S.sd[1].a; if (c.usedItem && !c.item) BS.b[i].item = false });
   const pa2 = S.sd[0].a, ba2 = S.sd[1].a;
   BS.pa = P[pa2] && P[pa2].hp > 0 ? P[pa2].key : (P.find(c => c.hp > 0) || {}).key || ''; BS.ba = ba2;
   BS.pstg = Object.assign({}, P[pa2].stg); BS.bstg = Object.assign({}, B[ba2].stg);
@@ -3430,12 +3548,13 @@ function btUndo() {
 }
 function renderTurnLog() {
   const el = document.getElementById('batlog'); if (!el) return;
+  if (BS.dbl) return renderDblLog(el);
   const r = curRun(), tl = btForm(), { P, B, pa, ba } = batBuild(r);
   if (pa < 0 || ba < 0) { el.innerHTML = ''; return }
   const me = P[pa], foe = B[ba], opt = (v, lab, cur) => `<option value="${esc(v)}" ${String(v) === String(cur) ? 'selected' : ''}>${esc(lab)}</option>`;
   const actSel = (side, c, team, cur) => `<select data-bt="${side ? 'b' : 'p'}"><option value="">— pick —</option><optgroup label="Moves">${c.moves.map(m => opt('mv:' + m, m, cur)).join('')}</optgroup>
     ${team.some((x, i) => i !== (side ? ba : pa) && x.hp > 0) ? `<optgroup label="Switch">${team.map((x, i) => i !== (side ? ba : pa) && x.hp > 0 ? opt('sw:' + i, 'Switch to ' + x.name, cur) : '').join('')}</optgroup>` : ''}
-    ${opt('none', "Couldn't move (asleep, flinched, paralyzed, recharging)", cur)}</select>`;
+    ${c.conf > 0 ? opt('conf', 'Hurt itself in confusion', cur) : ''}${opt('none', "Couldn't move (asleep, flinched, paralyzed, recharging)", cur)}</select>`;
   const outSel = (side, cur, secOn) => { const v = side ? tl.b : tl.p, mv = v.startsWith('mv:') ? v.slice(3) : ''; if (!mv) return '';
     const st = MV[mv] && MV[mv].c === 'St';
     return `<select data-bt="${side ? 'bOut' : 'pOut'}">${opt('hit', st ? 'Worked' : 'Hit', cur)}${opt('miss', st ? 'Missed / failed' : 'Missed', cur)}${st ? '' : opt('crit', 'Critical hit', cur)}</select>
@@ -3454,7 +3573,7 @@ function renderTurnLog() {
     </div>
     <div class="tbtns" style="margin-top:8px"><button class="btn primary" data-bact="turn" ${tl.p && tl.b ? '' : 'disabled'}>Advance turn ▸</button>${tl.p && tl.b ? '' : '<span class="sp">Pick both actions first.</span>'}</div>
     ${log ? `<h4 class="tph4">Turn history</h4><ol class="btlog">${log}</ol>` : ''}
-    <p class="sp" style="margin-top:6px">Logged turns use a middle damage roll and only the luck you tick (misses, crits, added effects). Ability effects like Static aren't assumed, so set a status on its card if one happened. Confusion, Taunt and similar aren't carried between turns; Leech Seed is.</p></div></section>`;
+    <p class="sp" style="margin-top:6px">Logged turns use a middle damage roll and only the luck you tick (misses, crits, added effects). Ability effects like Static aren't assumed, so set a status on its card if one happened. Confusion carries over until you untick it (when it snaps out); Taunt and similar aren't carried between turns; Leech Seed is.</p></div></section>`;
 }
 // Walks the boss's remaining Pokémon in the order the trainer AI will likely send them, deciding at each step from both sides' current
 // HP: stay in, switch, or chip and pull out. HP carries forward. Returns steps for batMapHtml.
@@ -3574,32 +3693,35 @@ function renderBattle() {
   const r = curRun(), opt = (v, lab, cur) => `<option value="${esc(v)}" ${String(v) === String(cur) ? 'selected' : ''}>${esc(lab)}</option>`;
   if (!NBOSS.length) { d.innerHTML = '<p class="empty">No boss data.</p>'; return }
   batState(r);
+  const dbl = !!BS.dbl;
   const teams = batTeams(r, BS.boss), team = batTeam(r), party = batParty(r);
-  const { P, B, pa, ba } = batBuild(r);
+  const { P, B, pa, ba, AL } = batBuild(r);
   const sts = cur => opt('', 'Healthy', cur) + [['par', 'Paralyzed'], ['brn', 'Burned'], ['psn', 'Poisoned'], ['tox', 'Badly poisoned'], ['slp', 'Asleep'], ['frz', 'Frozen']].map(([v, l]) => opt(v, l, cur)).join('');
   const stg = (who, obj) => `<div class="bstg">${[['atk', 'Atk'], ['def', 'Def'], ['spa', 'SpA'], ['spd', 'SpD'], ['spe', 'Spe'], ['acc', 'Acc'], ['eva', 'Eva']].map(([k, l]) =>
     `<label>${l}<select data-bf="stg" data-who="${who}" data-k="${k}">${[6, 5, 4, 3, 2, 1, 0, -1, -2, -3, -4, -5, -6].map(v => opt(v, (v > 0 ? '+' : '') + v, obj[k] || 0)).join('')}</select></label>`).join('')}</div>`;
   // each card opens to the full details (the Nuzlocke tab's card for yours, the boss team view for theirs) and minimizes back
   const expBtn = (key, open) => `<button class="btn bexpb" data-bexp="${esc(key)}" aria-expanded="${open}" title="${open ? 'Back to the compact card' : 'Show the full card'}">${open ? 'Minimize ▴' : 'Details ▾'}</button>`;
-  const bcard = (p, i) => { const s = BS.b[i], c = B[i], act = i === ba, out = c.hp <= 0, open = batExp.has('#b' + i);
+  const bcard = (p, i) => { const s = BS.b[i], c = B[i], act = dbl ? (BS.bas || []).includes(i) : i === ba, out = c.hp <= 0, open = batExp.has('#b' + i);
     return `<div class="bslot ${act ? 'act' : ''} ${out ? 'ko' : ''} ${open ? 'bfull' : ''}"><div class="bshd"><img src="${nimg(p.n)}" alt="">
-      <div class="bsn"><div class="bsnm"><b>${esc(monName(p.n))}</b> <span class="sp">Lv. ${esc(p.lv)}</span></div><div class="stypes">${c.types.map(typeBadge).join('')}</div></div>${expBtn('#b' + i, open)}</div>
-      <label class="bact"><input type="radio" name="batb" data-bf="ba" data-i="${i}" ${act ? 'checked' : ''} ${out ? 'disabled' : ''}> In battle</label>
+      <div class="bsn"><div class="bsnm"><b>${esc(monName(p.n))}</b> <span class="sp">Lv. ${esc(p.lv)}${p.trn ? ' · ' + esc(p.trn) : ''}</span></div><div class="stypes">${c.types.map(typeBadge).join('')}</div></div>${expBtn('#b' + i, open)}</div>
+      <label class="bact"><input type="${dbl ? 'checkbox' : 'radio'}" name="batb" data-bf="${dbl ? 'bas' : 'ba'}" data-i="${i}" ${act ? 'checked' : ''} ${out ? 'disabled' : ''}> In battle</label>
       <label>HP %<input type="number" min="0" max="100" data-bf="bhp" data-i="${i}" value="${esc(s.hp)}"></label>
       <label>Status<select data-bf="bst" data-i="${i}">${sts(s.st)}</select></label>
-      ${act && !out ? `<label class="bact" title="Loses 1/8 of its max HP each turn, which heals your Pokémon in battle. Ends when it switches out."><input type="checkbox" data-bf="bseed" data-i="${i}" ${s.seed ? 'checked' : ''}> Leech Seeded</label>` : ''}
+      ${act && !out ? `<label class="bact" title="Hits itself instead of moving about 3 turns in 8. Ends when it snaps out or switches out."><input type="checkbox" data-bf="bcf" data-i="${i}" ${s.cf ? 'checked' : ''}> Confused</label>` : ''}
+      ${act && !out && !dbl ? `<label class="bact" title="Loses 1/8 of its max HP each turn, which heals your Pokémon in battle. Ends when it switches out."><input type="checkbox" data-bf="bseed" data-i="${i}" ${s.seed ? 'checked' : ''}> Leech Seeded</label>` : ''}
       ${s.st === 'tox' ? `<label title="Its next end-of-turn hit is (turns + 1)/16 of its max HP. Switching out starts it over.">Turns badly poisoned<input type="number" min="0" max="15" data-bf="btn" data-i="${esc(i)}" value="${esc(s.tn || 0)}"></label>` : ''}
       ${p.item ? `<label class="bact"><input type="checkbox" data-bf="bitem" data-i="${i}" ${s.item !== false ? 'checked' : ''}> Holding ${esc(p.item)}</label>` : ''}
       ${batStatsHtml(c, BS.wx)}
       ${open ? `<div class="bdet">${bossMonHtml(p, party.map(x => x.e))}</div>` : `<div class="sp bsmv">${(p.mv || []).filter(Boolean).map(esc).join(' · ')}</div>`}</div>` };
   const next = NBOSS[r.beat], fullParty = partyOf(r);
   const ectx = { over: e => r.rules.caps && next && (+e.lv || 0) > next.cap, party: fullParty, partyFull: fullParty.length >= 6, boss: team.filter(p => mons[p.n - 1]), bossName: batB(BS.boss).label };
-  const pctl = (x, s, c, act, out) => `<label class="bact"><input type="radio" name="batp" data-bf="pa" data-k="${esc(x.row.k)}" ${act ? 'checked' : ''} ${out ? 'disabled' : ''}> In battle</label>
+  const pctl = (x, s, c, act, out) => `<label class="bact"><input type="${dbl ? 'checkbox' : 'radio'}" name="batp" data-bf="${dbl ? 'pas' : 'pa'}" data-k="${esc(x.row.k)}" ${act ? 'checked' : ''} ${out ? 'disabled' : ''}> In battle</label>
       <label>HP <small>of ${c.max}</small><input type="number" min="0" max="${c.max}" data-bf="php" data-k="${esc(x.row.k)}" value="${esc(s.hp ?? '')}" placeholder="${c.max}"></label>
       <label>Status<select data-bf="pst" data-k="${esc(x.row.k)}">${sts(s.st)}</select></label>
-      ${act && !out ? `<label class="bact" title="Loses 1/8 of its max HP each turn, which heals their Pokémon in battle. Ends when it switches out."><input type="checkbox" data-bf="pseed" data-k="${esc(x.row.k)}" ${s.seed ? 'checked' : ''}> Leech Seeded</label>` : ''}
+      ${act && !out ? `<label class="bact" title="Hits itself instead of moving about 3 turns in 8. Ends when it snaps out or switches out."><input type="checkbox" data-bf="pcf" data-k="${esc(x.row.k)}" ${s.cf ? 'checked' : ''}> Confused</label>` : ''}
+      ${act && !out && !dbl ? `<label class="bact" title="Loses 1/8 of its max HP each turn, which heals their Pokémon in battle. Ends when it switches out."><input type="checkbox" data-bf="pseed" data-k="${esc(x.row.k)}" ${s.seed ? 'checked' : ''}> Leech Seeded</label>` : ''}
       ${s.st === 'tox' ? `<label title="Its next end-of-turn hit is (turns + 1)/16 of its max HP. Switching out starts it over.">Turns badly poisoned<input type="number" min="0" max="15" data-bf="ptn" data-k="${esc(x.row.k)}" value="${esc(s.tn || 0)}"></label>` : ''}`;
-  const pcard = (x, i) => { const s = BS.p[x.row.k] || {}, c = P[i], act = i === pa, out = c.hp <= 0;
+  const pcard = (x, i) => { const s = BS.p[x.row.k] || {}, c = P[i], act = dbl ? (BS.pas || []).includes(x.row.k) : i === pa, out = c.hp <= 0;
     if (batExp.has(x.row.k)) return monEditor(x.row, x.e, r, Object.assign({}, ectx, { cls: `bfull ${act ? 'act' : ''} ${out ? 'ko' : ''}`,
       headBtn: expBtn(x.row.k, true), extra: `<div class="bstrip">${pctl(x, s, c, act, out)}</div>${batStatsHtml(c, BS.wx)}` }));
     return `<div class="bslot ${act ? 'act' : ''} ${out ? 'ko' : ''}"><div class="bshd"><img src="${nimg(x.e.n)}" alt="">
@@ -3616,6 +3738,23 @@ function renderBattle() {
   const stgBox = (who, c, obj, fresh, extra) => { const on = stgOn(obj);
     return fold(who + 'stg', `<b>${esc(c.name)}</b>: ${on.length ? on.join(', ') : 'no stat changes'}${fresh ? ' · just sent out' : ''}`,
       `<div class="bactive"><label class="bact"><input type="checkbox" data-bf="${who}fresh" ${fresh ? 'checked' : ''}> Just sent out</label>${extra || ''}</div>${stg(who, obj)}`, on.length > 0) };
+  const STGL = [['atk', 'Atk'], ['def', 'Def'], ['spa', 'SpA'], ['spd', 'SpD'], ['spe', 'Spe'], ['acc', 'Acc'], ['eva', 'Eva']];
+  // double battle: a stat-stage box per Pokémon out, the ones out on a side, and the partner's cards
+  const dstgBox = c => { const o = (BS.dstg || {})[c.key] || {}, on = stgOn(o);
+    return fold('dstg' + c.key, `<b>${esc(c.name)}</b>: ${on.length ? on.join(', ') : 'no stat changes'}`, `<div class="bstg">${STGL.map(([k, l]) => `<label>${l}<select data-bf="dstg" data-key="${esc(c.key)}" data-k="${k}">${[6, 5, 4, 3, 2, 1, 0, -1, -2, -3, -4, -5, -6].map(v => opt(v, (v > 0 ? '+' : '') + v, o[k] || 0)).join('')}</select></label>`).join('')}</div>`, on.length > 0) };
+  const dOut = side => side ? (BS.bas || []).map(i => B[i]).filter(c => c && c.hp > 0)
+    : (BS.pas || []).map(k => /^al\d+$/.test(k) ? AL[+k.slice(2)] : P[party.findIndex(x => x.row.k === k)]).filter(c => c && c.hp > 0);
+  const acard = (p, i) => { const s = (BS.al || [])[i] || {}, c = AL[i], k = 'al' + i, act = (BS.pas || []).includes(k), out = c.hp <= 0;
+    return `<div class="bslot ${act ? 'act' : ''} ${out ? 'ko' : ''}"><div class="bshd"><img src="${nimg(p.n)}" alt="">
+      <div class="bsn"><div class="bsnm"><b>${esc(monName(p.n))}</b> <span class="sp">Lv. ${esc(p.lv)}</span></div><div class="stypes">${c.types.map(typeBadge).join('')}</div></div></div>
+      <label class="bact"><input type="checkbox" data-bf="pas" data-k="${k}" ${act ? 'checked' : ''} ${out ? 'disabled' : ''}> In battle</label>
+      <label>HP %<input type="number" min="0" max="100" data-bf="alhp" data-i="${i}" value="${esc(s.hp ?? 100)}"></label>
+      <label>Status<select data-bf="alst" data-i="${i}">${sts(s.st)}</select></label>
+      ${act && !out ? `<label class="bact" title="Hits itself instead of moving about 3 turns in 8"><input type="checkbox" data-bf="alcf" data-i="${i}" ${s.cf ? 'checked' : ''}> Confused</label>` : ''}
+      ${batStatsHtml(c, BS.wx)}
+      <div class="sp bsmv">${(p.mv || []).filter(Boolean).map(esc).join(' · ')}${p.item ? ' · ' + esc(p.item) : ''}</div></div>` };
+  const allySec = () => `<section class="card full"><h3>${esc((batTr(BS.ally) || {}).label || 'Partner')}'s team <small class="sp">your partner, controlled by the game</small></h3>
+      <div class="bslots">${batAlly().map(acard).join('')}</div>${dOut(0).filter(c => /^al\d+$/.test(c.key)).map(dstgBox).join('')}</section>`;
   const wxName = { sun: 'Sun', rain: 'Rain', sand: 'Sandstorm', hail: 'Hail' };
   const fieldOn = [BS.wx ? wxName[BS.wx] + (BS.wxT >= 99 ? '' : ` (${BS.wxT} turns)`) : '',
     ...[0, 1].flatMap(i => { const x = BS.sd[i], who = i ? 'their side' : 'your side';
@@ -3625,6 +3764,7 @@ function renderBattle() {
         : 'Follow the fight as it happens: enter where it stands for advice on this turn, log each turn, and log stats and EVs as your Pokémon level up. Plan the fight beforehand in the Planner.'}</p>
       <div class="bcontrols"><label>Opponent<select data-bf="boss"><optgroup label="Bosses">${NBOSS.map((b, i) => opt(i, b.label + ' · ' + b.area + (i === r.beat ? ' (next)' : ''), BS.boss)).join('')}</optgroup>
           ${(trs => trs.length ? `<optgroup label="Trainers you've added">${trs.map(([k, b]) => opt(k, b.label + ' · ' + b.area + (b.sub ? ' ' + b.sub : ''), BS.boss)).join('')}</optgroup>` : '')(store.get(BTRKEY, []).map(k => [k, batTr(k)]).filter(x => x[1]))}</select></label>
+        ${batDblCtl(r, opt)}
         ${teams.length > 1 ? `<label>Team<select data-bf="v">${teams.map((t, i) => opt(i, t.var || 'Team ' + (i + 1), BS.v)).join('')}</select></label>` : ''}
         <label title="Renegade Platinum bosses usually have perfect IVs">Boss IVs<select data-bf="biv">${[31, 20, 10, 0].map(v => opt(v, v, nCalc.biv)).join('')}</select></label>
         ${plan ? '' : '<button class="btn" data-bact="reset" title="Full HP, no status, back to turn 1">Start over</button>'}</div>
@@ -3637,13 +3777,14 @@ function renderBattle() {
     <div id="batsim"></div>
     <div id="batrec"></div>` : `
     <h3 class="bsect">The fight now</h3>
-    <section class="card full"><h3>${esc(bl)}'s team</h3><div class="bslots">${team.map(bcard).join('')}</div>
-      ${bAct ? stgBox('b', bAct, BS.bstg, BS.bfresh) : ''}</section>
-    <section class="card full"><h3>Your party</h3><div class="bslots">${party.map(pcard).join('')}</div>
-      ${pAct ? stgBox('p', pAct, BS.pstg, BS.pfresh, `<label class="blast">Your last move<select data-bf="plast">${opt('', '—', BS.plast)}${pAct.moves.map(m => opt(m, m, BS.plast)).join('')}</select></label>`) : ''}
+    <section class="card full"><h3>${esc(dbl && BS.foe2 && batTr(BS.foe2) ? batName1(BS) + ' and ' + batTr(BS.foe2).label : bl)}'s team${dbl ? ' <small class="sp">tick the two in battle</small>' : ''}</h3><div class="bslots">${team.map(bcard).join('')}</div>
+      ${dbl ? dOut(1).map(dstgBox).join('') : bAct ? stgBox('b', bAct, BS.bstg, BS.bfresh) : ''}</section>
+    <section class="card full"><h3>Your party${dbl ? ` <small class="sp">tick the ${AL.length ? 'one' : 'two'} in battle</small>` : ''}</h3><div class="bslots">${party.map(pcard).join('')}</div>
+      ${dbl ? dOut(0).filter(c => !/^al\d+$/.test(c.key)).map(dstgBox).join('') : pAct ? stgBox('p', pAct, BS.pstg, BS.pfresh, `<label class="blast">Your last move<select data-bf="plast">${opt('', '—', BS.plast)}${pAct.moves.map(m => opt(m, m, BS.plast)).join('')}</select></label>`) : ''}
       ${fold('field', `<b>Field</b>: ${fieldOn.length ? esc(fieldOn.join(', ')) : 'no weather, hazards or screens'}`, `<div class="bfgrid" style="margin-top:8px"><label>Weather<select data-bf="wx">${opt('', 'None', BS.wx)}${opt('sun', 'Sun', BS.wx)}${opt('rain', 'Rain', BS.wx)}${opt('sand', 'Sandstorm', BS.wx)}${opt('hail', 'Hail', BS.wx)}</select></label>
       ${BS.wx ? `<label>Turns left<select data-bf="wxT">${[1, 2, 3, 4, 5, 6, 7, 8].map(v => opt(v, v, BS.wxT)).concat(opt(99, 'Permanent (ability)', BS.wxT)).join('')}</select></label>` : ''}</div>
       <div class="bfsides">${sideHtml(0, 'Your side')}${sideHtml(1, 'Their side')}</div>`)}</section>
+    ${dbl && AL.length ? allySec() : ''}
     <div id="batres"></div>
     <div id="bativ"></div>
     <div id="batlog"></div>
@@ -3785,6 +3926,10 @@ function renderPrep() {
 let batIvK = '', batIvPa = null, batIvMsg = '', batIvF = null;   // batIvF: keys ticked under "Who fought it" (null: just the chosen one)
 // the tracker remembers which of yours were out against each of theirs (BS.fought[their index] = your keys)
 function batIvFoughtRec() {
+  if (BS.dbl) { const f = BS.fought = BS.fought || {}; let ch = false;   // a double battle: each of yours out against each of theirs out
+    (BS.bas || []).forEach(i => { const b = BS.b[i]; if (!b || !(b.hp > 0)) return; const l = f[i] = f[i] || [];
+      (BS.pas || []).filter(k => !/^al\d+$/.test(k)).forEach(k => { if (!l.includes(k)) { l.push(k); ch = true } }) });
+    if (ch) batSave(); return }
   const b = BS.b && BS.b[BS.ba]; if (!BS.pa || !b || !(b.hp > 0)) return;
   const f = BS.fought = BS.fought || {}, l = f[BS.ba] = f[BS.ba] || [];
   if (!l.includes(BS.pa)) { l.push(BS.pa); batSave() }
@@ -3970,6 +4115,7 @@ function batSim() {
 }
 function renderSim() {
   const el = document.getElementById('batsim'); if (!el) return;
+  if (BS.dbl) return renderDblPlan(el);
   const r = curRun(), x = simRes, party = batParty(r), mode = simMode();
   if (!party.length || !batTeam(r).length) { el.innerHTML = ''; return }
   const ord = simOrder(r), lead = party.find(p => p.row.k === BS.pa) || party[0];
@@ -4195,6 +4341,7 @@ function recApply(i) {
 // forecast + rank every option, a few hundred full playouts each, in small slices so the page stays responsive
 function batAnalyze() {
   const el = document.getElementById('batres'); if (!el) return;
+  if (BS.dbl) return dblAdvice();
   const r = curRun(), tok = ++batTok, { P, B, party, team, pa, ba } = batBuild(r);
   if (pa < 0 || ba < 0) { el.innerHTML = `<section class="card full"><p class="empty">${pa < 0 ? 'All your Pokémon have fainted.' : 'Every boss Pokémon has fainted. You won!'}</p></section>`; return }
   batPrep(P, B, pa, ba);
@@ -4265,24 +4412,26 @@ function batHtml(S, me, foe, fc, options, acc, done, P, B) {
   const faster = nsSpeed(S, me) > nsSpeed(S, foe) ? 'You move first' : nsSpeed(S, me) < nsSpeed(S, foe) ? `${esc(foe.name)} moves first` : 'Speed tie';
   const TOP = 4, shown = rows.slice(0, TOP), more = rows.slice(TOP);
   return `<div class="badvice"><section class="card"><h3>What ${esc(foe.name)} will do</h3><p class="sp">${esc(foe.name)} ${Math.round(foe.hp / foe.max * 100)}% HP vs ${esc(me.name)} ${me.hp}/${me.max} HP · ${faster} (Speed ${spd(me)} vs ${spd(foe)})</p>
+      ${foe.conf > 0 ? `<p class="sp">${confTxt(foe, true)} The percentages are what it picks when it does move.</p>` : ''}
       <div class="bfc">${frows || '<p class="empty">No moves listed.</p>'}</div></section>
     <section class="card"><h3>Your best move${done ? '' : ' <small class="sp">working…</small>'}</h3>
       <p class="sp">Chance to win the fight if you do this now, then keep battling sensibly. Differences of 3% or less are noise.</p>
+      ${me.conf > 0 ? `<p class="sp">${confTxt(me)} Switching out cures it.</p>` : ''}
       <div class="bopts">${shown.map(orow).join('') || '<p class="empty">Working…</p>'}</div>
       ${(options.nope || []).length ? `<p class="sp" style="margin:8px 0 0">Not ranked, because they'd fail this turn: ${options.nope.map(x => `<b>${esc(x.mv)}</b> (${esc(x.why)})`).join(', ')}.</p>` : ''}
       ${more.length ? `<details class="bfold" data-bopen="moreopts" ${batOpen.has('moreopts') ? 'open' : ''}><summary>${more.length} more option${more.length > 1 ? 's' : ''}</summary><div class="bopts">${more.map(orow).join('')}</div></details>` : ''}
       <details class="simhow"><summary>How this works</summary>
         <p>The forecast samples the boss's choice 2,000 times from Platinum's trainer AI (the <a href="https://github.com/pret/pokeplatinum/tree/main/src/battle/trainer_ai" target="_blank" rel="noopener">pokeplatinum decompilation</a>, Basic + Evaluate Attack + Expert). Every move starts at 100. It loses 10 if it can't work and gains 4 (6 for +1 priority) if its highest roll knocks you out. It loses 1 if another move does more, then the move-specific Expert rules apply. The highest score wins and ties are random. The AI ignores crits and judges damage by its highest roll. It also treats Hyper Beam, Superpower, Explosion, Solar Beam, Eruption, Sucker Punch and Head Smash as doing no damage.</p>
         <p>Each of your options is played out to the end of the fight 300 times. Every hit uses the Gen 4 damage formula, with random rolls, crits, accuracy, status, weather, hazards and items. After this turn you're assumed to play sensibly: put the boss's Pokémon to sleep or paralyse it when that helps, set up when it's safe, otherwise attack with your strongest move. After a faint you send in your best matchup. The boss keeps following its AI.</p>
-        <p>Damage ranges ignore crits. The knock-out chance counts crits and accuracy. Boss HP is a percentage because the game only shows a bar. Turns left asleep or badly poisoned aren't shown in game, so those are estimated.</p>
+        <p>Damage ranges ignore crits. The knock-out chance counts crits and accuracy. Boss HP is a percentage because the game only shows a bar. Turns left asleep or badly poisoned aren't shown in game, so those are estimated. So are turns left confused: a confused Pokémon snaps out 1 turn in 4 and otherwise hits itself half the time, so it moves about 5 turns in 8. The win chances play that out, and the knock-out chances count it.</p>
       </details></section></div>`;
 }
 function batChange(t) {
   const r = curRun(), f = t.dataset.bf; batState(r);
   if (f === 'boss') { BS = batFresh(r, /^tr:/.test(t.value) ? t.value : +t.value, 0) }
   else if (f === 'v') { BS = batFresh(r, BS.boss, +t.value) }
-  else if (f === 'ba') { BS.b.forEach(x => x.seed = false); BS.ba = +t.dataset.i; BS.bstg = {}; BS.bfresh = true }
-  else if (f === 'pa') { Object.values(BS.p).forEach(x => x.seed = false); BS.pa = t.dataset.k; BS.pstg = {}; BS.pfresh = true; BS.plast = '' }
+  else if (f === 'ba') { BS.b.forEach(x => { x.seed = false; x.cf = false }); BS.ba = +t.dataset.i; BS.bstg = {}; BS.bfresh = true }
+  else if (f === 'pa') { Object.values(BS.p).forEach(x => { x.seed = false; x.cf = false }); BS.pa = t.dataset.k; BS.pstg = {}; BS.pfresh = true; BS.plast = '' }
   else if (f === 'bhp') BS.b[+t.dataset.i].hp = t.value === '' ? 100 : Math.max(0, Math.min(100, +t.value));
   else if (f === 'bst') { BS.b[+t.dataset.i].st = t.value; BS.b[+t.dataset.i].tn = 0 }
   else if (f === 'btn') BS.b[+t.dataset.i].tn = Math.max(0, Math.min(15, +t.value || 0));
@@ -4299,8 +4448,283 @@ function batChange(t) {
   else if (f === 'biv') { nCalc.biv = +t.value; store.set('rp-ncalc', nCalc) }
   else if (f === 'steal') { const j = +t.dataset.i, cur = new Set(BS.steal || []); t.checked ? cur.add(j) : cur.delete(j); BS.steal = [...cur].sort((a, b) => a - b) }
   else if (f === 'sd') BS.sd[+t.dataset.i][t.dataset.k] = +t.value;
+  else if (f === 'dbl') { BS.dbl = !!t.value; batDblInit(r, BS); batDblSave() }
+  else if (f === 'foe2') { BS.foe2 = t.value; batDblInit(r, BS); batDblSave() }
+  else if (f === 'ally') { BS.ally = t.value; batDblInit(r, BS); batDblSave() }
+  else if (f === 'bas' || f === 'pas') { const k = f === 'bas' ? +t.dataset.i : t.dataset.k, l = BS[f] = (BS[f] || []).filter(x => x !== k);
+    if (t.checked) { l.push(k); while (l.length > 2) l.shift() }
+    const cfOf = k => f === 'bas' ? BS.b[k] : /^al\d+$/.test(k) ? (BS.al || [])[+k.slice(2)] : BS.p[k];
+    (f === 'bas' ? BS.b.map((x, i) => i) : [...Object.keys(BS.p), ...(BS.al || []).map((x, i) => 'al' + i)]).forEach(j => { if (!l.includes(j) && cfOf(j)) cfOf(j).cf = false });
+    if (f === 'bas') { if (l.length) BS.ba = l[0] } else { const m = l.find(x => !/^al\d+$/.test(x)); if (m) BS.pa = m } }
+  else if (f === 'alhp') BS.al[+t.dataset.i].hp = t.value === '' ? 100 : Math.max(0, Math.min(100, +t.value));
+  else if (f === 'alst') BS.al[+t.dataset.i].st = t.value;
+  else if (f === 'bcf') BS.b[+t.dataset.i].cf = t.checked;
+  else if (f === 'alcf') BS.al[+t.dataset.i].cf = t.checked;
+  else if (f === 'pcf') { const o = BS.p[t.dataset.k] = BS.p[t.dataset.k] || {}; o.cf = t.checked }
+  else if (f === 'dstg') { BS.dstg = BS.dstg || {}; const o = BS.dstg[t.dataset.key] = BS.dstg[t.dataset.key] || {}; o[t.dataset.k] = +t.value }
+  else if (f === 'dfirst') BS.dfirst = t.checked;
   else return;
   batSave(); renderBattle();
+}
+// ---- Double battles: damage and the AI's likely picks for the Pokémon out now (Tracker), and lead pairs and matchups (Planner).
+// The single-battle simulation and battle map don't model two on each side, so these take their place (the turn log has its own double version).
+// A move that hits more than one target does 3/4 damage, as in Gen 4.
+function dblHit(S, A, D, mv, multi) {
+  const h = batHit(S, A, D, mv); if (!h || !multi || !h.mult) return h;
+  const q = v => Math.floor(v * 3 / 4), x = nsRolls(S, A, D, mv, false, null), xc = nsRolls(S, A, D, mv, true, null), d = MV[mv];
+  const acc = (!d.a ? 1 : Math.min(1, d.a / 100)) * nsActP(A), cp = D.ab === 'Battle Armor' || D.ab === 'Shell Armor' ? 0 : nsCritStage(A, mv), ko = rs => rs.filter(v => q(v) * h.hits >= D.hp).length / 16;
+  return Object.assign({}, h, { min: q(x.rolls[0]) * h.hits, max: q(x.rolls[15]) * h.hits, crit: xc ? q(xc.rolls[15]) * h.hits : 0, ko: acc * ((1 - cp) * ko(x.rolls) + cp * (xc ? ko(xc.rolls) : 0)), o: null, spread: true });
+}
+// point the battle state at one attacker and one target
+function dAt(S, A, D) { S.sd[A.side].a = S.sd[A.side].team.indexOf(A); if (D.side !== A.side) S.sd[D.side].a = S.sd[D.side].team.indexOf(D); return S }
+// does a move hit more than one target, with this many foes out and the attacker's partner out or not
+const dMulti = (mv, foesOut, partnerOut) => DSPREADALL.has(mv) ? foesOut + (partnerOut ? 1 : 0) > 1 : DSPREAD.has(mv) && foesOut > 1;
+const dPct = (v, c) => Math.round(v / c.max * 100);
+const dRng = (h, D) => h.mult === 0 ? 'no effect' : `${dPct(h.min, D)}–${dPct(h.max, D)}%`;
+const dKo = h => h && h.mult !== 0 && h.ko >= .005 ? (h.ko >= .995 ? ' <span class="bko">KO</span>' : ` <span class="bko">${Math.round(h.ko * 100)}% KO</span>`) : '';
+const dAvg = (h, mv) => h && h.mult ? (h.min + h.max) / 2 * (MV[mv].a ? Math.min(1, MV[mv].a / 100) : 1) * (h.act ?? 1) : 0;
+// the Tracker's battle state for a double: everyone with HP, status and stages as entered, and who's out
+function dblLive(r) {
+  const { P, B, AL, party } = batBuild(r), M = [...P, ...AL];
+  const byKey = k => /^al\d+$/.test(k) ? AL[+k.slice(2)] : P[party.findIndex(x => x.row.k === k)];
+  const mine = (BS.pas || []).map(byKey).filter(c => c && c.hp > 0), foes = (BS.bas || []).map(i => B[i]).filter(c => c && c.hp > 0);
+  [...M, ...B].forEach(c => Object.assign(c.stg, (BS.dstg || {})[c.key] || {}));
+  const S = { sd: [Object.assign({ team: M, a: 0, sg: 0 }, BS.sd[0]), Object.assign({ team: B, a: 0, sg: 0 }, BS.sd[1])], wx: BS.wx, wxT: BS.wx ? (+BS.wxT || 5) : 0 };
+  return { P, B, AL, M, party, mine, foes, S };
+}
+function dblAdvice() {
+  const el = document.getElementById('batres'); if (!el) return;
+  const mp = document.getElementById('batmap'); if (mp) mp.innerHTML = '';
+  const r = curRun(), { mine, foes, S } = dblLive(r), nm = c => esc(c.name), own = c => !/^al\d+$/.test(c.key);
+  if (!mine.length || !foes.length) { el.innerHTML = `<section class="card full"><h3>Double battle</h3><p class="empty">${!foes.length ? 'Tick the two of theirs in battle above. If they\'re all down, you won!' : 'Tick which of yours are in battle above.'}</p></section>`; return }
+  [...mine, ...foes].forEach(c => { c.firstOut = !!BS.dfirst });
+  const first = `<label class="chk dtinl" title="Fake Out only works on a Pokémon's first turn out"><input type="checkbox" data-bf="dfirst" ${BS.dfirst ? 'checked' : ''}> First turn out (Fake Out works)</label>`;
+  const order = [...mine, ...foes].map(c => ({ c, s: nsSpeed(S, c) })).sort((a, z) => z.s - a.s);
+  const prio = [...mine, ...foes].flatMap(c => c.moves.filter(mv => (NPRIO[mv] || 0) > 0 && MV[mv] && MV[mv].c !== 'St' && !(mv === 'Fake Out' && !BS.dfirst)).map(mv => c.name + "'s " + mv));
+  const foeHit = (f, m, mv) => dblHit(dAt(S, f, m), f, m, mv, dMulti(mv, mine.length, foes.length > 1));
+  // their picks: the trainer AI scores its moves against each of yours and uses the best (ties at random), sampled 400 times
+  const N = 400, fc = foes.map(f => { const t = new Map();
+    for (let i = 0; i < N; i++) { let top = -1e9, picks = [];
+      mine.forEach(m => { dAt(S, f, m); const sc = nsAiScores(S, f, m, flagsOf()); f.moves.forEach((mv, j) => { if (sc[j] > top) { top = sc[j]; picks = [[mv, m]] } else if (sc[j] === top) picks.push([mv, m]) }) });
+      if (!picks.length) continue; const [mv, m] = picks[nsR(picks.length)], k = dSpread(mv) ? mv + '|*' : mv + '|' + m.key; t.set(k, (t.get(k) || 0) + 1) }
+    return { f, rows: [...t.entries()].sort((a, z) => z[1] - a[1]).map(([k, c]) => { const j = k.indexOf('|'), mv = k.slice(0, j), tk = k.slice(j + 1); return { mv, tgt: tk === '*' ? null : mine.find(m => m.key === tk), p: c / N } }) } });
+  const fcHtml = fc.map(({ f, rows }) => `<div class="dfc"><div class="dfh"><img src="${nimg(f.m.n)}" alt=""><b>${nm(f)}</b> <span class="sp">${dPct(f.hp, f)}% HP · Speed ${nsSpeed(S, f)}</span></div>${rows.slice(0, 4).map(x => {
+      const d = MV[x.mv] || {}, hs = (x.tgt ? [x.tgt] : mine).map(m => [m, foeHit(f, m, x.mv)]).filter(([, h]) => h);
+      const other = foes.find(o => o !== f), ph = DSPREADALL.has(x.mv) && other ? dblHit(dAt(S, f, other), f, other, x.mv, true) : null;
+      const what = hs.length ? hs.map(([m, h]) => `${nm(m)} ${dRng(h, m)}${dKo(h)}`).join(' · ') : d.c === 'St' ? esc(DNOTE[x.mv] || 'status move') : '';
+      return `<div class="bfrow"><span class="bpct">${Math.round(x.p * 100)}%</span><span class="bmvn">${esc(x.mv)} ${d.t ? `<span class="mtype" style="background:${TC[d.t]}">${d.t}</span>` : ''}</span>
+        <span class="sp">${x.tgt ? 'at ' + nm(x.tgt) : 'hits both of yours'}${what ? ': ' + what : ''}${ph && ph.mult ? ` · also hits ${nm(other)} ${dRng(ph, other)}` : ''}</span></div>` }).join('')}</div>`).join('');
+  // how much trouble each of yours is in: the knock-out chance from their likely picks, and the worst if both target it
+  const danger = mine.map(m => { let worst = 0, safe = 1;
+    fc.forEach(({ f, rows }) => { let top = 0; f.moves.forEach(mv => { const h = foeHit(f, m, mv); if (h && h.mult) top = Math.max(top, h.max) }); worst += top;
+      safe *= 1 - rows.reduce((s, x) => { if (x.tgt && x.tgt !== m) return s; const h = foeHit(f, m, x.mv); return s + x.p * (h && h.mult ? h.ko : 0) }, 0) });
+    return { m, worst: worst / m.hp, ko: 1 - safe, prot: m.moves.find(mv => mv === 'Protect' || mv === 'Detect') } });
+  // your options: each move at each target (a spread move once, at both)
+  const opts = m => { const out = [], pOut = mine.length > 1, pal = mine.find(o => o !== m);
+    m.moves.forEach(mv => { const d = MV[mv]; if (!d) return;
+      if (d.c === 'St') return out.push({ m, mv, st: true });
+      if (dSpread(mv)) { const multi = dMulti(mv, foes.length, pOut), ph = DSPREADALL.has(mv) && pal ? dblHit(dAt(S, m, pal), m, pal, mv, true) : null;
+        return out.push({ m, mv, both: true, hs: foes.map(f => [f, dblHit(dAt(S, m, f), m, f, mv, multi)]), pal: ph ? pal : null, ph }) }
+      foes.forEach(f => out.push({ m, mv, hs: [[f, dblHit(dAt(S, m, f), m, f, mv, false)]] })) });
+    return out };
+  // the suggestion: the moves and targets for yours that knock out the most (weighted toward their more dangerous one),
+  // then do the most damage, without hurting your partner
+  const threat = new Map(foes.map(f => { let w = 0; mine.forEach(m => f.moves.forEach(mv => { const h = foeHit(f, m, mv); if (h && h.mult) w = Math.max(w, h.max / m.hp) })); return [f, 1 + Math.min(2, w)] }));
+  const value = acts => { let v = 0;
+    foes.forEach(f => { let miss = 1, dmg = 0; acts.forEach(a => (a.hs || []).forEach(([g, h]) => { if (g !== f || !h || !h.mult) return; miss *= 1 - h.ko; dmg += dAvg(h, a.mv) }));
+      v += threat.get(f) * (2 * (1 - miss) + Math.min(f.hp, dmg) / f.max) });
+    acts.forEach(a => { if (a.ph && a.ph.mult) v -= 1.5 * a.ph.max / a.pal.max + 3 * a.ph.ko }); return v };
+  const ownOut = mine.filter(own), cand = ownOut.map(m => opts(m).filter(o => !o.st && o.hs.some(([, h]) => h && h.mult)));
+  let best = null; const tryActs = acts => { const v = value(acts); if (!best || v > best.v) best = { v, acts } };
+  if (cand.length === 2) cand[0].forEach(a => cand[1].forEach(b => tryActs([a, b]))); else if (cand.length === 1) cand[0].forEach(a => tryActs([a]));
+  const actTxt = a => `${nm(a.m)}: <b>${esc(a.mv)}</b> ${a.both ? 'hitting both' : 'at ' + nm(a.hs[0][0])} (${a.hs.filter(([, h]) => h).map(([f, h]) => `${nm(f)} ${dRng(h, f)}${dKo(h)}`).join(', ')})${a.ph && a.ph.mult ? `, <span class="bko">also hits ${nm(a.pal)} ${dRng(a.ph, a.pal)}</span>` : ''}`;
+  const warn = danger.filter(x => own(x.m) && x.prot && x.ko >= .5).map(x => `${nm(x.m)} is likely to go down this turn (${Math.round(x.ko * 100)}%): ${esc(x.prot)} would keep it safe for a turn.`);
+  const optHtml = m => { const o = opts(m), st = o.filter(x => x.st).map(x => x.mv), atk = o.filter(x => !x.st);
+    return `<div class="dopt"><div class="dfh"><img src="${nimg(m.m.n)}" alt=""><b>${nm(m)}</b> <span class="sp">${m.hp}/${m.max} HP · Speed ${nsSpeed(S, m)}</span></div>
+      ${atk.map(a => { const d = MV[a.mv]; return `<div class="drow"><span class="bmvn">${esc(a.mv)} ${d.t ? `<span class="mtype" style="background:${TC[d.t]}">${d.t}</span>` : ''}</span><span class="sp">${a.both ? 'both: ' : 'at '}${a.hs.map(([f, h]) => `${nm(f)} ${h ? dRng(h, f) + dKo(h) : '—'}`).join(' · ')}${a.ph ? (a.ph.mult ? ` · <span class="bko">hits ${nm(a.pal)} ${dRng(a.ph, a.pal)}</span>` : ` · ${nm(a.pal)} is immune`) : ''}</span></div>` }).join('')}
+      ${st.length ? `<p class="sp">Status: ${st.map(mv => esc(mv) + (DNOTE[mv] ? ' (' + esc(DNOTE[mv]) + ')' : '')).join(', ')}</p>` : ''}</div>` };
+  const confs = [...mine, ...foes].filter(c => c.conf > 0).map(c => confTxt(c, c.side === 1 || !own(c)));
+  const pals = mine.filter(c => !own(c)), allyN = BS.ally && batTr(BS.ally) ? batTr(BS.ally).label : 'Your partner';
+  const palHtml = pals.map(c => `<div class="dopt"><div class="dfh"><img src="${nimg(c.m.n)}" alt=""><b>${nm(c)}</b> <span class="sp">${esc(allyN)}'s, controlled by the game · Speed ${nsSpeed(S, c)}</span></div>
+    <p class="sp">Its best hits: ${foes.map(f => { let o = null; c.moves.forEach(mv => { const h = dblHit(dAt(S, c, f), c, f, mv, dMulti(mv, foes.length, true)); if (h && h.mult && (!o || dAvg(h, mv) > o.v)) o = { mv, h, v: dAvg(h, mv) } }); return o ? `${esc(o.mv)} on ${nm(f)} ${dRng(o.h, f)}${dKo(o.h)}` : `nothing that hurts ${nm(f)}` }).join(' · ')}</p></div>`).join('');
+  el.innerHTML = `<div class="badvice"><section class="card"><h3>What theirs will do</h3>
+      <p class="sp">This turn's order: ${order.map(o => `${nm(o.c)} ${o.s}`).join(' → ')}${prio.length ? '. Priority moves go first: ' + esc(prio.join(', ')) : ''}.</p><div class="tbtns">${first}</div>${confs.length ? `<p class="sp">${confs.join('<br>')}</p>` : ''}${fcHtml}
+      <p class="sp" style="margin-top:8px">${danger.map(x => `${nm(x.m)}: ${x.ko >= .005 ? `<span class="bko">${Math.round(x.ko * 100)}% to be knocked out</span>` : 'safe from a knockout'}, both together could do up to ${Math.round(x.worst * 100)}% of the HP it has left`).join(' · ')}</p></section>
+    <section class="card"><h3>Your moves</h3>
+      ${best ? `<div class="borow best"><div class="bohd"><b>Suggested this turn</b><span class="btag good">Best</span></div><div class="sp">${best.acts.map(actTxt).join('<br>')}${warn.length ? '<br>' + warn.join('<br>') : ''}</div></div>` : warn.length ? `<p class="sp">${warn.join('<br>')}</p>` : ''}
+      ${ownOut.map(optHtml).join('')}${palHtml}
+      <details class="simhow"><summary>How this works</summary>
+        <p>Their picks use Platinum's trainer AI, the same scoring as single battles, run against each of yours: each sample uses the move and target that score highest, 400 samples per Pokémon. Damage is the Gen 4 formula from the HP, status and stat stages entered above. A move that hits more than one target does 3/4 damage; Earthquake, Surf, Discharge and the like hit your own partner too.</p>
+        <p>The suggestion picks the moves and targets that knock out the most this turn, weighted toward their more dangerous Pokémon, then the most damage, and avoids hitting your partner. It only looks at this turn. Follow Me, Helping Hand and Trick Room aren't modelled, and Reflect and Light Screen use their single-battle strength.</p></details></section></div>`;
+}
+// ---- Double battles: log a turn. Every Pokémon out (yours, your partner's, theirs) gets an action, a target and how it went;
+// the engine replays the turn in order (priority, then Speed, or the order you set) and the board updates
+const dtRow = k => { BS.dtl = BS.dtl || {}; return BS.dtl[k] = Object.assign({ a: '', tg: '', out: 'hit', sec: false, ord: '', hp: '' }, BS.dtl[k] || {}) };
+const dIsAl = k => /^al\d+$/.test(k);
+const dAllyN = () => ((batTr(BS.ally) || {}).label || 'Your partner').replace(/^PKMN Trainer /, '');
+// who a Pokémon is, in words: "your Monferno", "Barry's Staravia", "their Bronzong"
+const dWho = (c, up) => { const w = (c.side ? 'their ' : dIsAl(c.key) ? dAllyN() + "'s " : 'your ') + c.name; return up ? w[0].toUpperCase() + w.slice(1) : w };
+// who a switch can bring in for c: your own for yours, the partner's for the partner's, the same trainer's for theirs
+function dtBench(L, team, c, outK) {
+  const pool = c.side === 0 ? (dIsAl(c.key) ? L.AL : L.P) : L.B.filter((x, i) => !BS.foe2 || !!(team[i] || {}).tr2 === !!(team[+c.key.slice(1)] || {}).tr2);
+  return pool.filter(x => x.hp > 0 && !outK.includes(x.key));
+}
+function dtAdvance() {
+  const r = curRun(), L = dblLive(r), { S, M, B } = L, team = batTeam(r), outs = [...L.mine, ...L.foes];
+  if (!L.mine.length || !L.foes.length || outs.some(c => !dtRow(c.key).a)) return;
+  const R = { ko() {}, seen() {} }, all = [...M, ...B], byKey = k => all.find(c => c.key === k), out = outs.map(c => c.key);
+  outs.forEach(c => { c.firstOut = !!BS.dfirst });
+  all.forEach(c => { if (c.st === 'slp') c.slp = 9 });   // sleep is decided by what you logged, not rolled
+  // undo point: the board as it was
+  BS.hist = [JSON.stringify(Object.assign({}, BS, { hist: undefined, log: undefined })), ...(BS.hist || [])].slice(0, 15);
+  const steps = [], snapOf = () => Object.assign(btSnap(S), { out: [...out] }); let snap = snapOf();
+  const stage = head => { const now = snapOf(), fx = btDiff(snap, now, S); steps.push({ head, fx }); snap = now };
+  const live = side => out.map(byKey).filter(x => x && x.side === side && x.hp > 0);
+  // bring n in for the one at out[slot]; Intimidate hits both of the other side
+  const enter = (side, n, gone) => { const oth = live(1 - side); if (oth[0]) S.sd[1 - side].a = S.sd[1 - side].team.indexOf(oth[0]);
+    nsEnter(S, side, S.sd[side].team.indexOf(n), R); if (n.ab === 'Intimidate' && n.hp > 0) oth.slice(1).forEach(x => nsStage(x, { atk: -1 }, true));
+    const i = out.indexOf(gone); if (i >= 0) out[i] = n.key; else out.push(n.key) };
+  const acts = outs.map(c => { const f = dtRow(c.key), j = f.a.indexOf(':'); return { c, f, k: j < 0 ? f.a : f.a.slice(0, j), x: j < 0 ? '' : f.a.slice(j + 1) } });
+  // switches go first, fastest first
+  acts.filter(a => a.k === 'sw').sort((p, q) => nsSpeed(S, q.c) - nsSpeed(S, p.c)).forEach(a => { const n = byKey(a.x); if (!n || n.hp <= 0 || out.includes(n.key)) return;
+    enter(a.c.side, n, a.c.key); stage(`${a.c.side ? 'They' : dIsAl(a.c.key) ? dAllyN() : 'You'} switched ${a.c.name} out for ${n.name}.`) });
+  // then moves: priority, then Speed, with any order you set put in place
+  const mv = acts.filter(a => a.k === 'mv' && MV[a.x]).map(a => Object.assign(a, { mv: a.x, pr: NPRIO[a.x] || 0, sp: nsSpeed(S, a.c) }))
+    .sort((p, q) => q.pr - p.pr || q.sp - p.sp || p.c.side - q.c.side), order = Array(mv.length).fill(null);
+  mv.filter(a => a.f.ord).sort((p, q) => +p.f.ord - +q.f.ord).forEach(a => { let i = Math.min(+a.f.ord - 1, mv.length - 1); while (order[i]) i = (i + 1) % mv.length; order[i] = a });
+  mv.filter(a => !a.f.ord).forEach(a => { order[order.indexOf(null)] = a });
+  order.forEach((a, idx) => { const A = a.c;
+    if (A.hp <= 0 || !out.includes(A.key)) { steps.push({ head: `${dWho(A, 1)} ${A.hp <= 0 ? 'fainted' : 'was out of battle'} before it could use ${a.mv}.`, fx: [] }); return }
+    if (A.st === 'slp' && a.mv !== 'Sleep Talk' && a.mv !== 'Snore') { A.st = ''; snap = snapOf(); steps.push({ head: `${dWho(A, 1)} woke up.`, fx: [] }) }
+    A.flinch = false; A.recharge = false;
+    const foesOf = live(1 - A.side), pal = live(A.side).find(x => x !== A);
+    let tg;
+    if (dSpread(a.mv)) tg = [...foesOf, ...(DSPREADALL.has(a.mv) && pal ? [pal] : [])];
+    else { let D = byKey(a.f.tg); if (!D || D === A || D.hp <= 0 || !out.includes(D.key)) D = D && D.side !== A.side ? foesOf.find(x => x !== D) || foesOf[0] : D && D.side === A.side && pal ? pal : foesOf[0]; tg = D ? [D] : [] }
+    if (!tg.length) { steps.push({ head: `${dWho(A, 1)} used ${a.mv}, but there was no target.`, fx: [] }); return }
+    const multi = tg.length > 1, keep = { lastMv: A.lastMv, consec: A.consec, firstOut: A.firstOut };
+    tg.forEach(D => { if (D.hp <= 0) return; Object.assign(A, keep); dAt(S, A, D); const h0 = D.hp;
+      const next = order.slice(idx + 1).find(b => b.c === D);
+      NSF = { acc: a.f.out !== 'miss', crit: a.f.out === 'crit', sec: !!a.f.sec, hits: 3 };
+      try { nsUseMove(S, A, D, a.mv, { after: order.slice(0, idx).some(b => b.c === D), hit: !!A.hitThisTurn, foeMv: next && D.hp > 0 ? next.mv : null, first: keep.firstOut }, R) } finally { NSF = null }
+      if (multi && D.hp < h0) D.hp = h0 - Math.floor((h0 - D.hp) * 3 / 4);   // a move that hits more than one does 3/4 damage
+      // a move that pulled someone out (U-turn, Baton Pass, Roar)
+      [A.side, D.side].forEach((sd, z) => { const n = nsAct(S, sd), gone = z ? D : A; if (n && n !== gone && n.hp > 0 && !out.includes(n.key) && out.includes(gone.key)) out[out.indexOf(gone.key)] = n.key }) });
+    stage(`${dWho(A, 1)} used ${a.mv}${multi ? ', hitting ' + tg.map(x => x.name).join(' and ') : tg[0] !== A ? ' on ' + dWho(tg[0]) : ''}${a.f.out === 'miss' ? ', but it missed' : a.f.out === 'crit' ? ' (critical hit)' : ''}${a.f.sec ? ' (added effect)' : ''}.`);
+  });
+  acts.filter(a => a.k === 'none').forEach(a => steps.push({ head: `${dWho(a.c, 1)} couldn't move.`, fx: [] }));
+  acts.filter(a => a.k === 'conf' && a.c.hp > 0).forEach(a => { nsDamage(S, a.c, nsConfDmg(a.c), R); stage(`${dWho(a.c, 1)} hurt itself in confusion.`) });
+  // end of turn for each one out, fastest first; screens, Tailwind and weather count down once
+  const eo = out.map(byKey).filter(c => c && c.hp > 0).sort((p, q) => nsSpeed(S, q) - nsSpeed(S, p));
+  eo.forEach(c => { const dummy = Object.assign({}, c, { hp: 0, side: 1 - c.side, stg: Object.assign({}, c.stg) });
+    nsEndTurn({ sd: S.sd.map((sd, i) => Object.assign({}, sd, { team: [i === c.side ? c : dummy], a: 0 })), wx: S.wx, wxT: S.wxT }, R) });
+  S.sd.forEach(sd => { ['ref', 'ls', 'tw', 'sg'].forEach(k => { if (sd[k] > 0) sd[k]-- }) });
+  if (S.wx && S.wxT < 99 && --S.wxT <= 0) S.wx = '';
+  stage('End of turn');
+  // the HP you actually saw beats the middle-roll estimate
+  const fixes = [];
+  outs.forEach(c => { const v = dtRow(c.key).hp; if (v === '' || v === undefined || isNaN(+v)) return;
+    c.hp = c.side === 0 && !dIsAl(c.key) ? Math.max(0, Math.min(c.max, +v)) : Math.max(0, Math.min(c.max, Math.round(c.max * +v / 100))); fixes.push(c.name) });
+  if (fixes.length) stage('Corrected to the HP you saw');
+  // fainted ones are replaced: theirs and your partner's by the next in their party, yours by you
+  const effects = [];
+  out.slice().forEach(k => { const c = byKey(k); if (!c || c.hp > 0) return;
+    const n = c.side === 1 ? dtBench(L, team, c, out)[0] : dIsAl(k) ? L.AL.find(x => x.hp > 0 && !out.includes(x.key)) : null;
+    if (n) { enter(c.side, n, k); stage(`${c.side ? 'They' : dAllyN()} sent out ${n.name}.`);
+      if (c.side) effects.push(`<b>${esc(n.name)}</b> is a guess (the next in their party). Change it under their team if they chose differently.`) }
+    else { out.splice(out.indexOf(k), 1); if (c.side === 0 && !dIsAl(k) && L.P.some(x => x.hp > 0 && !out.includes(x.key))) effects.push('<b>Pick who you send in next</b>: tick it under Your party.') } });
+  // write the new state back to the board
+  L.P.forEach(c => { const o = BS.p[c.key] = BS.p[c.key] || {}; o.hp = c.hp; o.st = c.st; o.cf = c.conf > 0 && out.includes(c.key); o.tn = c.st === 'tox' ? c.toxN : 0 });
+  BS.al = BS.al || []; L.AL.forEach((c, i) => { BS.al[i] = Object.assign(BS.al[i] || {}, { hp: c.hp <= 0 ? 0 : Math.max(1, Math.round(c.hp / c.max * 100)), st: c.st, cf: c.conf > 0 && out.includes(c.key) }) });
+  B.forEach((c, i) => { const o = BS.b[i]; o.hp = c.hp <= 0 ? 0 : Math.max(1, Math.round(c.hp / c.max * 100)); o.st = c.st; o.cf = c.conf > 0 && out.includes(c.key); o.tn = c.st === 'tox' ? c.toxN : 0; if (c.usedItem && !c.item) o.item = false });
+  BS.dstg = {}; out.forEach(k => { const c = byKey(k), o = {}; Object.entries(c.stg).forEach(([s, v]) => { if (v) o[s] = v }); if (Object.keys(o).length) BS.dstg[k] = o });
+  BS.bas = out.filter(k => byKey(k).side === 1).map(k => +k.slice(1)); BS.pas = out.filter(k => byKey(k).side === 0);
+  if (BS.bas.length) BS.ba = BS.bas[0]; const pm = BS.pas.find(k => !dIsAl(k)); if (pm) BS.pa = pm;
+  BS.wx = S.wx; BS.wxT = S.wx ? S.wxT : 5; BS.dfirst = false;
+  BS.sd = S.sd.map(sd => ({ sr: sd.sr, spk: sd.spk, tsp: sd.tsp, ref: sd.ref, ls: sd.ls, tw: sd.tw }));
+  BS.turn = (BS.turn || 0) + 1;
+  BS.log = [{ t: BS.turn, steps: steps.filter(x => x.fx.length || x.head !== 'End of turn'), fx: effects, est: !fixes.length && order.some(a => a.f.out !== 'miss' && MV[a.mv].c !== 'St') }, ...(BS.log || [])].slice(0, 40);
+  BS.dtl = {};
+  batSave(); renderBattle();
+}
+function renderDblLog(el) {
+  const r = curRun(), L = dblLive(r), team = batTeam(r), outs = [...L.mine, ...L.foes], outK = outs.map(c => c.key);
+  if (!L.mine.length || !L.foes.length) { el.innerHTML = ''; return }
+  const opt = (v, lab, cur) => `<option value="${esc(v)}" ${String(v) === String(cur) ? 'selected' : ''}>${esc(lab)}</option>`;
+  const tag = c => c.side ? (BS.foe2 ? (team[+c.key.slice(1)] || {}).trn || 'them' : 'them') : dIsAl(c.key) ? dAllyN() + "'s" : 'you';
+  const row = c => { const f = dtRow(c.key), k = esc(c.key), mv = f.a.startsWith('mv:') ? f.a.slice(3) : '', bench = dtBench(L, team, c, outK), st = mv && MV[mv] && MV[mv].c === 'St';
+    const tgs = mv && !dSpread(mv) ? [...L.foes, ...L.mine.filter(x => x !== c)] : [];
+    const own = c.side === 0 && !dIsAl(c.key);
+    return `<div><h5>${esc(c.name)} <span class="sp">(${esc(tag(c))})</span></h5>
+      <select data-dt="a" data-key="${k}"><option value="">— pick —</option><optgroup label="Moves">${c.moves.map(m => opt('mv:' + m, m, f.a)).join('')}</optgroup>
+        ${bench.length ? `<optgroup label="Switch">${bench.map(x => opt('sw:' + x.key, 'Switch to ' + x.name, f.a)).join('')}</optgroup>` : ''}
+        ${c.conf > 0 ? opt('conf', 'Hurt itself in confusion', f.a) : ''}${opt('none', "Couldn't move (asleep, flinched, paralyzed, recharging)", f.a)}</select>
+      ${tgs.length > 1 ? `<label class="sp">At <select data-dt="tg" data-key="${k}">${tgs.map(x => opt(x.key, (x.side === c.side ? 'partner ' : '') + x.name, f.tg || tgs[0].key)).join('')}</select></label>` : ''}
+      ${mv && dSpread(mv) ? `<div class="sp">Hits ${esc([...L.foes, ...(DSPREADALL.has(mv) ? L.mine.filter(x => x !== c) : [])].map(x => x.name).join(' and '))}</div>` : ''}
+      ${mv ? `<select data-dt="out" data-key="${k}">${opt('hit', st ? 'Worked' : 'Hit', f.out)}${opt('miss', st ? 'Missed / failed' : 'Missed', f.out)}${st ? '' : opt('crit', 'Critical hit', f.out)}</select>
+        <label class="sp">Went <select data-dt="ord" data-key="${k}">${opt('', 'auto', f.ord)}${[1, 2, 3, 4].slice(0, outs.length).map(n => opt(n, ['1st', '2nd', '3rd', '4th'][n - 1], f.ord)).join('')}</select></label>
+        ${btHasChance(mv) ? `<label class="chk"><input type="checkbox" data-dt="sec" data-key="${k}" ${f.sec ? 'checked' : ''}> Added effect happened</label>` : ''}` : ''}
+      <label class="sp dtinl">HP after${own ? '' : ' %'} <input type="number" min="0" ${own ? '' : 'max="100"'} data-dt="hp" data-key="${k}" value="${esc(f.hp)}" placeholder="${own ? c.hp : Math.round(c.hp / c.max * 100)}"></label></div>` };
+  const ready = outs.every(c => dtRow(c.key).a);
+  const log = (BS.log || []).map(e => `<li><b>Turn ${e.t}</b><ul>${(e.steps || []).map(x => `<li><span class="bthead">${esc(x.head)}</span>${x.fx.length ? `<ul>${x.fx.map(y => `<li>${y}</li>`).join('')}</ul>` : ''}</li>`).join('')}${e.fx.map(x => `<li>${x}</li>`).join('')}</ul>${e.est ? '<div class="sp">Damage is a middle-roll estimate. If the game showed different numbers, fix the HP on the cards above.</div>' : ''}</li>`).join('');
+  const min = store.get('rp-btlog-min', false);
+  el.innerHTML = `<section class="card full"><div class="nhead"><h3>Log a turn${BS.turn ? ' <small class="sp">· turn ' + (BS.turn + 1) + ' next</small>' : ''}</h3><div class="tbtns">${(BS.hist || []).length ? '<button class="btn" data-bact="undo">Undo last turn</button>' : ''}<button class="btn" data-bact="logmin" aria-expanded="${!min}" aria-controls="btlogbody">${min ? 'Show ▾' : 'Hide ▴'}</button></div></div>
+    <div id="btlogbody" ${min ? 'hidden' : ''}>
+    <p class="sp">After a turn in the game, pick what each Pokémon out did${L.AL.length ? ', your partner\'s too,' : ''} and who it targeted, then press Advance. Moves go in priority, then Speed order unless you set when one went. The board updates (HP, status, stat changes, who's out, hazards, weather) and the effects are listed below.</p>
+    <div class="btform">${outs.map(row).join('')}</div>
+    <div class="tbtns" style="margin-top:8px"><button class="btn primary" data-bact="dturn" ${ready ? '' : 'disabled'}>Advance turn ▸</button>${ready ? '' : '<span class="sp">Pick an action for each Pokémon out first.</span>'}</div>
+    ${log ? `<h4 class="tph4">Turn history</h4><ol class="btlog">${log}</ol>` : ''}
+    <p class="sp" style="margin-top:6px">Logged turns use a middle damage roll and only the luck you tick. A move that hits more than one target does 3/4 damage. Follow Me, Helping Hand, Trick Room and Leech Seed's healing aren't modelled, and a fainted Pokémon of theirs is replaced by the next in their party.</p></div></section>`;
+}
+// the Planner's double-battle box, in place of the single-battle simulation
+function renderDblPlan(el) {
+  const r = curRun(), party = batParty(r), team = batTeam(r), t1 = batTeam1(r, BS).length, al = batAlly();
+  if (!party.length || !team.length) { el.innerHTML = ''; return }
+  const P = party.map((x, i) => nsMake(nMineMon(x.e), (x.e.moves || []).filter(Boolean), 0, i, x.row.k));
+  const AL = al.map((p, i) => nsMake(nBossMon(p, +nCalc.biv), (p.mv || []).filter(Boolean), 0, P.length + i, 'al' + i));
+  const B = team.map((p, i) => nsMake(nBossMon(p, +nCalc.biv), (p.mv || []).filter(Boolean), 1, i, 'b' + i));
+  const S = { sd: [Object.assign({ team: [...P, ...AL], a: 0, sg: 0 }, batSide()), Object.assign({ team: B, a: 0, sg: 0 }, batSide())], wx: '', wxT: 0 };
+  const nm = c => esc(c.name), allyN = al.length ? (batTr(BS.ally) || {}).label || 'your partner' : '', multi = !!(BS.foe2 && team.length > t1);
+  const leads = (multi ? [0, t1] : [0, 1]).filter(i => i < team.length).map(i => B[i]);
+  // A's best hit on D from full HP; spread moves at 3/4, as both sides start with two out
+  const best = (A, D) => { let o = null;
+    A.moves.forEach(mv => { const d = MV[mv]; if (!d || d.c === 'St' || NSELFKO.has(mv)) return; const h = dblHit(dAt(S, A, D), A, D, mv, dSpread(mv)); if (!h || !h.mult) return;
+      const v = { mv, h, avg: dAvg(h, mv) }; if (!o || v.avg > o.avg) o = v });
+    return o };
+  const pairs = al.length ? P.map(c => [c, AL[0]]) : P.flatMap((a, i) => P.slice(i + 1).map(b => [a, b]));
+  const scored = pairs.map(([a, b]) => {
+    const off = leads.map(f => { const ba = best(a, f), bb = best(b, f);
+      return { f, ko: 1 - (1 - (ba ? ba.h.ko : 0)) * (1 - (bb ? bb.h.ko : 0)), dmg: Math.min(f.max, (ba ? ba.avg : 0) + (bb ? bb.avg : 0)) / f.max,
+        who: [[a, ba], [b, bb]].filter(([, x]) => x && x.h.ko >= .9).map(([c, x]) => ({ c, mv: x.mv })) } });
+    const def = [a, b].map(m => ({ m, worst: leads.reduce((s, f) => { const x = best(f, m); return s + (x ? x.h.max : 0) }, 0) / m.max }));
+    const fast = [a, b].filter(m => leads.every(f => nsSpeed(S, m) > nsSpeed(S, f)));
+    // a spread move that would be its best hit and also hits its own partner
+    const ff = [[a, b], [b, a]].flatMap(([x, y]) => [...new Set(leads.map(f => best(x, f)).filter(Boolean).map(z => z.mv))].filter(mv => DSPREADALL.has(mv)).map(mv => ({ x, y, mv, h: dblHit(dAt(S, x, y), x, y, mv, true) })));
+    const score = off.reduce((s, o) => s + 1.5 * o.ko + o.dmg, 0) - def.reduce((s, d) => s + .8 * Math.min(2, d.worst), 0) + .25 * fast.length - ff.reduce((s, z) => s + (z.h && z.h.mult ? 1.5 * z.h.max / z.y.max : 0), 0);
+    return { a, b, off, def, fast, ff, score } }).sort((x, z) => z.score - x.score);
+  const why = s => [
+    ...s.off.map(o => o.who.length ? `${o.who.map(w => `${nm(w.c)} (${esc(w.mv)})`).join(' or ')} knocks out ${nm(o.f)} in one hit` : o.dmg >= 1 ? `together they can knock out ${nm(o.f)} in one turn` : `together about ${Math.round(o.dmg * 100)}% to ${nm(o.f)} in a turn`),
+    s.fast.length ? `${s.fast.map(nm).join(' and ')} ${s.fast.length > 1 ? 'outspeed' : 'outspeeds'} both of theirs` : '',
+    ...s.def.filter(d => d.worst >= 1).map(d => `<span class="bko">${nm(d.m)} can be knocked out on turn 1 if both target it (up to ${Math.round(d.worst * 100)}%)</span>`),
+    ...s.ff.filter(z => z.h).map(z => z.h.mult ? `<span class="bko">${nm(z.x)}'s ${esc(z.mv)} also hits ${nm(z.y)} for ${dRng(z.h, z.y)}</span>` : `${nm(z.y)} is immune to ${nm(z.x)}'s ${esc(z.mv)}`)
+  ].filter(Boolean).join(' · ');
+  const notes = B.map((f, i) => ({ f, i, sp: f.moves.filter(dSpread), sup: f.moves.filter(mv => DNOTE[mv] && !dSpread(mv)) })).filter(x => x.sp.length || x.sup.length).map(x =>
+    `<li><b>${nm(x.f)}</b>${team[x.i].trn ? ` <span class="sp">(${esc(team[x.i].trn)})</span>` : ''}: ${[...x.sp.map(mv => esc(mv) + (DSPREADALL.has(mv) ? ' (hits everyone else, its own partner too)' : ' (hits both of yours)')), ...x.sup.map(mv => `${esc(mv)} (${esc(DNOTE[mv])})`)].join(', ')}</li>`).join('');
+  const cell = (A, D) => { const x = best(A, D); if (!x) return '<td class="sp">—</td>'; const hi = dPct(x.h.max, D);
+    return `<td class="${x.h.min >= D.max ? 'dko' : hi >= 50 ? 'dhi' : ''}" title="${esc(x.mv)}: ${dPct(x.h.min, D)}–${hi}%${x.h.spread ? ', hitting both at 3/4' : ''}">${hi}%${x.h.spread ? '<sup>×¾</sup>' : ''}<small>${esc(x.mv)}</small></td>` };
+  const hd = c => `<th><img src="${nimg(c.m.n)}" alt=""><span>${nm(c)}</span>${/^al/.test(c.key) ? '<small class="sp">partner</small>' : c.side && team[+c.key.slice(1)].trn ? `<small class="sp">${esc(team[+c.key.slice(1)].trn)}</small>` : ''}</th>`;
+  const tab = (rows, cols) => `<div class="dscroll"><table class="dtab"><tr><th></th>${cols.map(hd).join('')}</tr>${rows.map(a => `<tr>${hd(a)}${cols.map(d => cell(a, d)).join('')}</tr>`).join('')}</table></div>`;
+  const n1 = batName1(BS), n2 = multi ? batTr(BS.foe2).label : '';
+  const setup = `${multi ? `${esc(n1)} and ${esc(n2)} send out one Pokémon each` : `${esc(n1)} sends out two at a time`}. ${al.length ? `You fight beside ${esc(allyN)}, who the game controls, so you pick one of yours.` : 'You send out two of yours.'}`;
+  el.innerHTML = `<section class="card full prep" data-sec="pdbl"><div class="nhead"><h3>Double battle plan</h3></div>
+    <p class="sp">${setup}</p>
+    <h4>They lead with</h4><div class="dleads">${leads.map(f => `<span class="dlead"><img src="${nimg(f.m.n)}" alt=""><b>${nm(f)}</b> <span class="sp">Lv. ${esc(String(f.m.lv))}</span></span>`).join('')}</div>
+    ${notes ? `<h4>Moves to watch with two on each side</h4><ul class="ptb">${notes}</ul>` : ''}
+    <h4>${al.length ? `Your best lead beside ${esc(allyN)}'s ${nm(AL[0])}` : 'Best lead pairs'}</h4>
+    ${scored.length ? `<div class="bopts">${scored.slice(0, 3).map((s, i) => `<div class="borow ${i ? '' : 'best'}"><div class="bohd"><b>${al.length ? nm(s.a) : nm(s.a) + ' + ' + nm(s.b)}</b>${i ? '' : '<span class="btag good">Best</span>'}</div><div class="sp">${why(s)}</div></div>`).join('')}</div>` : '<p class="empty">You need two Pokémon with levels for a double battle.</p>'}
+    <details class="bfold" data-bopen="ddmg" ${batOpen.has('ddmg') ? 'open' : ''}><summary>Your best hit on each of theirs</summary>${tab([...P, ...AL], B)}</details>
+    <details class="bfold" data-bopen="ddmg2" ${batOpen.has('ddmg2') ? 'open' : ''}><summary>Their best hit on each of yours</summary>${tab(B, [...P, ...AL])}</details>
+    <p class="sp">From full HP at your current levels. A move marked ×¾ hits more than one target, so it does 3/4 damage, as in Gen 4 double battles. Lead pairs are ranked on knocking out their leads, damage, Speed, and how much both of theirs could do to one of yours on turn 1, and they avoid spread moves that hit your own partner. The single-battle simulation is hidden while Double is picked; during the fight, the Tracker shows their likely moves and targets each turn.</p></section>`;
 }
 // ---- Team picker: choose up to six from party + box for the selected boss, with reasons ----
 let tpRes = null, tpBusy = false, tpTok = 0;
@@ -5419,6 +5843,8 @@ BD.addEventListener('change', ev => { if (ev.target.dataset.bf) return batChange
   if (ev.target.dataset.tppick) { const r = curRun(), all = tpSetup(r).all.map(x => x.row.k), k = ev.target.dataset.tppick;
     const cur = new Set(Array.isArray(BS.pick) ? BS.pick : all); ev.target.checked ? cur.add(k) : cur.delete(k);
     BS.pick = all.every(x => cur.has(x)) ? null : [...cur]; batSave(); return renderTeamPick() }
+  if (ev.target.dataset.dt) { const k = ev.target.dataset.dt, o = dtRow(ev.target.dataset.key); o[k] = ev.target.type === 'checkbox' ? ev.target.checked : ev.target.value;
+    if (k === 'a') { o.out = 'hit'; o.sec = false; o.tg = ''; o.ord = '' } batSave(); if (k !== 'hp') renderTurnLog(); return }
   const k = ev.target.dataset.bt; if (!k) return;
   const tl = btForm(); tl[k] = ev.target.type === 'checkbox' ? ev.target.checked : ev.target.value;
   if (k === 'p') { tl.pOut = 'hit'; tl.pSec = false } if (k === 'b') { tl.bOut = 'hit'; tl.bSec = false }
@@ -5445,6 +5871,7 @@ BD.addEventListener('click', ev => {
   if (b.dataset.bact === 'sim') return batSim();
   if (b.dataset.bact === 'simclose') { simTok++; simRes = null; return renderSim() }
   if (b.dataset.bact === 'turn') return btAdvance();
+  if (b.dataset.bact === 'dturn') return dtAdvance();
   if (b.dataset.bact === 'undo') return btUndo();
   if (b.dataset.bact === 'logmin') { store.set('rp-btlog-min', !store.get('rp-btlog-min', false)); return renderTurnLog() }
   if (b.dataset.bact === 'useteam') return tpUse();
@@ -6266,7 +6693,7 @@ function renderIv() {
   const from = ivAllRows ? 0 : Math.max(0, nR - (nR > 1 && blank(IVS.rows[nR - 1]) ? 2 : 1)), hid = IVS.rows.slice(0, from);
   const fold = nR > 1 ? `<div class="ivfold">${ivAllRows ? `<span class="sp">All ${nR} levels</span><button class="an" data-ivfold>Show only the latest</button>`
     : `<span class="sp">${hid.length} earlier level${hid.length === 1 ? '' : 's'} hidden (Lv. ${hid.map(x => esc(x.lv || '?')).join(', ')})</span><button class="an" data-ivfold>Show all ${nR} levels</button>`}</div>` : '';
-  d.innerHTML = `<div class="rhero"><h2>IV grading</h2>
+  d.innerHTML = `<div class="rhero" data-ivsec="top"><h2>IV grading</h2>
       <p class="ivsub">Work out a Pokémon's IVs (0–31) from its stats, level and nature. Add its stats again after it levels up to narrow them down.</p>
       <div class="ivtop">
         ${nz.length ? `<label>Nuzlocke Pokémon<select id="ivload"><option value="">— scratchpad (not saved to a run) —</option>${nz.map(x => `<option value="${esc(x.row.k)}" ${lk && lk.run.id === r.id && IVS.link.k === x.row.k ? 'selected' : ''}>${esc(x.e.nick || monName(x.e.n))}${x.e.lv ? ' · Lv. ' + esc(x.e.lv) : ''}${x.e.st === 'box' ? ' (box)' : ''}</option>`).join('')}</select></label>` : ''}
@@ -6277,12 +6704,12 @@ function renderIv() {
         <label title="Hidden Power's type, from its summary screen or a move tutor/TM check. Each IV's odd/even bit sets it, so it narrows every stat.">Hidden Power type (optional)<select id="ivhpt"><option value="">—</option>${HPTYPES.map(t => `<option value="${t}" ${t === IVS.hpt ? 'selected' : ''}>${t}</option>`).join('')}</select></label>
       </div>
       ${lk ? `<p class="ivlinked">Linked to <b>${esc(lk.e.nick || monName(lk.e.n))}</b> in “${esc(lk.run.name)}”. Changes here save to its Nuzlocke card, and its card shows the same IVs and EVs.</p>` : ''}${m ? `<div class="ivmon"><img src="${nimg(m.num)}" alt=""><div><div class="nn">${esc(m.name)}</div><div class="stypes">${m.v[ver].types.map(typeBadge).join('')}</div></div></div>` : ''}</div>
-    ${m ? `<section class="card full"><h3>Stats from the summary screen</h3>${from || ivAllRows ? fold : ''}<div class="ivrows">${IVS.rows.map(row).filter((_, i) => i >= from).join('')}</div>
+    ${m ? `<section class="card full" data-ivsec="stats"><h3>Stats from the summary screen</h3>${from || ivAllRows ? fold : ''}<div class="ivrows">${IVS.rows.map(row).filter((_, i) => i >= from).join('')}</div>
         <div class="tbtns" style="margin-top:10px"><button class="btn" id="ivadd">+ Stats at another level</button>${lk ? '' : '<button class="btn" id="ivclear">Clear</button>'}</div>
         <p class="ivsub" style="margin-top:10px">Wild Pokémon start with no EVs, but every battle adds some. If it has fought, enter its EVs, or use stats from right after you caught it.</p></section>
       ${lk ? ivEvHtml(lk.e) : ''}
       <div id="ivres"></div>` : '<p class="empty" style="margin-top:16px">Pick a Pokémon to start, or load one from your Nuzlocke run.</p>'}`;
-  renderIvResults();
+  renderIvResults(); ivDecorate();
 }
 
 // who else gets the EVs from a logged battle: party keys ticked by hand; untouched ones default to the Exp. Share holder
@@ -6316,12 +6743,13 @@ function evAreaHtml(lk, e) {
   const trs = A.subs.flatMap(x => x.tr.map(t => ({ t, x })).filter(o => o.t.sec !== 'Rematches' && o.t.sec !== 'Master Trainer' && trApplies(r, o.t) && (A.L.n !== PCAREA || (o.t.when || '') === pcTier(r.beat))));
   return `<div class="evarea"><label>Area<select id="evarea">${evAreas().map(a => `<option value="${esc(a.n)}" ${a === A ? 'selected' : ''}>${esc(a.L.n === PCAREA ? PCNAME : a.n)}${a === latest ? ' (latest encounter)' : ''}</option>`).join('')}</select></label>
       ${A !== latest && latest ? `<button class="an" data-evlatest>Back to ${esc(latest.n)}</button>` : ''}<span class="sp">Click a Pokémon to log one win against it.</span></div>
-    ${wild.size ? `<div class="evgroup"><h4>Wild</h4><div class="evpicks">${[...wild].map(([n, how]) => pick(n, how.join(', '))).join('')}</div></div>` : ''}
-    ${trs.length ? `<div class="evgroup"><h4>Trainers${A.L.n === PCAREA ? ` <span class="sp">in any Pokémon Center or gatehouse, ${pcTierText(r.beat)}</span>` : ''}</h4>${trs.map(({ t, x }) => ({ t, x, done: trBeaten(r, trKey(A.L, x, t)) })).sort((a, b) => a.done - b.done).map(({ t, x, done }) => {
+    ${wild.size ? `<div class="evgroup" data-ivsec="wild"><h4>Wild</h4><div class="evpicks">${[...wild].map(([n, how]) => pick(n, how.join(', '))).join('')}</div></div>` : ''}
+    ${trs.length ? `<div class="evgroup" data-ivsec="trs"><h4>Trainers${A.L.n === PCAREA ? ` <span class="sp">in any Pokémon Center or gatehouse, ${pcTierText(r.beat)}</span>` : ''}</h4>${trs.map(({ t, x }) => ({ t, x, done: trBeaten(r, trKey(A.L, x, t)) })).sort((a, b) => a.done - b.done).map(({ t, x, done }) => {
       const hd = `<b>${esc(t.name)}</b>${x.n ? ` <span class="sp">${esc(x.n)}</span>` : ''}${done ? ' <span class="btag good">Beaten ✓</span>' : ''}<button class="btn" data-evbeat="${esc(trKey(A.L, x, t))}" title="${done ? 'Show this trainer in full again' : 'Mark as beaten without logging EVs: it folds down here and on the Nuzlocke tab'}">${done ? 'Not beaten' : 'Beaten ✓'}</button><button class="btn" data-evteam="${li}|${A.L.subs.indexOf(x)}|${x.tr.indexOf(t)}" title="Log a win over the whole team">Beat whole team</button>`,
         picks = `<div class="evpicks">${t.team.map(p => pick(p.n, 'Lv. ' + p.lv)).join('')}</div>`;
       // marked beaten on the Nuzlocke tab: folded to one line, open it to log EVs anyway
-      return done ? `<details class="evtr trdone"><summary class="evtrhd">${hd}</summary>${picks}</details>` : `<div class="evtr"><div class="evtrhd">${hd}</div>${picks}</div>` }).join('')}</div>` : ''}
+      const tk = trKey(A.L, x, t);
+      return done ? `<details class="evtr trdone"><summary class="evtrhd">${hd}</summary>${picks}</details>` : `<details class="evtr evtrf" data-evtrk="${esc(tk)}" ${ivTrShut.has(tk) ? '' : 'open'}><summary class="evtrhd">${hd}</summary>${picks}</details>` }).join('')}</div>` : ''}
     ${!wild.size && !trs.length ? '<p class="empty">No wild Pokémon or trainers listed here.</p>' : ''}`;
 }
 const evWhen = t => new Date(t).toLocaleString([], { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' });
@@ -6347,7 +6775,7 @@ function ivEvHtml(e) {
   const bars = IVSTATS.map(k => `<div class="evrow"><span class="lab">${SL[k]}</span><input type="number" min="0" max="255" data-evset="${k}" value="${+ev[k] || 0}" aria-label="${SL[k]} EVs">
     <span class="evbar"><i style="width:${(+ev[k] || 0) / 255 * 100}%"></i></span><button class="btn evvit" data-evvit="${k}" title="${EVVIT[k]}: +10 ${SL[k]} EVs (vitamins stop at 100)" ${(+ev[k] || 0) >= 100 || tot >= 510 ? 'disabled' : ''}>+${EVVIT[k]}</button></div>`).join('');
   const recent = [...new Set((e.evlog || []).map(x => x.n).filter(Boolean))].slice(0, 8);
-  return `<section class="card full"><h3>EVs · ${tot}/510</h3>
+  return `<section class="card full" data-ivsec="evs"><h3>EVs · ${tot}/510</h3>
     <p class="ivsub">Effort values from battles. Log what it beats (pick from the area you're in, or search) and the EVs are added from each species' yield. Every level you record keeps the EVs it had, so the IVs above can be exact instead of a range.</p>
     ${e.item === 'Macho Brace' || pw ? `<p class="ivsub"><b>Holding ${esc(e.item)}:</b> ${e.item === 'Macho Brace' ? 'EVs from battles are doubled' : `+4 ${SL[pw]} EVs per battle`}.</p>` : ''}
     ${sh.length ? `<div class="evshare"><span class="sp">Also gets the EVs:</span> ${sh.map(x => `<label class="chk" title="${x.e.item === 'Exp. Share' ? 'Holding the Exp. Share: gets the full EVs too' : 'Tick if it also battled (each participant gets the full EVs)'}"><input type="checkbox" data-evalso="${esc(x.k)}" ${x.on ? 'checked' : ''}><img src="${nimg(x.e.n)}" alt="">${esc(x.e.nick || monName(x.e.n))}${x.e.item === 'Exp. Share' ? ' <span class="tag">Exp. Share</span>' : ''}${x.e.item === 'Macho Brace' ? ' <span class="tag">×2</span>' : EVPOWER[x.e.item] ? ` <span class="tag">+4 ${SL[EVPOWER[x.e.item]]}</span>` : ''}${x.e.pkrs ? ' <span class="tag">Pokérus</span>' : ''}</label>`).join('')}</div>` : ''}
@@ -6360,6 +6788,17 @@ function ivEvHtml(e) {
     <div class="evrows">${bars}</div>
     ${(e.evlog || []).length ? `<details class="evlog" ${evLogOpen ? 'open' : ''}><summary>EV log · ${e.evlog.length}</summary><ul>${evLogRows(e)}</ul></details>
       <div class="tbtns" style="margin-top:6px"><button class="btn" id="evundo">Undo last</button><button class="btn danger" id="evreset">Reset EVs</button></div>` : ''}</section>`;
+}
+// ---- IVs tab: each box folds to its title (state per browser, rp-ivhide); trainer boxes in the EV picker fold on click (rp-ivtrshut)
+const ivHide = new Set(store.get('rp-ivhide', [])), ivTrShut = new Set(store.get('rp-ivtrshut', []));
+function ivDecorate() {
+  document.getElementById('ivdetail').querySelectorAll('[data-ivsec]').forEach(s => {
+    const id = s.dataset.ivsec, h = s.querySelector(':scope > h2, :scope > h3, :scope > h4'); if (!h) return;
+    const hid = ivHide.has(id); s.classList.toggle('ivcoll', hid);
+    let b = h.querySelector(':scope > button[data-ivhide]');
+    if (!b) { b = document.createElement('button'); b.className = 'nhide'; b.dataset.ivhide = id; h.appendChild(b) }
+    b.textContent = hid ? 'Show' : 'Hide'; b.setAttribute('aria-expanded', String(!hid));
+  });
 }
 function renderIvResults() {
   const el = document.getElementById('ivres'); if (!el) return;
@@ -6397,9 +6836,10 @@ function renderIvResults() {
   const lockNote = ivClash.length ? `<p class="ivwarn">The stats you've entered don't fit the locked IVs for ${ivClash.map(k => SL[k]).join(', ')}, so the locked values are kept. Check the latest level for a typo. If an earlier entry or the nature was wrong, unlock and the IVs are worked out again from the log. <button class="btn" data-ivunlock>Unlock and recalculate</button></p>`
     : anyLock ? `<p class="sp ivlocknote">🔒 Ranges are locked as they narrow, so logging more levels or EVs can't widen them again. <button class="btn ivunl" data-ivunlock>Unlock and recalculate</button></p>` : '';
   const gave = ivRes ? ivGaveWay(ivRes, { n: IVS.n, hpt: IVS.hpt, ch: IVS.ch }) : [];
-  el.innerHTML = `<section class="card full"><h3>Results</h3>${gave.map(t => `<p class="ivwarn">${esc(t)}</p>`).join('')}${ivChOff ? `<p class="ivwarn">${esc(ivChHint(sol, ivChOff))}</p>` : ''}${ivUnlockMsg ? `<p class="bivmsg" role="status">${esc(ivUnlockMsg)}</p>` : ''}${lockNote}${slopNote}${hpNote}${total}
+  el.innerHTML = `<section class="card full" data-ivsec="res"><h3>Results</h3>${gave.map(t => `<p class="ivwarn">${esc(t)}</p>`).join('')}${ivChOff ? `<p class="ivwarn">${esc(ivChHint(sol, ivChOff))}</p>` : ''}${ivUnlockMsg ? `<p class="bivmsg" role="status">${esc(ivUnlockMsg)}</p>` : ''}${lockNote}${slopNote}${hpNote}${total}
     <div class="tablewrap"><table class="ivtable"><thead><tr><th>Stat</th><th>Base</th><th>Possible IVs</th><th class="bar">0 ··· 31</th><th>Judge</th></tr></thead><tbody>${rows}</tbody></table></div>
     <div class="legend"><span>Judge wording follows the in-game IV judge: Best 31 · Fantastic 30 · Very good 26–29 · Pretty good 16–25 · Decent 1–15 · No good 0.</span></div></section>`;
+  ivDecorate();
 }
 
 // The IV tab can be linked to a Nuzlocke Pokémon: its levels, stats, nature, characteristic and EVs are that card's, both ways.
@@ -6467,10 +6907,14 @@ IVD.addEventListener('change', ev => { ivUnlockMsg = '';
   if (t.id === 'evpkrs') { lk.e.pkrs = t.checked; lk.run.updated = Date.now(); saveRuns(); return renderIv() }
 });
 IVD.addEventListener('toggle', ev => { if (ev.target.classList && ev.target.classList.contains('evlog')) evLogOpen = ev.target.open }, true);
+IVD.addEventListener('toggle', ev => { const k = ev.target.dataset && ev.target.dataset.evtrk; if (!k || !ev.target.isConnected) return;
+  ev.target.open ? ivTrShut.delete(k) : ivTrShut.add(k); store.set('rp-ivtrshut', [...ivTrShut]) }, true);
 IVD.addEventListener('toggle', ev => { const d = ev.target, rw = d.closest && d.classList.contains('ivev') && d.closest('.ivrow'); if (!rw) return;
   d.open ? ivEvOpen.add(+rw.dataset.r) : ivEvOpen.delete(+rw.dataset.r) }, true);
 IVD.addEventListener('click', ev => {
   const t = ev.target;
+  const hb = t.closest('button[data-ivhide]');
+  if (hb) { const id = hb.dataset.ivhide; ivHide.has(id) ? ivHide.delete(id) : ivHide.add(id); store.set('rp-ivhide', [...ivHide]); return ivDecorate() }
   const lk = ivLinked();
   const evDone = (got, why) => { if (!Object.keys(got).length) alert('No EVs added: it has hit the cap (255 a stat, 510 in all) for those stats.'); lk.run.updated = Date.now(); saveRuns(); renderIv() };
   const evLog = (list, why) => {   // list: [[species, times], ...]
