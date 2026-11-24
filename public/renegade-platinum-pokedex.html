@@ -452,6 +452,8 @@ div.an { display: flex; gap: 2px; cursor: default }
 .pst.dn span { color: var(--chg); font-weight: 700 }
 .tslot .pst input { padding: 4px 1px; text-align: center; font: 600 .78rem var(--font-data) }
 .pst em { font: 400 .58rem var(--font-data); font-style: normal; white-space: nowrap }
+.pstfx { font: 700 .6rem var(--font-data); white-space: nowrap; cursor: help } .pstfx.up { color: var(--new) } .pstfx.dn { color: var(--chg) } .pstfx.if { color: var(--muted); font-weight: 400 }
+.pmvfx { color: var(--new) }
 .pmore summary { cursor: pointer; font-size: .76rem; color: var(--muted); margin-top: 8px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap }
 .pmv { display: flex; flex-direction: column; gap: 3px }
 .pmv .bmv { margin-left: 4px }
@@ -1802,12 +1804,12 @@ const NKEY = 'rp-nuzlocke';
 // Areas in rough story order; areas not listed here are appended at the end
 const NORDER = ['Twinleaf Town', 'Route 201', 'Lake Verity', 'Sandgem Town', 'Route 202', 'Jubilife City', 'Route 204 South', 'Ravaged Path', 'Route 203', 'Oreburgh Gate', 'Oreburgh City', 'Oreburgh Mine', 'Route 204 North',
   'Floaroma Town', 'Floaroma Meadow', 'Valley Windworks', 'Route 205 South', 'Eterna Forest', 'Route 205 North', 'Old Chateau', 'Eterna City', 'Route 211', 'Route 206', 'Wayward Cave', 'Route 207', 'Mt. Coronet', 'Route 208',
-  'Hearthome City', 'Route 209', 'Route 212 North', 'Lost Tower', 'Solaceon Town', 'Solaceon Ruins', 'Route 210', 'Route 215', 'Veilstone City', 'Route 214', 'Maniac Tunnel', 'Valor Lakefront', 'Route 213', 'Pastoria City',
-  'Great Marsh', 'Route 212 South', 'Trophy Garden', 'Celestic Town', 'Fuego Ironworks', 'Route 218', 'Canalave City', 'Iron Island', 'Lake Valor', 'Lake Acuity', 'Route 216', 'Route 217', 'Acuity Lakefront',
+  'Hearthome City', 'Route 209', 'Route 212 North', 'Lost Tower', 'Solaceon Town', 'Solaceon Ruins', 'Route 210 South', 'Route 215', 'Veilstone City', 'Route 214', 'Maniac Tunnel', 'Valor Lakefront', 'Route 213', 'Pastoria City',
+  'Great Marsh', 'Route 212 South', 'Trophy Garden', 'Route 210 North', 'Celestic Town', 'Fuego Ironworks', 'Route 218', 'Canalave City', 'Iron Island', 'Lake Valor', 'Lake Acuity', 'Route 216', 'Route 217', 'Acuity Lakefront',
   'Snowpoint City', 'Snowpoint Temple', 'Galactic HQ', 'Spear Pillar', 'Distortion World', 'Route 222', 'Sunyshore City', 'Route 219', 'Route 220', 'Route 221', 'Route 223', 'Victory Road', 'Pokémon League',
   'Fight Area', 'Route 225', 'Survival Area', 'Route 226', 'Route 227', 'Stark Mountain', 'Route 228', 'Route 229', 'Route 230', 'Resort Area', 'Route 224', 'Seven Stars Restaurant', 'Sendoff Spring',
   'Turnback Cave', 'Fullmoon Island'];
-const NSPLIT = { 'Route 204': ['South', 'North'], 'Route 205': ['South', 'North'], 'Route 212': ['North', 'South'] };   // first part gets an old combined encounter
+const NSPLIT = { 'Route 204': ['South', 'North'], 'Route 205': ['South', 'North'], 'Route 212': ['North', 'South'], 'Route 210': ['South', 'North'] };   // first part gets an old combined encounter
 const NSKIP = new Set(['Battle Marathon Only', 'Pokémon Center', 'Pal Park']);
 const nkey = s => s.normalize('NFC');
 // gifts, eggs, special and legendary encounters from the Pokédex event data: one encounter row per event, filed under
@@ -2118,12 +2120,80 @@ const calcStat = (k, base, lv, iv, nat) => k === 'hp' ? (base === 1 ? 1 : Math.f
 const nAb = e => { const v = mons[e.n - 1].v[ver]; return v.abilities.includes(e.ab) ? e.ab : v.abilities[0] };
 const nOpen = new Set();   // box cards with their details expanded
 
+// What a Pokémon's held item and ability do to its stats on its card. Always-on effects change the number;
+// ones that need a condition (a status, weather, low HP) are listed with it but don't change the number.
+function nCardStatFx(e, ab) {
+  const it = e.item || '', n = e.n, mods = {};
+  const add = (k, x, name, when) => (mods[k] = mods[k] || []).push({ x, name, when: when || '' });
+  if (ab === 'Huge Power' || ab === 'Pure Power') add('atk', 2, ab);
+  if (ab === 'Hustle') add('atk', 1.5, ab);
+  if (ab === 'Guts') add('atk', 1.5, ab, 'with a status condition');
+  if (ab === 'Marvel Scale') add('def', 1.5, ab, 'with a status condition');
+  if (ab === 'Quick Feet') add('spe', 1.5, ab, 'with a status condition');
+  if (ab === 'Swift Swim') add('spe', 2, ab, 'in rain');
+  if (ab === 'Chlorophyll') add('spe', 2, ab, 'in sun');
+  if (ab === 'Solar Power') add('spa', 1.5, ab, 'in sun');
+  if (ab === 'Flower Gift') { add('atk', 1.5, ab, 'in sun'); add('spd', 1.5, ab, 'in sun') }
+  if (ab === 'Unburden') add('spe', 2, ab, 'after its item is used up');
+  if (ab === 'Slow Start') { add('atk', .5, ab, 'for its first 5 turns'); add('spe', .5, ab, 'for its first 5 turns') }
+  if (it === 'Choice Band') add('atk', 1.5, it);
+  if (it === 'Choice Specs') add('spa', 1.5, it);
+  if (it === 'Choice Scarf') add('spe', 1.5, it);
+  if (it === 'Light Ball' && n === 25) { add('atk', 2, it); add('spa', 2, it) }
+  if (it === 'Thick Club' && (n === 104 || n === 105)) add('atk', 2, it);
+  if (it === 'Deep Sea Tooth' && n === 366) add('spa', 2, it);
+  if (it === 'Deep Sea Scale' && n === 366) add('spd', 2, it);
+  if (it === 'Metal Powder' && n === 132) add('def', 2, it);
+  if (it === 'Quick Powder' && n === 132) add('spe', 2, it);
+  if (it === 'Soul Dew' && (n === 380 || n === 381)) { add('spa', 1.5, it); add('spd', 1.5, it) }
+  if (it === 'Iron Ball' || it === 'Macho Brace' || /^Power (Weight|Bracer|Belt|Lens|Band|Anklet)$/.test(it)) add('spe', .5, it);
+  return mods;
+}
+// the in-battle number for one stat box: "×2 → 312" when an always-on effect applies, a muted note when it only applies sometimes
+function nCardStatTag(fx, val) {
+  if (!fx || !fx.length) return '';
+  const on = fx.filter(z => !z.when), cond = fx.filter(z => z.when), x = on.reduce((a, z) => a * z.x, 1);
+  const tip = fx.map(z => `${z.name} ×${z.x}${z.when ? ' ' + z.when : ''}`).join(' · ');
+  let v = val; if (val) on.forEach(z => { v = Math.floor(v * z.x) });
+  return `<b class="pstfx ${on.length ? (x >= 1 ? 'up' : 'dn') : 'if'}" title="${esc(tip)}">${on.length ? (val ? '→ ' + v : '×' + x) : '×' + cond[0].x + '?'}</b>`;
+}
+// a move's power and accuracy with the item and ability applied: { p, p0, a, a0, why, dmg }
+function nCardMoveFx(e, ab, mv, d, types) {
+  const it = e.item || '', why = [], cond = [], dmg = [], phys = d.c === 'P';
+  let P = d.p || 0, A = d.a || 0;
+  if (P) {
+    const pw = (x, name) => { P = Math.floor(P * x); why.push(name + ' ×' + x) };
+    if (ab === 'Technician' && P <= 60) pw(1.5, ab);
+    if (NTYPEITEM[it] === d.t) pw(1.2, it);
+    const orb = { 'Adamant Orb': [483, 'Dragon', 'Steel'], 'Lustrous Orb': [484, 'Water', 'Dragon'], 'Griseous Orb': [487, 'Ghost', 'Dragon'] }[it];
+    if (orb && e.n === orb[0] && orb.includes(d.t)) pw(1.2, it);
+    if ((phys && it === 'Muscle Band') || (d.c === 'S' && it === 'Wise Glasses')) pw(1.1, it);
+    if (ab === 'Reckless' && NRECOIL[mv]) pw(1.2, ab);
+    if (ab === 'Iron Fist' && NPUNCH.has(mv)) pw(1.2, ab);
+    const pinch = { Blaze: 'Fire', Torrent: 'Water', Overgrow: 'Grass', Swarm: 'Bug' }[ab];
+    if (pinch === d.t) cond.push(ab + ' ×1.5 below ⅓ HP');
+  }
+  if (A) {
+    const ac = (x, name) => { A = Math.min(100, Math.floor(A * x)); why.push(name + ' ×' + x + ' accuracy') };
+    if (ab === 'Compound Eyes') ac(1.3, ab);
+    if (ab === 'Hustle' && phys) ac(.8, ab);
+    if (it === 'Wide Lens') ac(1.1, it);
+  }
+  if (P || d.p) {
+    if (it === 'Life Orb') dmg.push('Life Orb ×1.3 damage');
+    if (it === 'Expert Belt') cond.push('Expert Belt ×1.2 when super effective');
+    if (ab === 'Tinted Lens') cond.push('Tinted Lens ×2 when resisted');
+  }
+  return { p: P, p0: d.p || 0, a: A, a0: d.a || 0, why, cond, dmg };
+}
+const nFxNum = (v, v0, why) => v === v0 ? String(v) : `<b class="fxv" title="${esc(why.join(' · '))}">${v}</b> <span class="fx0" title="Without the item or ability">(${v0})</span>`;
 function monEditor(row, e, r, ctx) {
   const m = mons[e.n - 1], v = m.v[ver], ab = nAb(e), lv = +e.lv || 0, k = esc(row.k);
-  const sol = nSolveIVs(e);
+  const sol = nSolveIVs(e), sfx = nCardStatFx(e, abName(ab));
   const stats = Object.entries(SL).map(([s, lab]) => { const b = v.stats[s], mod = natMod(e.nat, s), ivc = sol && sol.s[s] && sol.s[s].c.length ? sol.s[s].c : [0, 31], e0 = calcStat(s, b, lv, ivc[0], e.nat), e1 = calcStat(s, b, lv, ivc[ivc.length - 1], e.nat);
+    const sv = +(e.stats || {})[s] || (lv ? Math.round((e0 + e1) / 2) : 0);
     return `<div class="pst ${mod > 1 ? 'up' : mod < 1 ? 'dn' : ''}" title="Base ${b}${lv ? ' · Lv. ' + lv + ' range ' + calcStat(s, b, lv, 0, e.nat) + '–' + calcStat(s, b, lv, 31, e.nat) + ' (no EVs)' : ''}"><span>${lab}</span><i>${b}</i>
-      <input type="number" min="1" max="999" data-f="stat" data-s="${s}" value="${esc((e.stats || {})[s] || '')}" aria-label="${lab}">${lv ? `<em>${e0 === e1 ? e0 : e0 + '–' + e1}</em>` : ''}</div>`;
+      <input type="number" min="1" max="999" data-f="stat" data-s="${s}" value="${esc((e.stats || {})[s] || '')}" aria-label="${lab}">${lv ? `<em>${e0 === e1 ? e0 : e0 + '–' + e1}</em>` : ''}${nCardStatTag(sfx[s], sv)}</div>`;
   }).join('');
   const hpI = (e.moves || []).includes('Hidden Power') ? nHP(e) : null;
   const mvs = [0, 1, 2, 3].map(i => { const mv = (e.moves || [])[i] || '', d = mv === 'Hidden Power' && MV[mv] ? Object.assign({}, MV[mv], { t: hpI.t, p: hpI.p || (hpI.pr ? Math.round((hpI.pr[0] + hpI.pr[1]) / 2) : 0) }) : MV[mv];
@@ -2133,7 +2203,11 @@ function monEditor(row, e, r, ctx) {
     const vs = isAttack(mv) && d.t ? ctx.boss.map(p => ({ p, x: defMult(mons[p.n - 1].v[ver].types, abName((p.ab || '').replace(/ (.*)$/, '')), d.t) })) : [];
     const se = vs.filter(o => o.x >= 2), no = vs.filter(o => o.x === 0);
     return `<div class="pmv">${sel}<div class="bmv" style="--mvc:${TC[d.t]}"><div class="bmh"><span class="mtype" style="background:${TC[d.t] || 'var(--muted)'}">${d.t || '?'}</span><span class="cat">${catLabel(d.c)}</span>${mv === 'Hidden Power' ? nHpSelect(e, hpI) : ''}
-        <span class="bnums">Power ${mv === 'Hidden Power' && hpI.pr && hpI.pr[0] !== hpI.pr[1] ? hpI.pr[0] + '–' + hpI.pr[1] : d.p || '—'} · Accuracy ${d.a ? d.a + '%' : '—'} · ${d.pp || '—'} PP${v.types.includes(d.t) && isAttack(mv) ? ' · STAB' : ''}</span></div>
+        ${(() => { const mf = nCardMoveFx(e, abName(ab), mv, d, v.types), hpr = mv === 'Hidden Power' && hpI.pr && hpI.pr[0] !== hpI.pr[1];
+          const pr = hpr ? [hpI.pr[0], hpI.pr[1]].map(p => nCardMoveFx(e, abName(ab), mv, Object.assign({}, d, { p }), v.types).p) : null;
+          const pTxt = hpr ? (pr[0] === hpI.pr[0] && pr[1] === hpI.pr[1] ? hpI.pr[0] + '–' + hpI.pr[1] : `<b class="fxv" title="${esc(mf.why.join(' · '))}">${pr[0]}–${pr[1]}</b> <span class="fx0">(${hpI.pr[0]}–${hpI.pr[1]})</span>`) : d.p ? nFxNum(mf.p, mf.p0, mf.why) : '—';
+          const notes = [...mf.dmg, ...mf.cond.map(z => '<span class="sp">' + esc(z) + '</span>')];
+          return `<span class="bnums">Power ${pTxt} · Accuracy ${d.a ? nFxNum(mf.a, mf.a0, mf.why) + '%' : '—'} · ${d.pp || '—'} PP${v.types.includes(d.t) && isAttack(mv) ? (abName(ab) === 'Adaptability' ? ' · STAB ×2' : ' · STAB') : ''}${mf.why.length ? ` · <span class="pmvfx">${esc(mf.why.join(', '))}</span>` : ''}${notes.length ? ' · ' + notes.map(z => z.startsWith('<') ? z : esc(z)).join(' · ') : ''}</span>` })()}</div>
       <div class="bmd" title="${esc(MDESC[mv] || '')}">${esc(MDESC[mv] || '')}</div>
       ${(() => { const good = se.length ? `Super effective on ${se.map(o => monName(o.p.n) + (o.x >= 4 ? ' (4×)' : '')).join(', ')}` : '', bad = no.length ? `No effect on ${no.map(o => monName(o.p.n)).join(', ')}` : '';
         return `<div class="pvs" title="${esc([good, bad].filter(Boolean).join(' · '))}">${good ? `<span class="bgood">${esc(good)}</span>` : ''}${good && bad ? ' · ' : ''}${bad ? `<span class="bse">${esc(bad)}</span>` : ''}${!good && !bad && isAttack(mv) && ctx.boss.length ? `<span class="sp">Neutral or resisted by ${esc(ctx.bossName)}'s team</span>` : ''}</div>` })()}</div></div>`;
@@ -5361,7 +5435,7 @@ const GUIDE = [
       [451, 'Skorupi in the Great Marsh. Drapion has only one weakness (Ground).'],
       [115, 'Kangaskhan in the Great Marsh. Scrappy hits Ghosts with Normal moves.']],
     tips: ['There\'s a Choice Band on Route 214.'] },
-  { b: [9], title: 'Route 212 and Celestic', areas: ['Route 212|South', 'Trophy Garden', 'Celestic Town'],
+  { b: [9], title: 'Route 212 and Celestic', areas: ['Route 212|South', 'Trophy Garden', 'Route 210|North', 'Celestic Town'],
     picks: [[88, 'Grimer on Route 212 South. Muk is bulky.']],
     tips: ['An NPC in Celestic Town gives a Choice Specs in the morning.'] },
   { b: [10, 11], title: 'Fuego, Canalave and Iron Island', areas: ['Fuego Ironworks', 'Route 218', 'Canalave City', 'Iron Island'],
@@ -6209,7 +6283,7 @@ function trThreat(r, t, mine) {
 const TRAFTER = { 'Oreburgh City · Gym': 'Oreburgh Mine', 'Jubilife City · Trainer School': 'Jubilife City', 'Eterna City · Gym': 'Eterna City', 'Eterna City · Galactic Building': 'Eterna City',
   'Hearthome City · Gym': 'Hearthome City', 'Veilstone City · Gym': 'Veilstone City', 'Pastoria City · Gym': 'Pastoria City', 'Canalave City · Gym': 'Canalave City',
   'Snowpoint City · Gym': 'Snowpoint City', 'Sunyshore City · Gym': 'Sunyshore City' };
-const TRSUBORD = { West: 1, South: 1, North: 2, East: 2 };   // Route 211 West before East; Routes 210 and 212 handled by the split order below
+const TRSUBORD = { West: 1, South: 1, North: 2, East: 2 };   // Route 211 West before East; Routes 210 and 212 are split areas in NORDER
 function trOrder(L, x) {
   const key = L.n + ' · ' + x.n, after = x.n && TRAFTER[key], split = x.n ? NORDER.indexOf(L.n + ' ' + x.n) : -1;
   if (after) { const boss = NBOSS.findIndex(b => b.area === L.n && b.sub === x.n); return [NORDER.indexOf(after), 5 + (boss >= 0 ? boss : 0)] }
@@ -6715,13 +6789,15 @@ function renderIv() {
 // who else gets the EVs from a logged battle: party keys ticked by hand; untouched ones default to the Exp. Share holder
 let evAlso = {};
 const evShares = (run, me) => partyOf(run).filter(x => x.e !== me).map(x => ({ k: x.row.k, e: x.e, on: x.row.k in evAlso ? evAlso[x.row.k] : x.e.item === 'Exp. Share' }));
-// areas in play order for the EV picker (Routes 204/205 split into their two visits, like the encounter list)
+// areas in play order for the EV picker (Routes 204/205/212 split into their two visits, like the encounter list;
+// and 210: South on the way to Veilstone, North later on the way to Celestic)
+const EVSPLIT = NSPLIT;
 let EVAREAS = null;
 function evAreas() {
   if (EVAREAS) return EVAREAS;
   const out = [];
   ROUTES.forEach(L => {
-    const parts = NSPLIT[L.n], rest = parts ? L.subs.filter(x => !parts.includes(x.n)) : L.subs;
+    const parts = EVSPLIT[L.n], rest = parts ? L.subs.filter(x => !parts.includes(x.n)) : L.subs;
     const groups = [...(parts || []).map(p => ({ n: L.n + ' ' + p, subs: L.subs.filter(x => x.n === p) })), ...(rest.length ? [{ n: L.n, subs: rest }] : [])];
     groups.forEach(g => { if (!g.subs.some(x => x.wild.length || x.tr.length)) return;
       out.push({ n: g.n, L, subs: g.subs, ord: L.n === PCAREA ? -1 : Math.min(...g.subs.map(x => { const o = trOrder(L, x); return o[0] * 100 + o[1] })) }) });
@@ -6731,10 +6807,10 @@ function evAreas() {
 // where you are: the area you picked last, else the furthest area (in play order) with an encounter logged in the run
 function evLatest(r) {
   let best = null;
-  Object.keys(r.enc).forEach(k => { const e = r.enc[k]; if (!e || !(e.n || e.st)) return; const a = evAreas().find(a => nkey(a.n) === nkey(k)); if (a && (!best || a.ord > best.ord)) best = a });
+  Object.keys(r.enc).forEach(k => { const e = r.enc[k]; if (!e || !(e.n || e.st)) return; const a = evAreas().find(a => nkey(a.n) === nkey(k)) || evAreas().find(a => a.L.n === k); if (a && (!best || a.ord > best.ord)) best = a });
   return best;
 }
-function evHere(r) { return evAreas().find(a => a.n === r.evArea) || evLatest(r) || evAreas()[0] }
+function evHere(r) { return evAreas().find(a => a.n === r.evArea) || (r.evArea && evAreas().find(a => a.L.n === r.evArea)) || evLatest(r) || evAreas()[0] }
 function evAreaHtml(lk, e) {
   const r = lk.run, A = evHere(r), latest = evLatest(r), li = ROUTES.indexOf(A.L);
   const pick = (n, extra) => `<button class="btn evpick" data-evpick="${n}" title="Beat ${esc(monName(n))}${extra ? ' (' + esc(extra) + ')' : ''}: +${esc(evText(evForDefeat(e, n, 1, e.pkrs)) || '0')}"><img src="${nimg(n)}" alt=""><span>${esc(monName(n))}<small>${esc(evText(evForDefeat(e, n, 1, e.pkrs)) || '—')}</small></span></button>`;
