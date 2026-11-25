@@ -890,6 +890,9 @@ ol.gwalk .an::before { content: "→ " }
 .trmon { display: flex; gap: 6px; align-items: flex-start; font-size: .82rem; padding: 4px; border-radius: 8px; min-width: 0 }
 .trmon.bad { background: var(--chg-soft) } .trmon.warn { background: color-mix(in srgb, #d7a91a 14%, transparent) }
 .trmon img { width: 40px; height: 40px; image-rendering: pixelated; flex: none }
+.trmved { margin-top: 6px; font-size: .78rem } .trmved > summary { cursor: pointer; color: var(--muted) }
+.trmvsel { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 4px; margin: 4px 0 }
+.trmvsel select { font: 500 .78rem var(--font-body); padding: 4px 5px; border-radius: 6px; border: 1px solid var(--line); background: var(--bg); color: var(--ink); min-width: 0 }
 .trmon ul { margin: 3px 0 0; padding-left: 16px } .trmv { margin-top: 1px }
 .nbulk { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px }
 .trow.selmode { cursor: pointer }
@@ -2101,7 +2104,16 @@ function bossMonHtml(p, party) {
     <dl class="bfacts">${p.item ? `<dt>Item</dt><dd>${esc(p.item)}</dd>` : ''}${ab ? `<dt>Ability</dt><dd>${esc(ab)}${ABD[abKey] ? `<small>${esc(ABD[abKey])}</small>` : ''}</dd>` : ''}${p.nat && p.nat !== '?' ? `<dt>Nature</dt><dd>${esc(p.nat)}</dd>` : ''}
       ${w4.length ? `<dt>4× weak</dt><dd>${tl(w4)}</dd>` : ''}${w2.length ? `<dt>Weak to</dt><dd>${tl(w2)}</dd>` : ''}${im.length ? `<dt>Immune</dt><dd>${tl(im)}</dd>` : ''}</dl>
     <div class="bstats">${stats}<div class="nbst tot"><span>Total</span><b>${bst}</b></div></div>
-    ${moves ? `<ul class="bmoves">${moves}</ul>` : ''}</div>`;
+    ${moves ? `<ul class="bmoves">${moves}</ul>` : ''}${p.trk && p.trGuess ? trMvEditor(p, m) : ''}</div>`;
+}
+// fix a regular trainer's guessed moves from what you saw it use
+function trMvEditor(p, m) {
+  // same lists as your own Pokémon's move menus: level-up, TM / HM, and what it learned before evolving
+  const fixed = !!trMvFix[p.trk], cur = [0, 1, 2, 3].map(i => (p.mv || [])[i] || ''), opts = sel => nMoveOptions(m, { n: p.n }, sel);
+  return `<details class="trmved"><summary>${fixed ? '<b>Moves set by you</b>' : 'Moves are a guess (its last four level-up moves)'} · Edit</summary>
+    <p class="sp">The notes don't list this trainer's moves. If you saw it use something else, set its moves here. The Planner, Tracker and Trainers ahead all use them (saved in this browser).</p>
+    <div class="trmvsel">${cur.map((mv, i) => `<select data-trmv="${esc(p.trk)}" data-i="${i}" aria-label="Move ${i + 1}">${opts(mv)}</select>`).join('')}</div>
+    ${fixed ? `<button class="btn" data-trmvreset="${esc(p.trk)}">Back to the guess</button>` : ''}</details>`;
 }
 function bossHtml(t, party) {
   return `<div class="trainer"><div class="th"><span class="tn">${esc(t.name)}</span>${t.var ? `<span class="chip">${esc(t.var)}</span>` : ''}</div>
@@ -3316,7 +3328,7 @@ const batSide = () => ({ sr: 0, spk: 0, tsp: 0, ref: 0, ls: 0, tw: 0 });
 // without a custom set get the last four level-up moves, as in Trainers ahead. The level cap is the chapter's first boss's.
 function batTr(k) {
   const [a, sub, i] = k.slice(3).split('|'), L = ROUTES.find(x => x.n === a), x = L && L.subs.find(y => y.n === sub), t = x && x.tr[+i]; if (!t) return null;
-  const team = t.team.filter(p => mons[p.n - 1]).map(p => Object.assign({}, p, { mv: trMoves(p), ab: p.ab || mons[p.n - 1].v[ver].abilities[0] || '' }));
+  const team = t.team.filter(p => mons[p.n - 1]).map((p, j) => Object.assign({}, p, { mv: trMoves(p, k + '#' + j), trk: k + '#' + j, trGuess: !(p.mv && p.mv.filter(Boolean).length), ab: p.ab || mons[p.n - 1].v[ver].abilities[0] || '' }));
   const ch = GUIDE.find(c => trInCh(c, L, x, t)), b0 = ch && NBOSS[ch.b[0]];
   return { label: t.name.replace(/ R\d$/, ''), area: L.n, sub, cap: b0 ? b0.cap : Math.max(...team.map(p => parseInt(p.lv) || 0)), team, trs: [Object.assign({}, t, { team, var: '' })], tr: true, ch: ch ? GUIDE.indexOf(ch) : -1 };
 }
@@ -6239,7 +6251,10 @@ function nEvolve(e, to) {
 const nTrClosed = new Set(store.get('rp-trclosed', []));
 function nTrAreaState() { ND.querySelectorAll('details.trarea').forEach(d => { d.open = !nTrClosed.has(d.dataset.area) }) }
 let nTrCh = null, nTrAll = false, nTrKey = '', nTrOut = '';   // last result, reused until the party or settings change
-function trMoves(p) {
+// moves you've seen a regular trainer's Pokémon use, in place of the guess (per browser, rp-trmv), keyed trainer key + '#' + slot
+let trMvFix = store.get('rp-trmv', {});
+function trMoves(p, slot) {
+  if (slot && trMvFix[slot] && trMvFix[slot].some(m => MV[m])) return trMvFix[slot].filter(m => MV[m]);
   if (p.mv && p.mv.filter(Boolean).length) return p.mv.filter(m => MV[m]);
   const m = mons[p.n - 1], lv = parseInt(p.lv) || 1, out = [];
   (m ? m.lu : []).forEach(([l, mv]) => { if (l <= lv && MV[mv]) { const i = out.indexOf(mv); if (i >= 0) out.splice(i, 1); out.push(mv) } });
@@ -6249,10 +6264,10 @@ const TRBOOM = new Set(['Explosion', 'Self-Destruct']);
 // highest roll of one move (multi-hit moves at their usual count)
 function trHit(S, A, D, mv, low) { const d = MV[mv]; if (!d || d.c === 'St') return 0; const x = nsRolls(S, A, D, mv, false, null); if (!x || !x.mult) return 0;
   return x.rolls[low ? 0 : 15] * (NHITS2.has(mv) ? 2 : NHITS25.has(mv) ? 3 : 1) }
-function trThreat(r, t, mine) {
+function trThreat(r, t, mine, key) {
   const iv = +nCalc.biv, side = team => ({ team, a: 0, sr: 0, spk: 0, tsp: 0, ref: 0, ls: 0, tw: 0, sg: 0 }), half = Math.ceil(mine.length / 2);
   const mons2 = t.team.filter(p => mons[p.n - 1]).map((p, i) => {
-    const moves = trMoves(p), foe = nsMake(nBossMon(p, iv), moves, 1, i, 't' + i), notes = [];
+    const moves = trMoves(p, key && key + '#' + i), foe = nsMake(nBossMon(p, iv), moves, 1, i, 't' + i), notes = [];
     let lvl = 0;
     const per = mine.map(me => { const S = { sd: [side([me]), side([foe])], wx: '', wxT: 0 };
       const hits = moves.filter(mv => !TRBOOM.has(mv)).map(mv => ({ mv, dmg: trHit(S, foe, me, mv), low: trHit(S, foe, me, mv, true) })).sort((a, b) => b.dmg - a.dmg), top = hits[0] || { dmg: 0, low: 0 };
@@ -6310,20 +6325,20 @@ function nTrainersHtml(r) {
   ROUTES.forEach(L => L.subs.forEach(x => {
     // moved trainers (Barry's Hearthome fight) get their own block, first in the chapter they're fought in
     const mv = x.tr.filter(t => trMoved(L, x, t) && trInCh(ch, L, x, t) && trApplies(r, t));
-    if (mv.length) { const rows = mv.map(t => ({ t, th: trThreat(r, t, mine), key: trKey(L, x, t) })).filter(o => nTrAll || o.th.lvl >= 2);
+    if (mv.length) { const rows = mv.map(t => (k => ({ t, th: trThreat(r, t, mine, k), key: k }))(trKey(L, x, t))).filter(o => nTrAll || o.th.lvl >= 2);
       blocks.push({ ord: [-1, 0], area: trMoved(L, x, mv[0])[4], total: mv.length, rows: rows.sort((a, b) => b.th.lvl - a.th.lvl) }) }
     if (!gInCh(ch, L, x)) return;
     // skip post-game teams (far above this chapter's level cap) and starter variants that don't match your starter
     const trs = x.tr.filter(t => !trMoved(L, x, t) && t.sec !== 'Rematches' && t.sec !== 'Master Trainer' && !/After (Champion|Stark)/.test(t.when || '') && Math.max(...t.team.map(p => parseInt(p.lv) || 0)) <= cap + 10
       && trApplies(r, t));
     if (!trs.length) return;
-    const rows = trs.map(t => ({ t, th: trThreat(r, t, mine), key: trKey(L, x, t) })).filter(o => nTrAll || o.th.lvl >= 2);
+    const rows = trs.map(t => (k => ({ t, th: trThreat(r, t, mine, k), key: k }))(trKey(L, x, t))).filter(o => nTrAll || o.th.lvl >= 2);
     blocks.push({ ord: trOrder(L, x), area: L.n + (x.n ? ' · ' + x.n : ''), total: trs.length, rows: rows.sort((a, b) => b.th.lvl - a.th.lvl) });
   }));
   const PCL = ROUTES.find(l => l.n === PCAREA);
   if (PCL) { const at = nTrCh === chNext ? r.beat : (ch.b[0] || 0), want = pcTier(at);
     PCL.subs.forEach(x => { const trs = x.tr.filter(t => (t.when || '') === want && trApplies(r, t)); if (!trs.length) return;
-      const rows = trs.map(t => ({ t, th: trThreat(r, t, mine), key: trKey(PCL, x, t) })).filter(o => nTrAll || o.th.lvl >= 2);
+      const rows = trs.map(t => (k => ({ t, th: trThreat(r, t, mine, k), key: k }))(trKey(PCL, x, t))).filter(o => nTrAll || o.th.lvl >= 2);
       blocks.push({ ord: [99999, 0], area: PCNAME + ' (any town, ' + pcTierText(at) + ')', total: trs.length, rows: rows.sort((a, b) => b.th.lvl - a.th.lvl) }) }) }
   const tag = l => l >= 3 ? '<span class="btag bad">Danger</span>' : l === 2 ? '<span class="btag">Watch</span>' : l === 1 ? '<span class="btag">Minor</span>' : '<span class="btag good">Fine</span>';
   const team = th => `<div class="trteam">${th.mons.map(x => `<div class="trmon ${x.lvl >= 3 ? 'bad' : x.lvl === 2 ? 'warn' : ''}"><img src="${nimg(x.p.n)}" alt=""><div><b>${esc(monName(x.p.n))}</b> <span class="sp">Lv. ${esc(x.p.lv)}${x.p.item ? ' · ' + esc(x.p.item) : ''}</span>
@@ -6828,6 +6843,11 @@ function evAreaHtml(lk, e) {
       return done ? `<details class="evtr trdone"><summary class="evtrhd">${hd}</summary>${picks}</details>` : `<details class="evtr evtrf" data-evtrk="${esc(tk)}" ${ivTrShut.has(tk) ? '' : 'open'}><summary class="evtrhd">${hd}</summary>${picks}</details>` }).join('')}</div>` : ''}
     ${!wild.size && !trs.length ? '<p class="empty">No wild Pokémon or trainers listed here.</p>' : ''}`;
 }
+const trMvSave = () => { store.set('rp-trmv', trMvFix); batRes = null; if (view === 'battle' || view === 'plan') renderBattle(); else if (view === 'nuzlocke') renderRun() };
+document.addEventListener('change', ev => { const t = ev.target; if (!t.dataset || !t.dataset.trmv) return;
+  const k = t.dataset.trmv, card = t.closest('.trmvsel'), mv = [...card.querySelectorAll('select')].map(x => x.value);
+  trMvFix[k] = mv; if (!mv.some(Boolean)) delete trMvFix[k]; trMvSave() });
+document.addEventListener('click', ev => { const b = ev.target.closest && ev.target.closest('[data-trmvreset]'); if (!b) return; delete trMvFix[b.dataset.trmvreset]; trMvSave() });
 const evWhen = t => new Date(t).toLocaleString([], { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' });
 let evLogOpen = false;   // keep the EV log open across re-renders (e.g. after a revert)
 // the EV log (newest first) with the logged levels slotted in: by when the level was logged, else by the EVs it had then
