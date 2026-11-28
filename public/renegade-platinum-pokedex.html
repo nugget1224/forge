@@ -441,6 +441,11 @@ div.an { display: flex; gap: 2px; cursor: default }
 .pacts { display: flex; gap: 6px; margin-top: 8px }
 .tslot .pacts button, .tslot .pacts select { flex: 1; width: auto; font: 600 .74rem var(--font-body); padding: 5px; border-radius: 7px; border: 1px solid var(--line); background: var(--bg); color: var(--ink); cursor: pointer }
 .pacts button:hover { border-color: var(--accent) }
+.tslot .pacts button.pfav { flex: 0 0 auto; padding: 5px 9px; font-size: .9rem; line-height: 1 }
+.tslot .pacts button.pfav.on { color: #e0a800; border-color: #e0a800 }
+.ndiv.bfav { color: #c99400; padding-top: 4px }
+.nzone .ndiv + .pslots { margin-top: 8px }
+.bfavhint { margin: 0 0 8px }
 .pacts button[data-to="dead"]:hover { border-color: var(--chg); color: var(--chg) }
 .pgrid { display: grid; grid-template-columns: 1fr 1fr; gap: 0 8px }
 .pgrid.nl { grid-template-columns: 1fr 76px }
@@ -2258,7 +2263,7 @@ function monEditor(row, e, r, ctx) {
       <div><div class="sname">${esc(e.nick || m.name)}${gBtn(e)}${lv ? ` <span class="sp">Lv. ${lv}</span>` : ''}</div><div class="sp">${e.nick ? esc(m.name) + ' · ' : ''}${e.caught ? 'caught as ' + esc(monName(e.caught)) + ' · ' : ''}${esc(row.label)}</div>
       <div class="stypes">${v.types.map(typeBadge).join('')}</div></div>${ctx.headBtn || '<span class="grip" aria-hidden="true">⠿</span>'}</div>
     ${ctx.extra || ''}
-    <div class="pacts">${acts}<button data-to="dead">Died</button>${nEvoSelect(e)}</div>
+    <div class="pacts">${ctx.extra ? '' : `<button class="pfav${e.fav ? ' on' : ''}" data-fav aria-pressed="${!!e.fav}" title="${e.fav ? 'Remove from favorites' : 'Add to favorites: shown at the top of the box'}" aria-label="Favorite">${e.fav ? '★' : '☆'}</button>`}${acts}<button data-to="dead">Died</button>${nEvoSelect(e)}</div>
     ${e.st === 'box' ? `<details class="pmore" ${nOpen.has(row.k) ? 'open' : ''}><summary>${movesLine ? esc(movesLine) : 'Stats, ability & moves'}</summary>${body}</details>` : body}</div>`;
 }
 
@@ -2867,9 +2872,55 @@ function nsStatusPlay(S, me, foe, best) {
   if (hitsToKo >= 2 && (mv = pick('yawn')) && safeTurns >= 2) return mv;
   return null;
 }
+// does this weather chip c at the end of each turn?
+function nsWxChips(c, wx) {
+  if (c.ab === 'Magic Guard') return false;
+  if (wx === 'sand') return !c.types.some(t => ['Rock', 'Ground', 'Steel'].includes(t)) && c.ab !== 'Sand Veil';
+  if (wx === 'hail') return !c.types.includes('Ice') && c.ab !== 'Snow Cloak' && c.ab !== 'Ice Body';
+  return false;
+}
+// average damage of me's strongest attack on foe, as things stand on the field
+function nsBestEv(S, me, foe) {
+  const usable = nsUsable(S, me);
+  return Math.max(0, ...me.moves.filter((mv, i) => usable[i] && MV[mv] && MV[mv].c !== 'St' && !NSELFKO.has(mv)).map(mv => {
+    const x = nsRolls(S, me, foe, mv, false, null); if (!x) return 0;
+    const hits = NHITS2.has(mv) ? 2 : NHITS25.has(mv) ? (me.ab === 'Skill Link' ? 5 : 3) : 1;
+    return x.rolls.reduce((a, b) => a + b, 0) / 16 * hits * ((MV[mv].a || 100) / 100) }));
+}
+// your side's weather moves: to break a full-HP Focus Sash with end-of-turn chip (a planned sacrifice for this foe only has to
+// act once; anyone else has to live to land the knock-out after), or when the weather clearly raises your damage or Speed
+// without helping them more
+function nsWxPlay(S, me, foe, best) {
+  if (foe.hp <= 0 || S.sd.some(s => { const c = s.team[s.a]; return c && c.hp > 0 && (c.ab === 'Air Lock' || c.ab === 'Cloud Nine') })) return null;
+  const usable = nsUsable(S, me), opts = me.moves.filter((mv, i) => usable[i] && nsStKind(mv) === 'wx' && NSTAT[mv].wx !== S.wx);
+  if (!opts.length) return null;
+  const their = Math.max(0, ...foe.moves.map(m => nsAiDmg(S, foe, me, m))), faster = nsSpeed(S, me) > nsSpeed(S, foe);
+  const lives = their > 0 ? Math.floor((me.hp - 1) / their) : 99;   // hits it can take and still act
+  if (foe.item === 'Focus Sash' && !foe.usedItem && foe.hp === foe.max) {
+    const mv = opts.find(m => nsWxChips(foe, NSTAT[m].wx));
+    if (mv && me.sac === foe.slot) {
+      // any hit breaks the Sash too, so a sacrifice that can hit before it's hit attacks instead
+      const hitsFirst = best && best.ev > 0 && (faster || (NPRIO[best.mv] || 0) > 0);
+      if (!hitsFirst && (faster || lives >= 1)) return mv;
+    } else if (mv && best && best.ko >= .85 && lives >= (faster ? 1 : 2)) return mv;
+  }
+  if (!best || best.ko >= .85 || best.ev <= 0 || lives < 2 || Math.ceil(foe.hp / best.ev) < 2) return null;
+  let pick = null;
+  opts.forEach(mv => {
+    const wx = NSTAT[mv].wx, w0 = S.wx, t0 = S.wxT; S.wx = wx; S.wxT = 5;
+    const ev = nsBestEv(S, me, foe), fast = nsSpeed(S, me) > nsSpeed(S, foe), th = Math.max(0, ...foe.moves.map(m => nsAiDmg(S, foe, me, m)));
+    S.wx = w0; S.wxT = t0;
+    const gain = ev + (nsWxChips(foe, wx) ? foe.max / 16 : 0) - (nsWxChips(me, wx) ? me.max / 16 : 0);
+    if (th > their * 1.1) return;
+    const sc = gain / best.ev + (fast && !faster ? .5 : 0);
+    if (sc >= 1.3 && (!pick || sc > pick.sc)) pick = { mv, sc };
+  });
+  return pick ? pick.mv : null;
+}
 function nsPlayerMove(S, me, foe) {
   const opts = me.moves.filter((mv, i) => nsUsable(S, me)[i] && MV[mv].c !== 'St' && !NSELFKO.has(mv) && mv !== 'Focus Punch' && (mv !== 'Fake Out' || me.firstOut));
-  if (!opts.length) { const st = me.moves.find((mv, i) => nsUsable(S, me)[i] && nsStatusLands(S, me, foe, mv)); return st || me.moves.find((mv, i) => nsUsable(S, me)[i]) || me.moves[0] }
+  if (!opts.length) { const wm = nsWxPlay(S, me, foe, null); if (wm) return wm;
+    const st = me.moves.find((mv, i) => nsUsable(S, me)[i] && nsStatusLands(S, me, foe, mv)); return st || me.moves.find((mv, i) => nsUsable(S, me)[i]) || me.moves[0] }
   let best = null;
   opts.forEach(mv => {
     const x = nsRolls(S, me, foe, mv, false, null); if (!x) return;
@@ -2880,13 +2931,15 @@ function nsPlayerMove(S, me, foe) {
     const sc = ko > 0 ? 1e6 * ko + (NPRIO[mv] > 0 ? 1e5 : 0) + ev : ev;
     if (!best || sc > best.sc) best = { mv, sc, ko, ev: avg * acc };
   });
-  const st = nsStatusPlay(S, me, foe, best);
+  const st = nsWxPlay(S, me, foe, best) || nsStatusPlay(S, me, foe, best);
   return st || (best ? best.mv : opts[0]);
 }
-// pick a replacement: the bench member that wins the one-on-one fastest
+// pick a replacement: the bench member that wins the one-on-one fastest. A sacrifice saved for one of their Pokémon
+// (c.sac = its slot) only comes in some other time when nobody else is left.
 function nsPlayerReplace(S, policy) {
-  const sd = S.sd[0], foe = nsAct(S, 1), bench = sd.team.map((c, i) => ({ c, i })).filter(x => x.c.hp > 0 && x.i !== sd.a);
+  const sd = S.sd[0], foe = nsAct(S, 1); let bench = sd.team.map((c, i) => ({ c, i })).filter(x => x.c.hp > 0 && x.i !== sd.a);
   if (!bench.length) return -1;
+  const free = bench.filter(x => !(x.c.sac >= 0)); if (free.length) bench = free;
   if (policy === 'order') return bench[0].i;
   let best = null;
   bench.forEach(x => {
@@ -3183,10 +3236,20 @@ function nsEndTurn(S, R) {
   if (S.wx && S.wxT < 99 && --S.wxT <= 0) S.wx = '';
 }
 // a plan lists, per boss Pokémon, the keys of your Pokémon to use against it (answer first, then backup)
-const nsPlanList = (S, plan) => plan && plan[nsAct(S, 1).slot] || [];
+// sac: also the planned sacrifices for it (S.sacT), which come first, but only after a faint (never a hard switch) and only
+// while there's still something for them to do
+const nsPlanList = (S, plan, sac) => [...(sac && S.sacT && (S.sacT[nsAct(S, 1).slot] || []).filter(k => { const c = S.sd[0].team.find(x => x.key === k); return c && c.hp > 0 && nsSacUseful(S, c, nsAct(S, 1)) }) || []),
+  ...(plan && plan[nsAct(S, 1).slot] || [])];
+// can a sacrifice still do its job against foe: break a Focus Sash that hasn't gone off, or land status, weather or hazards?
+function nsSacUseful(S, c, foe) {
+  if (foe.item === 'Focus Sash' && !foe.usedItem && foe.hp === foe.max) return true;
+  const sd = S.sd[1 - c.side];
+  return c.moves.some(mv => { const k = nsStKind(mv);
+    return nsStatusLands(S, c, foe, mv) || (k === 'wx' && NSTAT[mv].wx !== S.wx) || (k === 'sr' && !sd.sr) || (k === 'spikes' && sd.spk < 3) || (k === 'tspikes' && sd.tsp < 2) });
+}
 const nsPlanHas = (S, plan, c) => nsPlanList(S, plan).includes(c.key);
-function nsPlanned(S, plan) {
-  for (const k of nsPlanList(S, plan)) { const i = S.sd[0].team.findIndex(c => c.key === k && c.hp > 0); if (i >= 0) return i }
+function nsPlanned(S, plan, sac) {
+  for (const k of nsPlanList(S, plan, sac)) { const i = S.sd[0].team.findIndex(c => c.key === k && c.hp > 0); if (i >= 0) return i }
   return -1;
 }
 // quick one-on-one from the current state: does c beat b, optionally after taking b's strongest hit on the way in?
@@ -3248,7 +3311,7 @@ function nsSaveSwitch(S) {
   if (nsSureKo(S, p, b)) return -1;   // it moves first and a reliable move's lowest roll finishes the boss
   S.saveN = S.saveN || {}; if ((S.saveN[b.slot] || 0) >= 2) return -1;   // don't ping-pong forever
   let pick = null;
-  sd.team.forEach((x, i) => { if (i === sd.a || x.hp <= 0) return;
+  sd.team.forEach((x, i) => { if (i === sd.a || x.hp <= 0 || x.sac >= 0) return;
     // only to a teammate that takes the hit coming in AND wins from there; otherwise staying in and attacking does more
     const d = nsDuelState(S, x, b, true); if (d.dead || !d.win) return;
     const sc = d.left / x.max;
@@ -3266,11 +3329,14 @@ function nsHardSwitch(S, plan) {
   if (nsDuelNow(S, p, b, false).win) return -1;
   return nsDuelNow(S, S.sd[0].team[w], b, true).win ? w : -1;
 }
+// opt.sac: planned sacrifices, { your key: the slot of their Pokémon it's saved for, or -1 for any time }. Their faints
+// are in out.deaths but not out.lost, which is what counts as losing a Pokémon.
 function nsBattle(P, B, opt) {
   const side = team => ({ team, a: 0, sr: 0, spk: 0, tsp: 0, ref: 0, ls: 0, tw: 0, sg: 0 });
   const S = { sd: [side(P), side(B)], wx: '', wxT: 0 };
-  const out = { win: false, turns: 0, deaths: [], killer: {}, firstMove: null, bossKO: [], seen: new Set(), face: {}, dt: {}, bt: {} };
-  const R = { ko: c => { if (c.side === 0) out.dt[c.key] = S.t; else out.bt[c.slot] = S.t; if (c.side === 0) { out.deaths.push(c.key); const k = nsAct(S, 1); if (k && k !== c) out.killer[c.key] = k.name } else out.bossKO.push(c.slot) }, seen: c => { if (c.side === 1) out.seen.add(c.slot) } };
+  if (opt.sac) { S.sacT = {}; P.forEach(c => { const v = opt.sac[c.key]; if (v === undefined) return; c.sac = v; if (v >= 0) (S.sacT[v] = S.sacT[v] || []).push(c.key) }) }
+  const out = { win: false, turns: 0, deaths: [], lost: [], killer: {}, firstMove: null, bossKO: [], seen: new Set(), face: {}, dt: {}, bt: {} };
+  const R = { ko: c => { if (c.side === 0) out.dt[c.key] = S.t; else out.bt[c.slot] = S.t; if (c.side === 0) { out.deaths.push(c.key); if (c.sac === undefined) out.lost.push(c.key); const k = nsAct(S, 1); if (k && k !== c) out.killer[c.key] = k.name } else out.bossKO.push(c.slot) }, seen: c => { if (c.side === 1) out.seen.add(c.slot) } };
   if (opt.start) {   // already mid-battle: no entry effects
     const st = opt.start; S.wx = st.wx; S.wxT = st.wxT; [0, 1].forEach(i => { Object.assign(S.sd[i], st.sd[i]); S.sd[i].a = st.a[i] });
   } else {
@@ -3315,7 +3381,7 @@ function nsBattle(P, B, opt) {
         S.t = t; nsEnter(S, 1, nsAiReplace(S, nsAct(S, 1)), R);   // Set battle style: no free swap, yours stays in
         continue;
       }
-      if (nsAct(S, 0).hp <= 0) { const w = nsPlanned(S, opt.plan); nsEnter(S, 0, w >= 0 ? w : nsPlayerReplace(S, opt.repl), R); continue }
+      if (nsAct(S, 0).hp <= 0) { const w = nsPlanned(S, opt.plan, true); nsEnter(S, 0, w >= 0 ? w : nsPlayerReplace(S, opt.repl), R); continue }
       break;
     }
   }
@@ -3738,7 +3804,7 @@ function batMap(S0) {
   }
   return steps;
 }
-function batMapHtml(steps, title, note) {
+function batMapHtml(steps, title, note, sec = 'pmap') {   // sec: its id for the Planner's Hide / Show
   if (!steps.length) return '';
   // consecutive no-safe-answer steps against the same Pokémon read as one
   const merged = [];
@@ -3775,7 +3841,7 @@ function batMapHtml(steps, title, note) {
       <div class="fcwhy sp">${esc(x.why || '')} ${x.pull ? esc(x.pull) : ''}</div>
     </div>`;
   };
-  return `<section class="card full"><h3>${title}</h3>${note ? `<p class="sp" style="margin:0 0 8px">${note}</p>` : ''}
+  return `<section class="card full" data-sec="${sec}"><h3>${title}</h3>${note ? `<p class="sp" style="margin:0 0 8px">${note}</p>` : ''}
     <div class="fc">${merged.map((x, i) => step(x, i)).join('<div class="fcdown" aria-hidden="true">↓</div>')}</div>
     <p class="sp" style="margin-top:8px">The highlighted branch is the one you're expected to take, given the HP each side has by then. The other branch is what to do if the fight goes differently. Average damage for you, the AI's highest roll for them, hazards and weather, and the Pokémon the trainer AI is likely to send next. Set style: you stay in after a knock-out unless the chart says to switch.</p></section>`;
 }
@@ -3892,6 +3958,33 @@ function renderBattle() {
 const prepKey = () => String(BS.boss) + '|' + (BS.v || 0);
 const prepGet = r => Object.assign({ chk: {}, note: '' }, (r.prep || {})[prepKey()]);
 function prepSet(r, o) { r.prep = r.prep || {}; r.prep[prepKey()] = o; r.updated = Date.now(); saveRuns() }
+// ---- Planned sacrifices: Pokémon you're willing to lose in this fight, { your row key: the slot of their Pokémon it's saved
+// for, or -1 for any time }. Kept per run and opponent in this browser (rp-bsac). The fight simulation, "Ways to raise your
+// win chance", the turn ranking and the team planner don't count their faints. ----
+const SACKEY = 'rp-bsac';
+function sacOf(r) {
+  const m = store.get(SACKEY, {})[r.id + '|' + prepKey()] || {}, n = batTeam(r).length;
+  const ok = new Set(placed(r).filter(x => x.e.st === 'party' || x.e.st === 'box').map(x => x.row.k));
+  return Object.fromEntries(Object.entries(m).filter(([k, v]) => ok.has(k) && v < n));
+}
+function sacSet(r, k, v) {
+  const all = store.get(SACKEY, {}), id = r.id + '|' + prepKey(), m = Object.assign({}, all[id]);
+  if (v === null) delete m[k]; else m[k] = v;
+  if (Object.keys(m).length) all[id] = m; else delete all[id];
+  store.set(SACKEY, all);
+}
+function sacUi(r) {
+  const sac = sacOf(r), team = batTeam(r), mine = placed(r).filter(x => (x.e.st === 'party' || x.e.st === 'box') && +x.e.lv);
+  if (!team.length || !mine.length) return '';
+  const nm = x => esc(x.e.nick || monName(x.e.n)), on = mine.filter(x => sac[x.row.k] !== undefined), off = mine.filter(x => sac[x.row.k] === undefined);
+  const vs = v => v >= 0 ? `saved for ${esc(monName(team[v].n))}` : 'any time';
+  return `<div class="tpstealui"><h4 class="tph4">Planned sacrifices</h4>
+    <p class="sp" style="margin:0 0 6px">Pokémon you're willing to lose in this fight. Their faints aren't counted against a plan. One saved for a Pokémon of theirs comes in only after one of yours faints while that one is out (Set style has no other free switch), and only while it still has a job there: breaking a Focus Sash that hasn't gone off (a priority hit or chip weather), or landing status, weather or hazards. Then your next answer comes in. It isn't sent in against anything else unless nobody else is left.</p>
+    ${on.length ? `<div class="tpstealpick">${on.map(x => `<span class="chk"><img src="${nimg(x.e.n)}" alt="" style="width:28px;height:28px"><b>${nm(x)}</b> <span class="sp">${vs(sac[x.row.k])}</span> <button class="btn" data-sacdel="${esc(x.row.k)}" aria-label="Stop planning to sacrifice ${nm(x)}">✕</button></span>`).join('')}</div>` : ''}
+    ${off.length ? `<div class="tbtns sacadd" style="margin-top:6px"><select data-sacmon aria-label="Pokémon to sacrifice">${off.map(x => `<option value="${esc(x.row.k)}">${nm(x)}${x.e.st === 'box' ? ' (box)' : ''}</option>`).join('')}</select>
+      <select data-sacvs aria-label="When it comes in">${team.map((p, j) => `<option value="${j}">Saved for ${esc(monName(p.n))}</option>`).join('')}<option value="-1">Any time (just don't count its faint)</option></select>
+      <button class="btn" data-sacadd>Add</button></div>` : ''}</div>`;
+}
 const PREP_STATUS = new Set(['sleep', 'para', 'tox', 'psn', 'brn', 'conf', 'yawn', 'swagger', 'flatter', 'attract']);
 const PREP_SUPPORT = new Set(['sleep', 'para', 'tox', 'psn', 'brn', 'conf', 'yawn', 'swagger', 'sr', 'spikes', 'tspikes', 'reflect', 'lscreen', 'atkDown', 'defDown', 'spaDown', 'spdDown',
   'speDown', 'accDown', 'leech', 'taunt', 'tailwind', 'force']);
@@ -4176,27 +4269,28 @@ function simOrder(r) {
   return [...saved, ...keys.filter(k => !saved.includes(k))].map(k => party.find(x => x.row.k === k));
 }
 const simMode = () => BS.simMode === 'order' ? 'order' : 'best';
-function simSig(r) { return JSON.stringify([BS.boss, BS.v, nCalc.biv, BS.pa, simMode(), !!BS.simNoSw, simOrder(r).map(x => x.row.k), batParty(r).map(x => [x.row.k, x.e.n, x.e.lv, x.e.moves, x.e.item, x.e.ab, x.e.nat, x.e.stats])]) }
+function simSig(r) { return JSON.stringify([BS.boss, BS.v, nCalc.biv, BS.pa, simMode(), !!BS.simNoSw, simOrder(r).map(x => x.row.k), batParty(r).map(x => [x.row.k, x.e.n, x.e.lv, x.e.moves, x.e.item, x.e.ab, x.e.nat, x.e.stats]), sacOf(r)]) }
 function batSim() {
   const r = curRun(), party = batParty(r), team = batTeam(r); if (!party.length || !team.length) return;
   const lead = Math.max(0, party.findIndex(x => x.row.k === BS.pa)), byBest = [party[lead], ...party.filter((_, i) => i !== lead)], byMine = simOrder(r);
   const mode = simMode(), noSw = mode === 'order' && !!BS.simNoSw, theirs = team.map(p => nBossMon(p, +nCalc.biv)), mm = new Map(party.map(x => [x.row.k, nMineMon(x.e)]));
   const setup = (list, repl, noSwitch) => ({ list, repl, noSwitch });
   const main = mode === 'order' ? setup(byMine, 'order', noSw) : setup(byBest, 'best', false), alt = mode === 'order' ? setup(byBest, 'best', false) : setup(byMine, 'order', false);
+  const sac = sacOf(r);
   const tok = ++simTok, res = simRes = { sig: simSig(r), boss: BS.boss, mode, noSw, n: 0, win: 0, stall: 0, turns: 0, lost: [0, 0, 0, 0, 0, 0, 0],
-    mons: main.list.map(x => ({ k: x.row.k, n: x.e.n, name: x.e.nick || monName(x.e.n), die: 0, by: {} })), foes: theirs.map(m => ({ n: m.n, name: m.name, kills: 0, down: 0 })),
+    mons: main.list.map(x => ({ k: x.row.k, n: x.e.n, name: x.e.nick || monName(x.e.n), die: 0, by: {}, sac: sac[x.row.k] })), foes: theirs.map(m => ({ n: m.n, name: m.name, kills: 0, down: 0 })),
     alt: { n: 0, win: 0, dead: 0 } };
   const fight = cfg => {
     const P = cfg.list.map((x, i) => nsMake(mm.get(x.row.k), (x.e.moves || []).filter(Boolean), 0, i, x.row.k)), B = theirs.map((m, i) => nsMake(m, (team[i].mv || []).filter(Boolean), 1, i, 'b' + i));
-    return nsBattle(P, B, { flags: flagsOf(), repl: cfg.repl, noSwitch: cfg.noSwitch });
+    return nsBattle(P, B, { flags: flagsOf(), repl: cfg.repl, noSwitch: cfg.noSwitch, sac });
   };
   const one = () => {
     const o = fight(main), dead = new Set(o.deaths);
-    res.n++; if (o.win) res.win++; if (o.stall) res.stall++; res.turns += o.turns; res.lost[Math.min(6, dead.size)]++;
+    res.n++; if (o.win) res.win++; if (o.stall) res.stall++; res.turns += o.turns; res.lost[Math.min(6, new Set(o.lost).size)]++;
     res.mons.forEach(m => { if (dead.has(m.k)) { m.die++; const k = o.killer[m.k]; if (k) m.by[k] = (m.by[k] || 0) + 1 } });
     Object.values(o.killer).forEach(nm => { const fo = res.foes.find(x => x.name === nm); if (fo) fo.kills++ });
     o.bossKO.forEach(i => { if (res.foes[i]) res.foes[i].down++ });
-    const a = fight(alt); res.alt.n++; if (a.win) res.alt.win++; res.alt.dead += new Set(a.deaths).size;
+    const a = fight(alt); res.alt.n++; if (a.win) res.alt.win++; res.alt.dead += new Set(a.lost).size;
   };
   const step = () => {
     if (tok !== simTok) return;
@@ -4217,14 +4311,15 @@ function renderSim() {
     ${mode === 'order' ? `<ol class="simord">${ord.map((p, i) => `<li><img src="${nimg(p.e.n)}" alt=""><span>${esc(p.e.nick || monName(p.e.n))}${i === 0 ? ' <small class="sp">leads</small>' : ''}</span>
         <button class="btn" data-simmv="${esc(p.row.k)}:-1" ${i === 0 ? 'disabled' : ''} aria-label="Move up">▲</button><button class="btn" data-simmv="${esc(p.row.k)}:1" ${i === ord.length - 1 ? 'disabled' : ''} aria-label="Move down">▼</button></li>`).join('')}</ol>
       <label class="chk"><input type="checkbox" data-simnosw ${BS.simNoSw ? 'checked' : ''}> Only switch when one faints (no switching mid-fight)</label>
-      <p class="sp" style="margin:4px 0 0">The first one leads. After a faint, the next one in this list that's still standing comes in.</p>` : ''}</div>`;
+      <p class="sp" style="margin:4px 0 0">The first one leads. After a faint, the next one in this list that's still standing comes in.</p>` : ''}${sacUi(r)}</div>`;
   if (!x || x.boss !== BS.boss) {
     el.innerHTML = `<section class="card full bsim"><div class="nhead"><h3>Simulate the fight</h3><button class="btn primary" data-bact="sim">Simulate the fight ▸</button></div>${orderUi}</section>`; return }
   const done = x.n >= SIMN, stale = done && x.sig !== simSig(r), pc = v => Math.round(v / Math.max(1, x.n) * 100) + '%', w = x.win / Math.max(1, x.n);
   const lostAvg = x.lost.reduce((a, c, i) => a + c * i, 0) / Math.max(1, x.n);
   const dist = [[0, 'nobody'], [1, '1 Pokémon'], [2, '2'], [3, '3 or more']].map(([i, lab]) => ({ lab, v: i === 3 ? x.lost.slice(3).reduce((a, c) => a + c, 0) : x.lost[i] }));
+  const team = batTeam(r), sacTag = m => m.sac === undefined ? '' : ` <span class="btag">sacrifice${m.sac >= 0 && team[m.sac] ? ' for ' + esc(monName(team[m.sac].n)) : ''}</span>`;
   const monRow = m => { const top = Object.entries(m.by).sort((a, b) => b[1] - a[1])[0];
-    return `<div class="smon"><img src="${nimg(m.n)}" alt=""><div><b>${esc(m.name)}</b><div class="sp">${m.die ? `faints in ${pc(m.die)} of fights${top ? `, mostly to ${esc(top[0])}` : ''}` : 'never fainted'}</div></div>
+    return `<div class="smon"><img src="${nimg(m.n)}" alt=""><div><b>${esc(m.name)}</b>${sacTag(m)}<div class="sp">${m.die ? `faints in ${pc(m.die)} of fights${top ? `, mostly to ${esc(top[0])}` : ''}${m.sac !== undefined ? ' (planned, not counted)' : ''}` : m.sac !== undefined ? 'never needed' : 'never fainted'}</div></div>
       <span class="sbar"><i style="width:${Math.round(m.die / Math.max(1, x.n) * 100)}%"></i></span></div>` };
   const foes = x.foes.slice().sort((a, b) => b.kills - a.kills);
   const tone = w >= .9 ? 'good' : w >= .6 ? 'ok' : 'bad';
@@ -4236,14 +4331,14 @@ function renderSim() {
   el.innerHTML = `<section class="card full bsim"><div class="nhead"><h3>Simulated fight vs ${esc(batB(x.boss).label)}${done ? '' : ` <small class="sp">${x.n} of ${SIMN}…</small>`}</h3>
       <div class="tbtns">${done ? '<button class="btn" data-bact="sim">Run again</button>' : ''}<button class="btn" data-bact="simclose">Close</button></div></div>
     ${orderUi}
-    ${stale ? '<p class="ivwarn">Your party, send-in order or the boss settings changed since this ran. Run it again to update.</p>' : ''}
+    ${stale ? '<p class="ivwarn">Your party, send-in order, planned sacrifices or the boss settings changed since this ran. Run it again to update.</p>' : ''}
     <div class="ssum"><div class="sbig ${tone}">${Math.round(w * 100)}%<small>win chance</small></div>
-      <div><div><b>You lose ${lostAvg < .05 ? 'nobody' : lostAvg.toFixed(1) + ' Pokémon'}</b> on average · about ${Math.round(x.turns / Math.max(1, x.n))} turns</div>
+      <div><div><b>You lose ${lostAvg < .05 ? 'nobody' : lostAvg.toFixed(1) + ' Pokémon'}</b> on average${x.mons.some(m => m.sac !== undefined) ? ', not counting planned sacrifices,' : ''} · about ${Math.round(x.turns / Math.max(1, x.n))} turns</div>
         <div class="sdist">${dist.map(d => `<span><b>${pc(d.v)}</b> lose ${d.lab}</span>`).join('')}</div>
         ${x.stall ? `<div class="sp">${pc(x.stall)} of fights hit the 120-turn limit and count as losses.</div>` : ''}${altLine}</div></div>
     <div class="sgrid"><div><h4 class="tph4">Your Pokémon${x.mode === 'order' ? ', in send-in order' : ''}</h4>${x.mons.map(monRow).join('')}</div>
       <div><h4 class="tph4">Their biggest threats</h4>${foes.map(f => `<div class="smon"><img src="${nimg(f.n)}" alt=""><div><b>${esc(f.name)}</b><div class="sp">${f.kills / Math.max(1, x.n) >= .05 ? `knocks out ${(f.kills / Math.max(1, x.n)).toFixed(1)} of yours per fight` : 'rarely knocks anything out'}</div></div></div>`).join('')}</div></div>
-    <p class="sp" style="margin-top:8px">${x.n} simulated fights from turn 1 with full HP and unused items. ${how}. You play sensibly (status and set-up when it helps, otherwise your strongest move); the boss follows Platinum's trainer AI. It doesn't use healing items, and Set style means no free switch after a knock-out.</p></section>`;
+    <p class="sp" style="margin-top:8px">${x.n} simulated fights from turn 1 with full HP and unused items. ${how}. You play sensibly (status and set-up when it helps, weather when its chip breaks a Focus Sash or it clearly raises your damage, otherwise your strongest move); the boss follows Platinum's trainer AI. It doesn't use healing items, and Set style means no free switch after a knock-out.</p></section>`;
 }
 
 // ---- Ways to raise the win chance: one change at a time (held item, move, evolution) on your current party, each played out on the
@@ -4330,19 +4425,19 @@ function recCands(r, su) {
 function recRun() {
   const r = curRun(); batState(r); const su = recSetup(r);
   if (!su.list.length || !su.team.length) return;
-  const tok = ++recTok, theirs = su.team.map(p => nBossMon(p, +nCalc.biv));
+  const tok = ++recTok, theirs = su.team.map(p => nBossMon(p, +nCalc.biv)), sac = sacOf(r);
   const base = new Map(su.list.map(x => [x.row.k, { mon: nMineMon(x.e), moves: (x.e.moves || []).filter(Boolean) }]));
   const cands = recCands(r, su);
   const play = (ov, seed) => {
     const P = su.list.map((x, i) => { const o = ov && ov.get(x.row.k) || base.get(x.row.k); return nsMake(o.mon, o.moves, 0, i, x.row.k) });
     const B = theirs.map((m, i) => nsMake(m, (su.team[i].mv || []).filter(Boolean), 1, i, 'b' + i));
     const rnd = Math.random; Math.random = recRng(Math.imul(seed + 1, 2654435761));
-    try { return nsBattle(P, B, { flags: flagsOf(), repl: su.repl, noSwitch: su.noSwitch }) } finally { Math.random = rnd }
+    try { return nsBattle(P, B, { flags: flagsOf(), repl: su.repl, noSwitch: su.noSwitch, sac }) } finally { Math.random = rnd }
   };
   const res = recRes = { sig: su.sig, boss: BS.boss, n: 0, bw: [], bd: [], cands, phase: 'base', done: 0, total: RECN2 + cands.length * RECN1 + RECTOP * (RECN2 - RECN1) + RECN2 };
   const acc = c => { c.n = 0; c.win = 0; c.dead = 0; c.up = 0; c.down = 0; c.dd = 0 };
   cands.forEach(acc);
-  const one = (c, ov) => { const s = c.n, o = play(ov, s), d = new Set(o.deaths).size; c.n++; res.done++;
+  const one = (c, ov) => { const s = c.n, o = play(ov, s), d = new Set(o.lost).size; c.n++; res.done++;
     if (o.win) c.win++; c.dead += d; c.dd += d - res.bd[s]; if (o.win && !res.bw[s]) c.up++; if (!o.win && res.bw[s]) c.down++ };
   const ovOf = c => new Map([[c.k, c]]);
   let queue = [], qi = 0;
@@ -4351,7 +4446,7 @@ function recRun() {
     const t0 = performance.now();
     while (performance.now() - t0 < 40) {
       if (res.phase === 'base') { if (res.n >= RECN2) { res.phase = 'screen'; queue = cands.map(c => [c, RECN1]); qi = 0; continue }
-        const o = play(null, res.n), d = new Set(o.deaths).size; res.bw.push(o.win); res.bd.push(d); res.n++; res.done++; continue }
+        const o = play(null, res.n), d = new Set(o.lost).size; res.bw.push(o.win); res.bd.push(d); res.n++; res.done++; continue }
       if (qi < queue.length) { const [c, N] = queue[qi]; if (c.n >= N) { qi++; continue } one(c, c.ov || ovOf(c)); continue }
       if (res.phase === 'screen') {
         // the most promising get the full count, so their numbers are solid
@@ -4439,18 +4534,18 @@ function batAnalyze() {
   batPrep(P, B, pa, ba);
   const S = batLiveS(P, B, pa, ba), me = P[pa], foe = B[ba];
   const fc = batForecast(S, 2000);
-  const mapEl = document.getElementById('batmap'); if (mapEl) mapEl.innerHTML = batMapHtml(batMap(S), 'Battle map from here', 'Decisions from where the fight stands now, through the rest of their team.');
+  const mapEl = document.getElementById('batmap'); if (mapEl) mapEl.innerHTML = batMapHtml(batMap(S), 'Battle map from here', 'Decisions from where the fight stands now, through the rest of their team.', 'pmaphere');
   // status moves that would just fail this turn aren't ranked; they're listed with the reason
   const usable = nsUsable(S, me), nope = me.moves.filter((m, i) => usable[i] && MV[m] && MV[m].c === 'St').map(mv => ({ mv, why: nsWontWork(S, me, foe, mv) })).filter(x => x.why), options = [
     ...me.moves.filter((m, i) => usable[i] && !nope.some(x => x.mv === m)).map(mv => ({ mv, label: mv })),
     ...P.map((c, i) => ({ c, i })).filter(x => x.i !== pa && x.c.hp > 0).map(x => ({ sw: x.i, label: 'Switch to ' + x.c.name })) ];
   options.nope = nope;
-  const K = 300, acc = options.map(() => ({ n: 0, win: 0, dead: 0, dead2: 0, meDie1: 0, foeKO1: 0, stall: 0 }));
+  const K = 300, acc = options.map(() => ({ n: 0, win: 0, dead: 0, dead2: 0, meDie1: 0, foeKO1: 0, stall: 0 })), sac = sacOf(r);
   const run = (oi) => {
     const P2 = P.map(batCp), B2 = B.map(batCp); batPrep(P2, B2, pa, ba);
     const first = options[oi].sw !== undefined ? { sw: options[oi].sw } : { mv: options[oi].mv };
-    const o = nsBattle(P2, B2, { flags: flagsOf(), repl: 'best', start: batStart(pa, ba), first }), a = acc[oi];
-    a.n++; if (o.win) a.win++; if (o.stall) a.stall++; const nd = new Set(o.deaths).size; a.dead += nd; a.dead2 += nd * nd;
+    const o = nsBattle(P2, B2, { flags: flagsOf(), repl: 'best', start: batStart(pa, ba), first, sac }), a = acc[oi];
+    a.n++; if (o.win) a.win++; if (o.stall) a.stall++; const nd = new Set(o.lost).size; a.dead += nd; a.dead2 += nd * nd;
     if (o.dt[me.key] === 1) a.meDie1++; if (o.bt[ba] === 1) a.foeKO1++;
   };
   let oi = 0;
@@ -4969,7 +5064,7 @@ function tpSetup(r, o = {}) {
   }).map(x => { if (!proj || +x.e.lv >= tgt) return x;
     const pj = Object.assign({ orig: x.e.n }, pjProject(x.e, tgt, team, chIdx));
     return { row: x.row, e: Object.assign(pj.e, { st: x.e.st }), orig: x.e, pj } });
-  const sig = JSON.stringify([r.id, BS.boss, BS.v, nCalc.biv, o.lv ? [] : BS.steal || [], proj, tgt, cands.map(x => [x.row.k, x.e.n, x.e.lv, x.e.moves, x.e.item, x.e.ab, x.e.nat, x.e.stats, x.e.hist, x.e.evoPlan])]);
+  const sig = JSON.stringify([r.id, BS.boss, BS.v, nCalc.biv, o.lv ? [] : BS.steal || [], sacOf(r), proj, tgt, cands.map(x => [x.row.k, x.e.n, x.e.lv, x.e.moves, x.e.item, x.e.ab, x.e.nat, x.e.stats, x.e.hist, x.e.evoPlan])]);
   return { b, team, cands, out, sig, all, proj, pick, cap, lo, tgt };
 }
 // What the boss's team does to the field, and from which of their Pokémon on. Hazards land on your side once the setter has
@@ -5148,12 +5243,16 @@ function tpRun(mode) {
   // the top few distinct plans get played out
   // steal goal: each wanted item gets a thief, and the thieves are guaranteed a place on the team
   const steal = (lv ? [] : BS.steal || []).filter(j => j < boss.length && boss[j].item).map(j => tpThiefFor(su, mine, boss, M, j));
-  const must = [...new Set(steal.filter(x => x.i >= 0).map(x => x.i))];
+  // planned sacrifices: their faints don't count, and one saved for a boss Pokémon is kept on the team but never picked as
+  // an answer or backup (the engine sends it in after a faint against its target)
+  const sac = sacOf(r), saved = new Set(mine.map((c, i) => sac[c.key] >= 0 ? i : -1).filter(i => i >= 0));
+  const Ma = saved.size ? M.map((row, i) => saved.has(i) ? row.map(d => Object.assign({}, d, { val: -99, win: false })) : row) : M;
+  const must = [...new Set([...steal.filter(x => x.i >= 0).map(x => x.i), ...saved])];
   const plans = [], seen = new Set();
-  for (const a of tpAssign(M, boss.length)) { if (new Set([...a.asg, ...must]).size > 6) continue; const p = tpTeamOf(a.asg, M, must), k = p.t.slice().sort().join() + '|' + a.asg.join(); if (!seen.has(k)) { seen.add(k); p.sc = a.sc; plans.push(p) } if (plans.length >= 8) break }
+  for (const a of tpAssign(Ma, boss.length)) { if (new Set([...a.asg, ...must]).size > 6) continue; const p = tpTeamOf(a.asg, Ma, must), k = p.t.slice().sort().join() + '|' + a.asg.join(); if (!seen.has(k)) { seen.add(k); p.sc = a.sc; plans.push(p) } if (plans.length >= 8) break }
   const curIdx = su.cands.map((x, i) => x.e.st === 'party' ? i : -1).filter(i => i >= 0);
   const tests = plans.map(p => Object.assign(p, { cur: false, lead: p.asg[0] }));
-  if (curIdx.length) tests.push({ t: curIdx, cur: true, lead: curIdx.slice().sort((a, b) => M[b][0].val - M[a][0].val)[0] });
+  if (curIdx.length) tests.push({ t: curIdx, cur: true, lead: curIdx.slice().sort((a, b) => Ma[b][0].val - Ma[a][0].val)[0] });
   tests.forEach(x => { x.n = 0; x.win = 0; x.dead = 0; x.clean = 0; x.E = 0; x.deaths = {} });
   const K = 300, cp = c => Object.assign({}, c, { stg: Object.assign({}, c.stg) });
   let ti = 0; redraw();
@@ -5163,8 +5262,8 @@ function tpRun(mode) {
     while (ti < tests.length && performance.now() - t0 < 35) {
       const x = tests[ti], ord = [x.lead, ...x.t.filter(i => i !== x.lead)];
       const plan = x.cur ? null : x.asg.map((a, j) => [a, x.backup[j]].filter(v => v !== undefined).map(v => mine[v].key));
-      const o = nsBattle(ord.map(i => cp(mine[i])), boss.map(cp), { flags: flagsOf(), repl: 'best', plan });
-      x.n++; if (o.win) x.win++; const dd = new Set(o.deaths); x.dead += dd.size; if (o.win && !dd.size) x.clean++; x.E += o.win ? dd.size : 6; if (o.win) x.Ewin = (x.Ewin || 0) + dd.size; dd.forEach(k => x.deaths[k] = (x.deaths[k] || 0) + 1);
+      const o = nsBattle(ord.map(i => cp(mine[i])), boss.map(cp), { flags: flagsOf(), repl: 'best', plan, sac });
+      x.n++; if (o.win) x.win++; const dd = new Set(o.lost); x.dead += dd.size; if (o.win && !dd.size) x.clean++; x.E += o.win ? dd.size : 6; if (o.win) x.Ewin = (x.Ewin || 0) + dd.size; new Set(o.deaths).forEach(k => x.deaths[k] = (x.deaths[k] || 0) + 1);
       if (x.n >= K) ti++;
     }
     const el = document.getElementById(lv ? 'lvprog' : 'tpprog'); if (el) el.textContent = `Testing plan ${Math.min(ti + 1, tests.length)} of ${tests.length}…`;
@@ -5172,7 +5271,7 @@ function tpRun(mode) {
     const picks = tests.filter(x => !x.cur);
     // the best-scoring plan stands unless another clearly plays out better
     const best = picks.reduce((b, x) => { const dE = b.E / b.n - x.E / x.n, dw = x.win / x.n - b.win / b.n; return dE > .15 || (Math.abs(dE) <= .15 && dw > .03) ? x : b }, picks[0]);
-    const res = { sig: su.sig, su, mine, boss, M, best, field, steal, cur: tests.find(x => x.cur) || null };
+    const res = { sig: su.sig, su, mine, boss, M, best, field, steal, sac, cur: tests.find(x => x.cur) || null };
     if (lv) { lvBusy = false; lvRes = res } else { tpBusy = false; tpRes = res }
     redraw();
   };
@@ -5244,7 +5343,17 @@ function tpPlanHtml(res) {
       <div>${j === 0 ? 'Lead with' : 'Answer:'} <b>${esc(c.name)}</b>. ${tpLine(c, b, d)}${note}</div>
       ${j === 0 ? '' : `<div>${tpEntry(res, i, j)}</div>`}
       ${tpStealStep(res, j, i)}
+      ${tpSacStep(res, j)}
       ${bk !== undefined ? `<div class="sp">If that goes wrong: <b>${esc(mine[bk].name)}</b>. ${tpLine(mine[bk], b, M[bk][j])}</div>` : ''}</li>` }).join('')}</ol>`;
+}
+// the planned sacrifices saved for boss Pokémon j, and what each one does when it comes in
+function tpSacStep(res, j) {
+  const { mine, boss, best } = res, b = boss[j], sac = res.sac || {};
+  return best.t.filter(i => sac[mine[i].key] === j).map(i => { const c = mine[i];
+    const prio = c.moves.filter(m => (NPRIO[m] || 0) > 0 && MV[m] && MV[m].c !== 'St'), wx = c.moves.filter(m => nsStKind(m) === 'wx' && nsWxChips(b, NSTAT[m].wx));
+    const sash = b.item === 'Focus Sash' ? prio.length ? ` Its ${esc(prio[0])} goes first and breaks the Focus Sash.` : wx.length ? ` Its ${esc(wx[0])} chips ${esc(b.name)} at the end of the turn, which breaks the Focus Sash.` : ` It has no priority move or chip weather, so it may not get to break the Focus Sash before it's knocked out.` : '';
+    const when = b.item === 'Focus Sash' ? ` This only matters if ${esc(b.name)} knocks one of yours out before it's been hit; once it's taken any damage the Sash is spent or useless, and you just send in your next answer.` : '';
+    return `<div class="tpsteal"><b>Planned sacrifice:</b> after one of yours faints while ${esc(b.name)} is out, send in <b>${esc(c.name)}</b>.${sash} Your next answer then comes in for free when it faints. Its faint isn't counted.${when}</div>` }).join('');
 }
 // the battle map for the suggested team, from full HP with the planned lead
 function tpMapHtml(res) {
@@ -5260,6 +5369,8 @@ function tpWhy(res, i) {
   const { M, boss, mine, best } = res, c = mine[i], row = M[i];
   const lines = [];
   const main = best.asg.map((k, j) => k === i ? j : -1).filter(j => j >= 0), back = Object.keys(best.backup).filter(j => best.backup[j] === i).map(Number);
+  const sv = (res.sac || {})[c.key];
+  if (sv !== undefined) lines.push(`<b>Planned sacrifice</b>${sv >= 0 && boss[sv] ? `, saved for ${esc(boss[sv].name)}` : ''}. Its faint isn't counted against the plan.`);
   if (main.length) lines.push(`<b>Plan for ${main.map(j => esc(boss[j].name)).join(' and ')}</b>${main.includes(0) ? ' (leads)' : ''}${main.length > 1 ? '. It covers both, so it may be worn down for the second' : ''}.`);
   if (back.length) lines.push(`<b>Backup for ${back.map(j => esc(boss[j].name)).join(' and ')}</b>, if the main answer falls or gets crippled.`);
   const also = boss.map((b, j) => ({ b, j, d: row[j] })).filter(x => x.d.win && !main.includes(x.j) && !back.includes(x.j));
@@ -5322,6 +5433,7 @@ function renderTeamPick() {
   } else body = `<p class="sp">${tpRes ? 'Your Pokémon or the boss changed since the last suggestion. ' : ''}Builds a plan for each of ${esc(b ? b.label : '')}'s Pokémon from your ${su.cands.length} available party and box Pokémon${r.rules.caps && b ? ` at or under the level cap (${b.cap})` : ''}, with a backup for each where you have one.</p>`;
   el.innerHTML = `<section class="card full"><div class="nhead"><h3>Best team for ${esc(b ? b.label : '')}</h3><button class="btn ${tpRes && tpRes.sig === su.sig ? '' : 'primary'}" data-bact="team" ${tpBusy || !su.cands.length ? 'disabled' : ''}>${tpRes && tpRes.sig === su.sig ? 'Suggest again' : 'Suggest a team'}</button></div>${tpLvUi(su)}${body}
     ${tpStealUi(r, su)}
+    ${sacUi(r)}
     ${tpPickUi(r, su)}
     <details class="simhow"><summary>How the team is picked</summary>
       <p>Every available Pokémon is scored one-on-one against each of the boss's Pokémon with the damage calculator. The score counts how many hits your best move needs, how many hits their strongest move needs (judged the way the boss AI judges it), and who moves first. Keeping your Pokémon alive comes first. A win that could end in a faint (on a high roll or a critical hit) scores far below a safe one, and a safe win with plenty of HP left scores highest.</p>
@@ -5921,6 +6033,14 @@ BD.addEventListener('click', ev => {
   if (t.closest('[data-bivevall]')) { const tm = batTeam(r), b = batB(BS.boss), fo = BS.fought || {}, ks = new Set(batParty(r).map(p => p.row.k)); if (typeof BS.boss === 'string') trSetBeaten(r, BS.boss, true);   // a trainer's whole team: marked beaten too
     return batIvEv(r, tm.map((p, i) => { const f = (fo[i] || []).filter(k => ks.has(k)); return [p.n, 1, f.length ? f : ticks] }), `Beat ${b.label}'s team (${tm.map(p => monName(p.n)).join(', ')})`) }
 });
+// planned sacrifices (shown on both the fight simulation and the team planner)
+BD.addEventListener('click', ev => {
+  const t = ev.target.closest && ev.target.closest('[data-sacadd],[data-sacdel]'); if (!t) return;
+  const r = curRun();
+  if (t.hasAttribute('data-sacadd')) { const w = t.closest('.sacadd'), k = w.querySelector('[data-sacmon]').value; if (!k) return; sacSet(r, k, +w.querySelector('[data-sacvs]').value) }
+  else sacSet(r, t.dataset.sacdel, null);
+  renderSim(); renderTeamPick(); renderRec(); batQueue();
+});
 BD.addEventListener('input', ev => { if (!ev.target.hasAttribute('data-tplvr')) return; const w = ev.target.closest('.tplv');
   w.querySelector('.tplvout').textContent = tpLvTxt(+ev.target.value, +w.dataset.lo, +w.dataset.cap);
   w.querySelectorAll('[data-tplv]').forEach(x => { x.checked = +x.dataset.tplv === +ev.target.value }) });
@@ -6398,7 +6518,8 @@ function renderRunTop() {
     ${nTrainersHtml(r)}
     <section class="card full nzone" data-zone="party" data-sec="party"><h3>Party · ${party.length}/6</h3>${verdicts}${party.length ? `<div class="pslots">${party.map(x => monEditor(x.row, x.e, r, ctx)).join('')}</div>` : '<p class="empty">Pick a Pokémon on an encounter below and it joins your party.</p>'}
       ${s.party > 6 ? '<p class="rnote" style="margin:10px 0 0">That\'s more than 6. Box one.</p>' : ''}</section>
-    ${box.length || party.length ? `<section class="card full nzone" data-zone="box" data-sec="box"><h3>Box · ${box.length}</h3>${box.length ? `<div class="pslots">${box.map(x => monEditor(x.row, x.e, r, ctx)).join('')}</div>` : '<p class="empty">Drag a party Pokémon here, or use “To box”.</p>'}</section>` : ''}
+    ${box.length || party.length ? `<section class="card full nzone" data-zone="box" data-sec="box"><h3>Box · ${box.length}</h3>${box.length ? (() => { const fv = box.filter(x => x.e.fav), rest = box.filter(x => !x.e.fav), g = xs => `<div class="pslots">${xs.map(x => monEditor(x.row, x.e, r, ctx)).join('')}</div>`;
+      return fv.length ? `<div class="ndiv bfav">★ Favorites · ${fv.length}</div>${g(fv)}${rest.length ? `<div class="ndiv">Everything else · ${rest.length}</div>${g(rest)}` : ''}` : `<p class="sp bfavhint">Tap ☆ on a Pokémon to pin it to a Favorites group up here.</p>${g(rest)}` })() : '<p class="empty">Drag a party Pokémon here, or use “To box”.</p>'}</section>` : ''}
     ${dead.length ? `<section class="card full" data-sec="grave"><h3>Graveyard · ${dead.length}</h3><div class="nparty">${dead.map(card).join('')}</div></section>` : ''}`;
   nTrAreaState();
   nDecorate();
@@ -6484,6 +6605,8 @@ function pmonChange(t, r, refresh, commit) {
 }
 // a click on a full Pokémon card's buttons; true when handled
 function pmonClick(t, r, refresh, commit, root) {
+  const fv = t.closest('button[data-fav]');
+  if (fv) { const e = r.enc[fv.closest('.pmon').dataset.k]; if (!e) return true; if (e.fav) delete e.fav; else e.fav = true; commit(); return true }
   const iu = t.closest('[data-ivunlock]');
   if (iu) { const e = r.enc[iu.dataset.ivunlock]; if (e) { delete e.ivLock; r.updated = Date.now(); saveRuns(); refresh() } return true }
   const hd = t.closest('button[data-hdel]');
